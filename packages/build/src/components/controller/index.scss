@@ -1,0 +1,37 @@
+.marrow-controller-wrapper {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+
+  .marrow-controller-bar {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    .semi-icon {
+      cursor: pointer;
+    }
+
+    .semi-slider {
+      flex: 1;
+    }
+
+    .marrow-controller-info {
+      font-size: 12px;
+    }
+  }
+
+  .marrow-controller-handle-wrapper {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    .marrow-controller-handle {
+      width: 40px;
+      height: 10px;
+      font-size: 0;
+      cursor: pointer;
+    }
+  }
+}

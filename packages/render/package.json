@@ -1,0 +1,13 @@
+{
+  "name": "@wonderful/render",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "animejs": "^3.2.1",
+    "react": "^18.2.0"
+  }
+}

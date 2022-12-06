@@ -1,0 +1,198 @@
+.marrow-container {
+  display: grid;
+  grid-template-columns: 1;
+  grid-template-rows: 1;
+  align-items: center;
+  justify-content: center;
+}
+
+.marrow-text {
+  display: inline-block;
+  width: fit-content;
+}
+
+.marrow-img {
+  font-size: 0;
+  line-height: 0;
+}
+
+.audio-edit-wrapper {
+  position: relative;
+  width: 100%;
+}
+.audio-edit-wrapper .audio-edit-draw {
+  width: 100%;
+  height: 30px;
+}
+.audio-edit-wrapper .audio-edit-control {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  flex-wrap: nowrap;
+}
+.audio-edit-wrapper .audio-edit-control .audio-edit-mask {
+  background-color: rgba(0, 0, 0, 0.1);
+  height: 100%;
+}
+.audio-edit-wrapper .audio-edit-control .audio-edit-control-bar {
+  height: 100%;
+  width: 0;
+  z-index: 2;
+}
+.audio-edit-wrapper .audio-edit-control .audio-edit-select {
+  height: 100%;
+  flex: 1;
+}
+.audio-edit-wrapper .audio-edit-actions {
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translateY(-100%);
+  padding: 5px 8px;
+  background-color: #f2f1f1;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+.audio-edit-wrapper .audio-edit-actions .input-audio {
+  display: inline-block;
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  line-height: 0;
+}
+.audio-edit-wrapper .audio-edit-actions .icon {
+  cursor: pointer;
+  color: #0069c2;
+}
+.audio-edit-wrapper .audio-edit-actions .icon:not(:last-child) {
+  margin-right: 5px;
+}
+.audio-edit-wrapper .audio-edit-actions .icon.disabled {
+  color: gray;
+}
+
+.ruler-wrapper {
+  display: flex;
+  width: 100%;
+  align-items: flex-end;
+  flex-wrap: nowrap;
+}
+.ruler-wrapper .ruler-content {
+  flex: 1;
+  position: relative;
+  padding-bottom: 20px;
+}
+.ruler-wrapper .ruler-content .ruler-num {
+  position: absolute;
+  bottom: 0;
+  font-size: 12px;
+  display: flex;
+  justify-content: center;
+  transform: translateX(-50%);
+}
+.ruler-wrapper .ruler-content .ruler-num.is-first {
+  transform: translateX(0);
+}
+.ruler-wrapper .ruler-content .ruler-num.is-last {
+  transform: translateX(calc(-100% + 4px));
+}
+.ruler-wrapper .ruler-content .ruler-unit {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  right: 0;
+  top: 2px;
+  font-size: 12px;
+  width: 10px;
+  height: 20px;
+  word-break: break-all;
+  line-height: 0.8;
+}
+.ruler-wrapper .ruler-scale {
+  position: relative;
+  --space: 6px;
+  width: 100%;
+  height: 20px;
+  background-image: repeating-linear-gradient(90deg, blue 0 4px, transparent 0 calc(10 * var(--space)));
+}
+.ruler-wrapper .ruler-scale::after, .ruler-wrapper .ruler-scale::before {
+  content: " ";
+  position: absolute;
+  display: inline-block;
+  left: 0;
+  top: 0;
+  right: 0;
+}
+.ruler-wrapper .ruler-scale::before {
+  height: 70%;
+  background-image: repeating-linear-gradient(90deg, transparent 0 1px, green 0 3px, transparent 0 calc(5 * var(--space)));
+}
+.ruler-wrapper .ruler-scale::after {
+  height: 40%;
+  background-image: repeating-linear-gradient(90deg, transparent 0 1.5px, pink 0 2.5px, transparent 0 var(--space));
+}
+
+.bar-wrapper {
+  width: 5px;
+  position: fixed;
+  cursor: ew-resize;
+}
+.bar-wrapper .bar-mask {
+  height: 100%;
+  width: 0;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  z-index: 2;
+  transform: translateX(-50%);
+}
+.bar-wrapper .bar-handle {
+  width: 1px;
+  height: 100%;
+  background-color: blue;
+  transition: width 0.2s linear;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.bar-wrapper:hover .bar-handle {
+  width: 3px;
+}
+
+.icon {
+  width: 1em;
+  height: 1em;
+  vertical-align: middle;
+  fill: currentColor;
+  overflow: hidden;
+}
+
+.marrow-render-wrapper {
+  display: grid;
+  grid-template-columns: 1;
+  grid-template-rows: 1;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.marrow-render-wrapper .marrow-item {
+  grid-row: 1/1;
+  grid-column: 1/1;
+  justify-self: center;
+  align-self: center;
+}
+
+.audio-analyser-wrapper {
+  width: 100%;
+  height: 50px;
+}

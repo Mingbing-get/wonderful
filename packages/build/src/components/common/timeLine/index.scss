@@ -1,0 +1,38 @@
+.time-line-wrapper {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  width: 100%;
+  overflow-x: auto;
+  padding: 8px 12px;
+  border-bottom: 1px solid #1c1f2314;
+  box-sizing: border-box;
+
+  .time-line-item {
+    display: flex;
+    align-items: center;
+
+    .time-line-node {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background-color: #0164fb;
+      cursor: pointer;
+    }
+
+    .time-line-line {
+      display: inline-block;
+      width: 30px;
+      height: 1px;
+      background-color: #d3d3d3;
+    }
+  }
+
+  .time-line-add,
+  .time-line-delete {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+}

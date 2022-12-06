@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "jsx": "react",
+    "target": "ES2016",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "baseUrl": ".",
+    "outDir": "dist",
+    "paths": {
+      "@marrow/global": [
+        "packages/global"
+      ],
+      "@marrow/*": [ "packages/*/src"],
+      "marrow": [ "packages/marrow/src"]
+    },
+  },
+  "include": [
+    "packages/global.d.ts",
+    "packages/images.d.ts",
+    "packages/*/src",
+    "packages/*/preview",
+  ]
+}

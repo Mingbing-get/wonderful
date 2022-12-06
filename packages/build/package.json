@@ -1,0 +1,13 @@
+{
+  "name": "@wonderful/build",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@douyinfe/semi-ui": "^2.22.3",
+    "@types/react-color": "^3.0.6",
+    "react-color": "^2.19.3"
+  }
+}

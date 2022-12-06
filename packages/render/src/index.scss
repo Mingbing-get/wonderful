@@ -1,0 +1,19 @@
+.marrow-render-wrapper {
+  display: grid;
+  grid-template-columns: 1;
+  grid-template-rows: 1;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+
+  position: relative;
+  width: 100%;
+  height: 100%;
+
+  .marrow-item {
+    grid-row: 1 / 1;
+    grid-column: 1 / 1;
+    justify-self: center;
+    align-self: center;
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "name": "@marrow/generate",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "html2canvas": "^1.4.1"
+  }
+}

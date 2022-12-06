@@ -1,0 +1,19 @@
+.element-store-wrapper {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  .element-store-item {
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    &:hover {
+      background-color: gray;
+    }
+    .element-store-item-text {
+      margin-top: 5px;
+    }
+  }
+}

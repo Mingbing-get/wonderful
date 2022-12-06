@@ -1,0 +1,20 @@
+.change-z-index-wrapper {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  background-color: #f4f5f5;
+  padding: 2px 0;
+  border-radius: 4px;
+  font-size: 14px;
+
+  span {
+    padding: 4px 6px;
+    cursor: pointer;
+    &:not(:last-child) {
+      border-right: 1px solid #e3e4e5;
+    }
+    &:hover {
+      background-color: #eceded;
+    }
+  }
+}
