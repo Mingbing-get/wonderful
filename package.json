@@ -1,5 +1,5 @@
 {
-  "name": "wonderful",
+  "name": "wonderful-marrow",
   "version": "1.0.0",
   "workspaces": [
     "packages/*"
