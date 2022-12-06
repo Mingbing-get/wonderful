@@ -5,9 +5,9 @@
     "packages/*"
   ],
   "description": "",
-  "main": "index.js",
+  "main": "packages/marrow/src/index.ts",
   "module": "packages/marrow/dist/marrow.esm.js",
-  "types": "packages/global.d.ts",
+  "types": "packages/marrow/dist/marrow/src/index.d.ts",
   "scripts": {
     "build": "node scripts/build.js",
     "preview": "node scripts/preview.js",

@@ -1,62 +1,3 @@
-.audio-edit-wrapper {
-  position: relative;
-  width: 100%;
-}
-.audio-edit-wrapper .audio-edit-draw {
-  width: 100%;
-  height: 30px;
-}
-.audio-edit-wrapper .audio-edit-control {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  display: flex;
-  flex-wrap: nowrap;
-}
-.audio-edit-wrapper .audio-edit-control .audio-edit-mask {
-  background-color: rgba(0, 0, 0, 0.1);
-  height: 100%;
-}
-.audio-edit-wrapper .audio-edit-control .audio-edit-control-bar {
-  height: 100%;
-  width: 0;
-  z-index: 2;
-}
-.audio-edit-wrapper .audio-edit-control .audio-edit-select {
-  height: 100%;
-  flex: 1;
-}
-.audio-edit-wrapper .audio-edit-actions {
-  position: absolute;
-  top: 0;
-  right: 0;
-  transform: translateY(-100%);
-  padding: 5px 8px;
-  background-color: #f2f1f1;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-}
-.audio-edit-wrapper .audio-edit-actions .input-audio {
-  display: inline-block;
-  position: absolute;
-  width: 0;
-  height: 0;
-  opacity: 0;
-  line-height: 0;
-}
-.audio-edit-wrapper .audio-edit-actions .icon {
-  cursor: pointer;
-  color: #0069c2;
-}
-.audio-edit-wrapper .audio-edit-actions .icon:not(:last-child) {
-  margin-right: 5px;
-}
-.audio-edit-wrapper .audio-edit-actions .icon.disabled {
-  color: gray;
-}
-
 .ruler-wrapper {
   display: flex;
   width: 100%;
@@ -118,6 +59,65 @@
 .ruler-wrapper .ruler-scale::after {
   height: 40%;
   background-image: repeating-linear-gradient(90deg, transparent 0 1.5px, pink 0 2.5px, transparent 0 var(--space));
+}
+
+.audio-edit-wrapper {
+  position: relative;
+  width: 100%;
+}
+.audio-edit-wrapper .audio-edit-draw {
+  width: 100%;
+  height: 30px;
+}
+.audio-edit-wrapper .audio-edit-control {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  flex-wrap: nowrap;
+}
+.audio-edit-wrapper .audio-edit-control .audio-edit-mask {
+  background-color: rgba(0, 0, 0, 0.1);
+  height: 100%;
+}
+.audio-edit-wrapper .audio-edit-control .audio-edit-control-bar {
+  height: 100%;
+  width: 0;
+  z-index: 2;
+}
+.audio-edit-wrapper .audio-edit-control .audio-edit-select {
+  height: 100%;
+  flex: 1;
+}
+.audio-edit-wrapper .audio-edit-actions {
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translateY(-100%);
+  padding: 5px 8px;
+  background-color: #f2f1f1;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+.audio-edit-wrapper .audio-edit-actions .input-audio {
+  display: inline-block;
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  line-height: 0;
+}
+.audio-edit-wrapper .audio-edit-actions .icon {
+  cursor: pointer;
+  color: #0069c2;
+}
+.audio-edit-wrapper .audio-edit-actions .icon:not(:last-child) {
+  margin-right: 5px;
+}
+.audio-edit-wrapper .audio-edit-actions .icon.disabled {
+  color: gray;
 }
 
 .bar-wrapper {
