@@ -1,0 +1,67 @@
+.rabbit-input-wrapper {
+  display: table;
+  display: flex;
+  flex-direction: row;
+  height: var(--rabbit-input-height-base);
+  border: 1px solid var(--rabbit-border-color-base);
+  min-width: var(--rabbit-input-min-width);
+  border-radius: var(--rabbit-border-radius-base);
+  padding: 0 0.125rem;
+  &.has-control {
+    padding-right: 0;
+  }
+  &.has-suffix {
+    padding-right: 0;
+    .rabbit-input-control {
+        margin-left: 0;
+      }
+  }
+  &.has-prefix {
+    padding-left: 0;
+  }
+
+  .rabbit-input-prefix {
+    display: table-cell;
+    margin-right: 0.125rem;
+    border-top-left-radius: var(--rabbit-border-radius-base);
+    border-bottom-left-radius: var(--rabbit-border-radius-base);
+    overflow: hidden;
+  }
+  .rabbit-input-control {
+    display: table-cell;
+    margin-left: 0.125rem;
+    border-top-right-radius: var(--rabbit-border-radius-base);
+    border-bottom-right-radius: var(--rabbit-border-radius-base);
+    overflow: hidden;
+  }
+  .rabbit-input-suffix {
+    display: table-cell;
+    margin-left: 0.125rem;
+    border-top-right-radius: var(--rabbit-border-radius-base);
+    border-bottom-right-radius: var(--rabbit-border-radius-base);
+    overflow: hidden;
+  }
+
+  &.split-fix {
+    &>.rabbit-input-prefix {
+      border-right: 1px solid var(--rabbit-border-color-base);
+    }
+    &>.rabbit-input-control {
+      border-left: 1px solid var(--rabbit-border-color-base);
+    }
+    &>.rabbit-input-suffix {
+      border-left: 1px solid var(--rabbit-border-color-base);
+    }
+  }
+
+  input {
+    display: table-cell;
+    flex: 1;
+    height: 100%;
+    width: 100%;
+    border: none;
+    outline: none;
+    padding: 0;
+    background-color: transparent;
+  }
+}

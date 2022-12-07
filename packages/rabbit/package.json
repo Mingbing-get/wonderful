@@ -1,0 +1,14 @@
+{
+  "name": "@wonderful/rabbit",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.ts",
+  "module": "dist/rabbit.esm.js",
+  "types": "dist/rabbit/src/index.d.ts",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@popperjs/core": "^2.11.6"
+  }
+}

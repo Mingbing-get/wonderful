@@ -1,0 +1,26 @@
+.rabbit-tab {
+  .rabbit-tab-title-wrapper {
+    display: flex;
+    flex-direction: row;
+    border-bottom: 1px solid var(--rabbit-border-color-base);
+    width: 100%;
+    overflow-x: auto;
+
+    .rabbit-tab-title {
+      padding: 0.3125rem 0;
+      cursor: pointer;
+
+      &:not(:first-child) {
+        margin-left: 1.25rem;
+      }
+
+      &.is-active {
+        color: var(--rabbit-primary-color);
+      }
+    }
+  }
+
+  .rabbit-tab-item {
+    padding-top: 0.625rem;
+  }
+}

@@ -1,0 +1,72 @@
+.rabbit-button-wrapper {
+  position: relative;
+  display: inline-block;
+  padding: 0.2rem 0.8rem;
+  border-radius: var(--rabbit-border-radius-base);
+  border: 1px solid var(--rabbit-border-color-base);
+  cursor: pointer;
+  text-align: center;
+  overflow: hidden;
+
+  .loading-mask,
+  .disabled-mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    cursor: not-allowed;
+  }
+  .loading-mask {
+    display: none;
+    align-items: center;
+    justify-content: center;
+  }
+  .disabled-mask {
+    display: none;
+    background-color: var(--rabbit-disabled-color);
+  }
+
+  &.is-block {
+    width: 100%;
+  }
+  &.is-disabled {
+    .disabled-mask {
+      display: inline-block;
+    }
+  }
+  &.is-loading {
+    .disabled-mask {
+      display: inline-block;
+    }
+    .loading-mask {
+      display: flex;
+    }
+  }
+
+  @each $name, $color in 
+    (primary, var(--rabbit-primary-color)),
+    (danger, var(--rabbit-error-color)),
+    (success, var(--rabbit-success-color)),
+    (warning, var(--rabbit-warning-color)) {
+      &.type-#{$name} {
+          color: #fff;
+          background-color: $color;
+          border-color: $color;
+      
+          &>.button-content {
+            color: #fff;
+          }
+      
+          &.is-ghost {
+            color: $color;
+            background-color: transparent;
+            border-color: $color;
+      
+            &>.button-content {
+              color: $color;
+            }
+          }
+        }
+    }
+}

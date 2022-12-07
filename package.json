@@ -14,7 +14,8 @@
     "preview:render": "node scripts/preview.js render",
     "preview:build": "node scripts/preview.js build",
     "preview:audio": "node scripts/preview.js audio",
-    "preview:generate": "node scripts/preview.js generate"
+    "preview:generate": "node scripts/preview.js generate",
+    "preview:rabbit": "node scripts/preview.js rabbit"
   },
   "author": "",
   "license": "ISC",

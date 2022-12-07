@@ -1,0 +1,15 @@
+.rabbit-loading-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: var(--rabbit-primary-color);
+
+  animation: rotate-until 1s 0.2s infinite linear;
+}
+
+@keyframes rotate-until {
+  0% { rotate: 0; }
+  50% { rotate: 270deg; }
+  100% { rotate: 360deg; }
+}
