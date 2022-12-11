@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { InputNumber } from '@douyinfe/semi-ui'
+import { InputNumber } from '@marrow/rabbit'
 
 type Props = {
   value?: number

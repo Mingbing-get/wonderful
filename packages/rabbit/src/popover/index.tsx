@@ -3,8 +3,6 @@ import ReactDOM from 'react-dom'
 import { createPopper, Placement, Instance, VirtualElement } from '@popperjs/core'
 import classNames from 'classnames'
 
-import { getLocation } from '../utils'
-
 import './index.scss'
 
 type Props = {
@@ -15,6 +13,7 @@ type Props = {
   placement?: Placement,
   visible?: boolean,
   delay?: number,
+  className?: string
   onVisibleChange?: (visible: boolean) => void
 }
 
@@ -26,6 +25,7 @@ export default function Popover({
   arrow = 'middle',
   visible,
   delay = 500,
+  className,
   onVisibleChange
 }: Props) {
   const targetRef = useRef<HTMLElement>(null)
@@ -103,15 +103,12 @@ export default function Popover({
 
   function getTargetLocationAndSize() {
     if (!targetRef.current) return { top: 0, left: 0, width: 0, height: 0 }
-
-    return {
-      ...getLocation(targetRef.current),
-      width: targetRef.current.offsetWidth,
-      height: targetRef.current.offsetHeight
-    }
+    return targetRef.current.getBoundingClientRect()
   }
 
-  useEffect(() => setIsHidden(!visible), [visible])
+  useEffect(() => {
+    setIsHidden(!visible)
+  }, [visible])
 
   useEffect(() => {
     onVisibleChange?.(!isHidden)
@@ -149,8 +146,9 @@ export default function Popover({
       {
         ReactDOM.createPortal(
           <div
-            className={classNames('rabbit-popper-wrapper', { 'is-hidden': isHidden })}
+            className={classNames('rabbit-popper-wrapper', className, { 'is-hidden': isHidden })}
             ref={displayRef}
+            onClick={e => e.stopPropagation()}
           >
             {content}
             <div

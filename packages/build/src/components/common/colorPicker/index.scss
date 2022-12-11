@@ -1,8 +1,8 @@
 .color-picker-wrapper {
-  width: 100px;
-  height: 24px;
+  width: 8rem;
+  height: 1.5rem;
   border: 1px solid #1c1f2314;
-  border-radius: 4px;
+  border-radius: 0.25rem;
   overflow: hidden;
   cursor: pointer;
   box-sizing: border-box;
@@ -16,16 +16,17 @@
   padding: 0;
   .sketch-picker {
     box-shadow: none !important;
+    width: 12rem !important;
   }
 
   .color-picker-popover-bottom {
     width: 100%;
-    padding: 8px 10px;
+    padding: 0.5rem 0.625rem;
     text-align: right;
     box-sizing: border-box;
 
-    .semi-button:not(:last-child) {
-      margin-right: 6px;
+    .rabbit-button-wrapper:not(:last-child) {
+      margin-right: 0.375rem;
     }
   }
 }

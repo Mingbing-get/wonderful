@@ -1,0 +1,17 @@
+.rabbit-input-group-wrapper {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  &>.rabbit-input-wrapper {
+    &:not(:last-child) {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+      border-right: none;
+    }
+
+    &:not(:first-child) {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+  }
+}

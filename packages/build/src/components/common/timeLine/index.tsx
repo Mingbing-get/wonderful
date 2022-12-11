@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { IconPlus, IconDeleteStroked } from '@douyinfe/semi-icons'
+import { Icon } from '@marrow/rabbit'
 
 import './index.scss'
 
@@ -36,7 +36,7 @@ export default function TimeLine({
             {
               selectIndex === node.index ? (
                 <span className='time-line-delete' onClick={() => onDelete?.(node)}>
-                  <IconDeleteStroked style={{ color: 'red' }} />
+                  <Icon type='delete' style={{ color: 'red' }} />
                 </span>
               ) : (
                 <span className='time-line-node' onClick={() => onPick?.(node)}></span>
@@ -47,7 +47,7 @@ export default function TimeLine({
         ))
       }
       <span className='time-line-add' onClick={onAdd}>
-        <IconPlus />
+        <Icon type='add' />
       </span>
     </div>
   )

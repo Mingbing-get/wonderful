@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 
-import Icon from '../fontIcons'
+import { Icon } from '@marrow/rabbit'
 import { useAudioEdit } from './context'
 
 export default function EditActions() {

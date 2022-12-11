@@ -10,16 +10,12 @@
     display: flex;
     align-items: center;
     width: 100%;
-    .semi-icon {
-      cursor: pointer;
-    }
-
-    .semi-slider {
-      flex: 1;
+    .rabbit-icon {
+      font-size: 1.5rem;
     }
 
     .marrow-controller-info {
-      font-size: 12px;
+      font-size: 0.75rem;
     }
   }
 
@@ -28,6 +24,8 @@
     flex-direction: row;
     flex-wrap: nowrap;
     .marrow-controller-handle {
+      display: flex;
+      align-items: flex-end;
       width: 40px;
       height: 10px;
       font-size: 0;

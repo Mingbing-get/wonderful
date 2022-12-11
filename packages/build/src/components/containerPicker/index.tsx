@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react'
-import { Modal, Select } from '@douyinfe/semi-ui'
+import { Modal, Select } from '@marrow/rabbit'
 
 import {
   getAllIncludeChildren,
@@ -14,8 +14,6 @@ import {
 import { createElement } from '../elementStore/elementItems'
 
 import { useBuildMarrow } from '../../context'
-
-const Option = Select.Option
 
 export default function ContainerPicker() {
   const {
@@ -43,6 +41,13 @@ export default function ContainerPicker() {
 
     return includeChildrenMarrow
   }, [data, willMoveId])
+
+  const options = useMemo(() => {
+    return hasChildrenMarrows.map(marrow => ({
+      value: marrow.id,
+      label: getMarrowName(marrow)
+    }))
+  }, [hasChildrenMarrows])
 
   function handleOk() {
     if (operationType === 'add') {
@@ -83,23 +88,22 @@ export default function ContainerPicker() {
 
   return (
     <Modal
-      title={`选择将要${operationType === 'add' ? '插入' : '移动到'}的容器`}
+      header={`选择将要${operationType === 'add' ? '插入' : '移动到'}的容器`}
       visible={!!operationType}
-      centered
       width='60%'
-      onOk={handleOk}
-      onCancel={handleCancel}
-      closeOnEsc={true}
-      getPopupContainer={getBuildContainer}
-      className={'container-modal-wrapper'}
-    >
-      <Select value={selectedValue} onChange={val => setSelectedValue(val as string)}>
-        {
-          hasChildrenMarrows.map(marrow => (
-            <Option key={marrow.id} value={marrow.id}>{getMarrowName(marrow)}</Option>
-          ))
-        }
-      </Select>
-    </Modal>
+      getContainer={getBuildContainer}
+      onClose={handleCancel}
+      footer={[
+        { text: '取消', onClick: handleCancel },
+        { text: '确定', type: 'primary', onClick: handleOk }
+      ]}
+      content={(
+        <Select
+          value={selectedValue}
+          onChange={val => setSelectedValue(val as string)}
+          options={options}
+        />
+      )}
+    />
   )
 }

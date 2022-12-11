@@ -1,19 +1,19 @@
 .mask-wrapper {
   position: fixed;
-  border: 1px solid #0064fa;
+  border: 1px solid var(--rabbit-primary-color);
   .mask-actions {
     display: flex;
     justify-content: flex-end;
     transform: translateY(-100%);
-    padding-bottom: 2px;
+    padding-bottom: 0.125rem;
     .mask-actions-item {
-      padding: 2px;
-      background-color: #0064fa;
-      border-radius: 2px;
+      padding: 0.125rem;
+      background-color: var(--rabbit-primary-color);
+      border-radius: 0.125rem;
       font-size: 0;
       cursor: pointer;
       &:not(:first-child) {
-        margin-left: 4px;
+        margin-left: 0.25rem;
       }
     }
   }

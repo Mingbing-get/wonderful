@@ -1,32 +1,26 @@
 import React, { useMemo } from 'react'
 import { getMarrowName, getMarrowsByIds } from '@marrow/utils'
+import { Select } from '@marrow/rabbit'
 
 import { useBuildMarrow } from '../../../context'
-
-import { Select } from '@douyinfe/semi-ui'
-const Option = Select.Option
 
 export default function MarrowPicker() {
   const { data, selectedId, currentLocationIds, setSelectedId } = useBuildMarrow()
   
-  const marrows = useMemo(() => { 
-    return getMarrowsByIds(data, currentLocationIds)
+  const marrowOptions = useMemo(() => { 
+    return getMarrowsByIds(data, currentLocationIds).map(marrow => ({
+      value: marrow.id,
+      label: getMarrowName(marrow)
+    }))
   }, [data, currentLocationIds])
 
   return (
     <Select
-      style={{ width: 120 }}
+      style={{ width: '8rem' }}
       value={selectedId}
       placeholder="请选择对象"
       onChange={id => setSelectedId?.(id as string)}
-    >
-      {
-        marrows.map(marrow => (
-          <Option key={marrow.id} value={marrow.id}>
-            {getMarrowName(marrow)}
-          </Option>
-        ))
-      }
-    </Select>
+      options={marrowOptions}
+    />
   )
 }

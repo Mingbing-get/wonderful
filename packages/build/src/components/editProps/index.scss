@@ -4,26 +4,10 @@
   flex-wrap: nowrap;
 
   p {
-    margin: 0 6px 0 0;
+    margin: 0 0.4rem 0 0;
   }
 
   .semi-icon {
     cursor: pointer;
-  }
-}
-
-.slide-edit-props {
-  .semi-sidesheet-header {
-    padding: 8px;
-  }
-  .semi-sidesheet-body {
-    padding: 0 8px;
-  }
-}
-
-.tab-edit-props {
-  .semi-tabs-bar-line.semi-tabs-bar-top .semi-tabs-tab {
-    padding-top: 0;
-    padding-bottom: 6px;
   }
 }

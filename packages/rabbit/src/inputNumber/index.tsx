@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react'
+import classNames from 'classnames'
 
-import Input, { InputValue } from '../input'
+import Input from '../input'
+import Icon from '../icon'
 
 import './index.scss'
 
@@ -15,6 +17,7 @@ type Props = {
   className?: string;
   style?: React.CSSProperties;
   onChange?: (value: number) => void;
+  onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
 }
 
 const numberReg = /^(-|\d)\d*$/
@@ -30,7 +33,8 @@ export default function InputNumber({
   suffix,
   className,
   style,
-  onChange
+  onChange,
+  onBlur
 }: Props) {
   const [_value, setValue] = useState<number>()
   const preValue = useRef<number>()
@@ -52,7 +56,7 @@ export default function InputNumber({
     setValueUsePrevent(value)
   }, [value, curReg])
 
-  const handleChange = useCallback((val?: InputValue) => {
+  const handleChange = useCallback((val?: string | number) => {
     if (setValueUsePrevent(val as number) === 'prevent') return
 
     onChange?.(Number(val))
@@ -73,26 +77,32 @@ export default function InputNumber({
 
   return (
     <Input
-      className={className}
+      className={classNames('rabbit-number-wrapper', className)}
       style={style}
       value={_value}
-      onChange={handleChange}
-      splitFix
+      onChange={e => handleChange(e.target.value)}
+      onBlur={onBlur}
       prefix={prefix}
       suffix={
-        suffix && (
-          <div className='rabbit-unit-suffix'>
-            {suffix}
-          </div>
-        )
-      }
-      control={
-        step && (
-          <div className='rabbit-step-wrapper'>
-            <span className='rabbit-step-add' onClick={() => handleChange((_value || 0) + step)} />
-            <span className='rabbit-step-reduce' onClick={() => handleChange((_value || 0) - step)} />
-          </div>
-        )
+        <>
+          {
+            suffix && (
+              <>
+                <div className='rabbit-unit-suffix'>
+                  {suffix}
+                </div>
+              </>
+            )
+          }
+          {
+            step && (
+              <div className='rabbit-step-wrapper'>
+                <Icon type='arrowUp' onClick={() => handleChange((_value || 0) + step)} />
+                <Icon type='arrowDown' onClick={() => handleChange((_value || 0) - step)} />
+              </div>
+            )
+          }
+        </>
       }
     />
   )

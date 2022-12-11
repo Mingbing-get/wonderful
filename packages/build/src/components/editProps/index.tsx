@@ -1,6 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react'
-import { SideSheet, Tabs, TabPane } from '@douyinfe/semi-ui'
-import { IconEyeClosedSolid, IconEyeOpened } from '@douyinfe/semi-icons'
+import { Modal, Tab, Icon } from '@marrow/rabbit'
 
 import { getBuildContainer } from '@marrow/utils'
 
@@ -10,6 +9,8 @@ import BaseInfo from './baseInfo'
 import { useBuildMarrow } from '../../context'
 
 import './index.scss'
+
+const Item = Tab.Item
 
 export default function EditProps() {
   const { editingId, setEditingId, setSelectedId } = useBuildMarrow()
@@ -23,54 +24,53 @@ export default function EditProps() {
   const tabList = useMemo(() => (
     [
       {
-        tabName: '基础信息',
-        itemKey: 'base-info',
-        tabContent: <BaseInfo />
+        title: '基础信息',
+        key: 'base-info',
+        children: <BaseInfo />
       },
       {
-        tabName: '初始化样式',
-        itemKey: 'start-style',
-        tabContent: <StartStyle />
+        title: '初始化样式',
+        key: 'start-style',
+        children: <StartStyle />
       },
       {
-        tabName: '动画配置',
-        itemKey: 'animations',
-        tabContent: <Animations />
+        title: '动画配置',
+        key: 'animations',
+        children: <Animations />
       }
     ]
   ), [])
   return (
-    <SideSheet
-      title={
+    <Modal
+      header={
         <div className='slide-edit-props-title'>
           <p>编辑详细信息</p>
           {
             open ? (
-              <IconEyeClosedSolid onClick={() => setOpen(false)} />
+              <Icon type='closeEye' style={{ cursor: 'pointer' }} onClick={() => setOpen(false)} />
             ) : (
-              <IconEyeOpened onClick={() => setOpen(true)} />
+              <Icon type='eye' style={{ cursor: 'pointer' }} onClick={() => setOpen(true)} />
             )
           }
         </div>
       }
-      width='100%'
       height='calc(90% - 45px)'
       visible={!!editingId}
       placement="bottom"
-      className='slide-edit-props'
       style={{ opacity: open ? 0.8 : 1 }}
-      onCancel={handleCancel}
-      getPopupContainer={getBuildContainer}
-    >
-      <Tabs className='tab-edit-props' type='line'>
-        {
-          tabList.map(({ tabName, tabContent, itemKey }) => (
-            <TabPane tab={tabName} itemKey={itemKey} key={itemKey}>
-              {tabContent}
-            </TabPane>
-          ))
-        }
-      </Tabs>
-    </SideSheet>
+      onClose={handleCancel}
+      getContainer={getBuildContainer}
+      content={(
+        <Tab>
+          {
+            tabList.map(({ title, key, children }) => (
+              <Item title={title} key={key}>
+                {children}
+              </Item>
+            ))
+          }
+        </Tab>
+      )}
+    />
   )
 }

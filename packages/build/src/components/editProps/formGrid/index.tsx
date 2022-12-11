@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { Collapse } from '@douyinfe/semi-ui'
+import { Collapse } from '@marrow/rabbit'
 
 import './index.scss'
 
@@ -64,7 +64,7 @@ export default function FormGrid({
           <Collapse>
             {
               groups.map(group => (
-                <Panel header={group.label} itemKey={group.key} key={group.key}>
+                <Panel header={group.label} panelKey={group.key} key={group.key}>
                   <BaseGrid items={group.items} />
                 </Panel>
               ))

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { SketchPicker } from 'react-color'
-import { Button, Popover  } from '@douyinfe/semi-ui'
+import { Button, Popover  } from '@marrow/rabbit'
 
 import './index.scss'
 
@@ -34,18 +34,16 @@ export default function ColorPicker({
   return (
     <div className='color-picker-wrapper'>
       <Popover
-        showArrow
         visible={visible}
-        position='top'
-        trigger='custom'
+        onVisibleChange={setVisible}
         className='color-picker-popover'
         content={
           (
             <div>
               <SketchPicker color={color} onChangeComplete={(color) => setColor(color.hex)} />
               <div className='color-picker-popover-bottom'>
-                <Button theme='solid' size='small' type='primary' onClick={handleConfirm}>确定</Button>
-                <Button theme='solid' size='small' type='secondary' onClick={handleCancel}>取消</Button>
+                <Button type='primary' onClick={handleConfirm}>确定</Button>
+                <Button onClick={handleCancel}>取消</Button>
               </div>
             </div>
           )

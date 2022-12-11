@@ -1,0 +1,32 @@
+.bar-wrapper {
+  width: 5px;
+  position: fixed;
+  cursor: ew-resize;
+
+  .bar-mask {
+    height: 100%;
+    width: 0;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    z-index: 2;
+    transform: translateX(-50%);
+  }
+
+  .bar-handle {
+    width: 1px;
+    height: 100%;
+    background-color: blue;
+    transition: width 0.2s linear;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  &:hover {
+    .bar-handle {
+      width: 3px;
+    }
+  }
+}

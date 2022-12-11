@@ -1,7 +1,8 @@
-import React, { useCallback, useState, useEffect, useRef } from 'react'
+import React, { useCallback, useState, useEffect } from 'react'
 import classNames from 'classnames'
 
 import Input from '../input'
+import Icon from '../icon'
 import Popover from '../popover'
 import Option from './option'
 
@@ -10,7 +11,7 @@ import './index.scss'
 export type ValueType = number | string;
 export type OptionType<T> = {
   value: T;
-  label?: React.ReactNode;
+  label?: string;
   prefix?: React.ReactElement;
   suffix?: React.ReactElement;
   className?: string;
@@ -25,6 +26,7 @@ type Props<T extends ValueType> = {
   options: OptionType<T>[];
   className?: string;
   style?: React.CSSProperties;
+  placeholder?: string;
   wrapperClassName?: string;
   wrapperStyle?: React.CSSProperties;
   onChange?: (value?: T) => void;
@@ -36,35 +38,35 @@ export default function Select<T extends ValueType>({
   options,
   className,
   style,
+  placeholder,
   wrapperClassName,
   wrapperStyle,
   onChange
 }: Props<T>) {
   const [visible, setVisible] = useState(false)
   const [_value, setValue] = useState<T>()
-  const preValue = useRef<T>()
 
   useEffect(() => setValue(defaultValue), [])
 
   useEffect(() => {
-    if (preValue.current === value) return
-
-    preValue.current = value
+    if (value === _value) return
     setValue(value)
   }, [value])
-
-  useEffect(() => {
-    if (_value === value) return
-    onChange?.(_value)
-  }, [_value, onChange])
 
   const handleClick = useCallback(({ value, onClick }: OptionType<T>) => {
     if (value === _value) return
 
+    onChange?.(value)
     setValue(value)
     setVisible(false)
     onClick?.(value)
-  }, [_value])
+  }, [_value, onChange])
+
+  const findLabelByValue = useCallback((value?: T) => {
+    if (!value) return
+    const currentOption = options.find(item => item.value === value)
+    return currentOption?.label || currentOption?.value
+  }, [options])
 
   return (
     <Popover
@@ -84,15 +86,16 @@ export default function Select<T extends ValueType>({
             ))
           }
         </div>
-      }
+      } 
     >
       <Input
+        placeholder={placeholder}
         className={classNames('rabbit-select', className)}
         style={style}
-        value={_value}
-        readonly
+        value={findLabelByValue(_value)}
+        readOnly
         suffix={
-          <span className={classNames('rabbit-select-arrow', { 'rotate-180': visible })} />
+          <Icon type='arrowDownFill' className={classNames('icon-arrow-down-fill', visible && 'rotate-180')} />
         }
       />
     </Popover>

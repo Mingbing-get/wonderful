@@ -1,6 +1,6 @@
 import React from 'react'
 import classnames from 'classnames'
-import { IconMenu } from '@douyinfe/semi-icons'
+import { Icon } from '@marrow/rabbit'
 
 import MarrowPicker from './marrowPicker'
 import ShowOperation from './showOperation'
@@ -26,7 +26,7 @@ export default function TopNav({
       onClick={e => { e.stopPropagation(); return false}}
     >
       <div className='top-nav-item'>
-        <IconMenu style={{ cursor: 'pointer' }} onClick={e => setShowStore?.(true) } />
+        <Icon type='menu' style={{ cursor: 'pointer' }} onClick={() => setShowStore?.(true) } />
       </div>
       <div className='top-nav-item'>
         <MarrowPicker />

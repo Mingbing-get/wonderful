@@ -1,5 +1,5 @@
 import React from 'react'
-import { SideSheet } from '@douyinfe/semi-ui'
+import { Modal } from '@marrow/rabbit'
 
 import { getBuildContainer } from '@marrow/utils'
 import { ElementType } from '@marrow/global'
@@ -19,26 +19,27 @@ export default function ElementStore() {
   }
 
   return (
-    <SideSheet
-      title="选择元素"
+    <Modal
+      header="选择元素"
       width='70%'
       visible={showStore}
       placement="left"
-      onCancel={e => setShowStore?.(false)}
-      getPopupContainer={getBuildContainer}
-    >
-      <div className='element-store-wrapper'>
-        {
-          elements.map(({ type, elementName, icon }) => (
-            <div className='element-store-item' key={type} onClick={() => handleSelected(type)}>
-              {icon}
-              <span className='element-store-item-text'>
-                {elementName}
-              </span>
-            </div>
-          ))
-        }
-      </div>
-    </SideSheet>
+      onClose={() => setShowStore?.(false)}
+      getContainer={getBuildContainer}
+      content={(
+        <div className='element-store-wrapper'>
+          {
+            elements.map(({ type, elementName, icon }) => (
+              <div className='element-store-item' key={type} onClick={() => handleSelected(type)}>
+                {icon}
+                <span className='element-store-item-text'>
+                  {elementName}
+                </span>
+              </div>
+            ))
+          }
+        </div>
+      )}
+    />
   )
 }

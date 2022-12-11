@@ -1,0 +1,39 @@
+.rabbit-switch-wrapper {
+  display: inline-block;
+  height: var(--rabbit-input-height-base);
+  border: 1px solid var(--rabbit-border-color-base);
+  min-width: 2.5rem;
+  border-radius: 1000rem;
+  cursor: pointer;
+  overflow: hidden;
+
+  &.is-yes {
+    .switch-trick {
+      background-color: var(--rabbit-primary-color);
+      flex-direction: row;
+    }
+  }
+
+  .switch-trick {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    flex-wrap: nowrap;
+  }
+
+  .switch-bar {
+    display: inline-block;
+    width: calc(var(--rabbit-input-height-base) - 0.4rem);
+    height: calc(var(--rabbit-input-height-base) - 0.4rem);
+    border-radius: 50%;
+    border: 1px solid var(--rabbit-border-color-base);
+    box-shadow: var(--rabbit-box-shadow-base);
+    background-color: #fff;
+  }
+
+  .switch-text {
+    flex: 1;
+  }
+}

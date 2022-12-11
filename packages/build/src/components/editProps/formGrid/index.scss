@@ -6,10 +6,12 @@
     flex-direction: row;
     flex-wrap: nowrap;
     align-items: center;
-    margin-bottom: 10px;
+    margin-bottom: 0.6rem;
 
     .form-label {
-      margin-right: 5px;
+      word-break: keep-all;
+      white-space: nowrap;
+      margin-right: 0.4rem;
     }
   }
 }

@@ -1,5 +1,5 @@
 import React from 'react'
-import { IconWindowAdaptionStroked, IconCommand, IconMark } from '@douyinfe/semi-icons'
+import { Icon } from '@marrow/rabbit'
 
 import { ElementType, Marrow } from '@marrow/global'
 import { generateId } from '@marrow/utils'
@@ -9,17 +9,17 @@ const elements = [
   {
     type: 'container',
     elementName: '容器',
-    icon: <IconWindowAdaptionStroked size='extra-large' />
+    icon: <Icon type='container' style={{ fontSize: '2rem' }} />
   },
   {
     type: 'img',
     elementName: '图片',
-    icon: <IconCommand size='extra-large' />
+    icon: <Icon type='image' style={{ fontSize: '2rem' }} />
   },
   {
     type: 'text',
     elementName: '文本',
-    icon: <IconMark size='extra-large' />
+    icon: <Icon type='text' style={{ fontSize: '2rem' }} />
   }
 ]
 
@@ -28,7 +28,7 @@ function getBaseProps(elementType: ElementType) {
     id: `${elementType}-${generateId()}`,
     startStyle: {
       zIndex: elementType === 'img' ? -1 : 0,
-      width: elementType === 'img' ? '100px' : ''
+      width: elementType === 'img' ? '20rem' : '' 
     },
     animation: [],
     timeLineParams: {},

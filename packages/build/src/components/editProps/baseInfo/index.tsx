@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { Select, Switch } from '@douyinfe/semi-ui'
+import { Select, Switch, SelectOptionType } from '@marrow/rabbit'
 import Input from '../../common/input'
 
 import LoopStylePicker from './loopStylePicker'
@@ -9,7 +9,10 @@ import getImgInfo from './imgInfo'
 
 import ChangeProps, { GetFormGridItems } from '../changeProps'
 
-const Option = Select.Option
+const easingStyleOptions: SelectOptionType<string>[] = [
+  { value: 'spring(1, 80, 10, 0)', label: '弹簧' },
+  { value: 'linear', label: '线性' }
+]
 
 export default function BaseInfo() {
   const getFormGridItems: GetFormGridItems = useCallback((marrow, handleChange) => {
@@ -37,10 +40,8 @@ export default function BaseInfo() {
           <Select
             value={marrow.timeLineParams?.easing || 'spring(1, 80, 10, 0)'}
             onChange={val => handleChange(['timeLineParams', 'easing'], val)}
-          >
-            <Option key='spring' value='spring(1, 80, 10, 0)'>弹簧</Option>
-            <Option key='linear' value='linear'>线性</Option>
-          </Select>
+            options={easingStyleOptions}
+          />
         )
       },
       {
@@ -51,7 +52,7 @@ export default function BaseInfo() {
       {
         key: 'completeIsDestroy',
         label: '完成后销毁:',
-        content: <Switch checked={marrow.completeIsDestroy} onChange={val => handleChange(['completeIsDestroy'], val)} />
+        content: <Switch value={marrow.completeIsDestroy} onChange={val => handleChange(['completeIsDestroy'], val)} />
       }
     ]
 

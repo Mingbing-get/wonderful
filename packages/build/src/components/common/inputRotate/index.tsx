@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { InputNumber } from '@douyinfe/semi-ui'
+import { InputNumber } from '@marrow/rabbit'
 
 import './index.scss'
 
@@ -40,6 +40,7 @@ export default function InputRotate({
         value={round}
         onChange={val => setRound(val as number)}
         onBlur={handleBlur}
+        style={{ width: '6rem' }}
       />
       <span>+</span>
       <InputNumber
@@ -47,6 +48,7 @@ export default function InputRotate({
         value={deg}
         onChange={val => setDeg(val as number)}
         onBlur={handleBlur}
+        style={{ width: '6rem' }}
       />
     </div>
   )

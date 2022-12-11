@@ -1,11 +1,9 @@
 import React from 'react'
-import { Select, InputGroup } from '@douyinfe/semi-ui'
+import { Select, InputGroup } from '@marrow/rabbit'
 import InputNumber from '../../common/inputNumber'
 
 import { ChangeFn } from '../changeProps'
 import { Marrow, TimeLineParams } from '@marrow/global'
-
-const Option = Select.Option
 
 function getRepeatStyle(loop?: boolean | number, direction?: string): string {
   if (!loop) return 'no_repeat'
@@ -53,6 +51,14 @@ function handleChangeLoop(handleChange: ChangeFn, value: string, timeLineParams?
   }
 }
 
+const repeatOptions = [
+  { value: 'no_repeat', label: '不重复' },
+  { value: 'repeat_times', label: '重复次数' },
+  { value: 'alternate_repeat_times', label: '无缝重复次数' },
+  { value: 'until_repeat', label: '无限重复' },
+  { value: 'until_alternate_repeat', label: '无限无缝重复' }
+]
+
 type Props = {
   marrow: Marrow,
   handleChange: ChangeFn
@@ -67,13 +73,8 @@ export default function LoopStylePicker({
       <Select
         value={getRepeatStyle(marrow.timeLineParams?.loop, marrow.timeLineParams?.direction)}
         onChange={val => handleChangeLoop(handleChange, val as string, marrow.timeLineParams)}
-      >
-        <Option key='no_repeat' value='no_repeat'>不重复</Option>
-        <Option key='repeat_times' value='repeat_times'>重复次数</Option>
-        <Option key='alternate_repeat_times' value='alternate_repeat_times'>无缝重复次数</Option>
-        <Option key='until_repeat' value='until_repeat'>无限重复</Option>
-        <Option key='until_alternate_repeat' value='until_alternate_repeat'>无限无缝重复</Option>
-      </Select>
+        options={repeatOptions}
+      />
       {
         Object.prototype.toString.call(marrow.timeLineParams?.loop) === '[object Number]' && (
           <InputNumber

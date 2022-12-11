@@ -23,8 +23,11 @@ type Props = {
   width?: number | string,
   height?: number | string,
   placement?: ModalPlacement,
+  style?: React.CSSProperties,
+  className?: string,
   onVisibleChange?: (visible: boolean) => void,
-  onClose?: () => void;
+  onClose?: () => void,
+  getContainer?: () => HTMLElement,
 }
 
 const animationTime = 200
@@ -37,8 +40,11 @@ export default function Modal({
   width,
   height,
   placement = 'center',
+  style,
+  className,
   onClose,
-  onVisibleChange
+  onVisibleChange,
+  getContainer = () => document.body
 }: Props) {
   const [_visible, setVisible] = useState(!!visible)
   const [hidden, setHidden] = useState(true)
@@ -81,42 +87,50 @@ export default function Modal({
     }, animationTime);
   }
 
+  if (!_visible) return <></>
+
+  const containerRect = getContainer().getBoundingClientRect()
+
   return ReactDOM.createPortal(
     <div
-      className={
-        classNames('rabbit-modal-wrapper', { 'is-hidden': !_visible }, `placement-${placement}`)
-      }
+      className={classNames('rabbit-modal-wrapper', `placement-${placement}`)}
+      style={{ transform: `translate(${-containerRect.left}px, ${-containerRect.top}px)` }}
     >
       <div
-        className={classNames('modal-content', { 'is-hidden': hidden })}
-        style={{ width, height, '--animation-time': `${animationTime / 1000}s` } as any}
+        className={classNames('modal-container', className)}
+        style={{ width: containerRect.width, height: containerRect.height, left: containerRect.left, top: containerRect.top }}
       >
-        <div className='modal-header'>
-          <div>
-            {header}
-          </div>
-          <Icon
-            type='close'
-            style={{ fontSize: '1.5rem' }}
-            onClick={handleClose}
-          />
-        </div>
-        <div className='modal-body'>
-          {content}
-        </div>
-        {
-          footer && (
-            <div className='modal-footer'>
-              {
-                footer.map(({ type, text, onClick }, index) => (
-                  <Button key={index} type={type} onClick={() => handleFooterButton(onClick)}>{text}</Button>
-                ))
-              }
+        <div
+          className={classNames('modal-content', { 'is-hidden': hidden })}
+          style={{ ...(style || {}) , width, height, '--animation-time': `${animationTime / 1000}s` } as any}
+        >
+          <div className='modal-header'>
+            <div>
+              {header}
             </div>
-          )
-        }
+            <Icon
+              type='close'
+              style={{ fontSize: '1.5rem' }}
+              onClick={handleClose}
+            />
+          </div>
+          <div className='modal-body'>
+            {content}
+          </div>
+          {
+            footer && (
+              <div className='modal-footer'>
+                {
+                  footer.map(({ type, text, onClick }, index) => (
+                    <Button key={index} type={type} onClick={() => handleFooterButton(onClick)}>{text}</Button>
+                  ))
+                }
+              </div>
+            )
+          }
+        </div>
       </div>
     </div>,
-    document.body
+    getContainer()
   )
 }

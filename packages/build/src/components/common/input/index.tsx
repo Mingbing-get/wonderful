@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Input } from '@douyinfe/semi-ui'
+import { Input } from '@marrow/rabbit'
 
 type Props = {
   value?: number | string
@@ -26,7 +26,7 @@ export default function ({
     <Input
       suffix={suffix}
       value={_value}
-      onChange={val => setValue(val)}
+      onChange={e => setValue(e.target.value)}
       onBlur={handleBlur}
     />
   )

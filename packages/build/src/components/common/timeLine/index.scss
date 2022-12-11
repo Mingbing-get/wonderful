@@ -4,7 +4,7 @@
   align-items: center;
   width: 100%;
   overflow-x: auto;
-  padding: 8px 12px;
+  padding: 0.5rem 0.75rem;
   border-bottom: 1px solid #1c1f2314;
   box-sizing: border-box;
 
@@ -14,8 +14,8 @@
 
     .time-line-node {
       display: inline-block;
-      width: 12px;
-      height: 12px;
+      width: 0.75rem;
+      height: 0.75rem;
       border-radius: 50%;
       background-color: #0164fb;
       cursor: pointer;
@@ -23,7 +23,7 @@
 
     .time-line-line {
       display: inline-block;
-      width: 30px;
+      width: 1.875rem;
       height: 1px;
       background-color: #d3d3d3;
     }

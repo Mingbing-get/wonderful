@@ -13,6 +13,9 @@ import ExampleTab from './examples/tab'
 import ExamplePopover from './examples/popover'
 import ExampleModal from './examples/modal'
 import ExampleUpload from './examples/upload'
+import ExampleSwitch from './examples/switch'
+import ExampleSlider from './examples/slider'
+import ExampleCollapse from './examples/collapse'
 
 import './index.scss'
 
@@ -49,6 +52,15 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     </div>
     <div className='rabbit-preview-item'>
       <ExampleUpload />
+    </div>
+    <div className='rabbit-preview-item'>
+      <ExampleSwitch />
+    </div>
+    <div className='rabbit-preview-item'>
+      <ExampleSlider />
+    </div>
+    <div className='rabbit-preview-item'>
+      <ExampleCollapse />
     </div>
   </div>
 )

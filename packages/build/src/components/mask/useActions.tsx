@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { IconDeleteStroked, IconEdit, IconSync } from '@douyinfe/semi-icons'
+import { Icon } from '@marrow/rabbit'
 
 import { replaceMarrow } from '@marrow/utils'
 import { useBuildMarrow } from '../../context'
@@ -9,7 +9,7 @@ export default function useActions() {
   return useMemo(() => (
     [
       {
-        icon: <IconSync size='small' style={{ color: '#fff' }} />,
+        icon: <Icon type='sync' style={{ color: '#fff' }} />,
         key: 'sync',
         onClick: (id: string) => {
           setOperationType?.('move')
@@ -17,14 +17,14 @@ export default function useActions() {
         }
       },
       {
-        icon: <IconEdit size='small' style={{ color: '#fff' }} />,
+        icon: <Icon type='edit' style={{ color: '#fff' }} />,
         key: 'edit',
         onClick: (id: string) => {
           setEditingId?.(id)
         }
       },
       {
-        icon: <IconDeleteStroked size='small' style={{ color: 'red' }} />,
+        icon: <Icon type='delete' style={{ color: 'red' }} />,
         key: 'delete',
         onClick: (id: string) => {
           const isReplace = replaceMarrow(data, id)

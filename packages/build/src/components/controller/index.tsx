@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react'
 
 import { marrowController } from '@marrow/render'
 import { AudioEdit } from '@marrow/audio'
-import { Slider } from '@douyinfe/semi-ui'
-import { IconPlay, IconPause, IconBackward, IconFastForward, IconRestart } from '@douyinfe/semi-icons'
+import { Slider } from '@marrow/rabbit'
+import { Icon } from '@marrow/rabbit'
 
 import { useBuildMarrow } from '../../context'
 
@@ -78,22 +78,23 @@ export default function Controller() {
       {
         showController && (
           <div className='marrow-controller-bar'>
-            <IconRestart onClick={() => refresh('restart')} />
+            <Icon type='restart' onClick={() => refresh('restart')} />
             {
               marrowController.getIsPlay() ? (
-                <IconPause onClick={() => refresh('pause')} />
+                <Icon type='pause' onClick={() => refresh('pause')} />
               ) : (
-                <IconPlay onClick={() => refresh('play')} />
+                <Icon type='play' onClick={() => refresh('play')} />
               )
             }
-            <IconBackward onClick={() => refresh('back')} />
+            <Icon type='backward' onClick={() => refresh('back')} />
             <Slider
               min={0}
               max={marrowController.getTotalTime()}
               value={marrowController.getCurrentTime()}
+              showLabel={false}
               onChange={val => handleChange(val as number)}
             />
-            <IconFastForward onClick={() => refresh('fast')} />
+            <Icon type='backward' onClick={() => refresh('fast')} style={{ transform: 'rotateZ(180deg)' }} />
             <span className='marrow-controller-info'>
               {marrowController.getCurrentTime()}/{marrowController.getTotalTime()}(ms)
             </span>

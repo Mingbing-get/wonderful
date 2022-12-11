@@ -113,7 +113,7 @@ export default function Upload({
   }
 
   return (
-    <div className='image-picker-wrapper'>
+    <div className='rabbit-image-picker-wrapper'>
       {
         imgList.map(item => (
           <div className='image-picker-item' key={item.key}>

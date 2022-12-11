@@ -2,8 +2,8 @@
   display: grid;
   grid-template-columns: repeat(3, auto);
   .element-store-item {
-    border-radius: 5px;
-    padding: 10px;
+    border-radius: 0.4rem;
+    padding: 0.5rem;
     cursor: pointer;
     display: flex;
     flex-direction: column;
@@ -13,7 +13,7 @@
       background-color: gray;
     }
     .element-store-item-text {
-      margin-top: 5px;
+      margin-top: 0.4rem;
     }
   }
 }

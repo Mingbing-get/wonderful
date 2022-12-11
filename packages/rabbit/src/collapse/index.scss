@@ -1,0 +1,37 @@
+.rabbit-collapse-wrapper {
+  overflow: hidden;
+}
+
+.rabbit-collapse-panel {
+  padding: 0.2rem;
+  border-bottom: 1px solid var(--rabbit-border-color-base);
+
+  .collapse-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.2rem;
+    margin-bottom: 0.2rem;
+    border-radius: var(--rabbit-border-radius-base);
+    cursor: pointer;
+    .icon-arrow-down {
+      transition: transform 0.2s linear;
+    }
+    &:hover {
+      background-color: var(--rabbit-hover-color);
+    }
+  }
+
+  .collapse-content {
+    overflow: hidden;
+    height: 0;
+    transition: height 0.2s linear;
+  }
+
+  &.is-open {
+    .icon-arrow-down {
+      transform: rotateZ(180deg);
+    }
+  }
+}

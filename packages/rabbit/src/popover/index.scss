@@ -24,6 +24,7 @@
   border-radius: var(--rabbit-border-radius-base);
   box-shadow: var(--rabbit-box-shadow-base);
   width: auto !important;
+  z-index: 10;
   &.is-hidden {
     display: none;
   }

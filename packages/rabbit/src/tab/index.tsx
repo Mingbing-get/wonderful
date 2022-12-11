@@ -9,12 +9,16 @@ type Props = {
   defaultActiveKey?: React.Key;
   onChange?: (key: React.Key) => void;
   children: React.ReactElement[] | React.ReactElement;
+  className?: string;
+  style?: React.CSSProperties;
 }
 
 export default function Tab({
   defaultActiveKey,
   onChange,
-  children
+  children,
+  className,
+  style
 }: Props) {
   const [childTypeError, setChildTypeError] = useState(false)
   const [activeKey, setActiveKey] = useState(defaultActiveKey)
@@ -53,7 +57,7 @@ export default function Tab({
   }
 
   return (
-    <div className='rabbit-tab'>
+    <div className={classNames('rabbit-tab-wrapper', className)} style={style}>
       <div className='rabbit-tab-title-wrapper'>
         {
           items.map(item => (

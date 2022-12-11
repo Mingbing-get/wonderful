@@ -1,58 +1,10 @@
 .rabbit-input-wrapper {
-  display: table;
-  display: flex;
-  flex-direction: row;
   height: var(--rabbit-input-height-base);
   border: 1px solid var(--rabbit-border-color-base);
   min-width: var(--rabbit-input-min-width);
   border-radius: var(--rabbit-border-radius-base);
-  padding: 0 0.125rem;
-  &.has-control {
-    padding-right: 0;
-  }
-  &.has-suffix {
-    padding-right: 0;
-    .rabbit-input-control {
-        margin-left: 0;
-      }
-  }
-  &.has-prefix {
-    padding-left: 0;
-  }
-
-  .rabbit-input-prefix {
-    display: table-cell;
-    margin-right: 0.125rem;
-    border-top-left-radius: var(--rabbit-border-radius-base);
-    border-bottom-left-radius: var(--rabbit-border-radius-base);
-    overflow: hidden;
-  }
-  .rabbit-input-control {
-    display: table-cell;
-    margin-left: 0.125rem;
-    border-top-right-radius: var(--rabbit-border-radius-base);
-    border-bottom-right-radius: var(--rabbit-border-radius-base);
-    overflow: hidden;
-  }
-  .rabbit-input-suffix {
-    display: table-cell;
-    margin-left: 0.125rem;
-    border-top-right-radius: var(--rabbit-border-radius-base);
-    border-bottom-right-radius: var(--rabbit-border-radius-base);
-    overflow: hidden;
-  }
-
-  &.split-fix {
-    &>.rabbit-input-prefix {
-      border-right: 1px solid var(--rabbit-border-color-base);
-    }
-    &>.rabbit-input-control {
-      border-left: 1px solid var(--rabbit-border-color-base);
-    }
-    &>.rabbit-input-suffix {
-      border-left: 1px solid var(--rabbit-border-color-base);
-    }
-  }
+  --input-space: 0.125rem;
+  padding: 0 var(--input-space);
 
   input {
     display: table-cell;
@@ -63,5 +15,43 @@
     outline: none;
     padding: 0;
     background-color: transparent;
+  }
+
+  .input-affix-wrapper {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+
+    .input-prefix {
+      display: flex;
+      align-items: center;
+      margin-left: -0.125rem;
+      margin-right: var(--input-space);
+      border-top-left-radius: var(--rabbit-border-radius-base);
+      border-bottom-left-radius: var(--rabbit-border-radius-base);
+      overflow: hidden;
+    }
+
+    .input-suffix {
+      display: flex;
+      align-items: center;
+      margin-left: var(--input-space);
+      margin-right: -0.125rem;
+      border-top-right-radius: var(--rabbit-border-radius-base);
+      border-bottom-right-radius: var(--rabbit-border-radius-base);
+      overflow: hidden;
+    }
+  }
+
+  .input-clear-icon {
+    background-color: rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    height: 1.1rem;
+    width: 1.1rem;
+    margin-right: 0.2rem;
+    cursor: pointer;
   }
 }
