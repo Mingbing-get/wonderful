@@ -3,7 +3,7 @@ import './index.scss';
 export declare type ValueType = number | string;
 export declare type OptionType<T> = {
     value: T;
-    label?: React.ReactNode;
+    label?: string;
     prefix?: React.ReactElement;
     suffix?: React.ReactElement;
     className?: string;
@@ -17,9 +17,10 @@ declare type Props<T extends ValueType> = {
     options: OptionType<T>[];
     className?: string;
     style?: React.CSSProperties;
+    placeholder?: string;
     wrapperClassName?: string;
     wrapperStyle?: React.CSSProperties;
     onChange?: (value?: T) => void;
 };
-export default function Select<T extends ValueType>({ defaultValue, value, options, className, style, wrapperClassName, wrapperStyle, onChange }: Props<T>): JSX.Element;
+export default function Select<T extends ValueType>({ defaultValue, value, options, className, style, placeholder, wrapperClassName, wrapperStyle, onChange }: Props<T>): JSX.Element;
 export {};

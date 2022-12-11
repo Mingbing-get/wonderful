@@ -15,8 +15,11 @@ declare type Props = {
     width?: number | string;
     height?: number | string;
     placement?: ModalPlacement;
+    style?: React.CSSProperties;
+    className?: string;
     onVisibleChange?: (visible: boolean) => void;
     onClose?: () => void;
+    getContainer?: () => HTMLElement;
 };
-export default function Modal({ header, content, footer, visible, width, height, placement, onClose, onVisibleChange }: Props): React.ReactPortal;
+export default function Modal({ header, content, footer, visible, width, height, placement, style, className, onClose, onVisibleChange, getContainer }: Props): JSX.Element;
 export {};

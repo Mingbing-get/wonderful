@@ -9,7 +9,8 @@ declare type Props = {
     placement?: Placement;
     visible?: boolean;
     delay?: number;
+    className?: string;
     onVisibleChange?: (visible: boolean) => void;
 };
-export default function Popover({ children, content, trigger, placement, arrow, visible, delay, onVisibleChange }: Props): JSX.Element;
+export default function Popover({ children, content, trigger, placement, arrow, visible, delay, className, onVisibleChange }: Props): JSX.Element;
 export {};

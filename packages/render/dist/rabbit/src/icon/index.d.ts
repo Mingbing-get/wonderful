@@ -10,9 +10,22 @@ declare const pathMap: {
     arrowUp: JSX.Element;
     arrowLeft: JSX.Element;
     arrowRight: JSX.Element;
+    arrowDownFill: JSX.Element;
     loading: JSX.Element;
     close: JSX.Element;
     delete: JSX.Element;
+    eye: JSX.Element;
+    closeEye: JSX.Element;
+    menu: JSX.Element;
+    sync: JSX.Element;
+    edit: JSX.Element;
+    text: JSX.Element;
+    container: JSX.Element;
+    image: JSX.Element;
+    play: JSX.Element;
+    restart: JSX.Element;
+    pause: JSX.Element;
+    backward: JSX.Element;
 };
 export declare type Props = {
     type: keyof (typeof pathMap);

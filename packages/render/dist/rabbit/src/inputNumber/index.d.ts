@@ -11,6 +11,7 @@ declare type Props = {
     className?: string;
     style?: React.CSSProperties;
     onChange?: (value: number) => void;
+    onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
 };
-export default function InputNumber({ defaultValue, value, step, min, max, prefix, suffix, className, style, onChange }: Props): JSX.Element;
+export default function InputNumber({ defaultValue, value, step, min, max, prefix, suffix, className, style, onChange, onBlur }: Props): JSX.Element;
 export {};
