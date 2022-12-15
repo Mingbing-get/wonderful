@@ -1,0 +1,27 @@
+.rabbit-message-wrapper {
+  box-shadow: var(--rabbit-box-shadow-base);
+  padding: 0.5rem 1rem;
+  border-radius: var(--rabbit-border-radius-base);
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  background-color: #fff;
+
+  p {
+    margin: 0;
+    padding-left: 0.4rem;
+  }
+
+  &.type-success {
+    color: var(--rabbit-success-color);
+  }
+  &.type-info {
+    color: var(--rabbit-primary-color);
+  }
+  &.type-warn {
+    color: var(--rabbit-warning-color);
+  }
+  &.type-error {
+    color: var(--rabbit-error-color);
+  }
+}

@@ -5,6 +5,7 @@ const babel =  require('@rollup/plugin-babel')
 const commonjs = require('@rollup/plugin-commonjs')
 const scss = require('rollup-plugin-scss')
 const jsx = require('acorn-jsx')
+const excludeDependenciesFromBundle = require('rollup-plugin-exclude-dependencies-from-bundle')
 
 const { getBabelOutputPlugin } = babel
 
@@ -16,36 +17,41 @@ const name = path.basename(packageDir)
 
 const outputConfigs = {
   'esm-bundler': {
-    file: resolve(`dist/${name}.esm-bundler.js`),
+    file: path.resolve(__dirname, `dist/${name}/index.esm-bundler.js`),
     format: `es`
   },
   'esm-browser': {
-    file: resolve(`dist/${name}.esm-browser.js`),
+    file: path.resolve(__dirname, `dist/${name}/index.esm-browser.js`),
     format: `es`
   },
   esm: {
-    file: resolve(`dist/${name}.esm.js`),
+    file: path.resolve(__dirname, `dist/${name}/index.js`),
     format: `es`
   },
   cjs: {
-    file: resolve(`dist/${name}.cjs.js`),
+    file: path.resolve(__dirname, `dist/${name}/index.cjs.js`),
     format: `cjs`
   },
   global: {
-    file: resolve(`dist/${name}.global.js`),
+    file: path.resolve(__dirname, `dist/${name}/index.global.js`),
     format: `iife`
+  },
+  umd: {
+    file: path.resolve(__dirname, `dist/${name}/index.umd.js`),
+    format: `umd`,
+    name: name
   },
   // runtime-only builds, for main "vue" package only
   'esm-bundler-runtime': {
-    file: resolve(`dist/${name}.runtime.esm-bundler.js`),
+    file: path.resolve(__dirname, `dist/${name}/index.runtime.esm-bundler.js`),
     format: `es`
   },
   'esm-browser-runtime': {
-    file: resolve(`dist/${name}.runtime.esm-browser.js`),
+    file: path.resolve(__dirname, `dist/${name}/index.runtime.esm-browser.js`),
     format: 'es'
   },
   'global-runtime': {
-    file: resolve(`dist/${name}.runtime.global.js`),
+    file: path.resolve(__dirname, `dist/${name}/index.runtime.global.js`),
     format: 'iife'
   }
 }
@@ -59,7 +65,10 @@ function createConfig(format, output) {
   }
 
   output.sourcemap = true
-  output.plugins = [getBabelOutputPlugin({ presets: ['@babel/preset-env'] })]
+  output.plugins = [getBabelOutputPlugin({
+    presets: ['@babel/preset-env'],
+    allowAllFormats: true,
+  })]
   output.format = format
 
   return {
@@ -81,10 +90,12 @@ function createConfig(format, output) {
       }),
       commonjs(),
       babel({
+        exclude: "**/node_modules/**",
         presets: ['@babel/preset-react'],
         babelHelpers: 'bundled',
-        extensions: ['.js', '.jsx', '.es6', '.es', '.mjs', '.ts', '.tsx']
-      })
+        extensions: ['.js', '.jsx', '.es6', '.es', '.mjs', '.ts', '.tsx'],
+      }),
+      excludeDependenciesFromBundle()
     ]
   }
 }

@@ -16,6 +16,7 @@ import ExampleUpload from './examples/upload'
 import ExampleSwitch from './examples/switch'
 import ExampleSlider from './examples/slider'
 import ExampleCollapse from './examples/collapse'
+import ExampleMessage from './examples/message'
 
 import './index.scss'
 
@@ -61,6 +62,9 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     </div>
     <div className='rabbit-preview-item'>
       <ExampleCollapse />
+    </div>
+    <div className='rabbit-preview-item'>
+      <ExampleMessage />
     </div>
   </div>
 )
