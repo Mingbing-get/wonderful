@@ -1,0 +1,192 @@
+.rabbit-cascader-wrapper {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--rabbit-border-color-base);
+  border-radius: var(--rabbit-border-radius-base);
+  overflow: hidden;
+  cursor: pointer;
+  .cascader-trigger {
+    position: relative;
+    flex: 1;
+    .cascader-value {
+      display: flex;
+      align-items: center;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      padding: 0 0.2rem;
+      background-color: #fff;
+      text-align: center;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      .cascader-tag:not(:last-child) {
+        margin-right: 0.2rem;
+      }
+      &.is-multiple {
+        overflow-x: auto;
+      }
+      &.show-placeholder {
+        color: var(--rabbit-border-color-base);
+      }
+    }
+    .rabbit-input-wrapper {
+      border: none;
+    }
+    &.show-input {
+      .cascader-value {
+        opacity: 0.1;
+        z-index: -1;
+      }
+    }
+  }
+  .cascader-icon {
+    padding: 0 0.2rem;
+    .cascader-clear {
+      display: none;
+      cursor: pointer;
+      .cascader-close {
+        border-radius: 50%;
+        background-color: rgba(0, 0, 0, 0.1);
+      }
+    }
+  }
+  &.allow-clear:hover {
+    .cascader-arrow {
+      display: none;
+    }
+  
+    .cascader-clear {
+      display: inline-block;
+    }
+  }
+  &.is-disabled {
+    background-color: var(--rabbit-disabled-bg-color);
+    cursor: not-allowed;
+    .cascader-trigger .cascader-value {
+      background-color: transparent;
+      color: var(--rabbit-disabled-color);
+    }
+  }
+}
+
+.cascader-empty {
+  padding: 0.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cascader-panel {
+  display: flex;
+  .cascader-panel-level {
+    display: flex;
+    flex-direction: column;
+    padding: 0 0.5rem;
+
+    .panel-level-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.1rem 0.4rem;
+      cursor: pointer;
+      border-radius: var(--rabbit-border-radius-base);
+      .item-content {
+        display: flex;
+        align-items: center;
+        margin-right: 0.2rem;
+        .item-checkbox {
+          display: flex;
+        }
+      }
+      .rabbit-checkbox-wrapper {
+        &>span {
+          display: none;
+        }
+      }
+      .cascader-loading-icon {
+        color: var(--rabbit-primary-color);
+        animation: rotate-until 1s 0.2s infinite linear;
+      }
+      &:hover {
+        background-color: var(--rabbit-hover-color);
+      }
+      &.is-expand {
+        background-color: var(--rabbit-primary-1);
+      }
+      &.is-checked {
+        color: #fff;
+        background-color: var(--rabbit-primary-color);
+      }
+      &.is-disabled {
+        color: var(--rabbit-disabled-color);
+        background-color: #fff;
+        cursor: not-allowed;
+      }
+      &:not(:last-of-type) {
+        margin-bottom: 0.2rem;
+      }
+    }
+    &:not(:last-of-type) {
+      border-right: 1px solid var(--rabbit-border-color-base);
+    }
+    &:last-of-type {
+      padding-right: 0;
+    }
+    &:first-of-type {
+      padding-left: 0;
+    }
+  }
+}
+
+.cascader-search-panel {
+  display: flex;
+  flex-direction: column;
+
+  .search-panel-item {
+    display: flex;
+    align-items: center;
+    padding: 0.2rem 0.4rem;
+    cursor: pointer;
+    border-radius: var(--rabbit-border-radius-base);
+    .match-text {
+      color: var(--rabbit-error-color);
+    }
+    .rabbit-checkbox-wrapper>span {
+      display: none;
+    }
+    &:hover {
+      background-color: var(--rabbit-hover-color);
+    }
+  
+    &.is-checked {
+      color: #fff;
+      background-color: var(--rabbit-primary-color);
+    }
+  
+    &.is-disabled {
+      color: var(--rabbit-disabled-color);
+      background-color: #fff;
+      cursor: not-allowed;
+    }
+  
+    &:not(:last-of-type) {
+      margin-bottom: 0.2rem;
+    }
+  }
+}
+
+@keyframes rotate-until {
+  0% {
+    rotate: 0;
+  }
+
+  50% {
+    rotate: 270deg;
+  }
+
+  100% {
+    rotate: 360deg;
+  }
+}

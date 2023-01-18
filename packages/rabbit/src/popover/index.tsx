@@ -1,20 +1,24 @@
-import React, { useRef, useEffect, useState } from 'react'
+import React, { useRef, useEffect, useState, useMemo } from 'react'
 import ReactDOM from 'react-dom'
 import { createPopper, Placement, Instance, VirtualElement } from '@popperjs/core'
 import classNames from 'classnames'
 
 import './index.scss'
+export {
+  Placement
+}
 
 type Props = {
   children: React.ReactElement,
-  content: React.ReactElement,
+  content: React.ReactNode,
   trigger?: 'click' | 'hover' | 'focus',
-  arrow?: 'small' | 'large' | 'middle',
+  arrow?: 'small' | 'large' | 'middle' | 'none',
   placement?: Placement,
   visible?: boolean,
   delay?: number,
-  className?: string
-  onVisibleChange?: (visible: boolean) => void
+  className?: string,
+  style?: React.CSSProperties,
+  onVisibleChange?: (visible: boolean) => void,
 }
 
 export default function Popover({
@@ -26,6 +30,7 @@ export default function Popover({
   visible,
   delay = 500,
   className,
+  style,
   onVisibleChange
 }: Props) {
   const targetRef = useRef<HTMLElement>(null)
@@ -41,27 +46,36 @@ export default function Popover({
   const [isHidden, setIsHidden] = useState(!visible)
 
   useEffect(() => {
-    if (!displayRef.current || !arrowRef.current ) return
+    setTimeout(() => {
+      if (!displayRef.current || !arrowRef.current) return
 
-    resetVirtualElement()
+      resetVirtualElement()
 
-    popperInstance.current = createPopper(virtualElement.current, displayRef.current, {
-      placement: placement,
-      modifiers: [
-        { name: 'arrow', options: { element: arrowRef.current } }
-      ],
-    })
-  }, [displayRef.current, arrowRef.current])
+      popperInstance.current = createPopper(virtualElement.current, displayRef.current, {
+        placement: placement,
+        modifiers: [
+          { name: 'arrow', options: { element: arrowRef.current } }
+        ],
+      })
+    }, 0);
+  }, [isHidden, arrowRef.current])
 
   useEffect(() => {
     document.addEventListener('click', () => {
       if (trigger !== 'click') return
       setIsHidden(true)
     })
+    document.addEventListener('scroll', () => {
+      requestAnimationFrame(resetVirtualElement)
+    })
+
+    return () => {
+      popperInstance.current?.destroy()
+    }
   }, [])
 
   useEffect(() => {
-    if (!targetRef.current || !displayRef.current || perTargetRef.current) return
+    if (!targetRef.current || perTargetRef.current) return
     perTargetRef.current = true
 
     trigger === 'click' && targetRef.current.addEventListener('click', toggleShow)
@@ -70,20 +84,11 @@ export default function Popover({
       targetRef.current.addEventListener('mouseenter', () => {
         counter.current++
         setIsHidden(false)
-      }),
-      targetRef.current.addEventListener('mouseleave', () => {
-        counter.current--
         setTimeout(() => {
-          if (counter.current === 0) setIsHidden(true)
+          counter.current--
         }, delay)
       }),
-
-      displayRef.current.addEventListener('mouseenter', () => {
-        counter.current++
-        setIsHidden(false)
-      }),
-      displayRef.current.addEventListener('mouseleave', () => {
-        counter.current--
+      targetRef.current.addEventListener('mouseleave', () => {
         setTimeout(() => {
           if (counter.current === 0) setIsHidden(true)
         }, delay)
@@ -94,7 +99,34 @@ export default function Popover({
       targetRef.current.addEventListener('focus', () => setIsHidden(false)),
       targetRef.current.addEventListener('blur', () => setIsHidden(true))
     )
-  }, [targetRef.current, displayRef.current])
+  }, [targetRef.current])
+
+  useEffect(() => {
+    if (!displayRef.current) return
+
+    trigger === 'hover' && (
+      displayRef.current.addEventListener('mouseenter', () => {
+        counter.current++
+        setIsHidden(false)
+        setTimeout(() => {
+          counter.current--
+        }, delay)
+      }),
+      displayRef.current.addEventListener('mouseleave', () => {
+        setTimeout(() => {
+          if (counter.current === 0) setIsHidden(true)
+        }, delay)
+      })
+    )
+  }, [displayRef.current])
+
+  useEffect(() => {
+    setIsHidden(!visible)
+  }, [visible])
+
+  useEffect(() => {
+    onVisibleChange?.(!isHidden)
+  }, [isHidden])
 
   function resetVirtualElement() {
     const { left, top, width, height } = getTargetLocationAndSize()
@@ -106,27 +138,14 @@ export default function Popover({
     return targetRef.current.getBoundingClientRect()
   }
 
-  useEffect(() => {
-    setIsHidden(!visible)
-  }, [visible])
-
-  useEffect(() => {
-    onVisibleChange?.(!isHidden)
-
-    if (!isHidden) {
-      resetVirtualElement()
-      popperInstance.current?.update()
-    }
-  }, [isHidden])
-
   function generateGetBoundingClientRect(x: number, y: number, width: number, height: number) {
     return () => ({
-      width: 0,
+      width: width,
       height: height,
       top: y,
-      right: x + width / 2,
+      right: x,
       bottom: y,
-      left: x + width / 2,
+      left: x,
     })
   }
 
@@ -136,17 +155,20 @@ export default function Popover({
     return false
   }
 
-  const targetElement = React.cloneElement(children, {
-    ref: targetRef
-  })
+  const targetElement = useMemo(() => {
+    return React.cloneElement(children, {
+      ref: targetRef
+    })
+  }, [children])
 
   return (
     <>
       { targetElement }
       {
-        ReactDOM.createPortal(
+        !isHidden && ReactDOM.createPortal(
           <div
-            className={classNames('rabbit-popper-wrapper', className, { 'is-hidden': isHidden })}
+            className={classNames('rabbit-popper-wrapper', arrow === 'none' && 'not-arrow', className)}
+            style={style}
             ref={displayRef}
             onClick={e => e.stopPropagation()}
           >

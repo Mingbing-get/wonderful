@@ -8,6 +8,10 @@ import { Marrow } from '@marrow/global'
 import { responseRegister } from '@marrow/rabbit'
 
 function handleChange(data: Marrow[]) {
+  console.log(data)
+}
+
+function handleSave(data: Marrow[]) {
   localStorage.setItem('marrow-data', JSON.stringify(data))
 }
 
@@ -18,7 +22,7 @@ const data = JSON.parse(localStorage.getItem('marrow-data') || '[]') as Marrow[]
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <div className='screen-mb'>
     <div className='stage'>
-      <Build marrows={data} onChange={handleChange} />
+      <Build marrows={data} onChange={handleChange} onSave={handleSave} />
     </div>
   </div>
 )

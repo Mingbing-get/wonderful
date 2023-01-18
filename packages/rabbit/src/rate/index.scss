@@ -1,0 +1,36 @@
+.rabbit-rate-wrapper {
+  display: inline-flex;
+  flex-wrap: nowrap;
+  .rate-item {
+    color: var(--uncheck-color);
+    cursor: pointer;
+    position: relative;
+    transition: transform 0.2s linear;
+    .rate-item-half {
+      padding-left: 0.1rem;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 50%;
+      overflow: hidden;
+      color: transparent;
+    }
+    .rate-item-all {
+      padding: 0 0.1rem;
+    }
+    &.is-half {
+      .rate-item-half {
+        color: var(--check-color);
+      }
+    }
+    &.is-checked {
+      .rate-item-all,
+      .rate-item-half {
+        color: var(--check-color);
+      }
+    }
+    &:hover {
+      transform: scale(1.2);
+    }
+  }
+}

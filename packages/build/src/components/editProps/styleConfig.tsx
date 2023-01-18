@@ -52,9 +52,9 @@ export function getItems(marrow: Marrow, basePath: (string | number)[], handleCh
       label: '向右偏移:',
       content: (
         <InputNumber
-          suffix='px'
+          suffix='rem'
           value={getNumberValue(getValueByPath(marrow, basePath, 'translateX'))}
-          onChange={val => handleChange([...basePath, 'translateX'], addSuffix('px', val))}
+          onChange={val => handleChange([...basePath, 'translateX'], addSuffix('rem', val))}
         />
       )
     },
@@ -63,9 +63,9 @@ export function getItems(marrow: Marrow, basePath: (string | number)[], handleCh
       label: '向下偏移:',
       content: (
         <InputNumber
-          suffix='px'
+          suffix='rem'
           value={getNumberValue(getValueByPath(marrow, basePath, 'translateY'))}
-          onChange={val => handleChange([...basePath, 'translateY'], addSuffix('px', val))}
+          onChange={val => handleChange([...basePath, 'translateY'], addSuffix('rem', val))}
         />
       )
     },
@@ -126,9 +126,9 @@ export function getItems(marrow: Marrow, basePath: (string | number)[], handleCh
       label: '宽度:',
       content: (
         <InputNumber
-          suffix='px'
+          suffix='rem'
           value={getNumberValue(getValueByPath(marrow, basePath, 'width'))}
-          onChange={val => handleChange([...basePath, 'width'], addSuffix('px', val))}
+          onChange={val => handleChange([...basePath, 'width'], addSuffix('rem', val))}
         />
       )
     },
@@ -137,9 +137,9 @@ export function getItems(marrow: Marrow, basePath: (string | number)[], handleCh
       label: '高度:',
       content: (
         <InputNumber
-          suffix='px'
+          suffix='rem'
           value={getNumberValue(getValueByPath(marrow, basePath, 'height'))}
-          onChange={val => handleChange([...basePath, 'height'], addSuffix('px', val))}
+          onChange={val => handleChange([...basePath, 'height'], addSuffix('rem', val))}
         />
       )
     },
@@ -148,9 +148,9 @@ export function getItems(marrow: Marrow, basePath: (string | number)[], handleCh
       label: '字体大小:',
       content: (
         <InputNumber
-          suffix='px'
+          suffix='rem'
           value={getNumberValue(getValueByPath(marrow, basePath, 'fontSize'))}
-          onChange={val => handleChange([...basePath, 'fontSize'], addSuffix('px', val))}
+          onChange={val => handleChange([...basePath, 'fontSize'], addSuffix('rem', val))}
         />
       )
     },

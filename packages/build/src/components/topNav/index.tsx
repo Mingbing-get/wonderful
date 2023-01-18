@@ -1,6 +1,6 @@
 import React from 'react'
 import classnames from 'classnames'
-import { Icon } from '@marrow/rabbit'
+import { Icon, Button } from '@marrow/rabbit'
 
 import MarrowPicker from './marrowPicker'
 import ShowOperation from './showOperation'
@@ -11,11 +11,13 @@ import './index.scss'
 type Props = {
   className?: string,
   style?: React.CSSProperties,
+  onSave?: () => void,
 }
 
 export default function TopNav({
   className,
   style,
+  onSave,
 }: Props) {
   const { setShowStore } = useBuildMarrow()
 
@@ -33,6 +35,9 @@ export default function TopNav({
       </div>
       <div className='top-nav-item'>
         <ShowOperation />
+      </div>
+      <div className='top-nav-right'>
+        <Button type='primary' onClick={onSave}>保存</Button>
       </div>
     </div>
   )

@@ -26,17 +26,22 @@ export default function Panel({
   const preOpen = useRef(false)
 
   const [contentStyle, setContentStyle] = useState<React.CSSProperties>()
+  const [delayIsOpen, setDelayIsOpen] = useState<boolean>(isOpen)
   
   useEffect(() => {
     if (!contentRef.current) return
 
     if (isOpen) {
-      setContentStyle({
-        height: contentRef.current.scrollHeight
-      })
-      delaySetContentStyle(200, {
-        height: 'auto'
-      })
+      setDelayIsOpen(true)
+      setTimeout(() => {
+        if (!contentRef.current) return
+        setContentStyle({
+          height: contentRef.current.scrollHeight
+        })
+        delaySetContentStyle(200, {
+          height: 'auto'
+        })
+      }, 0);
     } else if (preOpen.current) {
       setContentStyle({
         height: contentRef.current.scrollHeight
@@ -44,6 +49,7 @@ export default function Panel({
       delaySetContentStyle(60, {
         height: 0
       })
+      setTimeout(() => setDelayIsOpen(false), 260)
     } else {
       setContentStyle({
         height: 0
@@ -74,7 +80,7 @@ export default function Panel({
         className='collapse-content'
         style={contentStyle}
       >
-        {children}
+        {delayIsOpen && children}
       </div>
     </div>
   )

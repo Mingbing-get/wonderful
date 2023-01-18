@@ -47,7 +47,6 @@ function Button({
       <span className='button-content'>
         {children}
       </span>
-      <span className='disabled-mask' />
       <span className='loading-mask'>
         <Loading />
       </span>

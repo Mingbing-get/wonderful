@@ -23,6 +23,13 @@
 
 .rabbit-select {
   cursor: pointer;
+  input {
+    cursor: pointer;
+  }
+}
+
+.rabbit-popper-wrapper.rabbit-select-popover {
+  padding: 0;
 }
 
 .icon-arrow-down-fill {

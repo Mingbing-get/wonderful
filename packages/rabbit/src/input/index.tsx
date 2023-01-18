@@ -6,7 +6,7 @@ import Icon from '../icon'
 
 import './index.scss'
 
-type Props = Omit<InputProps, 'prefixCls'>
+export type Props = Omit<InputProps, 'prefixCls'>
 
 function Input({
   className,
@@ -15,12 +15,12 @@ function Input({
   ...extra
 }: Props, ref?: React.ForwardedRef<HTMLDivElement>){
   return (
-    <div className={classNames('rabbit-input-wrapper', className)} style={style} ref={ref}>
+    <div className={classNames('rabbit-input-wrapper', extra.disabled && 'is-disabled', className)} style={style} ref={ref}>
       <RcInput
         prefixCls='input'
-        allowClear={allowClear ? ({
+        allowClear={allowClear === true ? ({
           clearIcon: <Icon type='close' />
-        }) : false}
+        }) : allowClear}
         {...extra}
       />
     </div>

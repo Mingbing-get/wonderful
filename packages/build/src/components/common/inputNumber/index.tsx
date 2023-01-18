@@ -16,9 +16,7 @@ export default function({
 }: Props) {
   const [_value, setValue] = useState(value)
 
-  useEffect(() => {
-    setValue(_value)
-  }, [value])
+  useEffect(() => setValue(value), [value])
 
   function handleBlur() {
     onChange?.(_value)

@@ -89,7 +89,12 @@ export default function Modal({
 
   if (!_visible) return <></>
 
-  const containerRect = getContainer().getBoundingClientRect()
+  const containerRect = getContainer() === document.body ? {
+    left: 0,
+    top: 0,
+    width: '100vw',
+    height: '100vh'
+  } : getContainer().getBoundingClientRect()
 
   return ReactDOM.createPortal(
     <div

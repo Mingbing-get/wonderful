@@ -6,6 +6,11 @@
   --input-space: 0.125rem;
   padding: 0 var(--input-space);
 
+  &.is-disabled {
+    background-color: var(--rabbit-disabled-bg-color);
+    color: var(--rabbit-disabled-color);
+  }
+
   input {
     display: table-cell;
     flex: 1;
@@ -15,6 +20,8 @@
     outline: none;
     padding: 0;
     background-color: transparent;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .input-affix-wrapper {
@@ -45,7 +52,7 @@
 
   .input-clear-icon {
     background-color: rgba(0, 0, 0, 0.1);
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
@@ -53,5 +60,10 @@
     width: 1.1rem;
     margin-right: 0.2rem;
     cursor: pointer;
+  }
+  &:hover {
+    .input-clear-icon {
+      display: flex;
+    }
   }
 }

@@ -1,0 +1,76 @@
+.rabbit-pagination-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  .pagination-quick-jumper {
+    display: inline-flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+  }
+
+  .pagination-item {
+    margin: 0 0.2rem;
+  }
+
+  .pagination-page-btn,
+  .pagination-next-btn,
+  .pagination-prev-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    width: 1.4rem;
+    height: 1.4rem;
+    border-radius: var(--rabbit-border-radius-base);
+    &:hover {
+      background-color: var(--rabbit-border-color-base);
+    }
+  }
+
+  .pagination-page-btn {
+    &.is-active {
+      border: 1px solid var(--rabbit-primary-color);
+      color: var(--rabbit-primary-color);
+      font-weight: 600;
+      background-color: transparent;
+    }
+  }
+
+  .pagination-simple-input {
+    width: 2rem;
+    min-width: 2rem;
+    input {
+      text-align: center;
+    }
+    margin-left: 0.5rem;
+  }
+  .pagination-simple-text {
+    margin-left: 0.5rem;
+    &:last-of-type {
+      margin-right: 0.5rem;
+    }
+  }
+
+  &.is-disabled {
+    .pagination-page-btn,
+    .pagination-next-btn,
+    .pagination-prev-btn {
+      cursor: not-allowed;
+      color: var(--rabbit-disabled-color);
+      background-color: transparent;
+    }
+    .pagination-page-btn {
+      &.is-active {
+        color: var(--rabbit-text-color-secondary);
+        font-weight: 600;
+        background-color: var(--rabbit-disabled-bg-color);
+        border: none;
+      }
+    }
+    .pagination-simple-text {
+      color: var(--rabbit-disabled-color);
+    }
+  }
+}

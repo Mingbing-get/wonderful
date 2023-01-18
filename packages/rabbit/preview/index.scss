@@ -1,6 +1,18 @@
 .rabbit-preview-wrapper {
-  padding: 20px;
-  .rabbit-preview-item {
-    padding-bottom: 20px;
+  display: flex;
+  height: 100vh;
+  padding: 1rem;
+  .nav {
+    width: 12rem;
+    margin-right: 0.5rem;
+    overflow-y: auto;
+    border-right: 1px solid var(--rabbit-border-color-base);
+    height: 100%;
+  }
+  .preview {
+    flex: 1;
+    padding: 1rem;
+    overflow-y: auto;
+    height: 100%;
   }
 }

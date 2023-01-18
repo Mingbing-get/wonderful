@@ -39,6 +39,30 @@ export default function ExamplePopover() {
           top
         </Button>
       </Popover>
+      <Popover
+        placement='left'
+        content={(
+          <div>
+            1111content
+          </div>
+        )}
+      >
+        <Button>
+          left
+        </Button>
+      </Popover>
+      <Popover
+        placement='right'
+        content={(
+          <div>
+            1111content
+          </div>
+        )}
+      >
+        <Button>
+          right
+        </Button>
+      </Popover>
     </div>
   )
 }

@@ -1,23 +1,19 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import classNames from 'classnames'
 
-import Input from '../input'
+import Input, { Props as InputProps } from '../input'
 import Icon from '../icon'
 
 import './index.scss'
 
-type Props = {
+type Props = Omit<InputProps, 'onChange' | 'defaultValue' | 'value'> & {
   defaultValue?: number,
   value?: number;
-  step?: number;
+  step?: number | null;
   min?: number;
   max?: number;
-  prefix?: React.ReactNode;
-  suffix?: React.ReactNode;
-  className?: string;
-  style?: React.CSSProperties;
-  onChange?: (value: number) => void;
-  onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
+  showStepBtn?: boolean;
+  onChange?: (value?: number) => void;
 }
 
 const numberReg = /^(-|\d)\d*$/
@@ -29,41 +25,54 @@ export default function InputNumber({
   step = 1,
   min,
   max,
-  prefix,
+  showStepBtn = true,
   suffix,
   className,
-  style,
   onChange,
-  onBlur
+  onBlur,
+  ...extra
 }: Props) {
   const [_value, setValue] = useState<number>()
   const preValue = useRef<number>()
 
   const curReg = useMemo(() => {
-    if (!step) return floatReg
+    if (step === null) return floatReg
 
-    if (!numberReg.test(`${step}`)) return floatReg
+    if (floatReg.test(`${step}`)) return floatReg
 
     return numberReg
   }, [step])
 
-  useEffect(() => setValue(defaultValue), [])
-
   useEffect(() => {
     if (preValue.current === value) return
+    setValue(value)
     preValue.current = value
-    
-    setValueUsePrevent(value)
-  }, [value, curReg])
+  }, [value])
+
+  useEffect(() => {
+    if (defaultValue === undefined) return
+    setValue(defaultValue)
+    preValue.current = defaultValue
+  }, [])
 
   const handleChange = useCallback((val?: string | number) => {
-    if (setValueUsePrevent(val as number) === 'prevent') return
+    if (extra.disabled) return
+    
+    setValue(val as number)
+    onChange?.(val as number)
+    preValue.current = val as number
+  }, [onChange, curReg, extra.disabled])
 
-    onChange?.(Number(val))
-  }, [onChange, curReg])
+  function handleBlur(e: React.FocusEvent<HTMLInputElement>) {
+    const newValue = setValueUsePrevent(_value)
+    setValue(newValue)
+    onChange?.(newValue)
+    preValue.current = newValue
+    onBlur?.(e)
+  }
 
   function setValueUsePrevent(value?: number) {
-    if (value && !curReg.test(`${value}`)) return 'prevent'
+    if (value && !curReg.test(`${value}`) || value as any === '') return undefined
 
     let newValue = Number(value)
     if (min !== undefined && newValue) {
@@ -72,17 +81,19 @@ export default function InputNumber({
     if (max !== undefined && newValue) {
       newValue = Math.min(max, newValue)
     }
-    setValue(isNaN(newValue) ? undefined : Math.round(newValue / step) * step)
+
+    return isNaN(newValue) ? undefined : (
+      step === null ? newValue : Math.round(newValue / step) * step
+    )
   }
 
   return (
     <Input
+      {...extra}
       className={classNames('rabbit-number-wrapper', className)}
-      style={style}
       value={_value}
       onChange={e => handleChange(e.target.value)}
-      onBlur={onBlur}
-      prefix={prefix}
+      onBlur={handleBlur}
       suffix={
         <>
           {
@@ -95,10 +106,10 @@ export default function InputNumber({
             )
           }
           {
-            step && (
+            showStepBtn && (
               <div className='rabbit-step-wrapper'>
-                <Icon type='arrowUp' onClick={() => handleChange((_value || 0) + step)} />
-                <Icon type='arrowDown' onClick={() => handleChange((_value || 0) - step)} />
+                <Icon type='arrowUp' onClick={() => handleChange((_value || 0) + (step || 1))} />
+                <Icon type='arrowDown' onClick={() => handleChange((_value || 0) - (step || 1))} />
               </div>
             )
           }

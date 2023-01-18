@@ -1,0 +1,35 @@
+.rabbit-radio-wrapper {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  
+  .radio-control {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    border: 1px solid var(--rabbit-border-color-base);
+    margin-right: 0.2rem;
+
+    &.is-checked {
+      background-color: var(--rabbit-primary-color);
+      border-color: var(--rabbit-primary-color);
+      &::after {
+        content: ' ';
+        display: inline-block;
+        width: 50%;
+        height: 25%;
+        border-right: 0.125rem solid #fff;
+        border-top: 0.125rem solid #fff;
+        transform: rotateZ(135deg);
+      }
+    }
+    &.is-disabled {
+      cursor: not-allowed;
+      background-color: var(--rabbit-disabled-color);
+    }
+  }
+}

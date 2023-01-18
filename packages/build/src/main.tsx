@@ -17,12 +17,14 @@ import './index.scss'
 
 type Props = {
   marrows: Marrow[],
-  onChange?: (marrows: Marrow[]) => void
+  onChange?: (marrows: Marrow[]) => void,
+  onSave?: (marrows: Marrow[]) => void,
 }
 
 export default function Build({
   marrows,
-  onChange
+  onChange,
+  onSave
 }: Props) {
   const [currentLocationIds, setCurrentLocationIds] = useState<string[]>([])
   const [selectedId, setSelectedId] = useState<string>()
@@ -73,7 +75,7 @@ export default function Build({
     <div className='marrow-build-wrapper' onClick={handleClick}>
       <BuildMarrowProvider value={buildContext}>
         <Render marrows={_marrows} />
-        <TopNav className='marrow-build-top-nav'/>
+        <TopNav className='marrow-build-top-nav' onSave={() => onSave?.(_marrows)}/>
         <Controller />
         <Mask />
         <ElementStore />

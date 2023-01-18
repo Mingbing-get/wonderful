@@ -30,13 +30,13 @@ export type ImgDesc = {
   originPath?: string;
 }
 
-export default function Upload({
+function Upload({
   source,
   children,
   multiple,
   onChange,
   ...extra
-}: Props) {
+}: Props, ref?: React.ForwardedRef<HTMLDivElement>) {
   const { limit } = extra as Pick<MultipleProps, 'limit'>
 
   const [imgList, setImgList] = useState<ImgDesc[]>([])
@@ -113,7 +113,7 @@ export default function Upload({
   }
 
   return (
-    <div className='rabbit-image-picker-wrapper'>
+    <div className='rabbit-image-picker-wrapper' ref={ref}>
       {
         imgList.map(item => (
           <div className='image-picker-item' key={item.key}>
@@ -137,3 +137,5 @@ export default function Upload({
     </div>
   )
 }
+
+export default React.forwardRef<HTMLDivElement, Props>(Upload)

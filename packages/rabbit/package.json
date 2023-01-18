@@ -10,6 +10,10 @@
   "license": "ISC",
   "dependencies": {
     "@popperjs/core": "^2.11.6",
-    "rc-input": "^0.1.4"
+    "rc-input": "^0.1.4",
+    "react-table": "^7.8.0"
+  },
+  "devDependencies": {
+    "@types/react-table": "^7.7.14"
   }
 }

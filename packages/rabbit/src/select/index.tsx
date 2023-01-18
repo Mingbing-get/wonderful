@@ -27,6 +27,7 @@ type Props<T extends ValueType> = {
   className?: string;
   style?: React.CSSProperties;
   placeholder?: string;
+  disabled?: boolean;
   wrapperClassName?: string;
   wrapperStyle?: React.CSSProperties;
   onChange?: (value?: T) => void;
@@ -39,6 +40,7 @@ export default function Select<T extends ValueType>({
   className,
   style,
   placeholder,
+  disabled,
   wrapperClassName,
   wrapperStyle,
   onChange
@@ -68,9 +70,26 @@ export default function Select<T extends ValueType>({
     return currentOption?.label || currentOption?.value
   }, [options])
 
+  if (disabled) {
+    return (
+      <Input
+        placeholder={placeholder}
+        className={classNames('rabbit-select', className)}
+        style={style}
+        value={findLabelByValue(_value)}
+        readOnly
+        disabled
+        suffix={
+          <Icon type='arrowDownFill' className={classNames('icon-arrow-down-fill', visible && 'rotate-180')} />
+        }
+      />
+    )
+  }
+
   return (
     <Popover
       arrow="small"
+      className='rabbit-select-popover'
       visible={visible}
       onVisibleChange={setVisible}
       content={

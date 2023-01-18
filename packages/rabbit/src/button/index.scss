@@ -8,8 +8,7 @@
   text-align: center;
   overflow: hidden;
 
-  .loading-mask,
-  .disabled-mask {
+  .loading-mask {
     position: absolute;
     top: 0;
     left: 0;
@@ -22,23 +21,18 @@
     align-items: center;
     justify-content: center;
   }
-  .disabled-mask {
-    display: none;
-    background-color: var(--rabbit-disabled-color);
-  }
 
   &.is-block {
     width: 100%;
   }
   &.is-disabled {
-    .disabled-mask {
-      display: inline-block;
-    }
+    background-color: var(--rabbit-disabled-bg-color);
+    color: var(--rabbit-disabled-color);
+    cursor: not-allowed;
   }
   &.is-loading {
-    .disabled-mask {
-      display: inline-block;
-    }
+    background-color: var(--rabbit-disabled-bg-color);
+    color: var(--rabbit-disabled-color);
     .loading-mask {
       display: flex;
     }

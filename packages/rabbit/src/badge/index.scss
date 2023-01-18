@@ -1,0 +1,33 @@
+.rabbit-badge-wrapper {
+  position: relative;
+  width: fit-content;
+
+  .badge-float {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 0;
+    transform: translate(50%, -50%);
+    box-shadow: var(--rabbit-box-shadow-base);
+    border: 1px solid #fff;
+    border-radius: 999999px;
+    overflow: hidden;
+
+    .badge-count {
+      color: #fff;
+      padding: 0 0.5em;
+      font-size: 0.75rem;
+    }
+
+    .badge-node {
+      padding: 0 0.5em;
+      font-size: 0.75rem;
+    }
+
+    .badge-dot {
+      display: inline-block;
+      width: 0.4rem;
+      height: 0.4rem;
+    }
+  }
+}

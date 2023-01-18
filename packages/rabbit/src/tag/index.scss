@@ -1,0 +1,60 @@
+.rabbit-tag-wrapper {
+  width: fit-content;
+  min-width: fit-content;
+  padding: 0 0.2rem;
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  word-break: keep-all;
+  white-space: nowrap;
+  border-radius: var(--rabbit-border-radius-base);
+  overflow: hidden;
+  color: #fff;
+
+  .tag-icon {
+    margin-right: 0.2rem;
+  }
+
+  .tag-close {
+    cursor: pointer;
+    margin-left: 0.2rem;
+    .tag-close-icon {
+      width: 1rem;
+      height: 1rem;
+      border-radius: 50%;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+    
+      &:hover {
+        background-color: rgba(0, 0, 0, .05);
+      }
+    }
+  }
+
+  &.tag-success {
+    background: #f6ffed;
+    border: 1px solid #b7eb8f;
+    color: var(--rabbit-success-color);
+  }
+  &.tag-primary {
+    background: #e6f4ff;
+    border: 1px solid #91caff;
+    color: var(--rabbit-primary-color);
+  }
+  &.tag-error {
+    background: #fff2f0;
+    border: 1px solid #ffccc7;
+    color: var(--rabbit-error-color);
+  }
+  &.tag-warning {
+    background: #fffbe6;
+    border: 1px solid #ffe58f;
+    color: var(--rabbit-warning-color);
+  }
+  &.tag-default {
+    background-color: rgba(0, 0, 0, .02);
+    border: 1px solid var(--rabbit-border-color-base);
+    color: rgba(0, 0, 0, .88);
+  }
+}

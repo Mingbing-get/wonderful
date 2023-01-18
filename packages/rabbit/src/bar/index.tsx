@@ -24,7 +24,7 @@ function Bar({
   onChange,
   onStart,
   onEnd
-}: Props) {
+}: Props, ref?: React.ForwardedRef<HTMLDivElement>) {
   const [isMouseDown, setIsMouseDown] = useState(false)
   const [refDomRect, setRefDomRect] = useState<DOMRect>()
   const [offset, setOffset] = useState(0)
@@ -88,6 +88,7 @@ function Bar({
 
   return (
     <div
+      ref={ref}
       className='bar-wrapper'
       onMouseDown={handleMouseDown}
       onTouchStart={handleMouseDown}
@@ -111,7 +112,9 @@ function Bar({
   )
 }
 
-export default function PortalBar(props: Props) {
+const BarWidthRef = React.forwardRef<HTMLDivElement ,Props>(Bar)
+
+function PortalBar(props: Props, ref?: React.ForwardedRef<HTMLDivElement>) {
   const wrapper = useRef(document.createElement('div'))
 
   useEffect(() => {
@@ -122,5 +125,7 @@ export default function PortalBar(props: Props) {
     }
   }, [])
 
-  return createPortal(<Bar {...props} />, wrapper.current as HTMLDivElement)
+  return createPortal(<BarWidthRef {...props} ref={ref} />, wrapper.current as HTMLDivElement)
 }
+
+export default React.forwardRef<HTMLDivElement, Props>(PortalBar)

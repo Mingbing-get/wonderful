@@ -1,0 +1,9 @@
+.rabbit-radio-group-wrapper.use-options {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  &>.rabbit-radio-wrapper:not(:last-child) {
+    margin-right: 0.5rem;
+  }
+}

@@ -9,12 +9,13 @@ type Props = {
   color?: string
 }
 
-export default function Loading({
+function Loading({
   size = 1,
   color
-}: Props) {
+}: Props, ref?: React.ForwardedRef<HTMLSpanElement>) {
   return (
     <span
+      ref={ref}
       className='rabbit-loading-wrapper'
       style={{ width: `${size}rem`, height: `${size}rem`, color }}
     >
@@ -22,3 +23,5 @@ export default function Loading({
     </span>
   )
 }
+
+export default React.forwardRef<HTMLSpanElement, Props>(Loading)
