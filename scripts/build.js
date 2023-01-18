@@ -22,6 +22,8 @@ async function run() {
   })
   addJson.push(addMainPackageJson())
   await Promise.all(addJson)
+
+  await addReadMe()
 }
 
 async function build(target) {
@@ -71,18 +73,39 @@ async function addMainPackageJson() {
   const data = {
     name: pkg.name,
     version: pkg.version,
+    keywords: pkg.keywords,
     description: pkg.description,
     author: pkg.author,
     license: pkg.license,
     devDependencies: pkg.devDependencies,
     dependencies: pkg.dependencies,
-    peerDependencies: pkg.peerDependencies
+    peerDependencies: pkg.peerDependencies,
+    repository: pkg.repository,
+    homepage: pkg.homepage
   }
 
   return new Promise((resolve, reject) => {
     fs.writeFile(fileName, JSON.stringify(data, null, 2), (err) => {
       if (err) reject(err)
       else resolve()
+    })
+  })
+}
+
+async function addReadMe() {
+  const dir = path.resolve(__dirname, '../dist')
+  const fileName = path.resolve(dir, 'README.md')
+
+  return new Promise((resolve, reject) => {
+    fs.readFile(path.resolve('README.md'), (err, data) => {
+      if (err) {
+        reject(err)
+        return
+      }
+      fs.writeFile(fileName, data, (err) => {
+        if (err) reject(err)
+        else resolve()
+      })
     })
   })
 }

@@ -1,6 +1,6 @@
 {
   "name": "wonderful-marrow",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "workspaces": {
     "packages": [
       "packages/audio",
@@ -13,7 +13,7 @@
       "packages/global.d.ts"
     ]
   },
-  "description": "",
+  "description": "自定义组件库和基本动画组件",
   "main": "packages/marrow/src/index.ts",
   "module": "packages/marrow/dist/marrow.esm.js",
   "types": "packages/marrow/dist/marrow/src/index.d.ts",
@@ -47,8 +47,8 @@
     "preview:generate": "node scripts/preview.js generate",
     "preview:rabbit": "node scripts/preview.js rabbit"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Bing Ming",
+  "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.20.5",
     "@babel/plugin-transform-runtime": "^7.19.6",
@@ -84,5 +84,21 @@
     "@types/react": "^17.0.0 || ^18.0.0",
     "react": "^17.0.0 || ^18.0.0",
     "react-dom": "^17.0.0 || ^18.0.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Mingbing-get/wonderful",
+    "directory": "packages/*"
+  },
+  "keywords": [
+    "rabbit",
+    "component",
+    "components",
+    "wonderful",
+    "frontend",
+    "react",
+    "react-component",
+    "ui"
+  ],
+  "homepage": ""
 }
