@@ -47,14 +47,14 @@ const treeData: ComponentTreeNode[] = [
     label: '通用',
     children: [
       {
-        value: 'button',
-        label: '按钮',
-        component: <ExampleButton />
-      },
-      {
         value: 'icon',
         label: '图标',
         component: <ExampleIcon />
+      },
+      {
+        value: 'button',
+        label: '按钮',
+        component: <ExampleButton />
       }
     ]
   },
@@ -262,7 +262,7 @@ function mergeValueAndLabel(baseData: ComponentTreeNode[]) {
 mergeValueAndLabel(treeData)
 
 export default function ExampleRender() {
-  const [currentShow, setCurrentShow] = useState<React.ReactNode>(<ExampleTable />)
+  const [currentShow, setCurrentShow] = useState<React.ReactNode>(<ExampleIcon />)
 
   const handleChecked = useCallback((_: any, node: ComponentTreeNode) => {
     setCurrentShow(node.component)
@@ -272,8 +272,8 @@ export default function ExampleRender() {
     <div className='rabbit-preview-wrapper'>
       <div className='nav'>
         <Tree
-          defaultCheckedPath={['data-display', 'table']}
-          defaultExpandPath={[['data-display']]}
+          defaultCheckedPath={['currency', 'icon']}
+          defaultExpandPath={[['currency']]}
           data={treeData}
           onChecked={handleChecked}
           renderLabelIcon={(_, isExpand, isLeaf) => {

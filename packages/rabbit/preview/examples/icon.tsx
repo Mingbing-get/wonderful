@@ -1,12 +1,17 @@
 import React from 'react'
-import { Icon } from '@marrow/rabbit'
+import { Icon, iconPathKeys } from '@marrow/rabbit'
 
 export default function ExampleIcon() {
   return (
-    <div>
-      <Icon type='add' />
-      <Icon type='expand' />
-      <Icon type='shrink' />
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 23%)', justifyContent: 'space-between' }}>
+      {
+        iconPathKeys.map(key => (
+          <div key={key} style={{ padding: '1rem', borderRadius: '0.5rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <Icon type={key} style={{ fontSize: '2rem' }} />
+            <span style={{ marginTop: '0.4rem' }}>{key}</span>
+          </div>
+        ))
+      }
     </div>
   )
 }

@@ -1,5 +1,5 @@
 import './index.scss'
-export { default as Icon, IconType } from './icon'
+export { default as Icon, IconType, pathKeys as iconPathKeys } from './icon'
 export { default as Loading } from './loading'
 export { default as Button } from './button'
 export { default as Modal } from './modal'

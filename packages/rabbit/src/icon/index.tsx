@@ -91,6 +91,8 @@ const pathMap = {
 
 export type IconType = keyof (typeof pathMap)
 
+export const pathKeys = Object.keys(pathMap) as IconType[]
+
 export type Props = {
   type: IconType;
   className?: string;
