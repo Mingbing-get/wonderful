@@ -27,6 +27,183 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 )
 ```
 
+#### 支持的组件
+
+```js
+[
+  {
+    value: 'currency',
+    label: '通用',
+    children: [
+      {
+        value: 'Button',
+        label: '按钮',
+      },
+      {
+        value: 'Icon',
+        label: '图标',
+      }
+    ]
+  },
+  {
+    value: 'nav',
+    label: '导航',
+    children: [
+      {
+        value: 'Menu',
+        label: '导航菜单',
+      },
+      {
+        value: 'Pagination',
+        label: '分页',
+      },
+      {
+        value: 'Steps',
+        label: '步骤条',
+      }
+    ]
+  },
+  {
+    value: 'data-input',
+    label: '数据录入',
+    children: [
+      {
+        value: 'Cascader',
+        label: '级联选择',
+      },
+      {
+        value: 'Checkbox',
+        label: '多选框',
+      },
+      {
+        value: 'Input',
+        label: '输入框',
+      },
+      {
+        value: 'InputNumber',
+        label: '数字输入框',
+      },
+      {
+        value: 'Radio',
+        label: '单选框',
+      },
+      {
+        value: 'Rate',
+        label: '评分',
+      },
+      {
+        value: 'Select',
+        label: '选择器',
+      },
+      {
+        value: 'Slider',
+        label: '滑动输入条',
+      },
+      {
+        value: 'Switch',
+        label: '开关',
+      },
+      {
+        value: 'Upload',
+        label: '上传',
+      },
+      {
+        value: 'Calendar',
+        label: '日历',
+      },
+      {
+        value: 'TimePicker',
+        label: '时间选择器',
+      },
+      {
+        value: 'DatePicker',
+        label: '日期选择器',
+      },
+      {
+        value: 'Transfer',
+        label: '穿梭框',
+      },
+      {
+        value: 'TreeSelect',
+        label: '树形选择器',
+      }
+    ]
+  },
+  {
+    value: 'data-display',
+    label: '数据展示',
+    children: [
+      {
+        value: 'Badge',
+        label: '徽章',
+      },
+      {
+        value: 'Carousel',
+        label: '轮播',
+      },
+      {
+        value: 'Collapse',
+        label: '折叠面板',
+      },
+      {
+        value: 'Popover',
+        label: '气泡卡片',
+      },
+      {
+        value: 'Tab',
+        label: '标签页',
+      },
+      {
+        value: 'Tag',
+        label: '标签',
+      },
+      {
+        value: 'Tree',
+        label: '树形控件',
+      },
+      {
+        value: 'Timeline',
+        label: '时间线',
+      },
+      {
+        value: 'List',
+        label: '列表',
+      },
+      {
+        value: 'Tour',
+        label: '导游',
+      },
+      {
+        value: 'Table',
+        label: '表格',
+      }
+    ]
+  },
+  {
+    value: 'feedback',
+    label: '反馈',
+    children: [
+      {
+        value: 'Message',
+        label: '全局提示',
+      },
+      {
+        value: 'Modal',
+        label: '对话框',
+      },
+      {
+        value: 'Loading',
+        label: '加载中',
+      },
+      {
+        value: 'Progress',
+        label: '进度条',
+      }
+    ]
+  },
+]
+```
+
 #### 动画库使用
 ```js
 
