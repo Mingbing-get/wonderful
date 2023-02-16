@@ -44,9 +44,6 @@
         background-color: var(--rabbit-primary-1);
       }
     }
-    .rabbit-checkbox-wrapper>span {
-      display: none;
-    }
     &.is-left {
       .expand-handle {
         cursor: default;
@@ -98,7 +95,7 @@
   position: fixed;
   display: flex;
   align-items: center;
-  z-index: 1;
+  z-index: 2000;
   transform: translateY(-0.25rem);
   --bg-color: var(--rabbit-primary-color);
   .circle {

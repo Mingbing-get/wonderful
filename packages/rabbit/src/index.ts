@@ -14,8 +14,8 @@ export { default as Switch } from './switch'
 export { default as Slider } from './slider'
 export { default as Collapse } from './collapse'
 export { default as message, MessageType } from './message'
-export { default as Checkbox, Group as CheckboxGroup } from './checkbox'
-export { default as Radio, Group as RadioGroup } from './radio'
+export { default as Checkbox, Group as CheckboxGroup, OptionType as CheckboxOptionType } from './checkbox'
+export { default as Radio, Group as RadioGroup, OptionType as RadioOptionType } from './radio'
 export { default as Menu, MenuItem, MenuTheme, MenuTrigger, MenuMode, MenuClick, MenuOpenChange, MenuSelect } from './menu'
 export { default as Pagination, PaginationItemType } from './pagination'
 export { default as Tag } from './tag'
@@ -24,7 +24,31 @@ export { default as Rate, RateCharacterFn } from './rate'
 export { default as Carousel, CarouselDotPosition, CarouselRef, CarouselEffect } from './carousel'
 export { SingleCascader as Cascader, MultipleCascader, CascaderOption, TreeMode, TreeValue } from './cascader'
 export { SingleTree as Tree, MultipleTree, TreeNode } from './tree'
-export { default as Table } from './table'
+export { SingleTreeSelect as TreeSelect, MultipleTreeSelect } from './treeSelect'
+export { default as Progress, ProgressType, ProgressStatus, ProgressStartPosition } from './progress'
+export { default as Timeline, TimelineItemType, TimelineMode } from './timeLine'
+export { default as List, ListItemType, LoadMore as ListLoadMore } from './list'
+export { default as Tour, StepType as TourStepType, TourTipType } from './tour'
+export { default as Calendar } from './calendar'
+export { default as TimePicker } from './timePicker'
+export { default as DatePicker } from './datePicker'
+export { default as Transfer, TransferOptionType } from './transfer'
+export { default as Steps, StepsItemType } from './steps'
+export { default as Table, TableColumn, TableRowSelection, VirtualScrollY  } from './table'
+export {
+  TableRow,
+  TableHeadRow,
+  TableCell,
+  TableHeadCell,
+  HeadColumn as TableHeadColumn,
+  AccessorColumn as TableAccessorColumn,
+  ColumnFilter as TableColumnFilter,
+  ColumnSort as TableColumnSort,
+  FilterRenderProps as TableFilterRenderProps,
+  FilterType as TableFilterType,
+  SortRenderProps as TableSortRenderProps,
+  SortDir as TableSortDir,
+} from './hooks/useTable/index.d'
 
 import { resizeListenerRegister } from './resizeListener'
 import { rem2px, Rem2pxProps } from './utils'

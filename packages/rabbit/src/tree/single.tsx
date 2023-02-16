@@ -1,16 +1,16 @@
-import React, { useMemo, useCallback, useRef, useEffect } from 'react'
+import React, { useMemo, useCallback, useRef, useEffect, useImperativeHandle } from 'react'
 import { createPortal } from 'react-dom'
 import classNames from 'classnames'
 
 import { isSame } from '../utils'
 import useTree from '../hooks/useTree'
-import useVirtualScroll from '../hooks/useVirtualScroll'
+import useVirtualScrollY from '../hooks/useVirtualScrollY'
 import { LinkTreeNode, BaseTreeNode, TreeValue } from '../hooks/useTree/index.d'
 
 import Icon from '../icon'
 
 import useDragTree from './useDragTree'
-import { BaseProps, TreeLabelRender } from './index'
+import { BaseProps, TreeLabelRender, TreeRef } from './index'
 
 type ChangeRecord = { node: TreeNode, res: boolean }
 
@@ -26,7 +26,7 @@ export type Props = BaseProps & {
   onChecked?: (checkedPath: TreeValue[], node: TreeNode, isChecked: boolean) => void,
 }
 
-export default function SingleTree({
+function SingleTree({
   className,
   itemClassName,
   style,
@@ -47,7 +47,7 @@ export default function SingleTree({
   onExpand,
   onCanMove,
   onMove
-}: Props) {
+}: Props, ref: React.ForwardedRef<TreeRef>) {
   const hookCheckedPathRef = useRef<TreeValue[]>([])
   const hookExpandPathRef = useRef<TreeValue[][]>([])
   const curCheckedRef = useRef<ChangeRecord>()
@@ -67,6 +67,7 @@ export default function SingleTree({
     changeExpandPath,
     canMove: hookCanMove,
     move,
+    clearChecked,
   } = useTree({
     multiple: false,
     forest: data,
@@ -77,6 +78,13 @@ export default function SingleTree({
     onCanMove,
     onMove,
   })
+
+  useImperativeHandle(ref, () => ({
+    forest: linkForest,
+    setChecked,
+    setExpandNode,
+    clearChecked
+  }), [linkForest, setChecked, setExpandNode, clearChecked])
 
   useEffect(() => {
     hookCheckedPathRef.current = hookCheckedPath
@@ -219,7 +227,7 @@ export default function SingleTree({
     endShow,
     wrapperStyle,
     itemsStyle
-  } = useVirtualScroll(renderOptions.length, virtualScroll)
+  } = useVirtualScrollY(renderOptions.length, virtualScroll)
 
   return (
     <div
@@ -258,3 +266,5 @@ export default function SingleTree({
     </div>
   )
 }
+
+export default React.forwardRef<TreeRef, Props>(SingleTree)

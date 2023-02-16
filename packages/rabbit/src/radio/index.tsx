@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react'
 import classNames from 'classnames'
 
-import Group from './group'
+import Group, { OptionType } from './group'
 import { useRadio } from './context'
 
 import './index.scss'
+
+export { OptionType }
 
 type Props = {
   className?: string,

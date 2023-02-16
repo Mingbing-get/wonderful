@@ -1,0 +1,28 @@
+.rabbit-list-wrapper {
+  overflow-y: auto;
+  .list-item {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;
+    height: var(--tree-item-height);
+    &:not(:last-child) {
+      border-bottom: 1px solid var(--rabbit-border-color-base);
+    }
+  }
+
+  .rabbit-list-loading {
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .rabbit-list-load-more {
+    display: flex;
+    justify-content: center;
+  }
+
+  .rabbit-list-not-more {
+    display: flex;
+    justify-content: center;
+  }
+}

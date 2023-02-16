@@ -1,39 +1,58 @@
-import React, { useRef, useEffect, useState, useMemo } from 'react'
+import React, { useRef, useEffect, useState, useMemo, useImperativeHandle, useCallback } from 'react'
 import ReactDOM from 'react-dom'
 import { createPopper, Placement, Instance, VirtualElement } from '@popperjs/core'
 import classNames from 'classnames'
 
 import './index.scss'
+import { InputRef } from 'rc-input'
 export {
-  Placement
+  Placement,
+  Instance
 }
+export type PopoverRef = Instance & {
+  resetVirtualElement: () => void
+}
+export type ArrowType = 'small' | 'large' | 'middle' | 'none'
 
 type Props = {
   children: React.ReactElement,
   content: React.ReactNode,
   trigger?: 'click' | 'hover' | 'focus',
-  arrow?: 'small' | 'large' | 'middle' | 'none',
+  arrow?: ArrowType,
   placement?: Placement,
   visible?: boolean,
   delay?: number,
+  widthFollowTarget?: boolean,
   className?: string,
   style?: React.CSSProperties,
   onVisibleChange?: (visible: boolean) => void,
 }
 
-export default function Popover({
+function generateGetBoundingClientRect(x: number, y: number, width: number, height: number) {
+  return () => ({
+    width: width,
+    height: height,
+    top: y,
+    right: x,
+    bottom: y,
+    left: x,
+  })
+}
+
+function Popover({
   children,
   content,
   trigger = 'click',
   placement = 'bottom',
   arrow = 'middle',
   visible,
+  widthFollowTarget,
   delay = 500,
   className,
   style,
   onVisibleChange
-}: Props) {
-  const targetRef = useRef<HTMLElement>(null)
+}: Props, ref?: React.ForwardedRef<PopoverRef | undefined>) {
+  const targetRef = useRef<HTMLElement | InputRef>(null)
   const perTargetRef = useRef(false)
   const counter = useRef(0)
   const displayRef = useRef<HTMLDivElement>(null)
@@ -44,6 +63,14 @@ export default function Popover({
   } as VirtualElement)
 
   const [isHidden, setIsHidden] = useState(!visible)
+
+  useEffect(() => {
+    setIsHidden(!visible)
+  }, [visible])
+
+  useEffect(() => {
+    onVisibleChange?.(!isHidden)
+  }, [isHidden])
 
   useEffect(() => {
     setTimeout(() => {
@@ -62,7 +89,7 @@ export default function Popover({
 
   useEffect(() => {
     document.addEventListener('click', () => {
-      if (trigger !== 'click') return
+      if (!['click', 'focus'].includes(trigger)) return
       setIsHidden(true)
     })
     document.addEventListener('scroll', () => {
@@ -75,29 +102,29 @@ export default function Popover({
   }, [])
 
   useEffect(() => {
-    if (!targetRef.current || perTargetRef.current) return
+    if (!getTargetElement() || perTargetRef.current) return
     perTargetRef.current = true
 
-    trigger === 'click' && targetRef.current.addEventListener('click', toggleShow)
+    trigger === 'click' && getTargetElement().addEventListener('click', toggleShow)
 
     trigger === 'hover' && (
-      targetRef.current.addEventListener('mouseenter', () => {
+      getTargetElement().addEventListener('mouseenter', () => {
         counter.current++
         setIsHidden(false)
         setTimeout(() => {
           counter.current--
         }, delay)
       }),
-      targetRef.current.addEventListener('mouseleave', () => {
+      getTargetElement().addEventListener('mouseleave', () => {
         setTimeout(() => {
           if (counter.current === 0) setIsHidden(true)
         }, delay)
       })
     )
-
+ 
     trigger === 'focus' && (
-      targetRef.current.addEventListener('focus', () => setIsHidden(false)),
-      targetRef.current.addEventListener('blur', () => setIsHidden(true))
+      getTargetElement().addEventListener('focus', () => setIsHidden(false)),
+      getTargetElement().addEventListener('click', e => { e.stopPropagation(); return false })
     )
   }, [targetRef.current])
 
@@ -120,34 +147,28 @@ export default function Popover({
     )
   }, [displayRef.current])
 
-  useEffect(() => {
-    setIsHidden(!visible)
-  }, [visible])
+  const getTargetElement = useCallback(() => {
+    return (targetRef.current as InputRef).input || targetRef.current as HTMLElement
+  }, [targetRef.current])
 
-  useEffect(() => {
-    onVisibleChange?.(!isHidden)
-  }, [isHidden])
+  const getTargetLocationAndSize = useCallback(() => {
+    if (!getTargetElement()) return { top: 0, left: 0, width: 0, height: 0 }
+    return getTargetElement().getBoundingClientRect()
+  }, [getTargetElement])
 
-  function resetVirtualElement() {
+  const resetVirtualElement = useCallback(() => {
     const { left, top, width, height } = getTargetLocationAndSize()
     virtualElement.current.getBoundingClientRect = generateGetBoundingClientRect(left, top, width, height) as any
-  }
+  }, [getTargetLocationAndSize])
 
-  function getTargetLocationAndSize() {
-    if (!targetRef.current) return { top: 0, left: 0, width: 0, height: 0 }
-    return targetRef.current.getBoundingClientRect()
-  }
+  useImperativeHandle(ref, () => {
+    if (!popperInstance.current) return undefined
 
-  function generateGetBoundingClientRect(x: number, y: number, width: number, height: number) {
-    return () => ({
-      width: width,
-      height: height,
-      top: y,
-      right: x,
-      bottom: y,
-      left: x,
-    })
-  }
+    return {
+      ...popperInstance.current,
+      resetVirtualElement
+    }
+  }, [popperInstance.current, resetVirtualElement])
 
   function toggleShow(e: MouseEvent) {
     setIsHidden((isHidden) => !isHidden)
@@ -168,7 +189,7 @@ export default function Popover({
         !isHidden && ReactDOM.createPortal(
           <div
             className={classNames('rabbit-popper-wrapper', arrow === 'none' && 'not-arrow', className)}
-            style={style}
+            style={{ ...style, width: widthFollowTarget ? `${getTargetElement().getBoundingClientRect().width}px` : '' }}
             ref={displayRef}
             onClick={e => e.stopPropagation()}
           >
@@ -184,3 +205,5 @@ export default function Popover({
     </>
   )
 }
+
+export default React.forwardRef<PopoverRef | undefined, Props>(Popover)

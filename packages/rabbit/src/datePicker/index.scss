@@ -1,0 +1,105 @@
+.rabbit-date-picker {
+  width: 6rem;
+  min-width: auto;
+  .suffix {
+    display: flex;
+  }
+  .clear {
+    display: none;
+    cursor: pointer;
+  }
+  .rabbit-icon {
+    color: var(--rabbit-text-color-secondary);
+  }
+  &.effect-toggle:hover {
+    .suffix {
+      display: none;
+    }
+    .clear {
+      display: flex;
+    }
+  }
+  &.has-time {
+    width: 10rem;
+  }
+}
+
+.rabbit-date-picker-panel {
+  padding-bottom: 0.2rem;
+  margin-top: -0.2rem;
+  .rabbit-calendar-wrapper {
+    border: none;
+    padding: 0;
+    .rabbit-calendar-header {
+      border-bottom: 1px solid var(--rabbit-border-color-base);
+      margin: 0 -0.5rem;
+      height: 2rem;
+      padding-bottom: 0;
+      display: flex;
+      align-items: center;
+    }
+  }
+  .rabbit-time-panel {
+    border-left: 1px solid var(--rabbit-border-color-base);
+    margin-left: 0.5rem;
+  }
+
+  .date-panel-body {
+    display: flex;
+    .date-picker-panel-time-header {
+      border-bottom: 1px solid var(--rabbit-border-color-base);
+      border-left: 1px solid var(--rabbit-border-color-base);
+      margin-left: 0.5rem;
+      margin-right: -0.5rem;
+      height: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  .date-panel-footer {
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid var(--rabbit-border-color-base);
+    padding: 0.4rem 0.5rem 0;
+    margin: 0 -0.5rem;
+
+    .extra-footer {
+      display: flex;
+      align-items: center;
+      .date-now {
+        cursor: pointer;
+        color: var(--rabbit-primary-color);
+      }
+    }
+  }
+}
+
+.date-header-render {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  z-index: 1;
+  .header-title-wrapper {
+    display: flex;
+    .date-header-title {
+      border-radius: var(--rabbit-border-radius-base);
+      padding: 0.2rem 0.4rem;
+      &.has-pre:hover {
+        cursor: pointer;
+        background-color: var(--rabbit-primary-2);
+        color: var(--rabbit-primary-color);
+      }
+    }
+  }
+  .arrow-wrapper {
+    .rabbit-icon {
+      &:hover {
+        color: var(--rabbit-primary-color);
+        cursor: pointer;
+      }
+    }
+  }
+}

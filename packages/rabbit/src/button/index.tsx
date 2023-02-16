@@ -7,14 +7,14 @@ import './index.scss'
 
 export type ButtonType = 'primary' | 'danger' | 'success' | 'warning'
 
-type Props = {
+export type Props = {
   type?: ButtonType,
   loading?: boolean,
   block?: boolean,
   disabled?: boolean,
   ghost?: boolean,
   children: React.ReactNode,
-  onClick?: () => void
+  onClick?: (e: React.MouseEvent<HTMLDivElement>) => void
 }
 
 function Button({
@@ -26,9 +26,9 @@ function Button({
   children,
   onClick
 }: Props, ref?: React.ForwardedRef<HTMLDivElement>) {
-  function handleClick() {
+  function handleClick(e: React.MouseEvent<HTMLDivElement>) {
     if (disabled || loading) return
-    onClick?.()
+    onClick?.(e)
   }
 
   return (

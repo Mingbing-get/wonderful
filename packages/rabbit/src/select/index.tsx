@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from 'react'
+import React, { useCallback, useState, useEffect, useRef } from 'react'
 import classNames from 'classnames'
 
 import Input from '../input'
@@ -7,9 +7,10 @@ import Popover from '../popover'
 import Option from './option'
 
 import './index.scss'
+import { InputRef } from 'rc-input'
 
 export type ValueType = number | string;
-export type OptionType<T> = {
+export type OptionType<T extends ValueType = ValueType> = {
   value: T;
   label?: string;
   prefix?: React.ReactElement;
@@ -47,6 +48,7 @@ export default function Select<T extends ValueType>({
 }: Props<T>) {
   const [visible, setVisible] = useState(false)
   const [_value, setValue] = useState<T>()
+  const selectWrapperRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => setValue(defaultValue), [])
 
@@ -54,6 +56,17 @@ export default function Select<T extends ValueType>({
     if (value === _value) return
     setValue(value)
   }, [value])
+
+  useEffect(() => {
+    if (!visible || !selectWrapperRef.current) return
+
+    const selectOption = selectWrapperRef.current.getElementsByClassName('is-select')[0]
+    if (!selectOption) return
+
+    const selectWrapperRect = selectWrapperRef.current.getBoundingClientRect()
+    const topDiff = selectOption.getBoundingClientRect().top - selectWrapperRect.top
+    selectWrapperRef.current.scrollTop = topDiff - selectWrapperRect.height / 2
+  }, [visible])
 
   const handleClick = useCallback(({ value, onClick }: OptionType<T>) => {
     if (value === _value) return
@@ -65,7 +78,7 @@ export default function Select<T extends ValueType>({
   }, [_value, onChange])
 
   const findLabelByValue = useCallback((value?: T) => {
-    if (!value) return
+    if (value === undefined) return
     const currentOption = options.find(item => item.value === value)
     return currentOption?.label || currentOption?.value
   }, [options])
@@ -88,12 +101,14 @@ export default function Select<T extends ValueType>({
 
   return (
     <Popover
+      widthFollowTarget
       arrow="small"
       className='rabbit-select-popover'
+      trigger='focus'
       visible={visible}
       onVisibleChange={setVisible}
       content={
-        <div className={classNames('rabbit-select-wrapper', wrapperClassName)} style={wrapperStyle}>
+        <div ref={selectWrapperRef} className={classNames('rabbit-select-wrapper', wrapperClassName)} style={wrapperStyle}>
           {
             options.map(item => (
               <Option

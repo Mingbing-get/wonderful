@@ -1,7 +1,7 @@
 import React from 'react'
-import { BaseTreeNode, TreeValue, InnerLocation } from '../hooks/useTree/index.d'
+import { BaseTreeNode, TreeValue, InnerLocation, LinkTreeNode } from '../hooks/useTree/index.d'
 
-import { VirtualScroll } from '../hooks/useVirtualScroll'
+import { VirtualScroll } from '../hooks/useVirtualScrollY'
 import SingleTree from './single'
 import MultipleTree from './multiple'
 import './index.scss'
@@ -9,6 +9,13 @@ import './index.scss'
 export type TreeNode<T extends object = {}> = BaseTreeNode<T & {
   label?: string
 }>
+
+export type TreeRef = {
+  forest: LinkTreeNode<TreeNode>[],
+  setChecked: (data: TreeNode, checked: boolean) => void,
+  setExpandNode: (data?: TreeNode, expand?: boolean) => void,
+  clearChecked: () => void,
+} | undefined
 
 export type TreeLabelRender = (node: TreeNode) => React.ReactNode
 

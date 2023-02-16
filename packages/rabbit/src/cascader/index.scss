@@ -24,9 +24,6 @@
       .cascader-tag:not(:last-child) {
         margin-right: 0.2rem;
       }
-      &.is-multiple {
-        overflow-x: auto;
-      }
       &.show-placeholder {
         color: var(--rabbit-border-color-base);
       }
@@ -98,11 +95,6 @@
         margin-right: 0.2rem;
         .item-checkbox {
           display: flex;
-        }
-      }
-      .rabbit-checkbox-wrapper {
-        &>span {
-          display: none;
         }
       }
       .cascader-loading-icon {

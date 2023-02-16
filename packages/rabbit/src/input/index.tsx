@@ -1,6 +1,6 @@
 import React from 'react'
 import classNames from 'classnames'
-import RcInput, { InputProps } from 'rc-input'
+import RcInput, { InputProps, InputRef } from 'rc-input'
 
 import Icon from '../icon'
 
@@ -13,10 +13,11 @@ function Input({
   style,
   allowClear,
   ...extra
-}: Props, ref?: React.ForwardedRef<HTMLDivElement>){
+}: Props, ref?: React.ForwardedRef<InputRef>){
   return (
-    <div className={classNames('rabbit-input-wrapper', extra.disabled && 'is-disabled', className)} style={style} ref={ref}>
+    <div className={classNames('rabbit-input-wrapper', extra.disabled && 'is-disabled', className)} style={style}>
       <RcInput
+        ref={ref}
         prefixCls='input'
         allowClear={allowClear === true ? ({
           clearIcon: <Icon type='close' />
@@ -27,4 +28,4 @@ function Input({
   )
 }
 
-export default React.forwardRef<HTMLDivElement, Props>(Input)
+export default React.forwardRef<InputRef, Props>(Input)

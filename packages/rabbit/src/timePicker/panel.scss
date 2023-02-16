@@ -1,0 +1,38 @@
+.rabbit-time-panel {
+  display: flex;
+  height: 12rem;
+  margin: 0 -0.5rem;
+
+  .time-item-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow-y: auto;
+    padding: 0 0.2rem;
+
+    &:not(:last-child) {
+      border-right: 1px solid var(--rabbit-border-color-base);
+    }
+
+    .time-item {
+      text-align: justify;
+      cursor: pointer;
+      padding: 0.1rem 0.6rem;
+      border-radius: var(--rabbit-border-radius-base);
+
+      &:hover {
+        background-color: var(--rabbit-hover-color);
+      }
+
+      &.is-disabled {
+        color: var(--rabbit-disabled-color);
+        cursor: not-allowed;
+      }
+
+      &.is-selected {
+        background-color: var(--rabbit-primary-2);
+        color: var(--rabbit-primary-color);
+      }
+    }
+  }
+}

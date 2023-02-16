@@ -47,7 +47,7 @@ export default function Modal({
   getContainer = () => document.body
 }: Props) {
   const [_visible, setVisible] = useState(!!visible)
-  const [hidden, setHidden] = useState(true)
+  const [hidden, setHidden] = useState(!visible)
 
   useEffect(() => {
     if (_visible !== visible && visible !== undefined) {
@@ -109,16 +109,20 @@ export default function Modal({
           className={classNames('modal-content', { 'is-hidden': hidden })}
           style={{ ...(style || {}) , width, height, '--animation-time': `${animationTime / 1000}s` } as any}
         >
-          <div className='modal-header'>
-            <div>
-              {header}
-            </div>
-            <Icon
-              type='close'
-              style={{ fontSize: '1.5rem' }}
-              onClick={handleClose}
-            />
-          </div>
+          {
+            header && (
+              <div className='modal-header'>
+                <div>
+                  {header}
+                </div>
+                <Icon
+                  type='close'
+                  style={{ fontSize: '1.5rem' }}
+                  onClick={handleClose}
+                />
+              </div>
+            )
+          }
           <div className='modal-body'>
             {content}
           </div>

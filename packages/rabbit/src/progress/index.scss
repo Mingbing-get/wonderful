@@ -1,0 +1,38 @@
+.rabbit-progress-wrapper {
+  &.type-line {
+    display: flex;
+    align-items: center;
+    .progress-info {
+      display: inline-flex;
+      margin-left: 0.5rem;
+    }
+  }
+  &.type-circle {
+    position: relative;
+    .progress-info {
+      position: absolute;
+      display: inline-flex;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  .progress-line {
+    flex: 1;
+    border-radius: 99999px;
+    .progress-line-complete {
+      transition: width 0.2s linear,
+        color 0.2s linear;
+      border-radius: 99999px;
+      height: 100%;
+    }
+  }
+
+  .progress-circle {
+    circle {
+      transition: stroke-dasharray 0.2s linear,
+        color 0.2s linear;
+    }
+  }
+}

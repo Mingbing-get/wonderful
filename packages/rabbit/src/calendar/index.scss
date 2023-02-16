@@ -1,0 +1,145 @@
+.rabbit-calendar-wrapper {
+  border: 1px solid var(--rabbit-border-color-base);
+  padding: 0.4rem;
+  border-radius: var(--rabbit-border-radius-base);
+  height: fit-content;
+  .rabbit-calendar-header {
+    padding-bottom: 0.4rem;
+  }
+
+  .panel-cell {
+    cursor: pointer;
+    &:hover {
+      background-color: var(--rabbit-hover-color);
+    }
+  
+    &.is-disabled {
+      color: var(--rabbit-disabled-color);
+      background-color: transparent;
+      cursor: not-allowed;
+    }
+  
+    &.is-selected {
+      color: var(--rabbit-primary-color);
+      background-color: var(--rabbit-primary-2);
+    }
+  }
+
+  &.is-full-screen {
+    border: none;
+    padding: none;
+    .rabbit-date-panel {
+      grid-column-gap: 0.5rem;
+      .date-week {
+        text-align: right;
+      }
+      .date-cell {
+        text-align: right;
+        border-top: 2px solid var(--rabbit-border-color-base);
+        height: 4rem;
+      }
+    }
+    .default-calendar-header {
+      justify-content: flex-end;
+    }
+    .ten-year .month-cell {
+      padding: 0.5rem 1rem;
+      font-size: inherit;
+    }
+  }
+}
+
+.default-calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .calendar-year-select {
+    width: 4.5rem;
+    min-width: auto;
+  }
+  .calendar-month-select {
+    width: 3.5rem;
+    min-width: auto;
+  }
+  .calendar-ten-year-select {
+    width: 6rem;
+    min-width: auto;
+  }
+}
+
+.rabbit-date-panel {
+  display: grid;
+  grid-template-columns: repeat(7, auto);
+  .date-week {
+    padding: 0.2rem;
+    text-align: center;
+  }
+  .date-cell {
+    padding: 0.2rem;
+    text-align: center;
+    &.type-before,
+    &.type-after {
+      color: var(--rabbit-disabled-color);
+    }
+  }
+}
+
+.rabbit-week-panel {
+  .week-cell {
+    padding: 0.2rem 0;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: space-around;
+    border-radius: var(--rabbit-border-radius-base);
+    &>div {
+      width: 12.5%;
+      text-align: center;
+    }
+    &:not(.is-selected) {
+      .type-week,
+      .type-before,
+      .type-after {
+        color: var(--rabbit-disabled-color);
+      }
+    }
+  }
+}
+
+.rabbit-month-panel {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  justify-items: center;
+  min-height: 10rem;
+  height: 100%;
+  .month-cell {
+    padding: 0.5rem 1rem;
+    text-align: center;
+    width: fit-content;
+    &.type-before,
+    &.type-after {
+      color: var(--rabbit-disabled-color);
+    }
+  }
+  &.ten-year {
+    .month-cell {
+      display: flex;
+      align-items: center;
+      padding: 0;
+      font-size: 0.75rem;
+    }
+  }
+}
+
+.rabbit-quarter-panel {
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+  justify-items: center;
+  min-height: 2.5rem;
+  height: 100%;
+  .quarter-cell {
+    padding: 0.5rem 1rem;
+    text-align: center;
+    width: fit-content;
+  }
+}

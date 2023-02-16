@@ -1,0 +1,36 @@
+.rabbit-time-picker {
+  width: 6rem;
+  min-width: auto;
+  .suffix {
+    display: flex;
+  }
+  .clear {
+    display: none;
+    cursor: pointer;
+  }
+  .rabbit-icon {
+    color: var(--rabbit-text-color-secondary);
+  }
+  &.effect-toggle:hover {
+    .suffix {
+      display: none;
+    }
+    .clear {
+      display: flex;
+    }
+  }
+}
+
+.rabbit-time {
+  display: flex;
+  flex-direction: column;
+
+  .rabbit-time-footer {
+    border-top: 1px solid var(--rabbit-border-color-base);
+    padding: 0.5rem 0;
+    .time-now {
+      color: var(--rabbit-primary-color);
+      cursor: pointer;
+    }
+  }
+}

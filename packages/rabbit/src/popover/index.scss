@@ -24,7 +24,7 @@
   background-color: #fff;
   border-radius: var(--rabbit-border-radius-base);
   box-shadow: var(--rabbit-box-shadow-base);
-  width: auto !important;
+  width: auto;
   z-index: 10;
 
   &.not-arrow {

@@ -1,17 +1,17 @@
-import React, { useMemo, useCallback, useRef, useEffect } from 'react'
+import React, { useMemo, useCallback, useRef, useEffect, useImperativeHandle } from 'react'
 import { createPortal } from 'react-dom'
 import classNames from 'classnames'
 
 import { isSame } from '../utils'
 import useTree from '../hooks/useTree'
-import useVirtualScroll from '../hooks/useVirtualScroll'
+import useVirtualScrollY from '../hooks/useVirtualScrollY'
 import { LinkTreeNode, BaseTreeNode, TreeValue, TreeMode } from '../hooks/useTree/index.d'
 
 import Icon from '../icon'
 import Checkbox from '../checkbox'
 
 import useDragTree from './useDragTree'
-import { BaseProps, TreeLabelRender } from './index'
+import { BaseProps, TreeLabelRender, TreeRef } from './index'
 
 type ChangeRecord = { node: TreeNode, res: boolean }
 
@@ -28,7 +28,7 @@ export type Props = BaseProps & {
   onChecked?: (checkedPath: TreeValue[][], node: TreeNode, isChecked: boolean) => void,
 }
 
-export default function MultipleTree({
+function MultipleTree({
   className,
   itemClassName,
   style,
@@ -50,7 +50,7 @@ export default function MultipleTree({
   onExpand,
   onCanMove,
   onMove
-}: Props) {
+}: Props, ref: React.ForwardedRef<TreeRef>) {
   const hookCheckedPathRef = useRef<TreeValue[][]>([])
   const hookExpandPathRef = useRef<TreeValue[][]>([])
   const curCheckedRef = useRef<ChangeRecord>()
@@ -70,6 +70,7 @@ export default function MultipleTree({
     changeExpandPath,
     canMove: hookCanMove,
     move,
+    clearChecked,
   } = useTree({
     multiple: true,
     forest: data,
@@ -80,6 +81,13 @@ export default function MultipleTree({
     onCanMove,
     onMove,
   })
+
+  useImperativeHandle(ref, () => ({
+    forest: linkForest,
+    setChecked,
+    setExpandNode,
+    clearChecked
+  }), [linkForest, setChecked, setExpandNode, clearChecked])
 
   useEffect(() => {
     hookCheckedPathRef.current = hookCheckedPath
@@ -200,9 +208,7 @@ export default function MultipleTree({
               halfChecked={linkNode.halfChecked}
               disabled={linkNode.disabled}
               onChange={checked => toggleChecked(linkNode, checked)}
-            >
-              ''
-            </Checkbox>
+            />
             <span className='tree-item-label'>
               {renderLabelIcon && <span className='label-icon'>
                 {renderLabelIcon(linkNode.data, linkNode.isExpand, linkNode.isLeft)}
@@ -226,7 +232,7 @@ export default function MultipleTree({
     endShow,
     wrapperStyle,
     itemsStyle
-  } = useVirtualScroll(renderOptions.length, virtualScroll)
+  } = useVirtualScrollY(renderOptions.length, virtualScroll)
 
   return (
     <div
@@ -265,3 +271,5 @@ export default function MultipleTree({
     </div>
   )
 }
+
+export default React.forwardRef<TreeRef, Props>(MultipleTree)

@@ -13,6 +13,7 @@ import { checkedPathToLinkPath } from '../../hooks/useTree/utils'
 import { isSame } from '../../utils'
 
 import { CascaderOption, CascaderBaseProps, DropdownRender, NotFoundContent } from '../index'
+import { InputRef } from 'rc-input'
 
 export type DisplayRender = (labels: string[], checkedPath: CascaderOption[]) => React.ReactNode
 
@@ -63,7 +64,7 @@ export default function SingleCascader({
   const [showSearchInput, setShowSearchInput] = useState(false)
   const [visiblePopover, setVisiblePopover] = useState(false)
   const [searchText, setSearchText] = useState('')
-  const inputWrapperRef = useRef<HTMLDivElement>(null)
+  const inputRef = useRef<InputRef>(null)
   const valueRef = useRef<TreeValue[]>([])
   const linkForestRef = useRef<LinkTreeNode<CascaderOption>[]>([])
 
@@ -135,7 +136,7 @@ export default function SingleCascader({
     if (!showSearch) return
     setShowSearchInput(visible)
     if (visible) {
-      inputWrapperRef.current?.getElementsByTagName('input')?.[0]?.focus()
+      inputRef.current?.focus()
     } else {
       setSearchText('')
     }
@@ -159,7 +160,7 @@ export default function SingleCascader({
               placeholder
           }</div>
           <Input
-            ref={inputWrapperRef}
+            ref={inputRef}
             value={searchText}
             onChange={e => setSearchText(e.target.value)}
             onClick={(e) => e.stopPropagation()}
@@ -213,7 +214,7 @@ export default function SingleCascader({
             placeholder
           }</div>
           <Input
-            ref={inputWrapperRef}
+            ref={inputRef}
             value={searchText}
             onChange={e => setSearchText(e.target.value)}
             onClickCapture={(e) => e.stopPropagation()}

@@ -1,11 +1,12 @@
 import React, { useRef, useState, useCallback, useEffect } from 'react'
+import useDebounceAndThrottle from './useDebounceAndThrottle'
 
-export type VirtualScroll = {
+export type VirtualScrollY = {
   height: number,
   itemHeight: number,
 }
 
-export default function useVirtualScroll(itemLength: number, virtualScroll?: VirtualScroll) {
+export default function useVirtualScrollY(itemLength: number, virtualScroll?: VirtualScrollY) {
   const showCount = useRef(0)
   const [startShow, setStartShow] = useState(0)
   const [wrapperStyle, setWrapperStyle] = useState<React.CSSProperties>({})
@@ -31,7 +32,7 @@ export default function useVirtualScroll(itemLength: number, virtualScroll?: Vir
   }, [virtualScroll, itemLength, startShow])
 
   const handleScroll = useCallback((e: React.UIEvent<HTMLDivElement>) => {
-    if (!virtualScroll) return
+    if (!virtualScroll || !e.currentTarget) return
     e.stopPropagation()
 
     const count = Math.ceil(virtualScroll.height / virtualScroll.itemHeight)
@@ -43,7 +44,7 @@ export default function useVirtualScroll(itemLength: number, virtualScroll?: Vir
   }, [virtualScroll, startShow])
 
   return {
-    handleScroll,
+    handleScroll: useDebounceAndThrottle(handleScroll),
     startShow,
     endShow: virtualScroll ? startShow + showCount.current : undefined,
     wrapperStyle,

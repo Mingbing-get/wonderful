@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react'
 import classNames from 'classnames'
 
-import Group from './group'
+import Group, { ValueType, OptionType } from './group'
 import { useCheckbox } from './context'
 
 import './index.scss'
+
+export { OptionType }
 
 type Props = {
   className?: string,
@@ -13,7 +15,8 @@ type Props = {
   checked?: boolean,
   halfChecked?: boolean,
   defaultChecked?: boolean,
-  children: string,
+  value?: ValueType,
+  children?: React.ReactNode,
   onChange?: (checked: boolean) => void
 }
 
@@ -24,48 +27,50 @@ function Checkbox({
   checked,
   halfChecked,
   defaultChecked,
+  value,
   children,
   onChange
 }: Props, ref?: React.ForwardedRef<HTMLDivElement>) {
   const [_checked, setChecked] = useState<boolean>(false)
-  const { value, triggerChange, addValue } = useCheckbox()
+  const { value: values, triggerChange, addValue } = useCheckbox()
   const preChecked = useRef<boolean>(false)
 
   useEffect(() => {
     if (defaultChecked === undefined) return
     preChecked.current = defaultChecked
-    defaultChecked && addValue?.(children)
+    defaultChecked && value && addValue?.(value)
     setChecked(defaultChecked)
   }, [])
 
   useEffect(() => {
     if (checked === undefined || preChecked.current === checked) return
     preChecked.current = checked
-    checked && addValue?.(children)
+    checked && value && addValue?.(value)
     setChecked(checked)
   }, [checked])
 
   useEffect(() => {
-    if (value?.includes(children)) {
+    if (!value) return
+    if (values?.includes(value)) {
       preChecked.current = true
       setChecked(true)
     }
   }, [])
 
   useEffect(() => {
-    if (!!value?.includes(children) === preChecked.current || !addValue) return
+    if (!value || !!values?.includes(value) === preChecked.current || !addValue) return
 
     setChecked(!preChecked.current)
     onChange?.(!preChecked.current)
     preChecked.current = !preChecked.current
-  }, [value])
+  }, [values])
 
   function handleClick(e: React.MouseEvent<HTMLDivElement>) {
     if (disabled) return
 
     preChecked.current = !_checked
     onChange?.(!_checked)
-    triggerChange?.(children, !_checked)
+    value && triggerChange?.(value, !_checked)
     setChecked(!_checked)
   }
 

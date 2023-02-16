@@ -26,6 +26,16 @@ import ExampleCarousel from './examples/carousel'
 import ExampleTable from './examples/table'
 import ExampleCascader from './examples/cascader'
 import ExampleTree from './examples/tree'
+import ExampleTreeSelect from './examples/treeSelect'
+import ExampleProgress from './examples/progress'
+import ExampleTimeline from './examples/timeline'
+import ExampleList from './examples/list'
+import ExampleTour from './examples/tour'
+import ExampleCalendar from './examples/calendar'
+import ExampleTimePicker from './examples/timePicker'
+import ExampleDatePicker from './examples/datePicker'
+import ExampleTransfer from './examples/transfer'
+import ExampleSteps from './examples/steps'
 
 type ComponentTreeNode = TreeNode<{
   component?: React.ReactNode
@@ -61,6 +71,11 @@ const treeData: ComponentTreeNode[] = [
         value: 'pagination',
         label: '分页',
         component: <ExamplePagination />
+      },
+      {
+        value: 'steps',
+        label: '步骤条',
+        component: <ExampleSteps />
       }
     ]
   },
@@ -117,6 +132,31 @@ const treeData: ComponentTreeNode[] = [
         value: 'upload',
         label: '上传',
         component: <ExampleUpload />
+      },
+      {
+        value: 'calendar',
+        label: '日历',
+        component: <ExampleCalendar />
+      },
+      {
+        value: 'timePicker',
+        label: '时间选择器',
+        component: <ExampleTimePicker />
+      },
+      {
+        value: 'datePicker',
+        label: '日期选择器',
+        component: <ExampleDatePicker />
+      },
+      {
+        value: 'transfer',
+        label: '穿梭框',
+        component: <ExampleTransfer />
+      },
+      {
+        value: 'treeSelect',
+        label: '树形选择器',
+        component: <ExampleTreeSelect />
       }
     ]
   },
@@ -158,6 +198,26 @@ const treeData: ComponentTreeNode[] = [
         value: 'tree',
         label: '树形控件',
         component: <ExampleTree />
+      },
+      {
+        value: 'timeline',
+        label: '时间线',
+        component: <ExampleTimeline />
+      },
+      {
+        value: 'list',
+        label: '列表',
+        component: <ExampleList />
+      },
+      {
+        value: 'tour',
+        label: '导游',
+        component: <ExampleTour />
+      },
+      {
+        value: 'table',
+        label: '表格',
+        component: <ExampleTable />
       }
     ]
   },
@@ -179,6 +239,11 @@ const treeData: ComponentTreeNode[] = [
         value: 'loading',
         label: '加载中',
         component: <ExampleLoading />
+      },
+      {
+        value: 'progress',
+        label: '进度条',
+        component: <ExampleProgress />
       }
     ]
   },
@@ -197,7 +262,7 @@ function mergeValueAndLabel(baseData: ComponentTreeNode[]) {
 mergeValueAndLabel(treeData)
 
 export default function ExampleRender() {
-  const [currentShow, setCurrentShow] = useState<React.ReactNode>(<ExampleButton />)
+  const [currentShow, setCurrentShow] = useState<React.ReactNode>(<ExampleTable />)
 
   const handleChecked = useCallback((_: any, node: ComponentTreeNode) => {
     setCurrentShow(node.component)
@@ -207,8 +272,8 @@ export default function ExampleRender() {
     <div className='rabbit-preview-wrapper'>
       <div className='nav'>
         <Tree
-          defaultCheckedPath={['currency', 'button']}
-          defaultExpandPath={[['currency']]}
+          defaultCheckedPath={['data-display', 'table']}
+          defaultExpandPath={[['data-display']]}
           data={treeData}
           onChecked={handleChecked}
           renderLabelIcon={(_, isExpand, isLeaf) => {

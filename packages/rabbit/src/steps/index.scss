@@ -1,0 +1,107 @@
+.rabbit-steps-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  position: relative;
+
+  .steps-line {
+    position: absolute;
+    height: 1px;
+    color: var(--rabbit-primary-color);
+    background-color: var(--rabbit-primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    &.type-navigation {
+      height: 0;
+    }
+  }
+
+  &.direction-vertical {
+    flex-direction: column;
+    .steps-line {
+      transform-origin: 0 0;
+      transform: rotate(90deg);
+    }
+    .rabbit-steps-item:not(:last-child) {
+      margin-bottom: 0.6rem;
+    }
+  }
+}
+
+.rabbit-steps-item {
+  display: flex;
+  .steps-dot {
+    padding: 2px;
+    height: fit-content;
+    position: relative;
+    .progress-circle {
+      position: absolute;
+      width: 100%;
+      top: 0;
+      left: 0;
+    }
+    .default-dot {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      width: 1.6rem;
+      height: 1.6rem;
+      border-radius: 50%;
+      background-color: var(--rabbit-hover-color);
+    }
+  }
+
+  .steps-tip {
+    margin-left: 0.4rem;
+    .tip-header {
+      display: flex;
+      align-items: center;
+      .tip-title {
+        margin-right: 0.2rem;
+        font-weight: 600;
+      }
+      .tip-subtitle {
+        opacity: 0.8;
+      }
+    }
+    .tip-description {
+      opacity: 0.6;
+    }
+  }
+
+  &.type-inline .steps-dot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0;
+    .tip-title {
+      font-size: 0.75rem;
+    }
+    .default-dot {
+      width: 0.4rem;
+      height: 0.4rem;
+    }
+  }
+
+  &.status-finish {
+    color: var(--rabbit-primary-color);
+    .default-dot {
+      background-color: var(--rabbit-primary-2);
+    }
+  }
+  &.status-process {
+    color: var(--rabbit-primary-color);
+    .default-dot {
+      color: #fff;
+      background-color: var(--rabbit-primary-color);
+    }
+  }
+  &.status-error {
+    color: var(--rabbit-error-color);
+    .default-dot {
+      color: #fff;
+      background-color: var(--rabbit-error-color);
+    }
+  }
+}

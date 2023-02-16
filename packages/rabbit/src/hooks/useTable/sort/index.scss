@@ -1,0 +1,6 @@
+.sort-trigger {
+  cursor: pointer;
+  &.effect-sort {
+    color: var(--rabbit-primary-color);
+  }
+}

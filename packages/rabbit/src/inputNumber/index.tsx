@@ -5,6 +5,7 @@ import Input, { Props as InputProps } from '../input'
 import Icon from '../icon'
 
 import './index.scss'
+import { InputRef } from 'rc-input'
 
 type Props = Omit<InputProps, 'onChange' | 'defaultValue' | 'value'> & {
   defaultValue?: number,
@@ -19,7 +20,7 @@ type Props = Omit<InputProps, 'onChange' | 'defaultValue' | 'value'> & {
 const numberReg = /^(-|\d)\d*$/
 const floatReg = /^(-|\d)\d*\.?\d*$/
 
-export default function InputNumber({
+function InputNumber({
   defaultValue,
   value,
   step = 1,
@@ -31,7 +32,7 @@ export default function InputNumber({
   onChange,
   onBlur,
   ...extra
-}: Props) {
+}: Props, ref: React.ForwardedRef<InputRef>) {
   const [_value, setValue] = useState<number>()
   const preValue = useRef<number>()
 
@@ -89,6 +90,7 @@ export default function InputNumber({
 
   return (
     <Input
+      ref={ref}
       {...extra}
       className={classNames('rabbit-number-wrapper', className)}
       value={_value}
@@ -118,3 +120,5 @@ export default function InputNumber({
     />
   )
 }
+
+export default React.forwardRef<InputRef, Props>(InputNumber)

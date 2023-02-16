@@ -1,0 +1,24 @@
+.rabbit-tree-select-wrapper {
+  .clear {
+    display: none;
+    cursor: pointer;
+  }
+  &.can-clear {
+    &:hover {
+      .clear {
+        display: inline-block;
+      }
+      .suffix {
+        display: none;
+      }
+    }
+  }
+
+  &.is-multiple {
+    border: 1px solid var(--rabbit-border-color-base);
+    border-radius: var(--rabbit-border-radius-base);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+  }
+}

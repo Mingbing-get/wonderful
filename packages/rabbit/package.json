@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "@popperjs/core": "^2.11.6",
+    "dayjs": "^1.11.7",
     "rc-input": "^0.1.4",
     "react-table": "^7.8.0"
   },

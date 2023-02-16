@@ -3,7 +3,7 @@ import classNames from 'classnames'
 
 import Input from '../../input'
 import Icon from '../../icon'
-import Popover from '../../popover'
+import Popover, { PopoverRef } from '../../popover'
 import Tag from '../../tag'
 import Panel from './panel'
 import SearchPanel from './searchPanel'
@@ -11,6 +11,7 @@ import SearchPanel from './searchPanel'
 import useTree from '../../hooks/useTree'
 import { LinkTreeNode, TreeValue } from '../../hooks/useTree/index.d'
 import { checkedPathToLinkPath, linkPathToDataPath } from '../../hooks/useTree/utils'
+import useMultipleDisplay from '../../hooks/useMultipleDisplay'
 import { isSame } from '../../utils'
 
 import { CascaderOption, CascaderBaseProps, DropdownRender, NotFoundContent } from '../index'
@@ -32,7 +33,7 @@ const defaultDisplayRender = (checkedPath: CascaderOption[][], onClose: (data: C
     if (!curLastNode) return <></>
 
     return (
-      <Tag className='cascader-tag' closable key={curLastNode?.value} onCloseCapture={(e) => { onClose(curLastNode); e.stopPropagation() }}>
+      <Tag className='multiple-display-tag' closable key={curLastNode?.value} onCloseCapture={(e) => { onClose(curLastNode); e.stopPropagation() }}>
         {curLastNode?.label || curLastNode?.value}
       </Tag>
     )
@@ -74,9 +75,8 @@ export default function MultipleCascader({
 }: Props) {
   const [showSearchInput, setShowSearchInput] = useState(false)
   const [visiblePopover, setVisiblePopover] = useState(false)
-  const [searchText, setSearchText] = useState('')
-  const inputWrapperRef = useRef<HTMLDivElement>(null)
   const valueRef = useRef<TreeValue[][]>([])
+  const popoverRef = useRef<PopoverRef>()
 
   const {
     setChecked,
@@ -97,6 +97,29 @@ export default function MultipleCascader({
   const checkedLinkNodePath = useMemo(() => {
     return checkedPathToLinkPath(true, checkedPath, linkForest)
   }, [checkedPath, linkForest])
+
+  const _displayRender = useCallback((checkedLinkNodePath: LinkTreeNode<CascaderOption>[][]) => {
+    const labels: string[][] = []
+    const checkedPath: CascaderOption[][] = []
+    checkedLinkNodePath.forEach(linkPath => {
+      labels.push(linkPath.map(linkNode => linkNode.data.label || `${linkNode.value}`))
+      checkedPath.push(linkPath.map(linkNode => linkNode.data))
+    })
+
+    return displayRender ? displayRender(labels, checkedPath) : defaultDisplayRender(checkedPath, onClose)
+
+    function onClose(data: CascaderOption) {
+      setChecked(data, false)
+    }
+  }, [displayRender, setChecked])
+
+  const { component, inputRef, searchText, setSearchText } = useMultipleDisplay({
+    hasValue: checkedLinkNodePath.length > 0,
+    showSearchInput,
+    children: checkedLinkNodePath.length > 0 ?
+      _displayRender(checkedLinkNodePath) :
+      placeholder
+  })
 
   useEffect(() => {
     valueRef.current = checkedPath
@@ -121,20 +144,14 @@ export default function MultipleCascader({
     changeCheckedPath?.(value)
   }, [value])
 
-  const _displayRender = useCallback((checkedLinkNodePath: LinkTreeNode<CascaderOption>[][]) => {
-    const labels: string[][] = []
-    const checkedPath: CascaderOption[][] = []
-    checkedLinkNodePath.forEach(linkPath => {
-      labels.push(linkPath.map(linkNode => linkNode.data.label || `${linkNode.value}`))
-      checkedPath.push(linkPath.map(linkNode => linkNode.data))
+  useEffect(() => {
+    setTimeout(() => {
+      requestAnimationFrame(() => {
+        popoverRef.current?.resetVirtualElement()
+        popoverRef.current?.update()
+      })
     })
-
-    return displayRender ? displayRender(labels, checkedPath) : defaultDisplayRender(checkedPath, onClose)
-
-    function onClose(data: CascaderOption) {
-      setChecked(data, false)
-    }
-  }, [displayRender, setChecked])
+  }, [checkedLinkNodePath])
 
   const handleChangeVisible = useCallback((visible: boolean) => {
     setVisiblePopover(visible)
@@ -143,7 +160,7 @@ export default function MultipleCascader({
     if (!showSearch) return
     setShowSearchInput(visible)
     if (visible) {
-      inputWrapperRef.current?.getElementsByTagName('input')?.[0]?.focus()
+      inputRef.current?.focus()
     } else {
       setSearchText('')
     }
@@ -162,9 +179,7 @@ export default function MultipleCascader({
               placeholder
           }</div>
           <Input
-            ref={inputWrapperRef}
             value={searchText}
-            onChange={e => setSearchText(e.target.value)}
             onClick={(e) => e.stopPropagation()}
           />
         </div>
@@ -181,6 +196,7 @@ export default function MultipleCascader({
       style={style}
     >
       <Popover
+        ref={popoverRef}
         arrow='none'
         className={popupClassName}
         style={popupStyle}
@@ -208,19 +224,7 @@ export default function MultipleCascader({
               />, 'option'))
         }
       >
-        <div className={classNames('cascader-trigger', showSearchInput && 'show-input')}>
-          <div className={classNames('cascader-value is-multiple', checkedLinkNodePath.length === 0 && 'show-placeholder')}>{
-            checkedLinkNodePath.length > 0 ?
-              _displayRender(checkedLinkNodePath) :
-              placeholder
-          }</div>
-          <Input
-            ref={inputWrapperRef}
-            value={searchText}
-            onChange={e => setSearchText(e.target.value)}
-            onClickCapture={(e) => e.stopPropagation()}
-          />
-        </div>
+        {component}
       </Popover>
       <span className='cascader-icon'>
         <span className='cascader-arrow'>

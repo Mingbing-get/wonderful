@@ -68,6 +68,10 @@ export function isFunction<T>(obj: any): obj is T {
   return Object.prototype.toString.call(obj) === '[object Function]'
 }
 
+export function isArray<T>(obj: any): obj is T {
+  return Object.prototype.toString.call(obj) === '[object Array]'
+}
+
 export function isSame(data1: any, data2: any): boolean {
   if (['string', 'symbol', 'boolean', 'undefined'].includes(typeof data1)
     || ['string', 'symbol', 'boolean', 'undefined'].includes(typeof data2)) {

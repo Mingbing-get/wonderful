@@ -9,7 +9,7 @@ import './index.scss'
 export type PaginationItemType = 'page' | 'prev' | 'next' | 'ellipsis'
 type PaginationItemRender = (page: number, type: PaginationItemType, originalElement: React.ReactNode) => React.ReactNode
 
-type Props = {
+export type Props = {
   className?: string,
   style?: React.CSSProperties,
   total: number,

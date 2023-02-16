@@ -81,7 +81,7 @@ export default function Panel({
                         checked={linkNode.checked}
                         halfChecked={linkNode.halfChecked}
                         onChange={(checked) => handleClickLevelItem(linkNode, checked)}
-                      >''</Checkbox>
+                      />
                     </div>
                     <span>{linkNode.data.label || linkNode.data.value as string}</span>
                   </div>
