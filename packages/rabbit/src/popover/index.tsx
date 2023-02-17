@@ -189,7 +189,7 @@ function Popover({
         !isHidden && ReactDOM.createPortal(
           <div
             className={classNames('rabbit-popper-wrapper', arrow === 'none' && 'not-arrow', className)}
-            style={{ ...style, width: widthFollowTarget ? `${getTargetElement().getBoundingClientRect().width}px` : '' }}
+            style={{ ...style, minWidth: widthFollowTarget ? `${getTargetElement().getBoundingClientRect().width}px` : '' }}
             ref={displayRef}
             onClick={e => e.stopPropagation()}
           >
