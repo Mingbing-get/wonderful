@@ -14,6 +14,8 @@ export type Props = {
   disabled?: boolean,
   ghost?: boolean,
   children: React.ReactNode,
+  style?: React.CSSProperties,
+  className?: string,
   onClick?: (e: React.MouseEvent<HTMLDivElement>) => void
 }
 
@@ -24,6 +26,8 @@ function Button({
   disabled,
   ghost,
   children,
+  style,
+  className,
   onClick
 }: Props, ref?: React.ForwardedRef<HTMLDivElement>) {
   function handleClick(e: React.MouseEvent<HTMLDivElement>) {
@@ -39,8 +43,10 @@ function Button({
         block && 'is-block',
         disabled && 'is-disabled',
         loading && 'is-loading',
-        ghost && 'is-ghost'
+        ghost && 'is-ghost',
+        className
       )}
+      style={style}
       onClick={handleClick}
       ref={ref}
     >
