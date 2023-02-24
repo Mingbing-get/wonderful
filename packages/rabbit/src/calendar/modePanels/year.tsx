@@ -1,9 +1,8 @@
 import React, { useMemo } from 'react'
 import classNames from 'classnames'
-import { Dayjs } from 'dayjs'
 
 import { PanelProps } from '../index'
-import { isSameDate } from '../utils'
+import { isSameDate, Dayjs } from '../utils'
 
 type YearTypeType = 'before' | 'current' | 'after'
 

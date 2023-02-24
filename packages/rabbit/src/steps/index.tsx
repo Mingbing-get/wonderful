@@ -32,7 +32,7 @@ type Props = {
   percent?: number,
   status?: StepsStatus,
   type?: StepsType,
-  onChange?: (current: number) => void,
+  onClick?: (current: number) => void,
 }
 
 export default function Steps({
@@ -44,7 +44,7 @@ export default function Steps({
   percent,
   status = 'process',
   type = 'default',
-  onChange,
+  onClick,
 }: Props) {
   const stepsWrapperRef = useRef<HTMLDivElement>(null)
   const [lines, setLines] = useState<LineType[]>([])
@@ -117,7 +117,7 @@ export default function Steps({
             key={index}
             index={index}
             type={type}
-            onClick={onChange && (() => onChange?.(index))}
+            onClick={onClick && (() => onClick?.(index))}
           />
         ))
       }

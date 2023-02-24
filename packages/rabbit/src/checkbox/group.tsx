@@ -9,7 +9,7 @@ import './group.scss'
 export type ValueType = string | number
 
 export type OptionType = {
-  label?: string,
+  label?: React.ReactNode,
   value: ValueType,
   disabled?: boolean,
 }

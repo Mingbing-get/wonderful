@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import dayjs, { Dayjs } from 'dayjs'
 import classNames from 'classnames'
 
 import Input from '../input'
@@ -8,7 +7,7 @@ import Button from '../button'
 import Icon from '../icon'
 import TimePanel, { Props as TimePickerProps } from '../timePicker/panel'
 import Calendar, { Props as CalendarProps } from '../calendar'
-import { formatDateAndTime } from '../calendar/utils'
+import { formatDateAndTime, dayjs, Dayjs } from '../calendar/utils'
 import DateHeaderRender from './dateHeaderRender'
 
 import './index.scss'

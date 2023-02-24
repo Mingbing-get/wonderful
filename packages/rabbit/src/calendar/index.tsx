@@ -1,10 +1,5 @@
 import React, { useState, useMemo, useCallback, useEffect } from 'react'
 import classNames from 'classnames'
-import weekOfYear from 'dayjs/plugin/weekOfYear'
-import quarterOfYear from 'dayjs/plugin/quarterOfYear'
-import advancedFormat from 'dayjs/plugin/advancedFormat'
-import customParseFormat from 'dayjs/plugin/customParseFormat'
-import dayjs, { Dayjs } from 'dayjs'
 
 import DatePanel from './modePanels/date'
 import MonthPanel from './modePanels/month'
@@ -14,14 +9,9 @@ import TenYearPanel from './modePanels/tenYear'
 import QuarterPanel from './modePanels/quarter'
 import HeaderRender from './headerRender'
 
-import { isSameDate, getNextMode, formatDateByMode } from './utils'
+import { isSameDate, getNextMode, formatDateByMode, dayjs, Dayjs } from './utils'
 
 import './index.scss'
-
-dayjs.extend(weekOfYear)
-dayjs.extend(quarterOfYear)
-dayjs.extend(advancedFormat)
-dayjs.extend(customParseFormat)
 
 export type CalendarMode = 'tenYear' | 'year' | 'quarter' | 'month' | 'week' | 'date'
 

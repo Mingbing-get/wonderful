@@ -148,7 +148,7 @@ function Popover({
   }, [displayRef.current])
 
   const getTargetElement = useCallback(() => {
-    return (targetRef.current as InputRef).input || targetRef.current as HTMLElement
+    return (targetRef.current as InputRef)?.input || targetRef.current as HTMLElement
   }, [targetRef.current])
 
   const getTargetLocationAndSize = useCallback(() => {

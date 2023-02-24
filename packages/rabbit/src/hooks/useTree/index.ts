@@ -59,6 +59,8 @@ export default function useTree<T extends BaseTreeNode>({
   }, [checkedPathRef.current])
 
   const changeCheckedPath = useCallback((checkedPath: TreeValue[] | TreeValue[][]) => {
+    if (!linkForestRef.current.length) return
+
     clearChecked(linkForestRef.current)
     changeCheckedAll(multiple, mode, checkedPath, linkForestRef.current)
     setLinkForest([...linkForestRef.current])
@@ -66,6 +68,8 @@ export default function useTree<T extends BaseTreeNode>({
   }, [])
 
   const changeExpandPath = useCallback((expandPath: TreeValue[][]) => {
+    if (!linkForestRef.current.length) return
+    
     clearExpand(linkForestRef.current)
     changeExpand(expandPath, linkForestRef.current, loadData)
     setLinkForest([...linkForestRef.current])

@@ -8,6 +8,8 @@ import FilterTrigger from './filters/trigger'
 import Sort from './sort'
 import './filters/index.scss'
 
+export * from './index.d'
+
 type Props<T extends DataType = DataType> = {
   columns: Column<T>[],
   data: T[],

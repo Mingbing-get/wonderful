@@ -1,6 +1,20 @@
 import { CalendarMode } from '.'
 import { TimeFormatType } from '../timePicker'
-import { Dayjs } from 'dayjs'
+import weekOfYear from 'dayjs/plugin/weekOfYear'
+import quarterOfYear from 'dayjs/plugin/quarterOfYear'
+import advancedFormat from 'dayjs/plugin/advancedFormat'
+import customParseFormat from 'dayjs/plugin/customParseFormat'
+import dayjs, { Dayjs } from 'dayjs'
+
+dayjs.extend(weekOfYear)
+dayjs.extend(quarterOfYear)
+dayjs.extend(advancedFormat)
+dayjs.extend(customParseFormat)
+
+export {
+  dayjs,
+  Dayjs
+}
 
 export function getNextMode(mode: CalendarMode, baseMode: CalendarMode) {
   if (baseMode === 'date') {

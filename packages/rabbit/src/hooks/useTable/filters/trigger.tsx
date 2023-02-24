@@ -12,7 +12,7 @@ import RadioFilter from './radio'
 type Props<T extends DataType> = {
   filter?: ColumnFilter<T>,
   accessor: string,
-} & Omit<FilterRenderProps<T>, 'closePopover'>
+} & Omit<FilterRenderProps<T>, 'closePopover' | 'setEffect'>
 
 const filterMap: Record<FilterType, any> = {
   text: TextFilter,

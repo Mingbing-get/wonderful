@@ -2,6 +2,7 @@ import React, { useMemo, useState, useRef, useEffect, useCallback, useImperative
 import classNames from 'classnames'
 
 import Icon from '../icon'
+import useResize from '../hooks/useResize'
 
 import './index.scss'
 
@@ -18,6 +19,8 @@ export type CarouselRef = {
 type Props = {
   className?: string,
   style?: React.CSSProperties,
+  autoPlay?: boolean,
+  singlePlay?: boolean,
   speed?: number,
   duration?: number,
   dotPosition?: CarouselDotPosition,
@@ -37,6 +40,8 @@ type Props = {
 function Carousel({
   className,
   style,
+  autoPlay = true,
+  singlePlay = true,
   speed = 500,
   duration = 5000,
   dotPosition = 'bottom',
@@ -58,21 +63,18 @@ function Carousel({
   const [_speed, setSpeed] = useState(0)
   const [offset, setOffset] = useState(0)
 
-  const wrapperRef = useRef<HTMLDivElement>(null)
   const currentRef = useRef(0)
   const totalRef = useRef(0)
   const touchStart = useRef(-1)
   const timer = useRef<number>()
 
-  useEffect(() => {
-    if (!wrapperRef.current) return
-
-    setCarouselShowWidth(wrapperRef.current.offsetWidth)
-  }, [wrapperRef.current])
+  const { iframeRef, width } = useResize()
 
   useEffect(() => {
-    start()
-  }, [])
+    if (!width) return
+
+    setCarouselShowWidth(width)
+  }, [width])
 
   const carouselItems = useMemo(() => {
     if (!children) return
@@ -147,6 +149,22 @@ function Carousel({
     }, duration);
   }, [next, duration])
 
+  useEffect(() => {
+    if (autoPlay) {
+      start()
+    }
+    pause()
+  }, [autoPlay])
+
+  const singlePlayShow = useMemo(() => {
+    if (singlePlay || carouselItems.length > 3) {
+      start()
+      return true
+    }
+    pause()
+    return false
+  }, [singlePlay, carouselItems])
+
   useImperativeHandle(ref, () => ({
     goTo,
     next,
@@ -210,7 +228,6 @@ function Carousel({
 
   return (
     <div
-      ref={wrapperRef}
       className={classNames('rabbit-carousel-wrapper', `effect-${effect}`, className)}
       onMouseEnter={() => pause()}
       onMouseLeave={() => start()}
@@ -219,6 +236,7 @@ function Carousel({
       onTouchEnd={handleTouchEnd}
       style={style}
     >
+      <iframe ref={iframeRef} />
       <div
         className='carousel-scroll'
         style={{
@@ -230,7 +248,7 @@ function Carousel({
         {carouselItems}
       </div>
       {
-        dots && (
+        singlePlayShow && dots && (
           <div className={classNames('carousel-dots', dots, `carousel-position-${dotPosition}`)}>
             {
               new Array(totalRef.current).fill(1).map((_, index) => (
@@ -249,7 +267,7 @@ function Carousel({
         )
       }
       {
-        !hiddenSwitchBtn && (
+        singlePlayShow && !hiddenSwitchBtn && (
           <>
             <div className='carousel-switch-prev' onClick={() => handlePrev()}>
               {customBtn ? customBtn('prev') : <Icon type='arrowLeft' className='carousel-icon-btn' />}

@@ -1,9 +1,8 @@
 import React, { useCallback, useMemo } from 'react'
 import classNames from 'classnames'
-import { Dayjs } from 'dayjs'
 
 import { PanelProps } from '../index'
-import { isSameDate } from '../utils'
+import { isSameDate, Dayjs } from '../utils'
 
 const weeks = ['日', '一', '二', '三', '四', '五', '六']
 

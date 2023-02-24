@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Tree, MultipleTree, Icon, TreeNode } from '@marrow/rabbit'
 
 const baseData: TreeNode[] = [
@@ -58,11 +58,19 @@ const virtualData = createTreeNode(50, 2, '0')
 
 export default function ExampleTree() {
   const [data, setData] = useState(baseData)
+  const [expandPath, setExpandPath] = useState<string[][]>([['0-0']])
+
+  useEffect(() => {
+    setTimeout(() => {
+      setExpandPath([['0-0', '0-0-0']])
+    }, 5000)
+  }, [])
 
   return (
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 19%)', justifyContent: 'space-between' }}>
       <Tree
         data={data}
+        expandPath={expandPath}
         onChecked={(checkedPath, node, isChecked) => { console.log(checkedPath, node, isChecked)}}
         onExpand={(expandPath, node, isExpand) => { console.log(expandPath, node, isExpand)}}
       />
