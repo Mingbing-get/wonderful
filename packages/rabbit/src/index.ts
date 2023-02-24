@@ -22,7 +22,7 @@ export { default as Tag } from './tag'
 export { default as Badge } from './badge'
 export { default as Rate, RateCharacterFn } from './rate'
 export { default as Carousel, CarouselDotPosition, CarouselRef, CarouselEffect } from './carousel'
-export { SingleCascader as Cascader, MultipleCascader, CascaderOption, TreeMode, TreeValue } from './cascader'
+export { SingleCascader as Cascader, MultipleCascader, CascaderOption } from './cascader'
 export { SingleTree as Tree, MultipleTree, TreeNode } from './tree'
 export { SingleTreeSelect as TreeSelect, MultipleTreeSelect } from './treeSelect'
 export { default as Progress, ProgressType, ProgressStatus, ProgressStartPosition } from './progress'
@@ -35,7 +35,7 @@ export { default as TimePicker } from './timePicker'
 export { default as DatePicker } from './datePicker'
 export { default as Transfer, TransferOptionType } from './transfer'
 export { default as Steps, StepsItemType } from './steps'
-export { default as Table, TableColumn, TableRowSelection, VirtualScrollY  } from './table'
+export { default as Table, TableColumn, TableRowSelection  } from './table'
 export {
   TableRow,
   TableHeadRow,
@@ -50,6 +50,24 @@ export {
   SortRenderProps as TableSortRenderProps,
   SortDir as TableSortDir,
 } from './hooks/useTable/index.d'
+export { default as useTable } from './hooks/useTable'
+
+export { default as useVirtualScrollY, VirtualScrollY } from './hooks/useVirtualScrollY' 
+export { default as useSyncScrollX } from './hooks/useSyncScrollX'
+export { default as useDebounceAndThrottle } from './hooks/useDebounceAndThrottle'
+export { default as useResize } from './hooks/useResize'
+export { default as useTree } from './hooks/useTree'
+export {
+  TreeValue,
+  TreeMode,
+  InnerLocation as TreeInnerLocation,
+  BaseTreeNode,
+  LinkTreeNode,
+  MultipleProps as TreeMultipleProps,
+  SingleProps as TreeSingleProps,
+  MultipleReturn as TreeMultipleReturn,
+  SingleReturn as TreeSingleReturn
+} from './hooks/useTree/index.d'
 
 import { resizeListenerRegister } from './resizeListener'
 import { rem2px, Rem2pxProps } from './utils'

@@ -25,7 +25,7 @@ type Props = {
   inputReadOnly?: boolean,
   placeholder?: string,
   suffixIcon?: React.ReactNode,
-  time?: Omit<TimePickerProps, 'value' | 'onChange' | 'triggerScroll'>,
+  time?: Omit<TimePickerProps, 'value' | 'onChange'>,
   showNow?: boolean,
   customFormat?: {
     format: (dayjs: Dayjs) => string,

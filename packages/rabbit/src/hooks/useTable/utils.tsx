@@ -150,11 +150,17 @@ function unitCellsToRows<T extends DataType>(cells: UnitCell<T>[], maxDep: numbe
     _cells = newCell
   }
   // 检查footer是否需要删除 <span>&nbsp;</span>
+  let flag = false
   for (let i = footRows.length - 1; i >= 0; i--) {
     if (footRows[i].cells.some(cell => !!cell.content)) {
+      flag = true
       footRows = footRows.slice(0, i + 1)
       break
     }
+  }
+
+  if (!flag) {
+    footRows = []
   }
 
   footRows.forEach(footRow => {

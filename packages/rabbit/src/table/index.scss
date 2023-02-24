@@ -15,8 +15,6 @@
   .rabbit-table-content {
     position: relative;
     border: 1px solid var(--rabbit-border-color-base);
-    border-bottom: none;
-    border-right: none;
     border-radius: var(--rabbit-border-radius-base);
     overflow: hidden;
   }
@@ -85,6 +83,7 @@
     }
   }
   .table-footer {
+    margin-bottom: -1px;
     th {
       background-color: var(--rabbit-hover-color);
     }
