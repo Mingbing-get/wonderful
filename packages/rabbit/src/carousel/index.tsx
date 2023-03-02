@@ -29,7 +29,7 @@ type Props = {
   effect?: CarouselEffect,
   slidesToRows?: number,
   slidesToColumns?: number,
-  children?: React.ReactNode[],
+  children?: React.ReactNode | React.ReactNode[],
   itemSpace?: number | string,
   customBtn?: (type: 'prev' | 'next') => React.ReactNode,
   customPaging?: (page: number) => React.ReactNode,

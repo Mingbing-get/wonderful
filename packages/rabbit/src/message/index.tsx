@@ -12,7 +12,7 @@ type Props = {
   type?: MessageType,
   delay?: number,
   displayTime?: number,
-  content: string,
+  content: React.ReactNode,
   icon?: IconType,
 }
 
