@@ -99,7 +99,6 @@ export default function Modal({
   return ReactDOM.createPortal(
     <div
       className={classNames('rabbit-modal-wrapper', `placement-${placement}`)}
-      style={{ transform: `translate(${-containerRect.left}px, ${-containerRect.top}px)` }}
     >
       <div
         className={classNames('modal-container', className)}
