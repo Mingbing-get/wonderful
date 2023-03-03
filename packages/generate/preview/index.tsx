@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import ReactDOM from 'react-dom/client'
-import Render, { marrowController } from '@marrow/render'
+import Render, { MarrowController } from '@marrow/render'
 import Generate from '@marrow/generate'
 
 import './index.scss'
@@ -72,32 +72,44 @@ const data: Marrow[] = [
   }
 ]
 
-const audioController = marrowController.getAudioController()
-audioController.addAudioBySrc('./assets/test.mp3')
+function Main() {
+  const marrowControllerRef = useRef<MarrowController>(null)
 
-function startRecord() {
-  const generate = new Generate()
-  const stage = document.getElementsByClassName('stage')[0]
-  if (!stage) return
+  useEffect(() => {
+    if (!marrowControllerRef.current) return
 
-  generate.setRecordBox(stage as HTMLDivElement)
+    const audioController = marrowControllerRef.current.getAudioController()
+    audioController.addAudioBySrc('./assets/test.mp3')
+  }, [marrowControllerRef.current])
 
-  generate.start()
-  marrowController.play()
+  function startRecord() {
+    const generate = new Generate()
+    const stage = document.getElementsByClassName('stage')[0]
+    if (!stage || !marrowControllerRef.current) return
 
-  marrowController.addListener('end', () => {
-    generate.stop()
-    setTimeout(() => {
-      generate.generateByServe()
-    }, 500);
-  })
+    generate.setRecordBox(stage as HTMLDivElement)
+
+    generate.start()
+    marrowControllerRef.current.play()
+
+    marrowControllerRef.current.addListener('end', () => {
+      generate.stop()
+      setTimeout(() => {
+        generate.generateByServe()
+      }, 500);
+    })
+  }
+
+  return (
+    <div className='screen'>
+      <div className='stage'>
+        <Render marrows={data} ref={marrowControllerRef} />
+      </div>
+      <button onClick={startRecord}>录制</button>
+    </div>
+  )
 }
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <div className='screen'>
-    <div className='stage'>
-      <Render marrows={data} />
-    </div>
-    <button onClick={startRecord}>录制</button>
-  </div>
+  <Main />
 )

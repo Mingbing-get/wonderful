@@ -21,6 +21,7 @@ export default function ContainerPicker() {
     operationType,
     willAddElementType,
     willMoveId,
+    marrowController,
     setOperationType,
     setData,
     setSelectedId,
@@ -52,7 +53,7 @@ export default function ContainerPicker() {
   function handleOk() {
     if (operationType === 'add') {
       if (willAddElementType) {
-        const newElement = createElement(willAddElementType)
+        const newElement = createElement(willAddElementType, marrowController?.getCurrentTime() || 0)
         if (selectedValue === 'outer') {
           setData?.([...data, newElement])
         } else {

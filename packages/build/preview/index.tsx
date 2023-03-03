@@ -1,28 +1,18 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import Build from '../src/index'
+
+import { responseRegister } from '@marrow/rabbit'
+
+import Main from './main'
 
 import './index.scss'
 
-import { Marrow } from '@marrow/global'
-import { responseRegister } from '@marrow/rabbit'
-
-function handleChange(data: Marrow[]) {
-  console.log(data)
-}
-
-function handleSave(data: Marrow[]) {
-  localStorage.setItem('marrow-data', JSON.stringify(data))
-}
-
 responseRegister()
-
-const data = JSON.parse(localStorage.getItem('marrow-data') || '[]') as Marrow[]
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <div className='screen-mb'>
     <div className='stage'>
-      <Build marrows={data} onChange={handleChange} onSave={handleSave} />
+      <Main />
     </div>
   </div>
 )

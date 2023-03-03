@@ -1,9 +1,11 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo, useState, useImperativeHandle } from 'react'
 
 import { Marrow } from '@marrow/global'
+import { AudioInfo } from '@marrow/audio'
 
 import Main from './components/main'
 import MarrowController from './marrowController'
+import { RenderMarrowProvider } from './context'
 
 import './index.scss'
 
@@ -13,23 +15,40 @@ export {
 
 type Props = {
   marrows: Marrow[],
+  audioInfo?: AudioInfo,
   autoplay?: boolean
 }
 
-export const marrowController = new MarrowController()
-
-export default function Render({
+function Render({
   marrows,
+  audioInfo,
   autoplay = false
-}: Props) {
+}: Props, ref: React.ForwardedRef<MarrowController | null>) {
+  const [marrowController, _] = useState(new MarrowController())
+
   marrowController.setAutoplay(autoplay)
   useEffect(() => {
     autoplay && marrowController.play()
   }, [])
 
+  useEffect(() => {
+    marrowController.getAudioController().clearBuffer()
+    audioInfo && marrowController.getAudioController().addAudioBufferByFloat32Array(audioInfo)
+  }, [audioInfo])
+
+  const value = useMemo(() => ({
+    marrowController
+  }), [])
+
+  useImperativeHandle(ref, () => marrowController, [])
+
   return (
-    <div className= 'marrow-render-wrapper'>
-      <Main marrows={marrows} />
-    </div>
+    <RenderMarrowProvider value={value}>
+      <div className='marrow-render-wrapper'>
+        <Main marrows={marrows} />
+      </div>
+    </RenderMarrowProvider>
   )
 }
+
+export default React.forwardRef<MarrowController | null, Props>(Render)

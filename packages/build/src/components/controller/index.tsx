@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 
-import { marrowController } from '@marrow/render'
 import { AudioEdit } from '@marrow/audio'
 import { Slider } from '@marrow/rabbit'
 import { Icon } from '@marrow/rabbit'
@@ -16,22 +15,23 @@ export default function Controller() {
 
   const {
     selectedId,
+    marrowController,
     setSelectedId
   } = useBuildMarrow()
 
   useEffect(() => {
     if (!selectedId) return
 
-    marrowController.pause()
+    marrowController?.pause()
     setShowController(false)
     setShowAudioEdit(false)
-  }, [selectedId])
+  }, [selectedId, marrowController])
 
   useEffect(() => {
-    marrowController.addListener('changeCurrentTime', () => {
+    marrowController?.addListener('changeCurrentTime', () => {
       setRefreshCount(val => val + 1)
     })
-  }, [])
+  }, [marrowController])
 
   function handleChange(value: number) {
     marrowController?.seek(value)
@@ -52,19 +52,19 @@ export default function Controller() {
     setRefreshCount(refreshCount + 1)
     switch(type) {
       case 'pause':
-        marrowController.pause()
+        marrowController?.pause()
         break
       case 'play':
-        marrowController.play()
+        marrowController?.play()
         break
       case 'restart':
-        marrowController.restart()
+        marrowController?.restart()
         break
       case 'back':
-        marrowController.seek(marrowController.getCurrentTime() - 30)
+        marrowController?.seek(marrowController.getCurrentTime() - 30)
         break
       case 'fast':
-        marrowController.seek(marrowController.getCurrentTime() + 30)
+        marrowController?.seek(marrowController.getCurrentTime() + 30)
         break
     }
   }

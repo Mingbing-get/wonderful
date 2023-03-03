@@ -3,7 +3,6 @@ import { Icon } from '@marrow/rabbit'
 
 import { ElementType, Marrow } from '@marrow/global'
 import { generateId } from '@marrow/utils'
-import { marrowController } from '@marrow/render'
 
 const elements = [
   {
@@ -23,7 +22,7 @@ const elements = [
   }
 ]
 
-function getBaseProps(elementType: ElementType) {
+function getBaseProps(elementType: ElementType, appearTime: number) {
   return {
     id: `${elementType}-${generateId()}`,
     startStyle: {
@@ -32,31 +31,31 @@ function getBaseProps(elementType: ElementType) {
     },
     animation: [],
     timeLineParams: {},
-    appearTime: marrowController.getCurrentTime()
+    appearTime
   }
 }
 
-export function createElement(elementType: ElementType): Marrow {
+export function createElement(elementType: ElementType, appearTime: number): Marrow {
   switch (elementType) {
     case 'container':
       return {
         elementName: '容器',
         type: elementType,
-        ...getBaseProps(elementType)
+        ...getBaseProps(elementType, appearTime)
       }
     case 'img':
       return {
         elementName: '图片',
         src: '',
         type: elementType,
-        ...getBaseProps(elementType)
+        ...getBaseProps(elementType, appearTime)
       }
     case 'text':
       return {
         elementName: '文本',
         text: '',
         type: elementType,
-        ...getBaseProps(elementType)
+        ...getBaseProps(elementType, appearTime)
       }
   }
 }

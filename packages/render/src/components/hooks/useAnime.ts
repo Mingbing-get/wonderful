@@ -3,7 +3,7 @@ import anime from 'animejs'
 import { MARROW_ID_NAME, createStyle } from '@marrow/utils'
 
 import { Animation, TimeLineParams, StartStyle } from '@marrow/global'
-import { marrowController } from '../../index'
+import { useRenderMarrow } from '../../context'
 
 export type Props = {
   id: string,
@@ -24,6 +24,8 @@ export default function useAnime({
   appearTime,
   completeIsDestroy
 }: Props) {
+  const { marrowController } = useRenderMarrow()
+
   useEffect(() => {
     if (!animeRoot.current) return
 

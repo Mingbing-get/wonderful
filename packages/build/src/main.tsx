@@ -1,8 +1,9 @@
-import React, { useMemo, useState, useCallback, useEffect } from 'react'
+import React, { useMemo, useState, useCallback, useEffect, useRef, useImperativeHandle } from 'react'
 
-import Render from '@marrow/render'
+import Render, { MarrowController } from '@marrow/render'
 import { getMarrowIdsByLocation } from '@marrow/utils'
 import { Marrow, ElementType } from '@marrow/global'
+import { AudioInfo } from '@marrow/audio'
 
 import TopNav from './components/topNav'
 import Controller from './components/controller'
@@ -17,15 +18,17 @@ import './index.scss'
 
 type Props = {
   marrows: Marrow[],
+  audioInfo?: AudioInfo,
   onChange?: (marrows: Marrow[]) => void,
-  onSave?: (marrows: Marrow[]) => void,
+  onSave?: (marrows: Marrow[], audioInfo: AudioInfo | null) => void,
 }
 
-export default function Build({
+function Build({
   marrows,
+  audioInfo,
   onChange,
   onSave
-}: Props) {
+}: Props, ref: React.ForwardedRef<MarrowController | null>) {
   const [currentLocationIds, setCurrentLocationIds] = useState<string[]>([])
   const [selectedId, setSelectedId] = useState<string>()
   const [_marrows, setMarrows] = useState(marrows)
@@ -34,6 +37,9 @@ export default function Build({
   const [willAddElementType, setWillAddElementType] = useState<ElementType>()
   const [willMoveId, setWillMoveId] = useState<string>()
   const [editingId, setEditingId] = useState<string>()
+  const [marrowController, setMarrowController] = useState<MarrowController | null>(null)
+
+  const marrowControllerRef = useRef<MarrowController>(null)
 
   useEffect(() => {
     if (!!operationType || showStore || !!editingId) {
@@ -53,6 +59,12 @@ export default function Build({
     setMarrows([...data])
   }, [onChange])
 
+  useEffect(() => {
+    setMarrowController(marrowControllerRef.current)
+  }, [marrowControllerRef.current])
+
+  useImperativeHandle(ref, () => marrowController as any, [marrowController])
+
   const buildContext: BuildContext = useMemo(() => ({
     data: _marrows,
     selectedId,
@@ -62,6 +74,7 @@ export default function Build({
     willAddElementType,
     willMoveId,
     editingId,
+    marrowController,
     setSelectedId,
     setData,
     setShowStore,
@@ -69,13 +82,13 @@ export default function Build({
     setWillAddElementType,
     setWillMoveId,
     setEditingId
-  }), [_marrows, selectedId, currentLocationIds, showStore, operationType, willAddElementType, willMoveId, editingId])
+  }), [_marrows, selectedId, currentLocationIds, showStore, operationType, willAddElementType, willMoveId, editingId, marrowController])
 
   return (
     <div className='marrow-build-wrapper' onClick={handleClick}>
       <BuildMarrowProvider value={buildContext}>
-        <Render marrows={_marrows} />
-        <TopNav className='marrow-build-top-nav' onSave={() => onSave?.(_marrows)}/>
+        <Render audioInfo={audioInfo} marrows={_marrows} ref={marrowControllerRef} />
+        <TopNav className='marrow-build-top-nav' onSave={() => onSave?.(_marrows, marrowController?.getAudioController()?.getFloat32ArrayFromAudio() || null)}/>
         <Controller />
         <Mask />
         <ElementStore />
@@ -85,3 +98,5 @@ export default function Build({
     </div>
   )
 }
+
+export default React.forwardRef<MarrowController | null, Props>(Build)

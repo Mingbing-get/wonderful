@@ -1,4 +1,4 @@
-import AudioController from './audioController'
+import AudioController, { AudioInfo } from './audioController'
 
 import AudioEdit from './components/edit'
 import AudioAnalyser from './components/analyser'
@@ -6,5 +6,6 @@ import AudioAnalyser from './components/analyser'
 export {
   AudioController,
   AudioEdit,
-  AudioAnalyser
+  AudioAnalyser,
+  AudioInfo
 }

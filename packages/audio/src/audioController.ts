@@ -5,6 +5,11 @@ export type AudioChangeCurrentTimeListener = (currentTime: number) => void
 export type AudioListenerMap = Record<AudioEventType, AudioListener[]> & Record<AudioChangeCurrentTime, AudioChangeCurrentTimeListener[]>
 export type StatusType = 'pause' | 'running' | 'suspended' | 'end' | 'loading'
 
+export type AudioInfo = {
+  buffer: Float32Array[]
+  sampleRate: number
+}
+
 export default class AudioController {
   private audioCtx: AudioContext
   private sourceNode: AudioBufferSourceNode
@@ -136,6 +141,53 @@ export default class AudioController {
       this.sourceNode.buffer = audioBuffer
     }
 
+    this.changeBuffer()
+  }
+
+  getFloat32ArrayFromAudio(): AudioInfo | null {
+    if (!this.sourceNode.buffer) return null
+
+    return {
+      buffer: [this.sourceNode.buffer.getChannelData(0), this.sourceNode.buffer.getChannelData(1)],
+      sampleRate: this.sourceNode.buffer.sampleRate
+    }
+  }
+
+  addAudioBufferByFloat32Array(audioInfo: AudioInfo) {
+    if (!audioInfo) return
+
+    if (this.sourceNode.buffer) {
+      const beforeLen = this.sourceNode.buffer.length
+      const audioBufferCopy = this.audioCtx.createBuffer(2, beforeLen + audioInfo.buffer[0].length, this.sourceNode.buffer.sampleRate)
+      audioBufferCopy.copyToChannel(this.sourceNode.buffer.getChannelData(0), 0, 0)
+      audioBufferCopy.copyToChannel(this.sourceNode.buffer.getChannelData(1), 1, 0)
+      audioBufferCopy.copyToChannel(audioInfo.buffer[0], 0, beforeLen)
+
+      let otherChannel = 1
+      if (audioInfo.buffer.length === 1) {
+        otherChannel = 0
+      }
+
+      audioBufferCopy.copyToChannel(audioInfo.buffer[otherChannel], 1, beforeLen)
+      this.createSourceNode(audioBufferCopy)
+    } else {
+      const audioBufferCopy = this.audioCtx.createBuffer(audioInfo.buffer.length, audioInfo.buffer[0].length, audioInfo.sampleRate)
+      audioBufferCopy.copyToChannel(audioInfo.buffer[0], 0, 0)
+
+      let otherChannel = 1
+      if (audioInfo.buffer.length === 1) {
+        otherChannel = 0
+      }
+
+      audioBufferCopy.copyToChannel(audioInfo.buffer[otherChannel], 1, 0)
+      this.createSourceNode(audioBufferCopy)
+    }
+
+    this.changeBuffer()
+  }
+
+  clearBuffer() {
+    this.createSourceNode()
     this.changeBuffer()
   }
 

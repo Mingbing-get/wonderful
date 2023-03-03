@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 
 import { Marrow, ElementType } from '@marrow/global'
+import { MarrowController } from '@marrow/render'
 
 export type OperationType = '' | 'move' | 'add'
 
@@ -13,6 +14,7 @@ export type BuildContext = {
   willAddElementType?: ElementType; // 将要添加的元素类型
   willMoveId?: string; // 将要移动的元素的id
   editingId?: string; // 正在编辑的元素
+  marrowController: MarrowController | null,
   setSelectedId?: (id: string) => void;
   setData?: (data: Marrow[]) => void;
   setShowStore?: (visible: boolean) => void;
@@ -26,7 +28,8 @@ const buildContext: BuildContext = {
   data: [],
   currentLocationIds: [],
   showStore: false,
-  operationType: ''
+  operationType: '',
+  marrowController: null
 }
 
 const ConfigContext = React.createContext(buildContext)
