@@ -1,8 +1,12 @@
 export type AudioEventType = 'changeBuffer' | 'end' | 'loopEnd'
 export type AudioChangeCurrentTime = 'changeCurrentTime'
+export type AudioChangeStatus = 'changeStatus'
 export type AudioListener = (audioCtx: AudioContext, sourceNode: AudioBufferSourceNode, analyser: AnalyserNode) => void
 export type AudioChangeCurrentTimeListener = (currentTime: number) => void
-export type AudioListenerMap = Record<AudioEventType, AudioListener[]> & Record<AudioChangeCurrentTime, AudioChangeCurrentTimeListener[]>
+export type AudioChangeStatusListener = (preStatus: StatusType, status: StatusType) => void
+export type AudioListenerMap = Record<AudioEventType, AudioListener[]> &
+  Record<AudioChangeCurrentTime, AudioChangeCurrentTimeListener[]> &
+  Record<AudioChangeStatus, AudioChangeStatusListener[]>
 export type StatusType = 'pause' | 'running' | 'suspended' | 'end' | 'loading'
 
 export type AudioInfo = {
@@ -53,7 +57,7 @@ export default class AudioController {
         this.restart()
       } else {
         this.trigger('end')
-        this.status = 'end'
+        this.changeStatus('end')
       }
     })
 
@@ -68,15 +72,15 @@ export default class AudioController {
     if (this.tempStatus === 'running') {
       this.pause()
     }
-    this.status = 'loading'
+    this.changeStatus('loading')
   }
 
   private afterChangeBuffer() {
     if (this.tempStatus === 'running') {
-      this.status = 'suspended'
+      this.changeStatus('suspended')
       this.start()
     } else {
-      this.status = this.tempStatus
+      this.changeStatus(this.tempStatus)
     }
   }
 
@@ -155,6 +159,7 @@ export default class AudioController {
 
   addAudioBufferByFloat32Array(audioInfo: AudioInfo) {
     if (!audioInfo) return
+    this.beforeChangeBuffer()
 
     if (this.sourceNode.buffer) {
       const beforeLen = this.sourceNode.buffer.length
@@ -184,6 +189,7 @@ export default class AudioController {
     }
 
     this.changeBuffer()
+    this.afterChangeBuffer()
   }
 
   clearBuffer() {
@@ -270,6 +276,10 @@ export default class AudioController {
     return this.currentTime
   }
 
+  getStatus(): StatusType {
+    return this.status
+  }
+
   getLoop(): boolean {
     return this.loop
   }
@@ -292,7 +302,7 @@ export default class AudioController {
 
     this.sourceNode.start(0, this.currentTime / 1000)
     this.lastStartTime = this.currentTime
-    this.status = 'running'
+    this.changeStatus('running')
     this.startTime = new Date()
     this.watchPlaying()
   }
@@ -309,7 +319,7 @@ export default class AudioController {
     if (this.startTime) {
       this.currentTime = this.lastStartTime + new Date().getTime()  - this.startTime.getTime()
       this.startTime = undefined
-      this.status = 'pause'
+      this.changeStatus('pause')
     }
 
     clearInterval(this.playingTimer)
@@ -353,9 +363,18 @@ export default class AudioController {
     this.trigger('changeBuffer')
   }
 
+  private changeStatus(status: StatusType) {
+    if (this.status === status) return
+
+    const preStatus = this.status
+    this.status = status
+    this.triggerChangeStatus(preStatus)
+  }
+
+  addListener(eventType: AudioChangeStatus, listener: AudioChangeStatusListener): void
   addListener(eventType: AudioChangeCurrentTime, listener: AudioChangeCurrentTimeListener): void
   addListener(eventType: AudioEventType, listener: AudioListener): void
-  addListener(eventType: AudioEventType | AudioChangeCurrentTime, listener: AudioListener | AudioChangeCurrentTimeListener) {
+  addListener(eventType: AudioEventType | AudioChangeCurrentTime | AudioChangeStatus, listener: AudioListener | AudioChangeCurrentTimeListener | AudioChangeStatusListener) {
     if (this.listenerMap[eventType]) {
       this.listenerMap[eventType].push(listener as any)
     } else {
@@ -369,5 +388,9 @@ export default class AudioController {
 
   triggerChangeCurrentTime() {
     this.listenerMap['changeCurrentTime']?.forEach(fn => fn(this.currentTime))
+  }
+
+  triggerChangeStatus(preStatus: StatusType) {
+    this.listenerMap['changeStatus']?.forEach(fn => fn(preStatus, this.status))
   }
 }

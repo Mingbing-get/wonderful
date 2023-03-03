@@ -110,14 +110,10 @@ export default function Controller() {
         !showController && !showAudioEdit && (
           <div className='marrow-controller-handle-wrapper'>
             <div className='marrow-controller-handle' onClick={handleClickShowController}>
-              <svg width="40" height="12">
-                <path d="M0 10 Q10 9, 14 6 Q20 0, 26 6 Q30 9, 40 10 Z" fill="#86abe6cc"></path>
-              </svg>
+              <Icon type='outerPlay' />
             </div>
             <div className='marrow-controller-handle' onClick={handleClickShowAudioEdit}>
-              <svg width="40" height="12">
-                <path d="M0 10 Q10 9, 14 6 Q20 0, 26 6 Q30 9, 40 10 Z" fill="#86ab66cc"></path>
-              </svg>
+              <Icon type='music' />
             </div>
           </div>
         )

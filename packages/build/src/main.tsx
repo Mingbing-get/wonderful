@@ -42,6 +42,10 @@ function Build({
   const marrowControllerRef = useRef<MarrowController>(null)
 
   useEffect(() => {
+    setMarrows(marrows)
+  }, [marrows])
+
+  useEffect(() => {
     if (!!operationType || showStore || !!editingId) {
       setSelectedId('')
     }

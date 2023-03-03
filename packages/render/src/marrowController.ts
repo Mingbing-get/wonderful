@@ -37,6 +37,12 @@ export default class MarrowController {
   
   constructor(totalTime?: number, currentTime?: number) {
     this.audioController = new AudioController()
+    this.audioController.addListener('changeStatus', (preStatus, status) => {
+      if (preStatus === 'loading' && this.isPlay) {
+        this.audioController.seek(this.currentTime)
+        this.audioController.start()
+      }
+    })
     // this.audioController.setLoop(true)
     this.animeInstances = {}
     this.infoMap = {}
@@ -60,8 +66,14 @@ export default class MarrowController {
         this.animeInstances[key].play()
       }
     }
-    this.audioController.seek(this.currentTime)
-    this.audioController.start()
+    
+    if (this.audioController.getStatus() === 'running') {
+      this.audioController.pause()
+    }
+    if (this.audioController.getStatus() !== 'loading') {
+      this.audioController.seek(this.currentTime)
+      this.audioController.start()
+    }
 
     this.lastStartTime = this.currentTime
     this.startPlayTime = new Date()

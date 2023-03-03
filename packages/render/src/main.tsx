@@ -25,16 +25,16 @@ function Render({
   autoplay = false
 }: Props, ref: React.ForwardedRef<MarrowController | null>) {
   const [marrowController, _] = useState(new MarrowController())
-
   marrowController.setAutoplay(autoplay)
-  useEffect(() => {
-    autoplay && marrowController.play()
-  }, [])
 
   useEffect(() => {
     marrowController.getAudioController().clearBuffer()
     audioInfo && marrowController.getAudioController().addAudioBufferByFloat32Array(audioInfo)
   }, [audioInfo])
+
+  useEffect(() => {
+    autoplay && marrowController.play()
+  }, [])
 
   const value = useMemo(() => ({
     marrowController
