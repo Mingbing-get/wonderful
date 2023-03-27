@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import classNames from 'classnames'
 
 import SingleTree, { Props as SingleTreeProps } from '../tree/single'
-import { TreeValue } from '../hooks/useTree/index.d'
+import { TreeValue } from '../hooks/useTree/type'
 import { checkedPathToLinkPath } from '../hooks/useTree/utils'
 import { TreeNode, TreeRef } from '../tree'
 import Popover from '../popover'

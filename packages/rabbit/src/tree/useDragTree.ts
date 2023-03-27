@@ -1,6 +1,6 @@
 import React, { useRef, useState, useCallback } from 'react'
 
-import { LinkTreeNode, InnerLocation } from '../hooks/useTree/index.d'
+import { LinkTreeNode, InnerLocation } from '../hooks/useTree/type'
 import { TreeNode } from './index'
 
 type Props = {

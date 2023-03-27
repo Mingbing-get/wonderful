@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect, useCallback } from 'react'
 
-import { BaseTreeNode, SingleProps, SingleReturn, MultipleProps, MultipleReturn, LinkTreeNode, TreeValue, InnerLocation } from './index.d'
+import { BaseTreeNode, SingleProps, SingleReturn, MultipleProps, MultipleReturn, LinkTreeNode, TreeValue, InnerLocation } from './type'
 import {
   baseForestToLinkForest,
   linkForestToBaseForest,

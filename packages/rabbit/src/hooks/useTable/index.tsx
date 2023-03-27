@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react'
 import classNames from 'classnames'
-import { Column, TableHeadRow, TableRow, DataType, AccessorColumn, SortDir, TableCell, TableHeadCell } from './index.d'
+import { Column, TableHeadRow, TableRow, DataType, AccessorColumn, SortDir, TableCell, TableHeadCell } from './type'
 
 import { generateHeaderAndFooter, generateBody, getHeadLastRowCells } from './utils'
 

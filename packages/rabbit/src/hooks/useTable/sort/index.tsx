@@ -2,7 +2,7 @@ import React, { useCallback, useMemo } from 'react'
 import classNames from 'classnames'
 
 import Icon, { IconType } from '../../../icon'
-import { ColumnSort, SortDir, DataType } from '../index.d'
+import { ColumnSort, SortDir, DataType } from '../type'
 
 import './index.scss'
 

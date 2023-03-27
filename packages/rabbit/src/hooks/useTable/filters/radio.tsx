@@ -3,7 +3,7 @@ import React, { useCallback, useMemo, useState } from 'react'
 import { Group as CheckboxGroup, OptionType } from '../../../radio'
 import Button from '../../../button'
 
-import { FilterRenderProps, DataType } from '../index.d'
+import { FilterRenderProps, DataType } from '../type'
 
 type Props<T extends DataType> = {
   accessor: string,

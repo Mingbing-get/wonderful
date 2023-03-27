@@ -5,7 +5,7 @@ import classNames from 'classnames'
 import { isSame } from '../utils'
 import useTree from '../hooks/useTree'
 import useVirtualScrollY from '../hooks/useVirtualScrollY'
-import { LinkTreeNode, BaseTreeNode, TreeValue, TreeMode } from '../hooks/useTree/index.d'
+import { LinkTreeNode, BaseTreeNode, TreeValue, TreeMode } from '../hooks/useTree/type'
 
 import Icon from '../icon'
 import Checkbox from '../checkbox'

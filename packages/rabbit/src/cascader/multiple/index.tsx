@@ -9,7 +9,7 @@ import Panel from './panel'
 import SearchPanel from './searchPanel'
 
 import useTree from '../../hooks/useTree'
-import { LinkTreeNode, TreeValue } from '../../hooks/useTree/index.d'
+import { LinkTreeNode, TreeValue } from '../../hooks/useTree/type'
 import { checkedPathToLinkPath, linkPathToDataPath } from '../../hooks/useTree/utils'
 import useMultipleDisplay from '../../hooks/useMultipleDisplay'
 import { isSame } from '../../utils'

@@ -3,7 +3,7 @@ import SingleCascader, { DisplayRender as SingleDisplayRender } from './single'
 import MultipleCascader, { DisplayRender as MultipleDisplayRender } from './multiple'
 
 import { Placement } from '../popover'
-import { BaseTreeNode, TreeMode, TreeValue } from '../hooks/useTree/index.d'
+import { BaseTreeNode, TreeMode, TreeValue } from '../hooks/useTree/type'
 
 import './index.scss'
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Column, TableHeadRow, TableHeadCell, TableRow, TableCell, HeadColumn, DataType, AccessorColumn } from './index.d'
+import { Column, TableHeadRow, TableHeadCell, TableRow, TableCell, HeadColumn, DataType, AccessorColumn } from './type'
 
 // body
 export function generateBody<T extends DataType>(header: TableHeadRow<T>[], data: T[]) {

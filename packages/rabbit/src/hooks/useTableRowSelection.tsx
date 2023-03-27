@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef } from 'react'
-import { Column, DataType, TableRow } from '../hooks/useTable/index.d'
+import { Column, DataType, TableRow } from './useTable/type'
 
 import Checkbox from '../checkbox'
 

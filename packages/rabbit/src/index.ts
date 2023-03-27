@@ -49,7 +49,7 @@ export {
   FilterType as TableFilterType,
   SortRenderProps as TableSortRenderProps,
   SortDir as TableSortDir,
-} from './hooks/useTable/index.d'
+} from './hooks/useTable/type'
 export { default as useTable } from './hooks/useTable'
 
 export { default as useVirtualScrollY, VirtualScrollY } from './hooks/useVirtualScrollY' 
@@ -67,7 +67,7 @@ export {
   SingleProps as TreeSingleProps,
   MultipleReturn as TreeMultipleReturn,
   SingleReturn as TreeSingleReturn
-} from './hooks/useTree/index.d'
+} from './hooks/useTree/type'
 
 import { resizeListenerRegister } from './resizeListener'
 import { rem2px, Rem2pxProps } from './utils'

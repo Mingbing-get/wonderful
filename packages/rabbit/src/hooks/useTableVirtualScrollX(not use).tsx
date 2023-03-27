@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react'
 import useDebounceAndThrottle from './useDebounceAndThrottle'
-import { TableHeadRow, TableRow, DataType } from './useTable/index.d'
+import { TableHeadRow, TableRow, DataType } from './useTable/type'
 import { Col } from './useTable'
 import { findFixedCols } from './useTable/utils'
 import { isSame } from '../utils'

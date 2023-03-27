@@ -3,7 +3,7 @@ import classNames from 'classnames'
 
 import Popover from '../../../popover'
 import Icon from '../../../icon'
-import { ColumnFilter, FilterRenderProps, DataType, FilterType, FilterRender } from '../index.d'
+import { ColumnFilter, FilterRenderProps, DataType, FilterType, FilterRender } from '../type'
 
 import TextFilter from './text'
 import CheckBoxFilter from './checkBox'

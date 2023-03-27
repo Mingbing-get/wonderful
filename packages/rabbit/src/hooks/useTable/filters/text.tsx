@@ -3,7 +3,7 @@ import React, { useCallback, useState } from 'react'
 import Input from '../../../input'
 import Button from '../../../button'
 
-import { FilterRenderProps, DataType } from '../index.d'
+import { FilterRenderProps, DataType } from '../type'
 
 type Props<T extends DataType> = {
   accessor: string,

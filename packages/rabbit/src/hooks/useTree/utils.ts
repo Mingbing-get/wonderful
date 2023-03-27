@@ -1,4 +1,4 @@
-import { BaseTreeNode, LinkTreeNode, TreeValue, TreeMode, InnerLocation } from './index.d'
+import { BaseTreeNode, LinkTreeNode, TreeValue, TreeMode, InnerLocation } from './type'
 
 // 将原始Forest转换成LinkForest
 export function baseForestToLinkForest<T extends BaseTreeNode>(forest: T[], loadData?: (node: T) => void): LinkTreeNode<T>[] {

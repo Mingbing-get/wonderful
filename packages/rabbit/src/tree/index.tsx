@@ -1,5 +1,5 @@
 import React from 'react'
-import { BaseTreeNode, TreeValue, InnerLocation, LinkTreeNode } from '../hooks/useTree/index.d'
+import { BaseTreeNode, TreeValue, InnerLocation, LinkTreeNode } from '../hooks/useTree/type'
 
 import { VirtualScroll } from '../hooks/useVirtualScrollY'
 import SingleTree from './single'

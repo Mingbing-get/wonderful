@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from 'react'
 import classNames from 'classnames'
 
-import { LinkTreeNode, TreeMode } from '../../hooks/useTree/index.d'
+import { LinkTreeNode, TreeMode } from '../../hooks/useTree/type'
 import { getExpandLinkPathFromLinkForest } from '../../hooks/useTree/utils'
 import { CascaderOption, CascaderTriggerType } from '../index'
 

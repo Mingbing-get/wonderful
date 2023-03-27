@@ -20,6 +20,7 @@ type Props = {
   marrows: Marrow[],
   audioInfo?: AudioInfo,
   onChange?: (marrows: Marrow[]) => void,
+  onAudioChange?: (audioInfo: AudioInfo | null) => void,
   onSave?: (marrows: Marrow[], audioInfo: AudioInfo | null) => void,
 }
 
@@ -27,6 +28,7 @@ function Build({
   marrows,
   audioInfo,
   onChange,
+  onAudioChange,
   onSave
 }: Props, ref: React.ForwardedRef<MarrowController | null>) {
   const [currentLocationIds, setCurrentLocationIds] = useState<string[]>([])
@@ -65,7 +67,11 @@ function Build({
 
   useEffect(() => {
     setMarrowController(marrowControllerRef.current)
-  }, [marrowControllerRef.current])
+    marrowControllerRef.current?.getAudioController()?.addListener?.('changeBuffer', () => {
+      const audioInfo = marrowControllerRef.current?.getAudioController()?.getFloat32ArrayFromAudio() || null
+      onAudioChange?.(audioInfo)
+    })
+  }, [marrowControllerRef.current, onAudioChange])
 
   useImperativeHandle(ref, () => marrowController as any, [marrowController])
 

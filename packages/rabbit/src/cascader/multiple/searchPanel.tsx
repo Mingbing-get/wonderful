@@ -1,7 +1,7 @@
 import React, { useMemo, useCallback } from 'react'
 import classNames from 'classnames'
 
-import { LinkTreeNode } from '../../hooks/useTree/index.d'
+import { LinkTreeNode } from '../../hooks/useTree/type'
 import { searchTextFromBaseTree } from '../../hooks/useTree/utils'
 import { CascaderOption } from '../index'
 

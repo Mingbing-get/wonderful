@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react'
 import classNames from 'classnames'
 
 import MultipleTree, { Props as MultipleTreeProps } from '../tree/multiple'
-import { TreeValue } from '../hooks/useTree/index.d'
+import { TreeValue } from '../hooks/useTree/type'
 import { checkedPathToLinkPath } from '../hooks/useTree/utils'
 import useMultipleDisplay from '../hooks/useMultipleDisplay'
 import { TreeNode, TreeRef } from '../tree'

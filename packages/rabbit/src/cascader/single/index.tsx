@@ -8,7 +8,7 @@ import Panel from './panel'
 import SearchPanel from './searchPanel'
 
 import useTree from '../../hooks/useTree'
-import { LinkTreeNode, TreeValue } from '../../hooks/useTree/index.d'
+import { LinkTreeNode, TreeValue } from '../../hooks/useTree/type'
 import { checkedPathToLinkPath } from '../../hooks/useTree/utils'
 import { isSame } from '../../utils'
 
