@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Menu, MenuItem, Icon } from '@marrow/rabbit'
 
 export default function ExampleMenu() {
@@ -81,6 +81,16 @@ export default function ExampleMenu() {
       ]
     }
   ]
+
+  const [selectedPath, setSelectedPath] = useState<string[]>([])
+  const [openPath, setOpenPath] = useState<string[]>([])
+
+  useEffect(() => {
+    setTimeout(() => {
+      setOpenPath(['option3'])
+      setSelectedPath(['option3', 'option3-1'])
+    }, 2000)
+  }, [])
   return (
     <div>
       <Menu
@@ -94,7 +104,7 @@ export default function ExampleMenu() {
       <br />
       <Menu items={items} triggerSubMenuAction='click' />
       <br />
-      <Menu items={items} mode='inline' style={{ width: '9rem' }} />
+      <Menu items={items} mode='inline' openPath={openPath} selectedPath={selectedPath} style={{ width: '9rem' }} />
       <br />
       <Menu items={items} mode='vertical' triggerSubMenuAction='hover' />
       <br />

@@ -1,8 +1,8 @@
-import React, { useMemo, useState, useCallback, useRef } from 'react'
+import React, { useMemo, useState, useCallback, useRef, useEffect } from 'react'
 
 import MenuMain from './main'
 import { MenuProvider, MenuContext } from './context'
-import { findItemByKeyFromForest } from '../utils'
+import { findItemByKeyFromForest, isSame } from '../utils'
 
 import './index.scss'
 
@@ -40,6 +40,8 @@ type Props = {
   mode?: MenuMode,
   defaultOpenPath?: string[],
   defaultSelectedPath?: string[],
+  openPath?: string[],
+  selectedPath?: string[],
   style?: React.CSSProperties,
   className?: string,
   theme?: MenuTheme,
@@ -55,6 +57,8 @@ export default function Menu({
   items,
   defaultOpenPath,
   defaultSelectedPath,
+  openPath,
+  selectedPath,
   style,
   className,
   mode = 'horizontal',
@@ -64,7 +68,7 @@ export default function Menu({
   onOpenChange,
   onSelect
 }: Props) {
-  const [openPath, setOpenPath] = useState(defaultOpenPath || [])
+  const [_openPath, setOpenPath] = useState(defaultOpenPath || [])
   const [selectPath, setSelectPath] = useState(defaultSelectedPath || [])
   const keepShow = useRef<string[]>([])
 
@@ -146,16 +150,36 @@ export default function Menu({
     })
   }, [onOpenChange])
 
+  useEffect(() => {
+    setOpenPath(oldOpenPath => {
+      if (openPath && isSame(oldOpenPath, openPath)) {
+        return oldOpenPath
+      }
+
+      return openPath || []
+    })
+  }, [openPath])
+
+  useEffect(() => {
+    setSelectPath(oldSelectPath => {
+      if (selectedPath && isSame(oldSelectPath, selectedPath)) {
+        return oldSelectPath
+      }
+
+      return selectedPath || []
+    })
+  }, [selectedPath])
+
   const value: MenuContext = useMemo(() => ({
     items,
-    openPath,
+    openPath: _openPath,
     selectPath,
     onToggleOpen: handleToggleOpen,
     onClickItem: handleClickItem,
     onMouseEnter: handleMouseEnter,
     onMouseLeave: handleMouseLeave,
     onPopoverChangeVisible: handlePopoverChangeVisible,
-  }), [items, openPath, selectPath, handleClickItem, handleMouseEnter, handleMouseLeave, handlePopoverChangeVisible, handleToggleOpen])
+  }), [items, _openPath, selectPath, handleClickItem, handleMouseEnter, handleMouseLeave, handlePopoverChangeVisible, handleToggleOpen])
 
   return (
     <MenuProvider value={value}>
