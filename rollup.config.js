@@ -71,6 +71,28 @@ function createConfig(format, output) {
   })]
   output.format = format
 
+  if (process.env.TARGET === 'types') {
+    return {
+      input: resolve('index.ts'),
+      output,
+      acornInjectPlugins: [jsx()],
+      plugins: [
+        nodeResolve(),
+        ts({
+          check: process.env.NODE_ENV === 'production',
+          tsconfig: path.resolve(__dirname, 'tsconfig.json'),
+          tsconfigOverride: {
+            compilerOptions: {
+              sourceMap: output.sourcemap,
+              declaration: true,
+              // emitDeclarationOnly: true,
+            },
+          },
+        }),
+      ],
+    }
+  }
+
   return {
     input: resolve('src/index.ts'),
     output,

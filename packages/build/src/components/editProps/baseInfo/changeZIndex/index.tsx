@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { getMinZIndex, getMaxZIndex } from '@marrow/utils'
-import { ElementType } from '@marrow/global'
+import { getMinZIndex, getMaxZIndex } from '../../../../../../utils/src'
+import { ElementType } from '../../../../../../types/global'
 
 import { useBuildMarrow } from '../../../../context'
 

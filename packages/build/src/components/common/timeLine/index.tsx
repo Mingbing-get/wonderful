@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { Icon } from '@marrow/rabbit'
+import { Icon } from '../../../../../rabbit/src'
 
 import './index.scss'
 

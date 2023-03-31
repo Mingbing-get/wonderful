@@ -4,8 +4,8 @@ import Build from '../src/index'
 
 import './index.scss'
 
-import { Marrow } from '@marrow/global'
-import { responseRegister } from '@marrow/rabbit'
+import { Marrow } from '../../types/global'
+import { responseRegister } from '../../rabbit/src'
 
 import img1 from './assets/a.jpeg'
 

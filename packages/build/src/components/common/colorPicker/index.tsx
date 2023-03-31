@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { SketchPicker } from 'react-color'
-import { Button, Popover  } from '@marrow/rabbit'
+import { Button, Popover  } from '../../../../../rabbit/src'
 
 import './index.scss'
 

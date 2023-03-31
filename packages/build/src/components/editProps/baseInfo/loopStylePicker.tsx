@@ -1,9 +1,9 @@
 import React from 'react'
-import { Select, InputGroup } from '@marrow/rabbit'
+import { Select, InputGroup } from '../../../../../rabbit/src'
 import InputNumber from '../../common/inputNumber'
 
 import { ChangeFn } from '../changeProps'
-import { Marrow, TimeLineParams } from '@marrow/global'
+import { Marrow, TimeLineParams } from '../../../../../types/global'
 
 function getRepeatStyle(loop?: boolean | number, direction?: string): string {
   if (!loop) return 'no_repeat'

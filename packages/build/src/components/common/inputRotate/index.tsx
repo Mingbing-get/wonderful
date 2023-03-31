@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { InputNumber } from '@marrow/rabbit'
+import { InputNumber } from '../../../../../rabbit/src'
 
 import './index.scss'
 

@@ -1,0 +1,11 @@
+{
+  "name": "@wonderful/types",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.ts",
+  "module": "dist/types.esm.js",
+  "types": "dist/types/src/index.d.ts",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Cascader, MultipleCascader, CascaderOption, TreeValue } from '@marrow/rabbit'
+import { Cascader, MultipleCascader, CascaderOption, TreeValue } from '../../../rabbit/src'
 
 const _options: CascaderOption[] = [
   {

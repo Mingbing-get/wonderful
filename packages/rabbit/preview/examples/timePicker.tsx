@@ -1,5 +1,5 @@
 import React from 'react'
-import { TimePicker } from '@marrow/rabbit'
+import { TimePicker } from '../../../rabbit/src'
 import dayjs from 'dayjs'
 
 export default function ExampleTimePicker() {

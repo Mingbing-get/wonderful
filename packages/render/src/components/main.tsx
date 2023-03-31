@@ -1,5 +1,5 @@
 import React from 'react'
-import { Marrow } from '@marrow/global'
+import { Marrow } from '../../../types/global'
 
 import MarrowContainer from './container'
 import MarrowText from './text'

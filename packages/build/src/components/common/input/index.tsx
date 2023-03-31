@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Input } from '@marrow/rabbit'
+import { Input } from '../../../../../rabbit/src'
 
 type Props = {
   value?: number | string

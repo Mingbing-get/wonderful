@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { List, ListItemType, Button, Loading } from '@marrow/rabbit'
+import { List, ListItemType, Button, Loading } from '../../../rabbit/src'
 
 const data: ListItemType[] = new Array(10000).fill(1).map((_, index) => ({
   key: index,

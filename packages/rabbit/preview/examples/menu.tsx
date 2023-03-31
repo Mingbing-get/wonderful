@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Menu, MenuItem, Icon } from '@marrow/rabbit'
+import { Menu, MenuItem, Icon } from '../../../rabbit/src'
 
 export default function ExampleMenu() {
   const items: MenuItem[] = [

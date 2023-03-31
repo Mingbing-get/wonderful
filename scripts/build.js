@@ -10,8 +10,8 @@ async function run() {
     return fs.statSync(`packages/${f}`).isDirectory()
   })
 
-  const executing = []
-  directories.forEach(directoryName => {
+  const executing = [];
+  [...directories, 'types'].forEach(directoryName => {
     executing.push(build(directoryName))
   })
   await Promise.all(executing)
@@ -52,7 +52,7 @@ async function addPackageJson(name) {
     version: pkg.version,
     main: "index.js",
     module: "index.js",
-    types: `${name}/src/index.d.ts`,
+    types: `../types/${name}/src/index.d.ts`,
     keywords: [],
     author: "",
     license: "ISC"

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 
-import { AudioEdit } from '@marrow/audio'
-import { Slider } from '@marrow/rabbit'
-import { Icon } from '@marrow/rabbit'
+import { AudioEdit } from '../../../../audio/src'
+import { Slider } from '../../../../rabbit/src'
+import { Icon } from '../../../../rabbit/src'
 
 import { useBuildMarrow } from '../../context'
 

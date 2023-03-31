@@ -1,5 +1,5 @@
 import React from 'react'
-import { DatePicker } from '@marrow/rabbit'
+import { DatePicker } from '../../../rabbit/src'
 import dayjs from 'dayjs'
 
 export default function ExampleDatePicker() {

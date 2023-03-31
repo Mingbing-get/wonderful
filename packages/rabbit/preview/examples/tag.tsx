@@ -1,5 +1,5 @@
 import React from 'react'
-import { Tag, Icon } from '@marrow/rabbit'
+import { Tag, Icon } from '../../../rabbit/src'
 
 export default function ExampleTag() {
   return (

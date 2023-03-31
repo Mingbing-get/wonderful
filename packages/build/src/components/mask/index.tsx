@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { MARROW_ID_NAME, stopPropagation } from '@marrow/utils'
+import { MARROW_ID_NAME, stopPropagation } from '../../../../utils/src'
 
 import { useBuildMarrow } from '../../context'
 import useActions from './useActions'

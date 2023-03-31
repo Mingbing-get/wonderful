@@ -1,5 +1,5 @@
 import React from 'react'
-import { Radio, RadioGroup } from '@marrow/rabbit'
+import { Radio, RadioGroup } from '../../../rabbit/src'
 
 export default function ExampleRadio() {
   const style = { marginRight: '0.5rem' }

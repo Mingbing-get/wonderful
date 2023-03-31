@@ -1,5 +1,5 @@
 import React from 'react'
-import { Steps, StepsItemType, Icon } from '@marrow/rabbit'
+import { Steps, StepsItemType, Icon } from '../../../rabbit/src'
 
 const items: StepsItemType[] = [
   {

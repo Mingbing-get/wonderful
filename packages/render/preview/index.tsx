@@ -4,7 +4,7 @@ import Render from '../src/index'
 
 import './index.scss'
 
-import { Marrow } from '@marrow/global'
+import { Marrow } from '../../types/global'
 
 import img1 from './assets/a.jpeg'
 

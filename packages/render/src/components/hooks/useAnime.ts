@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
 import anime from 'animejs'
-import { MARROW_ID_NAME, createStyle } from '@marrow/utils'
+import { MARROW_ID_NAME, createStyle } from '../../../../utils/src'
 
-import { Animation, TimeLineParams, StartStyle } from '@marrow/global'
+import { Animation, TimeLineParams, StartStyle } from '../../../../types/global'
 import { useRenderMarrow } from '../../context'
 
 export type Props = {

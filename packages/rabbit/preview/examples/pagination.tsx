@@ -1,5 +1,5 @@
 import React from 'react'
-import { Pagination } from '@marrow/rabbit'
+import { Pagination } from '../../../rabbit/src'
 
 export default function ExamplePagination() {
   return (

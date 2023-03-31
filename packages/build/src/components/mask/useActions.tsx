@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
-import { Icon } from '@marrow/rabbit'
+import { Icon } from '../../../../rabbit/src'
 
-import { replaceMarrow } from '@marrow/utils'
+import { replaceMarrow } from '../../../../utils/src'
 import { useBuildMarrow } from '../../context'
 
 export default function useActions() {

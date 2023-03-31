@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { Collapse } from '@marrow/rabbit'
+import { Collapse } from '../../../../../rabbit/src'
 
 import './index.scss'
 

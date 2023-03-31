@@ -1,5 +1,5 @@
 import React from 'react'
-import { Rate } from '@marrow/rabbit'
+import { Rate } from '../../../rabbit/src'
 
 export default function ExampleRate() {
   return (

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Timeline, TimelineItemType, Icon } from '@marrow/rabbit'
+import { Timeline, TimelineItemType, Icon } from '../../../rabbit/src'
 
 const items: TimelineItemType[] = [
   {

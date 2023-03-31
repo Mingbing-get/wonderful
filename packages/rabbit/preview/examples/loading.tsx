@@ -1,5 +1,5 @@
 import React from 'react'
-import { Loading } from '@marrow/rabbit'
+import { Loading } from '../../../rabbit/src'
 
 export default function ExampleLoading() {
   return (

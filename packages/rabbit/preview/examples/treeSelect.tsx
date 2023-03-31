@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { TreeSelect, TreeNode, MultipleTreeSelect } from '@marrow/rabbit'
+import { TreeSelect, TreeNode, MultipleTreeSelect } from '../../../rabbit/src'
 
 const baseData: TreeNode[] = [
   {

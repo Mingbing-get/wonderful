@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useState } from 'react'
-import { Modal, Tab, Icon } from '@marrow/rabbit'
+import { Modal, Tab, Icon } from '../../../../rabbit/src'
 
-import { getBuildContainer } from '@marrow/utils'
+import { getBuildContainer } from '../../../../utils/src'
 
 import Animations from './animations'
 import StartStyle from './startStyle'

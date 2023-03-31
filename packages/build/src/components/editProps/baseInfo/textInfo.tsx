@@ -1,7 +1,7 @@
 import React from 'react'
 import Input from '../../common/input'
 
-import { MarrowText } from '@marrow/global'
+import { MarrowText } from '../../../../../types/global'
 
 import { FormGridItem } from '../formGrid'
 import { ChangeFn } from '../changeProps'

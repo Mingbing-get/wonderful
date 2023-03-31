@@ -1,5 +1,5 @@
 import React from 'react'
-import { Calendar } from '@marrow/rabbit'
+import { Calendar } from '../../../rabbit/src'
 import dayjs from 'dayjs'
 
 export default function ExampleCalendar() {

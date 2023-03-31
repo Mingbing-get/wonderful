@@ -1,7 +1,7 @@
 import React from 'react'
 import InputNumber from '../../common/inputNumber'
 
-import { Marrow } from '@marrow/global'
+import { Marrow } from '../../../../../types/global'
 
 import { FormGroup } from '../formGrid'
 import { ChangeFn } from '../changeProps'

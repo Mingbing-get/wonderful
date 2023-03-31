@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { MarrowImg } from '@marrow/global'
-import { Upload, Icon } from '@marrow/rabbit'
+import { MarrowImg } from '../../../../../types/global'
+import { Upload, Icon } from '../../../../../rabbit/src'
 
 import { FormGridItem } from '../formGrid'
 import { ChangeFn } from '../changeProps'

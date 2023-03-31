@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button } from '@marrow/rabbit'
+import { Button } from '../../../rabbit/src'
 
 export default function ExampleButton() {
   return (

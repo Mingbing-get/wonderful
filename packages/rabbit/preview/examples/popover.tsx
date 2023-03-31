@@ -1,5 +1,5 @@
 import React from 'react'
-import { Popover, Button } from '@marrow/rabbit'
+import { Popover, Button } from '../../../rabbit/src'
 
 export default function ExamplePopover() {
   return (

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Input } from '@marrow/rabbit'
+import { Input } from '../../../rabbit/src'
 
 export default function ExampleInput() {
   return (

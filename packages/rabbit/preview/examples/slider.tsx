@@ -1,5 +1,5 @@
 import React from 'react'
-import { Slider } from '@marrow/rabbit'
+import { Slider } from '../../../rabbit/src'
 
 export default function ExampleSlider() {
   return (

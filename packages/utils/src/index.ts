@@ -1,6 +1,6 @@
 import { MARROW_ID_NAME, OUTER_ID } from './constants'
 
-import { Marrow, MarrowContainer, StartStyle, TransformType, TransformAllType } from '@marrow/global'
+import { Marrow, MarrowContainer, StartStyle, TransformType, TransformAllType } from '../../types/global'
 import React from 'react'
 
 export {

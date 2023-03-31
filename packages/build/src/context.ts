@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 
-import { Marrow, ElementType } from '@marrow/global'
-import { MarrowController } from '@marrow/render'
+import { Marrow, ElementType } from '../../types/global'
+import { MarrowController } from '../../render/src'
 
 export type OperationType = '' | 'move' | 'add'
 

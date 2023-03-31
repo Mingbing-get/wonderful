@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { Select, Switch, SelectOptionType } from '@marrow/rabbit'
+import { Select, Switch, SelectOptionType } from '../../../../../rabbit/src'
 import Input from '../../common/input'
 
 import LoopStylePicker from './loopStylePicker'

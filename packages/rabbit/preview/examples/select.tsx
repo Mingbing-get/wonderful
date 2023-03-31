@@ -1,5 +1,5 @@
 import React from 'react'
-import { Select } from '@marrow/rabbit'
+import { Select } from '../../../rabbit/src'
 
 export default function ExampleSelect() {
   return (

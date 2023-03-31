@@ -1,11 +1,11 @@
 import React, { useEffect, useRef } from 'react'
 import ReactDOM from 'react-dom/client'
-import Render, { MarrowController } from '@marrow/render'
-import Generate from '@marrow/generate'
+import Render, { MarrowController } from '../../render/src'
+import Generate from '../../generate/src'
 
 import './index.scss'
 
-import { Marrow } from '@marrow/global'
+import { Marrow } from '../../types/global'
 
 import img1 from './assets/a.jpeg'
 

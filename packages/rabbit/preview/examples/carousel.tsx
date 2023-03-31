@@ -1,5 +1,5 @@
 import React from 'react'
-import { Carousel } from '@marrow/rabbit'
+import { Carousel } from '../../../rabbit/src'
 
 export default function ExampleCarousel() {
   const style = {

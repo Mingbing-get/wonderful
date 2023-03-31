@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Progress } from '@marrow/rabbit'
+import { Progress } from '../../../rabbit/src'
 
 export default function ExampleProgress() {
   const [pre, setPre] = useState(0)

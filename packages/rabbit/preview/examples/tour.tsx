@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import { Tour, TourStepType, Button } from '@marrow/rabbit'
+import { Tour, TourStepType, Button } from '../../../rabbit/src'
 
 export default function ExampleTour() {
   const firstRef = useRef<HTMLDivElement>(null)

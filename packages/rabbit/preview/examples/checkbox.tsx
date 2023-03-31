@@ -1,5 +1,5 @@
 import React from 'react'
-import { Checkbox, CheckboxGroup } from '@marrow/rabbit'
+import { Checkbox, CheckboxGroup } from '../../../rabbit/src'
 
 export default function ExampleCheckbox() {
   const style = { marginRight: '0.5rem' }

@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react'
 import Build from '../src/index'
 import { read, save } from './indexDB'
 
-import { Marrow } from '@marrow/global'
-import { AudioInfo } from '@marrow/audio'
+import { Marrow } from '../../types/global'
+import { AudioInfo } from '../../audio/src'
 
 export default function Main() {
   const [data, setData] = useState<any>()

@@ -1,8 +1,8 @@
 import React from 'react'
 import InputNumber from '../common/inputNumber'
 
-import { replaceUnit } from '@marrow/utils'
-import { ElementType, Marrow } from '@marrow/global'
+import { replaceUnit } from '../../../../utils/src'
+import { ElementType, Marrow } from '../../../../types/global'
 
 import { FormGridItem, FormGroup } from './formGrid'
 import ColorPicker from '../common/colorPicker'

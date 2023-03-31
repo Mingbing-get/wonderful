@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 
-import { getMarrowById, getMarrowName } from '@marrow/utils'
+import { getMarrowById, getMarrowName } from '../../../../../utils/src'
 
 import { getElementName } from '../../elementStore/elementItems'
 import { useBuildMarrow } from '../../../context'

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Icon, iconPathKeys } from '@marrow/rabbit'
+import { Icon, iconPathKeys } from '../../../rabbit/src'
 
 export default function ExampleIcon() {
   return (

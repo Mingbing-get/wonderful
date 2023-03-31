@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { Table, Input, TableColumn } from '@marrow/rabbit'
+import { Table, Input, TableColumn } from '../../../rabbit/src'
 
 const range = (len: number) => {
   const arr = []

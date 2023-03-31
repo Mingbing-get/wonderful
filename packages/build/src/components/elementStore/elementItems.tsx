@@ -1,8 +1,8 @@
 import React from 'react'
-import { Icon } from '@marrow/rabbit'
+import { Icon } from '../../../../rabbit/src'
 
-import { ElementType, Marrow } from '@marrow/global'
-import { generateId } from '@marrow/utils'
+import { ElementType, Marrow } from '../../../../types/global'
+import { generateId } from '../../../../utils/src'
 
 const elements = [
   {

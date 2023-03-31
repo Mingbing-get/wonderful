@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Transfer, TransferOptionType } from '@marrow/rabbit'
+import { Transfer, TransferOptionType } from '../../../rabbit/src'
 
 const data: TransferOptionType[][] = [
   [{

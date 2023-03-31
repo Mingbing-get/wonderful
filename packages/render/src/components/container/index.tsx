@@ -2,7 +2,7 @@ import React, { useRef } from 'react'
 
 import useAnime, { Props as UseAnimeProps } from '../hooks/useAnime'
 import Main from '../main'
-import { Marrow } from '@marrow/global'
+import { Marrow } from '../../../../types/global'
 import './index.scss'
 
 type Props = {

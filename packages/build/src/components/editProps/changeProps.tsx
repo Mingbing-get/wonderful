@@ -1,10 +1,10 @@
 import React, { useMemo, useCallback } from 'react'
 
-import { getMarrowById, changeObjectByPath, replaceMarrow } from '@marrow/utils'
+import { getMarrowById, changeObjectByPath, replaceMarrow } from '../../../../utils/src'
 
 import FormGrid, { FormGridItem, FormGroup } from './formGrid'
 import { useBuildMarrow } from '../../context'
-import { Marrow } from '@marrow/global'
+import { Marrow } from '../../../../types/global'
 
 export type ChangeFn = (path: (string | number)[], value: any) => void
 export type GetFormGridItems = (currentMarrow: Marrow, handleChange: ChangeFn) => FormGridItem[]

@@ -1,5 +1,5 @@
-import { StartStyle } from '@marrow/global'
-import { AudioController } from '@marrow/audio'
+import { StartStyle } from '../../types/global'
+import { AudioController } from '../../audio/src'
 import { AnimeInstance } from 'animejs'
 
 export type OnceEventType = 'play' | 'pause' | 'restart' | 'end'

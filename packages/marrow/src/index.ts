@@ -1,7 +1,7 @@
-import Render, { MarrowController } from '@marrow/render'
-import Build from '@marrow/build'
-import { AudioAnalyser, AudioController, AudioEdit } from '@marrow/audio'
-import Generate from '@marrow/generate'
+import Render, { MarrowController } from '../../render/src'
+import Build from '../../build/src'
+import { AudioAnalyser, AudioController, AudioEdit } from '../../audio/src'
+import Generate from '../../generate/src'
 
 export {
   Render,
@@ -25,4 +25,4 @@ export {
   MarrowContainer,
   MarrowImg,
   MarrowText
-} from '@marrow/global'
+} from '../../types/global'

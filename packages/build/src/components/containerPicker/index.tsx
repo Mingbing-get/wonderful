@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react'
-import { Modal, Select } from '@marrow/rabbit'
+import { Modal, Select } from '../../../../rabbit/src'
 
 import {
   getAllIncludeChildren,
@@ -10,7 +10,7 @@ import {
   getMarrowById,
   getBuildContainer,
   OUTER_ID
-} from '@marrow/utils'
+} from '../../../../utils/src'
 import { createElement } from '../elementStore/elementItems'
 
 import { useBuildMarrow } from '../../context'

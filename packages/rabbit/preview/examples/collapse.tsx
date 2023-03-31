@@ -1,5 +1,5 @@
 import React from 'react'
-import { Collapse } from '@marrow/rabbit'
+import { Collapse } from '../../../rabbit/src'
 
 const Panel = Collapse.Panel
 

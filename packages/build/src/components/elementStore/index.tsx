@@ -1,8 +1,8 @@
 import React from 'react'
-import { Modal } from '@marrow/rabbit'
+import { Modal } from '../../../../rabbit/src'
 
-import { getBuildContainer } from '@marrow/utils'
-import { ElementType } from '@marrow/global'
+import { getBuildContainer } from '../../../../utils/src'
+import { ElementType } from '../../../../types/global'
 
 import elements from './elementItems'
 import { useBuildMarrow } from '../../context'

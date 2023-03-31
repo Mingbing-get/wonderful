@@ -1,5 +1,5 @@
 import React from 'react'
-import { Tab } from '@marrow/rabbit'
+import { Tab } from '../../../rabbit/src'
 
 const TabItem = Tab.Item
 

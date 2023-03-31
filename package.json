@@ -1,6 +1,6 @@
 {
   "name": "wonderful-marrow",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "workspaces": {
     "packages": [
       "packages/audio",
@@ -21,7 +21,7 @@
     "./packages/*/dist/",
     "./packages/*/src/",
     "./packages/*/package.json",
-    "./packages/global.d.ts",
+    "./packages/types/global.ts",
     "./packages/images.d.ts",
     "./index.js",
     "./packages.json",

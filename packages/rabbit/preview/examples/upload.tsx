@@ -1,5 +1,5 @@
 import React from 'react'
-import { Upload, Icon } from '@marrow/rabbit'
+import { Upload, Icon } from '../../../rabbit/src'
 
 export default function ExampleUpload() {
   return (

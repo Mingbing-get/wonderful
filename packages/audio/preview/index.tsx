@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 
-import { AudioAnalyser, AudioController, AudioEdit } from '@marrow/audio'
+import { AudioAnalyser, AudioController, AudioEdit } from '../../audio/src'
 
 import './index.scss'
 

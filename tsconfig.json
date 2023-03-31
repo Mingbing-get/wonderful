@@ -8,19 +8,15 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
-    "declaration": true,
+    // "declaration": true,
+    // "emitDeclarationOnly": true,
     "baseUrl": ".",
     "outDir": "dist",
     "paths": {
-      "@marrow/global": [
-        "packages/global"
-      ],
-      "@marrow/*": [ "packages/*/src"],
       "marrow": [ "packages/marrow/src"]
     },
   },
   "include": [
-    "packages/global.d.ts",
     "packages/images.d.ts",
     "packages/*/src",
     "packages/*/preview",

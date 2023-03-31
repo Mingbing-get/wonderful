@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useCallback, useEffect } from 'react'
 
-import { getMarrowById, replaceMarrow } from '@marrow/utils'
+import { getMarrowById, replaceMarrow } from '../../../../../utils/src'
 import ChangeProps, { GetFormGridItems } from '../changeProps'
 import { groups, getItems } from '../styleConfig'
 import { getBaseItems, baseGroup } from './baseConfig'

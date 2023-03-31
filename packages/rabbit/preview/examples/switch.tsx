@@ -1,5 +1,5 @@
 import React from 'react'
-import { Switch } from '@marrow/rabbit'
+import { Switch } from '../../../rabbit/src'
 
 export default function ExampleSwitch() {
   return (

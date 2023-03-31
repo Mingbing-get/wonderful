@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Modal, Button } from '@marrow/rabbit'
+import { Modal, Button } from '../../../rabbit/src'
 
 export default function ExampleModal() {
   const [visible, setVisible] = useState({

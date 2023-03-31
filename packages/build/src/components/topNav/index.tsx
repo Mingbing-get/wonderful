@@ -1,6 +1,6 @@
 import React from 'react'
 import classnames from 'classnames'
-import { Icon, Button } from '@marrow/rabbit'
+import { Icon, Button } from '../../../../rabbit/src'
 
 import MarrowPicker from './marrowPicker'
 import ShowOperation from './showOperation'

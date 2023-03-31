@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState, useImperativeHandle } from 'react'
 
-import { Marrow } from '@marrow/global'
-import { AudioInfo } from '@marrow/audio'
+import { Marrow } from '../../types/global'
+import { AudioInfo } from '../../audio/src'
 
 import Main from './components/main'
 import MarrowController from './marrowController'

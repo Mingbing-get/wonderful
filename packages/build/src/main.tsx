@@ -1,9 +1,9 @@
 import React, { useMemo, useState, useCallback, useEffect, useRef, useImperativeHandle } from 'react'
 
-import Render, { MarrowController } from '@marrow/render'
-import { getMarrowIdsByLocation } from '@marrow/utils'
-import { Marrow, ElementType } from '@marrow/global'
-import { AudioInfo } from '@marrow/audio'
+import Render, { MarrowController } from '../../render/src'
+import { getMarrowIdsByLocation } from '../../utils/src'
+import { Marrow, ElementType } from '../../types/global'
+import { AudioInfo } from '../../audio/src'
 
 import TopNav from './components/topNav'
 import Controller from './components/controller'

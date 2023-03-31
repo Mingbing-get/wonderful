@@ -1,5 +1,5 @@
 import React from 'react'
-import { Badge, Icon } from '@marrow/rabbit'
+import { Badge, Icon } from '../../../rabbit/src'
 
 export default function ExampleBadge() {
   return (

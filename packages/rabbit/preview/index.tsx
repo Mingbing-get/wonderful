@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 
-import { responseRegister } from '@marrow/rabbit'
+import { responseRegister } from '../../rabbit/src'
 
 import ExampleRender from './exampleRender'
 import './index.scss'

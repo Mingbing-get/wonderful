@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, message, MessageType } from '@marrow/rabbit'
+import { Button, message, MessageType } from '../../../rabbit/src'
 
 export default function ExampleLoading() {
   function showMessage(type: MessageType) {
