@@ -95,7 +95,7 @@ export default function Steps({
   }, [stepsWrapperRef.current, direction, type])
 
   const getStatus = useCallback((index: number, itemStatus?: StepsStatus): StepsStatus | undefined => {
-    if (!current) return itemStatus
+    if (current === undefined) return itemStatus
 
     if (index < current) return itemStatus || 'finish'
     if (index === current) return status
