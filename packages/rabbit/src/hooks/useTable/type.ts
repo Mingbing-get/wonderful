@@ -1,4 +1,5 @@
 import React from 'react'
+import { OptionType } from '../../checkbox'
 
 export type DataType = Record<string, any>
 
@@ -38,11 +39,13 @@ export type ColumnFilter<T extends DataType, D extends any = any> = {
   render: FilterRender<T, D> | FilterType,
   icon?: React.ReactNode,
   filterValue?: D,
+  options?: OptionType[]
 }
 
 export type FilterRenderProps<T extends DataType, D extends any = any> = {
   data: TableRow<T>[],
   filterValue?: D,
+  options?: OptionType[],
   onFilter: (excludeIds: string[], filterValue: D) => void,
   closePopover: () => void,
   setEffect: (effect: boolean) => void,

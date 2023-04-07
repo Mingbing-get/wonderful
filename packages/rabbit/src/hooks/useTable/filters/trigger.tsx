@@ -48,6 +48,7 @@ export default function FilterTrigger<T extends DataType>({
           setEffect={setEffect}
           closePopover={closePopover}
           filterValue={filter?.filterValue}
+          options={filter?.options}
         />
       )
     }

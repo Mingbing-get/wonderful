@@ -12,6 +12,7 @@ type Props<T extends DataType> = {
 export default function RadioFilter<T extends DataType>({
   data,
   filterValue,
+  options,
   accessor,
   setEffect,
   onFilter,
@@ -36,7 +37,9 @@ export default function RadioFilter<T extends DataType>({
     closePopover()
   }, [closePopover, filterValue])
 
-  const options: OptionType[] = useMemo(() => {
+  const _options: OptionType[] = useMemo(() => {
+    if (options) return options as OptionType[]
+
     const values: string[] = []
     data.forEach(row => {
       if (!values.includes(row.data[accessor])) {
@@ -47,7 +50,7 @@ export default function RadioFilter<T extends DataType>({
     return values.map(value => ({
       value
     }))
-  }, [data, accessor])
+  }, [data, accessor, options])
 
   return (
     <div className='filter-wrapper'>
@@ -55,7 +58,7 @@ export default function RadioFilter<T extends DataType>({
         className='filter-checkbox'
         value={value}
         onChange={val => setValue(val || '')}
-        options={options}
+        options={_options}
       />
       <div className='filter-footer'>
         <Button onClick={handleCancel}>

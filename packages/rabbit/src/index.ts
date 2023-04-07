@@ -50,7 +50,7 @@ export {
   SortRenderProps as TableSortRenderProps,
   SortDir as TableSortDir,
 } from './hooks/useTable/type'
-export { default as useTable } from './hooks/useTable'
+export { default as useTable, FilterMapType, SaveSort } from './hooks/useTable'
 
 export { default as useVirtualScrollY, VirtualScrollY } from './hooks/useVirtualScrollY' 
 export { default as useSyncScrollX } from './hooks/useSyncScrollX'
