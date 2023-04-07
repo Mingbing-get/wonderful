@@ -8,12 +8,19 @@ import FilterTrigger from './filters/trigger'
 import Sort from './sort'
 import './filters/index.scss'
 
+export type SingleFilter = {
+  excludeIds: string[],
+  filterValue?: any
+}
+
+export type FilterMapType = Record<string, SingleFilter>
+
 type Props<T extends DataType = DataType> = {
   columns: Column<T>[],
   data: T[],
   page?: PageConfig,
   tableWidth?: number,
-  onFilter?: (filters: Record<string, Array<string>>, data: TableRow<T>[]) => void,
+  onFilter?: (filters: FilterMapType, data: TableRow<T>[]) => void,
   onSort?: (sorter: SaveSort<T>[], data: TableRow<T>[]) => void,
 }
 
@@ -45,7 +52,7 @@ export default function useTable<T extends DataType = DataType>({
   const [header, setHeader] = useState<TableHeadRow<T>[]>([])
   const [footer, setFooter] = useState<TableHeadRow<T>[]>([])
   const [body, setBody] = useState<TableRow<T>[]>([])
-  const [filterMap, setFilterMap] = useState<Record<string, Array<string>>>({})
+  const [filterMap, setFilterMap] = useState<FilterMapType>({})
   const [sortList, setSortList] = useState<SaveSort<T>[]>([])
 
   const filterCounter = useRef({ pre: 0, cur: 0 })
@@ -75,7 +82,10 @@ export default function useTable<T extends DataType = DataType>({
     }
     setFilterMap((oldMap) => ({
       ...oldMap,
-      [column.accessor]: excludeIds
+      [column.accessor]: {
+        excludeIds,
+        filterValue
+      }
     }))
     filterCounter.current.cur++
   }, [])
@@ -234,7 +244,7 @@ export default function useTable<T extends DataType = DataType>({
     const excludeIds: string[] = []
 
     for (const key in filterMap) {
-      excludeIds.push(...filterMap[key])
+      excludeIds.push(...filterMap[key].excludeIds)
     }
     
     return body.filter(row => {

@@ -11,10 +11,11 @@ async function run() {
   })
 
   const executing = [];
-  [...directories, 'types'].forEach(directoryName => {
+  directories.forEach(directoryName => {
     executing.push(build(directoryName))
   })
   await Promise.all(executing)
+  await build('types')
 
   const addJson = []
   directories.forEach(directoryName => {

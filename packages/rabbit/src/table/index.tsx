@@ -3,7 +3,7 @@ import classNames from 'classnames'
 
 import Loading from '../loading'
 import Pagination, { Props as PaginationProps } from '../pagination'
-import useTable, { PageConfig, SaveSort } from '../hooks/useTable'
+import useTable, { PageConfig, SaveSort, FilterMapType } from '../hooks/useTable'
 import { Column, DataType, TableRow, TableHeadRow, AccessorColumn } from '../hooks/useTable/type'
 import useResize from '../hooks/useResize'
 import useSyncScrollX from '../hooks/useSyncScrollX'
@@ -32,7 +32,7 @@ type Props<T extends DataType = DataType> = {
   onRow?: (row: TableRow<T>) => React.HtmlHTMLAttributes<HTMLTableRowElement>,
   onHeaderRow?: (headRow: TableHeadRow<T>) => React.HtmlHTMLAttributes<HTMLTableRowElement>,
   onFooterRow?: (headRow: TableHeadRow<T>) => React.HtmlHTMLAttributes<HTMLTableRowElement>,
-  onFilter?: (filters: Record<string, Array<string>>, data: TableRow<T>[]) => void,
+  onFilter?: (filters: FilterMapType, data: TableRow<T>[]) => void,
   onSort?: (sorter: SaveSort<T>[], data: TableRow<T>[]) => void,
 }
 
