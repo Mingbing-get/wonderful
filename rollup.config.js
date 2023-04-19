@@ -4,8 +4,10 @@ const nodeResolve = require('@rollup/plugin-node-resolve')
 const babel =  require('@rollup/plugin-babel')
 const commonjs = require('@rollup/plugin-commonjs')
 const scss = require('rollup-plugin-scss')
+const url = require('@rollup/plugin-url')
 const jsx = require('acorn-jsx')
 const excludeDependenciesFromBundle = require('rollup-plugin-exclude-dependencies-from-bundle')
+const clear = require('rollup-plugin-clear')
 
 const { getBabelOutputPlugin } = babel
 
@@ -98,7 +100,16 @@ function createConfig(format, output) {
     output,
     acornInjectPlugins: [jsx()],
     plugins: [
+      clear({
+        targets: [path.resolve(output.file, '../')]
+      }),
       nodeResolve(),
+      url({
+        fileName: '[dirname][hash][extname]',
+        limit: 0,
+        publicPath: `node_modules/wonderful-marrow/${process.env.TARGET}/`,
+        destDir: path.resolve(output.file, '../')
+      }),
       scss(),
       ts({
         check: process.env.NODE_ENV === 'production',
@@ -117,7 +128,7 @@ function createConfig(format, output) {
         babelHelpers: 'bundled',
         extensions: ['.js', '.jsx', '.es6', '.es', '.mjs', '.ts', '.tsx'],
       }),
-      excludeDependenciesFromBundle()
+      excludeDependenciesFromBundle(),
     ]
   }
 }

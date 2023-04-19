@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import classNames from 'classnames'
 
-import Group, { OptionType } from './group'
+import Group, { OptionType, ValueType } from './group'
 import { useRadio } from './context'
 
 import './index.scss'
@@ -11,6 +11,7 @@ export { OptionType }
 type Props = {
   className?: string,
   style?: React.CSSProperties,
+  value?: ValueType,
   disabled?: boolean,
   checked?: boolean,
   defaultChecked?: boolean,
@@ -21,6 +22,7 @@ type Props = {
 function Radio({
   className,
   style,
+  value,
   disabled,
   checked,
   defaultChecked,
@@ -28,7 +30,7 @@ function Radio({
   onChange
 }: Props, ref?: React.ForwardedRef<HTMLDivElement>) {
   const [_checked, setChecked] = useState<boolean>(false)
-  const { value, triggerChange, addValue } = useRadio()
+  const { value: _value, triggerChange, addValue } = useRadio()
   const preChecked = useRef<boolean>(false)
 
   useEffect(() => {
@@ -46,26 +48,26 @@ function Radio({
   }, [checked])
 
   useEffect(() => {
-    if (value === children) {
+    if (_value === children) {
       preChecked.current = true
       setChecked(true)
     }
   }, [])
 
   useEffect(() => {
-    if ((value === children) === preChecked.current || !addValue) return
+    if ((_value === children) === preChecked.current || !addValue) return
 
     setChecked(!preChecked.current)
     onChange?.(!preChecked.current)
     preChecked.current = !preChecked.current
-  }, [value])
+  }, [_value])
 
   function handleClick() {
     if (disabled) return
 
     preChecked.current = !_checked
     onChange?.(!_checked)
-    triggerChange?.(children, !_checked)
+    value && triggerChange?.(value, !_checked)
     setChecked(!_checked)
   }
 

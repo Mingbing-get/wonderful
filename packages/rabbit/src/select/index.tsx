@@ -7,7 +7,6 @@ import Popover from '../popover'
 import Option from './option'
 
 import './index.scss'
-import { InputRef } from 'rc-input'
 
 export type ValueType = number | string;
 export type OptionType<T extends ValueType = ValueType> = {

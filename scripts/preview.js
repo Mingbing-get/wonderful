@@ -29,6 +29,7 @@ serve({
     '.jpeg': 'file',
     '.jpg': 'file',
     '.mp3': 'file',
+    '.svg': 'file',
     '.jsx': 'jsx',
   },
 
