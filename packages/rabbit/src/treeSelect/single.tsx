@@ -38,8 +38,13 @@ export default function SingleTreeSelect({
   const [visible, setVisible] = useState(false)
   const [_checkedPath, setCheckedPath] = useState(defaultCheckedPath || checkedPath || [])
   const treeRef = useRef<TreeRef>()
+  const initRef = useRef(false)
 
   useEffect(() => {
+    if (!initRef.current) {
+      initRef.current = true
+      if (checkedPath === undefined) return
+    }
     setCheckedPath(checkedPath || [])
   }, [checkedPath])
 

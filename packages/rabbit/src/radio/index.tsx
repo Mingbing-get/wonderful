@@ -48,14 +48,14 @@ function Radio({
   }, [checked])
 
   useEffect(() => {
-    if (_value === children) {
+    if (value && _value === value) {
       preChecked.current = true
       setChecked(true)
     }
   }, [])
 
   useEffect(() => {
-    if ((_value === children) === preChecked.current || !addValue) return
+    if (!value || (_value === value) === preChecked.current || !addValue) return
 
     setChecked(!preChecked.current)
     onChange?.(!preChecked.current)

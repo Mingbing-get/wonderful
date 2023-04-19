@@ -48,12 +48,21 @@ export default function Select<T extends ValueType>({
   const [visible, setVisible] = useState(false)
   const [_value, setValue] = useState<T>()
   const selectWrapperRef = useRef<HTMLDivElement>(null)
+  const initRef = useRef(false)
 
   useEffect(() => setValue(defaultValue), [])
 
   useEffect(() => {
-    if (value === _value) return
-    setValue(value)
+    if (!initRef.current) {
+      initRef.current = true
+      if (value === undefined) return
+    }
+
+    setValue(old => {
+      if (value === old) return old
+
+      return value
+    })
   }, [value])
 
   useEffect(() => {

@@ -55,8 +55,13 @@ export default function MultipleTreeSelect({
   const treeRef = useRef<TreeRef>()
   const preTreeRef = useRef<TreeRef>()
   const popoverRef = useRef<PopoverRef>()
+  const initRef = useRef(false)
 
   useEffect(() => {
+    if (!initRef.current) {
+      initRef.current = true
+      if (checkedPath === undefined) return
+    }
     setCheckedPath(checkedPath || [])
   }, [checkedPath])
 

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState, useRef } from 'react'
 import classNames from 'classnames'
 
 import Input from '../input'
@@ -66,11 +66,18 @@ export default function DatePicker({
   const [visible, setVisible] = useState(false)
   const [count, setCount] = useState(0)
 
+  const initRef = useRef(false)
+
   const _formatDateAndTime = useCallback((value: Dayjs) => {
     return formatDateAndTime(value, mode, customFormat?.format, time ? (time.format || 'HH:mm:ss') : undefined, time?.customFormat?.format)
   }, [mode, customFormat, time])
 
   useEffect(() => {
+    if (!initRef.current) {
+      initRef.current = true
+      if (value === undefined) return
+    }
+
     setValue(oldValue => {
       if (oldValue?.isSame(value)) return oldValue
 
