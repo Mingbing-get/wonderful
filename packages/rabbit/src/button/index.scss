@@ -15,8 +15,7 @@
     bottom: 0;
     right: 0;
     cursor: not-allowed;
-  }
-  .loading-mask {
+
     display: none;
     align-items: center;
     justify-content: center;
@@ -24,18 +23,6 @@
 
   &.is-block {
     width: 100%;
-  }
-  &.is-disabled {
-    background-color: var(--rabbit-disabled-bg-color);
-    color: var(--rabbit-disabled-color);
-    cursor: not-allowed;
-  }
-  &.is-loading {
-    background-color: var(--rabbit-disabled-bg-color);
-    color: var(--rabbit-disabled-color);
-    .loading-mask {
-      display: flex;
-    }
   }
 
   @each $name, $color in 
@@ -48,19 +35,36 @@
           background-color: $color;
           border-color: $color;
       
-          &>.button-content {
-            color: #fff;
-          }
-      
           &.is-ghost {
             color: $color;
             background-color: transparent;
             border-color: $color;
-      
-            &>.button-content {
-              color: $color;
-            }
           }
         }
     }
+
+  &.is-disabled {
+    background-color: var(--rabbit-disabled-bg-color);
+    border-color: var(--rabbit-disabled-bg-color);
+    color: var(--rabbit-disabled-color);
+    cursor: not-allowed;
+    &.is-ghost {
+      color: var(--rabbit-disabled-color);
+      background-color: transparent;
+      border-color: var(--rabbit-disabled-bg-color);
+    }
+  }
+  &.is-loading {
+    background-color: var(--rabbit-disabled-bg-color);
+    border-color: var(--rabbit-disabled-bg-color);
+    color: var(--rabbit-disabled-color);
+    &.is-ghost {
+      color: var(--rabbit-disabled-color);
+      background-color: transparent;
+      border-color: var(--rabbit-disabled-bg-color);
+    }
+    .loading-mask {
+      display: flex;
+    }
+  }
 }
