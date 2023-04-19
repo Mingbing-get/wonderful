@@ -85,6 +85,7 @@ function Group<T extends ValueType>({
             <Checkbox
               key={item.value}
               disabled={item.disabled}
+              value={item.value}
             >
               {item.label || `${item.value}`}
             </Checkbox>

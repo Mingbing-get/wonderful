@@ -15,7 +15,7 @@ type Props = {
   disabled?: boolean,
   checked?: boolean,
   defaultChecked?: boolean,
-  children: string,
+  children: React.ReactNode,
   onChange?: (checked: boolean) => void
 }
 
@@ -36,14 +36,14 @@ function Radio({
   useEffect(() => {
     if (defaultChecked === undefined) return
     preChecked.current = defaultChecked
-    defaultChecked && addValue?.(children)
+    defaultChecked && value && addValue?.(value)
     setChecked(defaultChecked)
   }, [])
 
   useEffect(() => {
     if (checked === undefined || preChecked.current === checked) return
     preChecked.current = checked
-    checked && addValue?.(children)
+    checked && value && addValue?.(value)
     setChecked(checked)
   }, [checked])
 

@@ -30,16 +30,16 @@ export default function ExampleCheckbox() {
       />
       <CheckboxGroup onChange={val => console.log(val)} >
         <div>
-          <Checkbox defaultChecked>
+          <Checkbox value='A' defaultChecked>
             A
           </Checkbox>
         </div>
         <div>
-          <Checkbox checked>
+          <Checkbox value='B' checked>
             B
           </Checkbox>
         </div>
-        <Checkbox>
+        <Checkbox value='C'>
           C
         </Checkbox>
         <div>

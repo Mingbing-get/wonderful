@@ -28,16 +28,16 @@ export default function ExampleRadio() {
       <RadioGroup onChange={val => console.log(val)} >
         <div>
           <span>其他节点</span>
-          <Radio defaultChecked>
+          <Radio value='A' defaultChecked>
             A
           </Radio>
         </div>
         <div>
-          <Radio>
+          <Radio value='B'>
             B
           </Radio>
         </div>
-        <Radio>
+        <Radio value='C'>
           C
         </Radio>
         <div>
