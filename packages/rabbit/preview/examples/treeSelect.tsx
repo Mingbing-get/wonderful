@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { TreeSelect, TreeNode, MultipleTreeSelect } from '../../../rabbit/src'
+import { TreeSelect, TreeNode, MultipleTreeSelect, Input } from '../../../rabbit/src'
 
 const baseData: TreeNode[] = [
   {
@@ -60,7 +60,7 @@ export default function ExampleTreeSelect() {
   const [data, setData] = useState(baseData)
 
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 24%)', justifyContent: 'space-between', gridRowGap: 20 }}>
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 19%)', justifyContent: 'space-between', gridRowGap: 20 }}>
       <TreeSelect
         allowClear
         data={data}
@@ -92,6 +92,14 @@ export default function ExampleTreeSelect() {
         }}
         draggable
       />
+      <TreeSelect
+        allowClear
+        data={data}
+        showLine
+        renderExtra={(path, parentNode) => (
+          <Input />
+        )}
+      />
       <MultipleTreeSelect
         allowClear
         data={data}
@@ -119,6 +127,14 @@ export default function ExampleTreeSelect() {
           itemHeight: 26
         }}
         draggable
+      />
+      <MultipleTreeSelect
+        allowClear
+        data={data}
+        showLine
+        renderExtra={(path, parentNode) => (
+          <Input />
+        )}
       />
     </div>
   )

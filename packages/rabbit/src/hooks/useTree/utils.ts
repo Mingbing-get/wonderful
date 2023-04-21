@@ -369,6 +369,20 @@ function resetParent<T extends BaseTreeNode>(nodeParent?: LinkTreeNode<T>) {
     linkNode.halfChecked = checked ? false : halfChecked
   })
 }
+// 获取LinkNode的path
+export function getPathFromLinkTreeNode<T extends BaseTreeNode>(linkForest: LinkTreeNode<T>): TreeValue[] {
+  const path: TreeValue[] = []
+
+  let currentNode = linkForest
+  while(true) {
+    path.unshift(currentNode.value)
+    if (!currentNode.parent) break
+
+    currentNode = currentNode.parent
+  }
+
+  return path
+}
 // 将TreeValue的path转换成linkTreeNode的path
 export function checkedPathToLinkPath<T extends BaseTreeNode>(multiple: true, checkedPath: TreeValue[] | TreeValue[][], linkForest: LinkTreeNode<T>[]): LinkTreeNode<T>[][]
 export function checkedPathToLinkPath<T extends BaseTreeNode>(multiple: false, checkedPath: TreeValue[] | TreeValue[][], linkForest: LinkTreeNode<T>[]): LinkTreeNode<T>[]

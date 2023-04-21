@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Tree, MultipleTree, Icon, TreeNode } from '../../../rabbit/src'
+import { Tree, MultipleTree, Icon, TreeNode, Input } from '../../../rabbit/src'
 
 const baseData: TreeNode[] = [
   {
@@ -67,7 +67,7 @@ export default function ExampleTree() {
   }, [])
 
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 19%)', justifyContent: 'space-between' }}>
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 16%)', justifyContent: 'space-between' }}>
       <Tree
         data={data}
         expandPath={expandPath}
@@ -112,6 +112,12 @@ export default function ExampleTree() {
           itemHeight: 30
         }}
       />
+      <Tree
+        data={data}
+        renderExtra={(path, parentNode) => (
+          <Input />
+        )}
+      />
       <MultipleTree
         data={data}
       />
@@ -125,6 +131,15 @@ export default function ExampleTree() {
           height: 400,
           itemHeight: 30
         }}
+      />
+      <MultipleTree
+        data={data}
+        draggable
+        renderExtra={(path, parentNode) => (
+          parentNode?.value === '0-0' ?
+          false :
+          <Input />
+        )}
       />
     </div>
   )

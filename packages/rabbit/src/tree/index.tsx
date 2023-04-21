@@ -1,7 +1,7 @@
 import React from 'react'
 import { BaseTreeNode, TreeValue, InnerLocation, LinkTreeNode } from '../hooks/useTree/type'
 
-import { VirtualScroll } from '../hooks/useVirtualScrollY'
+import { VirtualScrollY } from '../hooks/useVirtualScrollY'
 import SingleTree from './single'
 import MultipleTree from './multiple'
 import './index.scss'
@@ -30,8 +30,9 @@ export type BaseProps = {
   showLine?: boolean,
   expandIcon?: React.ReactNode,
   draggleIcon?: React.ReactNode | boolean,
-  virtualScroll?: VirtualScroll,
+  virtualScroll?: VirtualScrollY,
   renderLabelIcon?: (node: TreeNode, isExpand?: boolean, isLeaf?: boolean) => React.ReactNode,
+  renderExtra?: (parentPath: TreeValue[], parentNode?: TreeNode) => React.ReactNode | false,
   labelRender?: TreeLabelRender,
   loadData?: (node: TreeNode) => void,
   onExpand?: (expandPath: TreeValue[][], node: TreeNode, isExpand: boolean) => void,

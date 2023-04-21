@@ -4,6 +4,7 @@ import classNames from 'classnames'
 
 import { isSame } from '../utils'
 import useTree from '../hooks/useTree'
+import { getPathFromLinkTreeNode } from '../hooks/useTree/utils'
 import useVirtualScrollY from '../hooks/useVirtualScrollY'
 import { LinkTreeNode, BaseTreeNode, TreeValue } from '../hooks/useTree/type'
 
@@ -41,6 +42,7 @@ function SingleTree({
   draggleIcon = true,
   virtualScroll,
   renderLabelIcon,
+  renderExtra,
   labelRender = defaultLabelRender,
   loadData,
   onChecked,
@@ -161,7 +163,7 @@ function SingleTree({
     deepRef.current = 0
     return getRenderOptions(linkForest, 0)
 
-    function getRenderOptions(linkForest: LinkTreeNode<TreeNode>[], level: number) {
+    function getRenderOptions(linkForest: LinkTreeNode<TreeNode>[], level: number, parentNode?: LinkTreeNode<TreeNode>) {
       deepRef.current = Math.max(level, deepRef.current)
       const options: React.ReactNode[] = []
       linkForest.forEach(linkNode => {
@@ -214,12 +216,45 @@ function SingleTree({
         )
 
         if (linkNode.isExpand && linkNode.children) {
-          options.push(...getRenderOptions(linkNode.children, level + 1))
+          options.push(...getRenderOptions(linkNode.children, level + 1, linkNode))
         }
       })
+
+      const path = parentNode ? getPathFromLinkTreeNode(parentNode) : []
+      const extra = renderExtra?.(path, parentNode?.data)
+      if (extra) {
+        options.push(
+          <div
+            key={`extra-${level}-${parentNode?.value || 'first'}`}
+            style={{ marginLeft: `${level}rem` }}
+            className={classNames(
+              'tree-item',
+              itemClassName,
+              'is-left'
+            )}
+          >
+            {
+              draggable && draggleIcon && (
+                <span className='draggle-handle' style={{ opacity: 0, cursor: 'default' }}>
+                  {
+                    draggleIcon === true ?
+                      <Icon type='draggle' /> :
+                      draggleIcon
+                  }
+                </span>
+              )
+            }
+            <span className='expand-handle'>
+              {expandIcon || <Icon className='tree-arrow-right' type='arrowRight' />}
+            </span>
+            {extra}
+          </div>
+        )
+      }
+
       return options
     }
-  }, [linkForest, toggleExpand, toggleChecked, labelRender, renderLabelIcon, expandIcon, itemClassName, draggable, draggleIcon])
+  }, [linkForest, toggleExpand, toggleChecked, labelRender, renderLabelIcon, renderExtra, expandIcon, itemClassName, draggable, draggleIcon])
 
   const {
     handleScroll,
