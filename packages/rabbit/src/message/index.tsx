@@ -3,24 +3,15 @@ import { createRoot } from 'react-dom/client'
 import classNames from 'classnames'
 
 import Icon, { IconType } from '../icon'
+import { MessageProps } from '../types/message'
 
 import './index.scss'
-
-export type MessageType = 'success' | 'info' | 'warn' | 'error'
-
-type Props = {
-  type?: MessageType,
-  delay?: number,
-  displayTime?: number,
-  content: React.ReactNode,
-  icon?: IconType,
-}
 
 function Message({
   type = 'info',
   content,
   icon,
-}: Omit<Props, 'delay' | 'displayTime'>) {
+}: Omit<MessageProps, 'delay' | 'displayTime'>) {
   const _icon = useMemo(() => {
     if (icon) return icon
     return {
@@ -46,28 +37,28 @@ class MessageFactory {
     this.effectDivList = []
   }
 
-  info({ delay = 0, ...props }: Omit<Props, 'type'>) {
+  info({ delay = 0, ...props }: Omit<MessageProps, 'type'>) {
     delay === 0
       ? this.createInstance({...props, type: 'info'})
       : setTimeout(() => {
         this.createInstance({ ...props, type: 'info' })
       }, delay);
   }
-  success({ delay = 0, ...props }: Omit<Props, 'type'>) {
+  success({ delay = 0, ...props }: Omit<MessageProps, 'type'>) {
     delay === 0
       ? this.createInstance({ ...props, type: 'success' })
       : setTimeout(() => {
         this.createInstance({ ...props, type: 'success' })
       }, delay);
   }
-  warn({ delay = 0, ...props }: Omit<Props, 'type'>) {
+  warn({ delay = 0, ...props }: Omit<MessageProps, 'type'>) {
     delay === 0
       ? this.createInstance({ ...props, type: 'warn' })
       : setTimeout(() => {
         this.createInstance({ ...props, type: 'warn' })
       }, delay);
   }
-  error({ delay = 0, ...props }: Omit<Props, 'type'>) {
+  error({ delay = 0, ...props }: Omit<MessageProps, 'type'>) {
     delay === 0
       ? this.createInstance({ ...props, type: 'error' })
       : setTimeout(() => {
@@ -75,7 +66,7 @@ class MessageFactory {
       }, delay);
   }
 
-  private createInstance({ displayTime = 3000, ...extra }: Omit<Props, 'id' | 'delay'>) {
+  private createInstance({ displayTime = 3000, ...extra }: Omit<MessageProps, 'id' | 'delay'>) {
     const id = this.generateId()
     const lastInstanceBottom = this.getLastInstanceBottom()
     const div = document.createElement('div')

@@ -1,11 +1,7 @@
 import React from 'react'
 
-export type Props = {
-  title: React.ReactNode;
-  key: React.Key;
-  children: React.ReactElement;
-}
+import { TabItemProps } from '../types/tab'
 
-export default function TabItem({}: Props) {
+export default function TabItem({ }: TabItemProps) {
   return <></>
 }

@@ -6,26 +6,16 @@ import { isSame } from '../utils'
 import useTree from '../hooks/useTree'
 import { getPathFromLinkTreeNode } from '../hooks/useTree/utils'
 import useVirtualScrollY from '../hooks/useVirtualScrollY'
-import { LinkTreeNode, BaseTreeNode, TreeValue } from '../hooks/useTree/type'
+import { LinkTreeNode, TreeValue } from '../hooks/useTree/type'
 
 import Icon from '../icon'
 
 import useDragTree from './useDragTree'
-import { BaseProps, TreeLabelRender, TreeRef } from './index'
+import { SingleTreeProps, TreeNode, TreeLabelRender, TreeRef } from '../types/tree'
 
 type ChangeRecord = { node: TreeNode, res: boolean }
 
-export type TreeNode = BaseTreeNode<{
-  label?: string
-}>
-
 const defaultLabelRender: TreeLabelRender = (node) => node.label || node.value
-
-export type Props = BaseProps & {
-  defaultCheckedPath?: TreeValue[],
-  checkedPath?: TreeValue[],
-  onChecked?: (checkedPath: TreeValue[], node: TreeNode, isChecked: boolean) => void,
-}
 
 function SingleTree({
   className,
@@ -49,7 +39,7 @@ function SingleTree({
   onExpand,
   onCanMove,
   onMove
-}: Props, ref: React.ForwardedRef<TreeRef>) {
+}: SingleTreeProps, ref: React.ForwardedRef<TreeRef>) {
   const hookCheckedPathRef = useRef<TreeValue[]>([])
   const hookExpandPathRef = useRef<TreeValue[][]>([])
   const curCheckedRef = useRef<ChangeRecord>()
@@ -302,4 +292,4 @@ function SingleTree({
   )
 }
 
-export default React.forwardRef<TreeRef, Props>(SingleTree)
+export default React.forwardRef<TreeRef, SingleTreeProps>(SingleTree)

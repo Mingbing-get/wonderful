@@ -1,16 +1,18 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import classNames from 'classnames'
 
-import MultipleTree, { Props as MultipleTreeProps } from '../tree/multiple'
+import MultipleTree from '../tree/multiple'
 import { TreeValue } from '../hooks/useTree/type'
 import { checkedPathToLinkPath } from '../hooks/useTree/utils'
 import useMultipleDisplay from '../hooks/useMultipleDisplay'
-import { TreeNode, TreeRef } from '../tree'
-import Popover, { PopoverRef } from '../popover'
+import Popover from '../popover'
 import Input from '../input'
 import Icon from '../icon'
 import Tag from '../tag'
-import { TreeSelectBaseProps } from './index'
+
+import { PopoverRef } from '../types/popover'
+import { TreeNode, TreeRef } from '../types/tree'
+import { MultipleTreeSelectProps } from '../types/treeSelect'
 
 const defaultDisplayRender = (checkedPath: TreeNode[][], onClose: (data: TreeNode) => void) => {
   return checkedPath.map((singlePath, index) => {
@@ -24,11 +26,6 @@ const defaultDisplayRender = (checkedPath: TreeNode[][], onClose: (data: TreeNod
     )
   })
 }
-
-type Props = {
-  onChange?: (checkedPath: TreeValue[][]) => void,
-  displayRender?: (checkedPath: TreeValue[][], checkedDataPath: TreeNode[][]) => string,
-} & TreeSelectBaseProps & MultipleTreeProps
 
 export default function MultipleTreeSelect({
   style,
@@ -49,7 +46,7 @@ export default function MultipleTreeSelect({
   onPopoverVisibleChange,
   displayRender,
   ...extra
-}: Props) {
+}: MultipleTreeSelectProps) {
   const [visible, setVisible] = useState(false)
   const [_checkedPath, setCheckedPath] = useState(defaultCheckedPath || checkedPath || [])
   const treeRef = useRef<TreeRef>()

@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 import classNames from 'classnames'
 
-import { PanelProps } from '../index'
+import { CalendarPanelProps } from '../../types/calendar'
 import { isSameDate, Dayjs } from '../utils'
 
 type MonthType = {
@@ -16,7 +16,7 @@ export default function MonthPanel({
   cellRender,
   disabledDate,
   onCellClick,
-}: PanelProps) {
+}: CalendarPanelProps) {
 
   const cellData: MonthType[] = useMemo(() => {
     return new Array(12).fill(1).map((_, index) => {

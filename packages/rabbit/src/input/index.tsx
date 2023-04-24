@@ -1,19 +1,18 @@
 import React from 'react'
 import classNames from 'classnames'
-import RcInput, { InputProps, InputRef } from 'rc-input'
+import RcInput from 'rc-input'
 
 import Icon from '../icon'
+import { InputProps, InputRef } from '../types/input'
 
 import './index.scss'
-
-export type Props = Omit<InputProps, 'prefixCls'>
 
 function Input({
   className,
   style,
   allowClear,
   ...extra
-}: Props, ref?: React.ForwardedRef<InputRef>){
+}: InputProps, ref?: React.ForwardedRef<InputRef>){
   return (
     <div className={classNames('rabbit-input-wrapper', extra.disabled && 'is-disabled', className)} style={style}>
       <RcInput
@@ -28,4 +27,4 @@ function Input({
   )
 }
 
-export default React.forwardRef<InputRef, Props>(Input)
+export default React.forwardRef<InputRef, InputProps>(Input)

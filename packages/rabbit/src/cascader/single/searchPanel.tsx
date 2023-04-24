@@ -3,7 +3,7 @@ import classNames from 'classnames'
 
 import { LinkTreeNode, TreeMode } from '../../hooks/useTree/type'
 import { searchTextFromBaseTree } from '../../hooks/useTree/utils'
-import { CascaderOption } from '../index'
+import { CascaderOption } from '../../types/cascader'
 
 type SearchPath = {
   texts: string[],

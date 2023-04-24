@@ -3,15 +3,7 @@ import classNames from 'classnames'
 
 import Icon from '../icon'
 
-export type PanelProps = {
-  header: React.ReactNode;
-  panelKey: React.Key;
-  children: React.ReactElement;
-  isOpen?: boolean;
-  className?: string;
-  style?: React.CSSProperties;
-  onToggleOpen?: (key: React.Key) => void;
-}
+import { CollapsePanelProps } from '../types/collapse'
 
 export default function Panel({
   header,
@@ -21,7 +13,7 @@ export default function Panel({
   className,
   style,
   onToggleOpen
-}: PanelProps) {
+}: CollapsePanelProps) {
   const contentRef = useRef<HTMLDivElement>(null)
   const preOpen = useRef(false)
 

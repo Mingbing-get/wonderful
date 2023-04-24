@@ -1,36 +1,9 @@
-import React, { ReactNode, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import classNames from 'classnames'
 
 import Icon from '../icon'
+import { ProgressProps, ProgressStatus, ProgressBaseProps, ProgressCircleProps, ProgressLinearGradientColor } from '../types/progress'
 import './index.scss'
-
-export type ProgressType = 'line' | 'circle'
-export type ProgressStatus = 'success' | 'error' | 'normal'
-export type ProgressStartPosition = 'top' | 'left' | 'right' | 'bottom'
-type LinearGradientColor = Record<number, string>
-
-type BaseProps = {
-  percent: number,
-  hiddenInfo?: boolean,
-  status?: ProgressStatus,
-  strokeWidth?: number,
-  strokeColor?: string | LinearGradientColor,
-  successColor?: string | LinearGradientColor,
-  errorColor?: string | LinearGradientColor,
-  trailColor?: string,
-  format?: (percent: number, status: ProgressStatus) => ReactNode,
-}
-
-type CircleProps = {
-  type: 'circle',
-  width?: number,
-  gapDegree?: number,
-  startPosition?: ProgressStartPosition
-}
-
-type Props = BaseProps & {
-  type?: 'line',
-} | BaseProps & CircleProps
 
 function defaultFormat(percent: number, status: ProgressStatus) {
   if (status === 'normal') return `${percent}%`
@@ -50,7 +23,7 @@ export default function Progress({
   trailColor = 'rgba(0,0,0,.06)',
   format = defaultFormat,
   ...extra
- }: Props) {
+}: ProgressProps) {
   const _percent = useMemo(() => {
     if (percent < 0) return 0
     if (percent > 100) return 100
@@ -104,7 +77,7 @@ function ProgressLine({
   trailColor,
   hiddenInfo,
   format
-}: Required<BaseProps>) {
+}: Required<ProgressBaseProps>) {
   const lineColor = useMemo(() => {
     let currentColor = strokeColor
     if (status === 'success') currentColor = successColor
@@ -147,7 +120,7 @@ export function ProgressCircle({
   gapDegree = 0,
   startPosition = 'top',
   format
-}: Required<BaseProps> & Omit<CircleProps, 'type' | 'width'>) {
+}: Required<ProgressBaseProps> & Omit<ProgressCircleProps, 'type' | 'width'>) {
   const r = 50
   const lineColor = useMemo(() => {
     let currentColor = strokeColor
@@ -232,6 +205,6 @@ export function ProgressCircle({
   )
 }
 
-function colorIsString(color: string | LinearGradientColor): color is string {
+function colorIsString(color: string | ProgressLinearGradientColor): color is string {
   return typeof color === 'string'
 }

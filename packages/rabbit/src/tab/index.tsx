@@ -1,17 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import classNames from 'classnames'
 
-import TabItem, { Props as ItemType } from './item'
-
+import TabItem from './item'
+import { TabProps, TabItemProps } from '../types/tab'
 import './index.scss'
-
-type Props = {
-  defaultActiveKey?: React.Key;
-  onChange?: (key: React.Key) => void;
-  children: React.ReactElement[] | React.ReactElement;
-  className?: string;
-  style?: React.CSSProperties;
-}
 
 export default function Tab({
   defaultActiveKey,
@@ -19,10 +11,10 @@ export default function Tab({
   children,
   className,
   style
-}: Props) {
+}: TabProps) {
   const [childTypeError, setChildTypeError] = useState(false)
   const [activeKey, setActiveKey] = useState(defaultActiveKey)
-  const [items, setItems] = useState<ItemType[]>([])
+  const [items, setItems] = useState<TabItemProps[]>([])
 
   useEffect(() => {
     const items =  React.Children.map(children, (child, i) => {
@@ -38,7 +30,7 @@ export default function Tab({
         title: child.props.title,
         key: child.key,
         children: child.props.children
-      } as ItemType
+      } as TabItemProps
     })
 
     setItems(items)
@@ -50,6 +42,7 @@ export default function Tab({
 
   function handleChange(key: React.Key) {
     setActiveKey(key)
+    onChange?.(key)
   }
 
   function getActiveNode() {

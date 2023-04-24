@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from 'react'
 import classNames from 'classnames'
 
-import { PanelProps } from '../index'
+import { CalendarPanelProps } from '../../types/calendar'
 import { isSameDate, Dayjs } from '../utils'
 
 const weeks = ['日', '一', '二', '三', '四', '五', '六']
@@ -20,7 +20,7 @@ export default function DatePanel({
   cellRender,
   disabledDate,
   onCellClick,
-}: PanelProps) {
+}: CalendarPanelProps) {
 
   const dateToDayjs = useCallback((date: number, type: DateTypeType) => {
     let copyDate = showDate.clone()

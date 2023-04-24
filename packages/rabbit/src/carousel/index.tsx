@@ -3,39 +3,9 @@ import classNames from 'classnames'
 
 import Icon from '../icon'
 import useResize from '../hooks/useResize'
+import { CarouselProps, CarouselRef } from '../types/carousel'
 
 import './index.scss'
-
-export type CarouselDotPosition = 'top' | 'bottom' | 'left' | 'right'
-export type CarouselEffect = 'scrollX' | 'fade'
-export type CarouselRef = {
-  goTo: (slideNumber: number, useAnimate: boolean) => void,
-  next: () => void,
-  prev: () => void,
-  pause: () => void,
-  start: () => void,
-}
-
-type Props = {
-  className?: string,
-  style?: React.CSSProperties,
-  autoPlay?: boolean,
-  singlePlay?: boolean,
-  speed?: number,
-  duration?: number,
-  dotPosition?: CarouselDotPosition,
-  dots?: boolean | string,
-  hiddenSwitchBtn?: boolean,
-  effect?: CarouselEffect,
-  slidesToRows?: number,
-  slidesToColumns?: number,
-  children?: React.ReactNode | React.ReactNode[],
-  itemSpace?: number | string,
-  customBtn?: (type: 'prev' | 'next') => React.ReactNode,
-  customPaging?: (page: number) => React.ReactNode,
-  afterChange?: (current: number) => void,
-  beforeChange?: (from: number, to: number) => void,
-}
 
 function Carousel({
   className,
@@ -56,7 +26,7 @@ function Carousel({
   customPaging,
   afterChange,
   beforeChange,
-}: Props, ref?: React.ForwardedRef<CarouselRef>) {
+}: CarouselProps, ref?: React.ForwardedRef<CarouselRef>) {
   const [carouselShowWidth, setCarouselShowWidth] = useState(0)
   const [current, setCurrent] = useState(0)
   const [factCurrent, setFactCurrent] = useState(0)
@@ -282,7 +252,7 @@ function Carousel({
   )
 }
 
-export default React.forwardRef<CarouselRef, Props>(Carousel)
+export default React.forwardRef<CarouselRef, CarouselProps>(Carousel)
 
 function computedCarouselItems(children: React.ReactNode[], slidesToRows: number, slidesToColumns: number, carouselShowWidth: number, current: number) {
   const items: JSX.Element[] = []

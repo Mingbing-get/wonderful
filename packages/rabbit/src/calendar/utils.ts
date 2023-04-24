@@ -1,4 +1,4 @@
-import { CalendarMode } from '.'
+import { CalendarMode } from '../types/calendar'
 import { TimeFormatType } from '../timePicker'
 import weekOfYear from 'dayjs/plugin/weekOfYear'
 import quarterOfYear from 'dayjs/plugin/quarterOfYear'

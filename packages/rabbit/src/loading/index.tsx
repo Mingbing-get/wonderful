@@ -1,18 +1,14 @@
 import React from 'react'
 
 import Icon from '../icon'
+import { LoadingProps } from '../types/loading'
 
 import './index.scss'
-
-type Props = {
-  size?: number,
-  color?: string
-}
 
 function Loading({
   size = 1,
   color
-}: Props, ref?: React.ForwardedRef<HTMLSpanElement>) {
+}: LoadingProps, ref?: React.ForwardedRef<HTMLSpanElement>) {
   return (
     <span
       ref={ref}
@@ -24,4 +20,4 @@ function Loading({
   )
 }
 
-export default React.forwardRef<HTMLSpanElement, Props>(Loading)
+export default React.forwardRef<HTMLSpanElement, LoadingProps>(Loading)

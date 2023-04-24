@@ -4,7 +4,7 @@ import classNames from 'classnames'
 import Icon from '../icon'
 import Popover from '../popover'
 import { ProgressCircle } from '../progress'
-import { StepsItemType, StepsType } from './index'
+import { StepsItemType, StepsType } from '../types/steps'
 
 type Props = {
   index: number,

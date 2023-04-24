@@ -1,19 +1,15 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import classNames from 'classnames'
 
-import SingleTree, { Props as SingleTreeProps } from '../tree/single'
+import SingleTree from '../tree/single'
 import { TreeValue } from '../hooks/useTree/type'
 import { checkedPathToLinkPath } from '../hooks/useTree/utils'
-import { TreeNode, TreeRef } from '../tree'
 import Popover from '../popover'
 import Input from '../input'
 import Icon from '../icon'
-import { TreeSelectBaseProps } from './index'
 
-type Props = {
-  onChange?: (checkedPath: TreeValue[]) => void,
-  displayRender?: (checkedPath: TreeValue[], checkedDataPath: TreeNode[]) => string,
-} & TreeSelectBaseProps & SingleTreeProps
+import { TreeNode, TreeRef } from '../types/tree'
+import { SingleTreeSelectProps } from '../types/treeSelect'
 
 export default function SingleTreeSelect({
   style,
@@ -34,7 +30,7 @@ export default function SingleTreeSelect({
   onPopoverVisibleChange,
   displayRender,
   ...extra
-}: Props) {
+}: SingleTreeSelectProps) {
   const [visible, setVisible] = useState(false)
   const [_checkedPath, setCheckedPath] = useState(defaultCheckedPath || checkedPath || [])
   const treeRef = useRef<TreeRef>()

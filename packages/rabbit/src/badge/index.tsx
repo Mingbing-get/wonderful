@@ -1,17 +1,8 @@
 import React, { useMemo } from 'react'
 
-import './index.scss'
+import { BadgeProps } from '../types/badge'
 
-type Props = {
-  children?: React.ReactNode,
-  color?: string,
-  count: number | React.ReactNode,
-  dot?: boolean,
-  offsetRight?: number,
-  offsetTop?: number,
-  overflowCount?: number,
-  showZero?: boolean,
-}
+import './index.scss'
 
 function Badge({
   children,
@@ -22,7 +13,7 @@ function Badge({
   offsetTop = 0,
   overflowCount = 99,
   showZero
-}: Props, ref?: React.ForwardedRef<HTMLDivElement>) {
+}: BadgeProps, ref?: React.ForwardedRef<HTMLDivElement>) {
   const {showCount, showNode} = useMemo(() => {
     if (Object.prototype.toString.call(count) === '[object Number]') {
       const _count = count as number
@@ -61,4 +52,4 @@ function Badge({
   )
 }
 
-export default React.forwardRef<HTMLDivElement, Props>(Badge)
+export default React.forwardRef<HTMLDivElement, BadgeProps>(Badge)

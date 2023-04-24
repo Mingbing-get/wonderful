@@ -3,53 +3,9 @@ import React, { useMemo, useState, useCallback, useRef, useEffect } from 'react'
 import MenuMain from './main'
 import { MenuProvider, MenuContext } from './context'
 import { findItemByKeyFromForest, isSame } from '../utils'
+import { MenuProps, MenuItem, MenuMode } from '../types/menu'
 
 import './index.scss'
-
-export type MenuMode = 'horizontal' | 'inline' | 'vertical'
-export type MenuTheme = 'light' | 'dark'
-export type MenuTrigger = 'click' | 'hover'
-
-export type MenuItemType = {
-  disabled?: boolean,
-  icon?: React.ReactNode,
-  key: string,
-  label: React.ReactNode,
-  [key: string]: any,
-}
-
-export type MenuSubMenuType = {
-  children: MenuItem[],
-  disabled?: boolean,
-  icon?: React.ReactNode,
-  key: string,
-  label: React.ReactNode,
-  theme?: MenuTheme,
-  mode?: MenuMode,
-  [key: string]: any,
-}
-
-export type MenuClick = (item: MenuItem, clickPath: string[], e: React.MouseEvent<HTMLDivElement>) => void
-export type MenuOpenChange = (openPath: string[]) => void
-export type MenuSelect = (item: MenuItem, selectPath: string[], e: React.MouseEvent<HTMLDivElement>) => void
-
-export type MenuItem = MenuItemType | MenuSubMenuType
-
-type Props = {
-  items: MenuItem[],
-  mode?: MenuMode,
-  defaultOpenPath?: string[],
-  defaultSelectedPath?: string[],
-  openPath?: string[],
-  selectedPath?: string[],
-  style?: React.CSSProperties,
-  className?: string,
-  theme?: MenuTheme,
-  triggerSubMenuAction?: MenuTrigger,
-  onClick?: MenuClick,
-  onOpenChange?: MenuOpenChange,
-  onSelect?: MenuSelect,
-}
 
 const delay = 200
 
@@ -67,7 +23,7 @@ export default function Menu({
   onClick,
   onOpenChange,
   onSelect
-}: Props) {
+}: MenuProps) {
   const [_openPath, setOpenPath] = useState(defaultOpenPath || [])
   const [selectPath, setSelectPath] = useState(defaultSelectedPath || [])
   const keepShow = useRef<string[]>([])

@@ -1,42 +1,21 @@
 import React, { useMemo, useState, useEffect, useCallback } from 'react'
 import classNames from 'classnames'
 import { CheckboxProvider, CheckboxContext } from './context'
+import { CheckboxGroupProps, CheckboxValueType, CheckboxOptionType } from '../types/checkbox'
 
 import Checkbox from '.'
 
 import './group.scss'
 
-export type ValueType = string | number
-
-export type OptionType = {
-  label?: React.ReactNode,
-  value: ValueType,
-  disabled?: boolean,
-}
-
-type BaseProps<T extends ValueType> = {
-  className?: string,
-  style?: React.CSSProperties,
-  value?: T[],
-  defaultValue?: T[],
-  onChange?: (value: T[]) => void
-}
-
-type Props<T extends ValueType> = (BaseProps<T> & {
-  options: OptionType[]
-}) | (BaseProps<T> & {
-  children: React.ReactNode
-})
-
-function Group<T extends ValueType>({
+function Group<T extends CheckboxValueType>({
   className,
   style,
   value,
   defaultValue,
   onChange,
   ...extra
-}: Props<T>, ref?: React.ForwardedRef<HTMLDivElement>) {
-  const [_value, setValue] = useState<ValueType[]>([])
+}: CheckboxGroupProps<T>, ref?: React.ForwardedRef<HTMLDivElement>) {
+  const [_value, setValue] = useState<CheckboxValueType[]>([])
 
   useEffect(() => {
     if (!defaultValue) return
@@ -50,14 +29,14 @@ function Group<T extends ValueType>({
 
   const { options: _options, useOptions, children: _children } = useMemo(() => {
     const options = (extra as any).options
-    if (options) return { options: options as OptionType[], useOptions: true }
+    if (options) return { options: options as CheckboxOptionType[], useOptions: true }
 
     const children = (extra as any).children as React.ReactNode
 
     return { options: [], useOptions: false, children }
   }, [extra])
 
-  const handleChange = useCallback((key: ValueType, val: boolean) => {
+  const handleChange = useCallback((key: CheckboxValueType, val: boolean) => {
     const newValue = [..._value]
     if (val && !newValue.includes(key)) {
       newValue.push(key)
@@ -103,4 +82,4 @@ function Group<T extends ValueType>({
   )
 }
 
-export default React.forwardRef<HTMLDivElement, Props<ValueType>>(Group)
+export default React.forwardRef<HTMLDivElement, CheckboxGroupProps<CheckboxValueType>>(Group)

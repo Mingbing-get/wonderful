@@ -3,33 +3,10 @@ import ReactDOM from 'react-dom'
 import classNames from 'classnames'
 
 import Icon from '../icon'
-import Button, { ButtonType } from '../button'
+import Button from '../button'
+import { ModalProps } from '../types/modal'
 
 import './index.scss'
-
-export type ModalPlacement = 'center' | 'bottom' | 'top' | 'left' | 'right'
-
-export type FooterButtonConfig = {
-  text: string,
-  type?: ButtonType,
-  onClick?: () => void,
-}
-
-type Props = {
-  header?: React.ReactNode,
-  content: React.ReactNode,
-  footer?: FooterButtonConfig[],
-  visible?: boolean,
-  width?: number | string,
-  height?: number | string,
-  placement?: ModalPlacement,
-  style?: React.CSSProperties,
-  className?: string,
-  onVisibleChange?: (visible: boolean) => void,
-  onClose?: () => void,
-  getContainer?: () => HTMLElement,
-}
-
 const animationTime = 200
 
 export default function Modal({
@@ -45,7 +22,7 @@ export default function Modal({
   onClose,
   onVisibleChange,
   getContainer = () => document.body
-}: Props) {
+}: ModalProps) {
   const [_visible, setVisible] = useState(!!visible)
   const [hidden, setHidden] = useState(!visible)
 

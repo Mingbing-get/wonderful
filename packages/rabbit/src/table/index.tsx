@@ -2,39 +2,16 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import classNames from 'classnames'
 
 import Loading from '../loading'
-import Pagination, { Props as PaginationProps } from '../pagination'
-import useTable, { PageConfig, SaveSort, FilterMapType } from '../hooks/useTable'
-import { Column, DataType, TableRow, TableHeadRow, AccessorColumn } from '../hooks/useTable/type'
+import Pagination from '../pagination'
+import useTable, { PageConfig } from '../hooks/useTable'
+import { DataType, TableRow, AccessorColumn } from '../hooks/useTable/type'
 import useResize from '../hooks/useResize'
 import useSyncScrollX from '../hooks/useSyncScrollX'
-import useVirtualScrollY, { VirtualScrollY } from '../hooks/useVirtualScrollY'
-import useTableRowSelection, { RowSelection } from '../hooks/useTableRowSelection'
+import useVirtualScrollY from '../hooks/useVirtualScrollY'
+import useTableRowSelection from '../hooks/useTableRowSelection'
+import { TableProps } from '../types/table'
 
 import './index.scss'
-
-export {
-  Column as TableColumn,
-  RowSelection as TableRowSelection,
-  VirtualScrollY,
-}
-
-type Props<T extends DataType = DataType> = {
-  className?: string,
-  rowClassName?: string,
-  style?: React.CSSProperties,
-  columns: Column<T>[],
-  data: T[],
-  pagination?: Partial<PaginationProps>,
-  scroll?: { x?: string | number, y?: string | number },
-  virtualScrollY?: VirtualScrollY,
-  loading?: boolean,
-  rowSelection?: RowSelection<T>,
-  onRow?: (row: TableRow<T>) => React.HtmlHTMLAttributes<HTMLTableRowElement>,
-  onHeaderRow?: (headRow: TableHeadRow<T>) => React.HtmlHTMLAttributes<HTMLTableRowElement>,
-  onFooterRow?: (headRow: TableHeadRow<T>) => React.HtmlHTMLAttributes<HTMLTableRowElement>,
-  onFilter?: (filters: FilterMapType, data: TableRow<T>[]) => void,
-  onSort?: (sorter: SaveSort<T>[], data: TableRow<T>[]) => void,
-}
 
 export default function Table<T extends DataType = DataType>({
   className,
@@ -52,7 +29,7 @@ export default function Table<T extends DataType = DataType>({
   onFooterRow,
   onFilter,
   onSort
-}: Props<T>) {
+}: TableProps<T>) {
   const [page, setPage] = useState<PageConfig>()
   const [renderTableCount, reRenderTable] = useState(0)
   const [syncScrollXDomList, setSyncScrollXDomList] = useState<(HTMLDivElement | null)[]>([])

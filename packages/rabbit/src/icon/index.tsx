@@ -1,5 +1,7 @@
-import React, { SVGProps } from 'react'
+import React from 'react'
 import classNames from 'classnames'
+
+import { IconProps } from '../types/icon'
 
 import './index.scss'
 
@@ -109,16 +111,11 @@ export type IconType = keyof (typeof pathMap)
 
 export const pathKeys = Object.keys(pathMap) as IconType[]
 
-export type Props = {
-  type: IconType;
-  className?: string;
-} & SVGProps<any>
-
 function Icon({
   type,
   className,
   ...extra
-}: Props, ref?: React.ForwardedRef<SVGSVGElement>) {
+}: IconProps, ref?: React.ForwardedRef<SVGSVGElement>) {
   return (
     <svg
       className={classNames('rabbit-icon', className)}
@@ -133,4 +130,4 @@ function Icon({
   )
 }
 
-export default React.forwardRef<SVGSVGElement, Props>(Icon)
+export default React.forwardRef<SVGSVGElement, IconProps>(Icon)

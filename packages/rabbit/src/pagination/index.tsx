@@ -4,30 +4,9 @@ import classNames from 'classnames'
 import Select, { OptionType } from '../select'
 import InputNumber from '../inputNumber'
 import Icon from '../icon'
+import { PaginationProps, PaginationItemRender } from '../types/pagination'
+
 import './index.scss'
-
-export type PaginationItemType = 'page' | 'prev' | 'next' | 'ellipsis'
-type PaginationItemRender = (page: number, type: PaginationItemType, originalElement: React.ReactNode) => React.ReactNode
-
-export type Props = {
-  className?: string,
-  style?: React.CSSProperties,
-  total: number,
-  defaultCurrent?: number,
-  defaultPageSize?: number,
-  current?: number,
-  pageSize?: number,
-  pageSizeOptions?: number[],
-  showItemCount?: number,
-  disabled?: boolean,
-  hideOnSinglePage?: boolean,
-  showQuickJumper?: boolean,
-  simple?: boolean,
-  itemRender?: PaginationItemRender,
-  showTotal?: (total: number, range: [number, number]) => React.ReactNode,
-  onChange?: (current: number, pageSize: number) => void,
-  onPageSizeChange?: (current: number, pageSize: number) => void,
-}
 
 const defaultItemRender: PaginationItemRender = (_, __, originalElement) => originalElement
 
@@ -49,7 +28,7 @@ export default function Pagination({
   showTotal,
   onChange,
   onPageSizeChange
-}: Props) {
+}: PaginationProps) {
   const [jumperPage, setJumperPage] = useState<number>()
   const [_current, setCurrent] = useState(defaultCurrent || current || 0)
   const [_pageSize, setPageSize] = useState(defaultPageSize || pageSize || 10)

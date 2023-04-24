@@ -1,11 +1,11 @@
 import React, { useContext } from 'react'
 
-import { ValueType } from './group'
+import { CheckboxValueType } from '../types/checkbox'
 
 export type CheckboxContext = {
-  value?: ValueType[],
-  triggerChange?: (key: ValueType, val: boolean) => void,
-  addValue?: (value: ValueType) => void
+  value?: CheckboxValueType[],
+  triggerChange?: (key: CheckboxValueType, val: boolean) => void,
+  addValue?: (value: CheckboxValueType) => void
 }
 
 const checkboxContext: CheckboxContext = {}

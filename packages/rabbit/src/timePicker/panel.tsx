@@ -2,7 +2,7 @@ import React, { useMemo, useCallback, useEffect, useRef } from 'react'
 import dayjs, { Dayjs } from 'dayjs'
 import classNames from 'classnames'
 
-import { Props as TimePickerProps, TimeType } from './index'
+import { TimePickerProps, TimePickerType } from '../types/timePicker'
 
 import './panel.scss'
 
@@ -26,7 +26,7 @@ export default function TimePanel({
   onChange
 }: Props) {
 
-  const getOption = useCallback((timeType: TimeType, step: number) => {
+  const getOption = useCallback((timeType: TimePickerType, step: number) => {
     const total = {
       'hour': 24,
       'minute': 60,

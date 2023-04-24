@@ -12,23 +12,12 @@ import { LinkTreeNode, TreeValue } from '../../hooks/useTree/type'
 import { checkedPathToLinkPath } from '../../hooks/useTree/utils'
 import { isSame } from '../../utils'
 
-import { CascaderOption, CascaderBaseProps, DropdownRender, NotFoundContent } from '../index'
+import { CascaderOption, CascaderSingleProps, CascaderSingleDisplayRender, CascaderDropdownRender, CascaderNotFoundContent } from '../../types/cascader'
 import { InputRef } from 'rc-input'
 
-export type DisplayRender = (labels: string[], checkedPath: CascaderOption[]) => React.ReactNode
-
-type SingleProps = {
-  defaultValue?: TreeValue[],
-  value?: TreeValue[],
-  onChange?: (value: TreeValue[], checkedPath: CascaderOption[]) => void,
-  displayRender?: DisplayRender,
-}
-
-type Props = CascaderBaseProps & SingleProps
-
-const defaultDisplayRender: DisplayRender = (labels, _) => labels.join(' / ')
-const defaultDropdownRender: DropdownRender = (menus, _) => menus
-const defaultNotFoundContent: NotFoundContent = () => (
+const defaultDisplayRender: CascaderSingleDisplayRender = (labels, _) => labels.join(' / ')
+const defaultDropdownRender: CascaderDropdownRender = (menus, _) => menus
+const defaultNotFoundContent: CascaderNotFoundContent = () => (
   <div className='cascader-empty'>
     <Icon type='empty' style={{ fontSize: '4rem' }} />
     <p>无数据...</p>
@@ -60,7 +49,7 @@ export default function SingleCascader({
   loadData,
   onDropdownVisibleChange,
   onSearch,
-}: Props) {
+}: CascaderSingleProps) {
   const [showSearchInput, setShowSearchInput] = useState(false)
   const [visiblePopover, setVisiblePopover] = useState(false)
   const [searchText, setSearchText] = useState('')

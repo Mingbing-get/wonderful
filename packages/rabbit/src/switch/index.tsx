@@ -1,21 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import classNames from 'classnames'
+import { SwitchProps } from '../types/switch'
 
 import './index.scss'
-
-type Props = {
-  value?: boolean,
-  yesText?: string,
-  noText?: string,
-  onChange?: (value: boolean) => void
-}
 
 export default function Switch({
   value = false,
   yesText,
   noText,
   onChange
-}: Props) {
+}: SwitchProps) {
   const [_value, setValue] = useState(value)
 
   useEffect(() => {

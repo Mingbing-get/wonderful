@@ -1,25 +1,9 @@
-import React, { ReactNode, useCallback, useMemo } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import classNames from 'classnames'
 
 import Loading from '../loading'
+import { TimeLineProps, TimelineItemType } from '../types/timeLine'
 import './index.scss'
-
-export type TimelineItemType<T extends Object = {}> = {
-  color?: string,
-  dot?: ReactNode,
-  label?: ReactNode,
-  content?: ReactNode,
-} & T
-
-export type TimelineMode = 'left' | 'right' | 'alternate'
-
-type Props = {
-  className?: string,
-  style?: React.CSSProperties,
-  items: TimelineItemType[],
-  mode?: TimelineMode,
-  pending?: TimelineItemType | true,
-}
 
 export default function Timeline({
   className,
@@ -27,7 +11,7 @@ export default function Timeline({
   items,
   mode = 'right',
   pending
-}: Props) {
+}: TimeLineProps) {
   const pendItem = useMemo(() => {
     if (pending === true) {
       return {

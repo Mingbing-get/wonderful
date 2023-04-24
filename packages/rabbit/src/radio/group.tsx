@@ -3,40 +3,19 @@ import classNames from 'classnames'
 import { RadioProvider, RadioContext } from './context'
 
 import Checkbox from '.'
+import { RadioGroupProps, RadioValueType, RadioOptionType } from '../types/radio'
 
 import './group.scss'
 
-export type ValueType = string | number
-
-export type OptionType = {
-  label?: string,
-  value: ValueType,
-  disabled?: boolean,
-}
-
-type BaseProps<T extends ValueType> = {
-  className?: string,
-  style?: React.CSSProperties,
-  value?: T,
-  defaultValue?: T,
-  onChange?: (value?: T) => void
-}
-
-type Props<T extends ValueType> = (BaseProps<T> & {
-  options: OptionType[]
-}) | (BaseProps<T> & {
-  children: React.ReactNode
-})
-
-function Group<T extends ValueType>({
+function Group<T extends RadioValueType>({
   className,
   style,
   value,
   defaultValue,
   onChange,
   ...extra
-}: Props<T>, ref?: React.ForwardedRef<HTMLDivElement>) {
-  const [_value, setValue] = useState<ValueType>()
+}: RadioGroupProps<T>, ref?: React.ForwardedRef<HTMLDivElement>) {
+  const [_value, setValue] = useState<RadioValueType>()
 
   useEffect(() => {
     if (!defaultValue) return
@@ -50,14 +29,14 @@ function Group<T extends ValueType>({
 
   const { options: _options, useOptions, children: _children } = useMemo(() => {
     const options = (extra as any).options
-    if (options) return { options: options as OptionType[], useOptions: true }
+    if (options) return { options: options as RadioOptionType[], useOptions: true }
 
     const children = (extra as any).children as React.ReactNode
 
     return { options: [], useOptions: false, children }
   }, [extra])
 
-  const handleChange = useCallback((key: ValueType, val: boolean) => {
+  const handleChange = useCallback((key: RadioValueType, val: boolean) => {
     if ((key === _value) === val) return
     if (val) {
       setValue(key)
@@ -98,4 +77,4 @@ function Group<T extends ValueType>({
   )
 }
 
-export default React.forwardRef<HTMLDivElement, Props<ValueType>>(Group)
+export default React.forwardRef<HTMLDivElement, RadioGroupProps<RadioValueType>>(Group)

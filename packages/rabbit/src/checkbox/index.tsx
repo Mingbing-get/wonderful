@@ -1,24 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react'
 import classNames from 'classnames'
 
-import Group, { ValueType, OptionType } from './group'
+import Group from './group'
 import { useCheckbox } from './context'
+import { CheckboxProps } from '../types/checkbox'
 
 import './index.scss'
-
-export { OptionType }
-
-type Props = {
-  className?: string,
-  style?: React.CSSProperties,
-  disabled?: boolean,
-  checked?: boolean,
-  halfChecked?: boolean,
-  defaultChecked?: boolean,
-  value?: ValueType,
-  children?: React.ReactNode,
-  onChange?: (checked: boolean) => void
-}
 
 function Checkbox({
   className,
@@ -30,7 +17,7 @@ function Checkbox({
   value,
   children,
   onChange
-}: Props, ref?: React.ForwardedRef<HTMLDivElement>) {
+}: CheckboxProps, ref?: React.ForwardedRef<HTMLDivElement>) {
   const [_checked, setChecked] = useState<boolean>(false)
   const { value: values, triggerChange, addValue } = useCheckbox()
   const preChecked = useRef<boolean>(false)
@@ -82,6 +69,6 @@ function Checkbox({
   )
 }
 
-export default React.forwardRef<HTMLDivElement, Props>(Checkbox)
+export default React.forwardRef<HTMLDivElement, CheckboxProps>(Checkbox)
 
 export { Group }

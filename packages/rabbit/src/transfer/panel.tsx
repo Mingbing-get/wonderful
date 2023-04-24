@@ -1,13 +1,15 @@
 import React, { useState, useMemo, useCallback } from 'react'
 import classNames from 'classnames'
 
-import List, { LoadMore } from '../list'
+import List from '../list'
 import Checkbox from '../checkbox'
 import Popover from '../popover'
 import Icon from '../icon'
 import Input from '../input'
-import { VirtualScroll } from '../hooks/useVirtualScrollY'
-import { TransferOptionType } from './index'
+import { VirtualScrollY } from '../hooks/useVirtualScrollY'
+import { TransferOptionType } from '../types/transfer'
+import { ListLoadMore } from '../types/list'
+
 import './panel.scss'
 
 type Props = {
@@ -20,8 +22,8 @@ type Props = {
   title?: React.ReactNode,
   selectAllLabel?: React.ReactNode,
   selectInvertLabel?: React.ReactNode,
-  loadMore?: LoadMore,
-  virtualScroll?: VirtualScroll,
+  loadMore?: ListLoadMore,
+  virtualScroll?: VirtualScrollY,
   filterOption?: (inputValue: string, option: TransferOptionType) => boolean,
   footerRender?: () => React.ReactNode,
   onSelectChange?: (changeOptions: TransferOptionType[], selected?: boolean) => void,

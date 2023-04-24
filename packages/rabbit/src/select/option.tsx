@@ -1,11 +1,11 @@
 import React, { useCallback } from 'react'
 import classNames from 'classnames'
 
-import { OptionType, ValueType } from './index'
+import { SelectOptionType, SelectValueType } from '../types/select'
 
 import './index.scss'
 
-export default function Option<T extends ValueType>({
+export default function Option<T extends SelectValueType>({
   className,
   style,
   value,
@@ -13,7 +13,7 @@ export default function Option<T extends ValueType>({
   prefix,
   suffix,
   onClick
- }: OptionType<T>) {
+}: SelectOptionType<T>) {
   const handleClick = useCallback((e: React.MouseEvent) => {
     e.stopPropagation()
 

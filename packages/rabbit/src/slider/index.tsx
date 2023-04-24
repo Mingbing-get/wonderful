@@ -1,18 +1,8 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react'
 import classNames from 'classnames'
+import { SliderProps } from '../types/slider'
 
 import './index.scss'
-
-type Props = {
-  min?: number,
-  max?: number,
-  value?: number,
-  step?: number,
-  showLabel?: boolean,
-  className?: string,
-  style?: React.CSSProperties,
-  onChange?: (val: number) => void
-}
 
 let preRate = 0
 
@@ -25,7 +15,7 @@ export default function Slider({
   className,
   style,
   onChange
-}: Props) {
+}: SliderProps) {
   const [selectRate, setSelectRate] = useState(0)
   const [startX, setStartX] = useState(-1)
 

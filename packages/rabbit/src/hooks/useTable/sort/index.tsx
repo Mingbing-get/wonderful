@@ -1,8 +1,9 @@
 import React, { useCallback, useMemo } from 'react'
 import classNames from 'classnames'
 
-import Icon, { IconType } from '../../../icon'
+import Icon from '../../../icon'
 import { ColumnSort, SortDir, DataType } from '../type'
+import { IconType } from '../../../types/icon'
 
 import './index.scss'
 

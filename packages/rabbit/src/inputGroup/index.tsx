@@ -1,19 +1,14 @@
 import React from 'react'
 import classNames from 'classnames'
 
+import { InputGroupProps } from '../types/inputGroup'
 import './index.scss'
-
-type Props = {
-  children: React.ReactNode,
-  className?: string,
-  style?: React.CSSProperties,
-}
 
 export default function InputGroup({
   children,
   className,
   style
-}: Props) {
+}: InputGroupProps) {
   return (
     <div className={classNames('rabbit-input-group-wrapper', className)} style={style}>
       {children}

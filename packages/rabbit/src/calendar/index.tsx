@@ -10,38 +10,9 @@ import QuarterPanel from './modePanels/quarter'
 import HeaderRender from './headerRender'
 
 import { isSameDate, getNextMode, formatDateByMode, dayjs, Dayjs } from './utils'
+import { CalendarProps, CalendarMode } from '../types/calendar'
 
 import './index.scss'
-
-export type CalendarMode = 'tenYear' | 'year' | 'quarter' | 'month' | 'week' | 'date'
-
-export type PanelProps = {
-  value?: Dayjs,
-  showDate: Dayjs,
-  cellRender?: (date: Dayjs, mode: CalendarMode) => React.ReactNode,
-  disabledDate?: (date: Dayjs, mode: CalendarMode) => boolean,
-  onCellClick?: (date: Dayjs, mode: CalendarMode) => void,
-}
-
-export type HeaderRenderProps = {
-  date: Dayjs,
-  mode: CalendarMode,
-  baseMode: CalendarMode,
-  onChangeDate: (newDate: Dayjs) => void,
-  onChangeMode: (newMode: CalendarMode) => void
-}
-
-export type Props = {
-  value?: Dayjs,
-  defaultValue?: Dayjs,
-  fullscreen?: boolean,
-  mode?: CalendarMode,
-  cellRender?: (date: Dayjs, mode: CalendarMode) => React.ReactNode,
-  disabledDate?: (date: Dayjs, mode: CalendarMode) => boolean,
-  headerRender?: (props: HeaderRenderProps) => React.ReactNode,
-  onChange?: (value: Dayjs, valueStr: string) => void,
-  onPanelChange?: (date: Dayjs, mode: CalendarMode) => void,
-}
 
 export default function Calendar({
   value,
@@ -53,7 +24,7 @@ export default function Calendar({
   headerRender = (props) => <HeaderRender {...props} />,
   onChange,
   onPanelChange
-}: Props) {
+}: CalendarProps) {
   const [showDate, setShowDate] = useState(defaultValue || value || dayjs())
   const [_value, setValue] = useState(defaultValue || value)
   const [_mode, setMode] = useState(mode)

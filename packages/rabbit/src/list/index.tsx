@@ -2,31 +2,9 @@ import React, { useRef, useState, useEffect } from 'react'
 import classNames from 'classnames'
 
 import Loading from '../loading'
-import useVirtualScrollY, { VirtualScrollY } from '../hooks/useVirtualScrollY'
+import useVirtualScrollY from '../hooks/useVirtualScrollY'
+import { ListProps } from '../types/list'
 import './index.scss'
-
-export type ListItemType<T extends object = {}> = {
-  key: React.Key,
-  component: React.ReactNode
-} & T
-
-export type LoadMore = {
-  action?: React.ReactNode, // 触底时 有action则渲染按钮，否则直接触发加载
-  total?: number, // 没有total则可以无限加载, 否则当数量达到total后不再渲染加载更多或者触发加载方法
-  loading?: React.ReactNode,
-  notMore?: React.ReactNode,
-  onLoad: () => void
-}
-
-type Props = {
-  className?: string,
-  style?: React.CSSProperties,
-  itemClassName?: string,
-  itemStyle?: React.CSSProperties,
-  items: ListItemType[],
-  virtualScroll?: VirtualScrollY,
-  loadMore?: LoadMore
-}
 
 export default function List({
   className,
@@ -36,7 +14,7 @@ export default function List({
   items,
   virtualScroll,
   loadMore
-}: Props) {
+}: ListProps) {
   const [touchBottom, setTouchBottom] = useState(false)
   const [loading, setLoading] = useState(false)
   const [hasMore, setHasMore] = useState(true)

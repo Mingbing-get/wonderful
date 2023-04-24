@@ -4,36 +4,12 @@ import classNames from 'classnames'
 
 import Icon from '../icon'
 import Modal from '../modal'
-import Popover, { Placement, ArrowType } from '../popover'
-import Button, { Props as ButtonProps } from '../button'
+import Popover from '../popover'
+import Button from '../button'
+import { TourProps } from '../types/tour'
+import { ButtonProps } from '../types/button'
 
 import './index.scss'
-
-export type StepType<T extends object = {}> = {
-  title?: React.ReactNode,
-  content?: React.ReactNode,
-  arrow?: ArrowType,
-  placement?: Placement,
-  nextButtonProps?: Partial<ButtonProps>,
-  prevButtonProps?: Partial<ButtonProps>,
-  onClose?: () => void,
-  target: () => HTMLElement | null,
-} & T
-
-export type TourTipType = 'dot' | 'none' | 'simple'
-
-type Props = {
-  steps: StepType[],
-  open?: boolean,
-  arrow?: ArrowType,
-  placement?: Placement,
-  current?: number,
-  finishButtonProps?: Partial<ButtonProps>,
-  tip?: TourTipType,
-  onClose?: (current: number) => void,
-  onFinish?: () => void,
-  onChange?: (current: number) => void,
-}
 
 const padding = 4
 
@@ -48,7 +24,7 @@ export default function Tour({
   onClose,
   onFinish,
   onChange
-}: Props) {
+}: TourProps) {
   const [_open, setOpen] = useState(open)
   const [_current, setCurrent] = useState(current)
   const [showPopover, setShowPopover] = useState(true)

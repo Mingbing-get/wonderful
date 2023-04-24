@@ -6,28 +6,17 @@ import { isSame } from '../utils'
 import useTree from '../hooks/useTree'
 import { getPathFromLinkTreeNode } from '../hooks/useTree/utils'
 import useVirtualScrollY from '../hooks/useVirtualScrollY'
-import { LinkTreeNode, BaseTreeNode, TreeValue, TreeMode } from '../hooks/useTree/type'
+import { LinkTreeNode, TreeValue } from '../hooks/useTree/type'
 
 import Icon from '../icon'
 import Checkbox from '../checkbox'
 
 import useDragTree from './useDragTree'
-import { BaseProps, TreeLabelRender, TreeRef } from './index'
+import { MultipleTreeProps, TreeLabelRender, TreeRef, TreeNode } from '../types/tree'
 
 type ChangeRecord = { node: TreeNode, res: boolean }
 
-export type TreeNode = BaseTreeNode<{
-  label?: string
-}>
-
 const defaultLabelRender: TreeLabelRender = (node) => node.label || node.value
-
-export type Props = BaseProps & {
-  mode?: TreeMode,
-  defaultCheckedPath?: TreeValue[][],
-  checkedPath?: TreeValue[][],
-  onChecked?: (checkedPath: TreeValue[][], node: TreeNode, isChecked: boolean) => void,
-}
 
 function MultipleTree({
   className,
@@ -52,7 +41,7 @@ function MultipleTree({
   onExpand,
   onCanMove,
   onMove
-}: Props, ref: React.ForwardedRef<TreeRef>) {
+}: MultipleTreeProps, ref: React.ForwardedRef<TreeRef>) {
   const hookCheckedPathRef = useRef<TreeValue[][]>([])
   const hookExpandPathRef = useRef<TreeValue[][]>([])
   const curCheckedRef = useRef<ChangeRecord>()
@@ -76,8 +65,8 @@ function MultipleTree({
   } = useTree({
     multiple: true,
     forest: data,
-    defaultCheckedPath: defaultCheckedPath,
-    defaultExpandPath: defaultExpandPath,
+    defaultCheckedPath: checkedPath || defaultCheckedPath,
+    defaultExpandPath: expandPath || defaultExpandPath,
     mode,
     loadData,
     onCanMove,
@@ -307,4 +296,4 @@ function MultipleTree({
   )
 }
 
-export default React.forwardRef<TreeRef, Props>(MultipleTree)
+export default React.forwardRef<TreeRef, MultipleTreeProps>(MultipleTree)

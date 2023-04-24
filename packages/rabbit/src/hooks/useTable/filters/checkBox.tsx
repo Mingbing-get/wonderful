@@ -1,8 +1,9 @@
 import React, { useCallback, useMemo, useState } from 'react'
 
-import { Group as CheckboxGroup, OptionType } from '../../../checkbox'
+import { Group as CheckboxGroup } from '../../../checkbox'
 import Button from '../../../button'
 
+import { CheckboxOptionType } from '../../../types/checkbox'
 import { FilterRenderProps, DataType } from '../type'
 
 type Props<T extends DataType> = {
@@ -37,7 +38,7 @@ export default function CheckBoxFilter<T extends DataType>({
     closePopover()
   }, [closePopover, filterValue])
 
-  const _options: OptionType[] = useMemo(() => {
+  const _options: CheckboxOptionType[] = useMemo(() => {
     if (options) return options
 
     const values: string[] = []

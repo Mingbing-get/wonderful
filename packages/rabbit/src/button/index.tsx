@@ -2,22 +2,9 @@ import React from 'react'
 import classNames from 'classnames'
 
 import Loading from '../loading'
+import { ButtonProps } from '../types/button'
 
 import './index.scss'
-
-export type ButtonType = 'primary' | 'danger' | 'success' | 'warning'
-
-export type Props = {
-  type?: ButtonType,
-  loading?: boolean,
-  block?: boolean,
-  disabled?: boolean,
-  ghost?: boolean,
-  children: React.ReactNode,
-  style?: React.CSSProperties,
-  className?: string,
-  onClick?: (e: React.MouseEvent<HTMLDivElement>) => void
-}
 
 function Button({
   type,
@@ -29,7 +16,7 @@ function Button({
   style,
   className,
   onClick
-}: Props, ref?: React.ForwardedRef<HTMLDivElement>) {
+}: ButtonProps, ref?: React.ForwardedRef<HTMLDivElement>) {
   function handleClick(e: React.MouseEvent<HTMLDivElement>) {
     if (disabled || loading) return
     onClick?.(e)
@@ -60,4 +47,4 @@ function Button({
   )
 }
 
-export default React.forwardRef<HTMLDivElement, Props>(Button)
+export default React.forwardRef<HTMLDivElement, ButtonProps>(Button)

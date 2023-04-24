@@ -1,21 +1,12 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import classNames from 'classnames'
 
-import Input, { Props as InputProps } from '../input'
+import Input from '../input'
 import Icon from '../icon'
+import { InputNumberProps } from '../types/inputNumber'
+import { InputRef } from '../types/input'
 
 import './index.scss'
-import { InputRef } from 'rc-input'
-
-type Props = Omit<InputProps, 'onChange' | 'defaultValue' | 'value'> & {
-  defaultValue?: number,
-  value?: number;
-  step?: number | null;
-  min?: number;
-  max?: number;
-  showStepBtn?: boolean;
-  onChange?: (value?: number) => void;
-}
 
 const numberReg = /^(-|\d)\d*$/
 const floatReg = /^(-|\d)\d*\.?\d*$/
@@ -32,7 +23,7 @@ function InputNumber({
   onChange,
   onBlur,
   ...extra
-}: Props, ref: React.ForwardedRef<InputRef>) {
+}: InputNumberProps, ref: React.ForwardedRef<InputRef>) {
   const [_value, setValue] = useState<number>()
   const preValue = useRef<number>()
 
@@ -121,4 +112,4 @@ function InputNumber({
   )
 }
 
-export default React.forwardRef<InputRef, Props>(InputNumber)
+export default React.forwardRef<InputRef, InputNumberProps>(InputNumber)

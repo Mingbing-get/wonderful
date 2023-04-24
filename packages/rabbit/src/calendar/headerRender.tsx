@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 
 import Select, { OptionType } from '../select'
 import InputGroup from '../inputGroup'
-import { HeaderRenderProps } from './index'
+import { CalendarHeaderRenderProps } from '../types/calendar'
 
 export default function HeaderRender({
   date,
@@ -10,7 +10,7 @@ export default function HeaderRender({
   baseMode,
   onChangeDate,
   onChangeMode
-}: HeaderRenderProps) {
+}: CalendarHeaderRenderProps) {
   const tenYearOptions: OptionType<number>[] = useMemo(() => {
     const startYear = Math.floor(date.year() / 10) * 10 - 100
 

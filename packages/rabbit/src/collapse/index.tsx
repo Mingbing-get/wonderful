@@ -1,25 +1,19 @@
 import React, { useState, useEffect } from 'react'
 import classNames from 'classnames'
 
-import Panel, { PanelProps } from './panel'
+import Panel from './panel'
+import { CollapsePanelProps, CollapseProps } from '../types/collapse'
 
 import './index.scss'
-
-type Props = {
-  className?: string,
-  style?: React.CSSProperties,
-  isOpenOnly?: boolean,
-  children: React.ReactElement[] | React.ReactElement,
-}
 
 function Collapse({
   className,
   style,
   isOpenOnly,
   children
-}: Props) {
+}: CollapseProps) {
   const [childTypeError, setChildTypeError] = useState(false)
-  const [panels, setPanels] = useState<PanelProps[]>([])
+  const [panels, setPanels] = useState<CollapsePanelProps[]>([])
   const [openKeys, setOpenKeys] = useState<React.Key[]>([])
 
   useEffect(() => {
@@ -33,7 +27,7 @@ function Collapse({
         !opens.includes(child.props.panelKey) && opens.push(child.props.panelKey)
       }
 
-      return child.props as PanelProps
+      return child.props as CollapsePanelProps
     })
 
     setOpenKeys(opens)

@@ -2,42 +2,11 @@ import React, { useCallback, useEffect, useState } from 'react'
 import classNames from 'classnames'
 
 import Icon from '../icon'
-import { LoadMore } from '../list'
-import { VirtualScroll } from '../hooks/useVirtualScrollY'
 import Panel from './panel'
 import { isArray, isSame } from '../utils'
+import { TransferProps, TransferDirection, TransferOptionType } from '../types/transfer'
+
 import './index.scss'
-
-export type TransferDirection = 'left' | 'right'
-
-export type TransferOptionType<T extends object = {}> = {
-  value: number | string,
-  label?: string,
-  disabled?: boolean
-} & T
-
-type Props = {
-  className?: string,
-  listClassName?: string,
-  style?: React.CSSProperties,
-  listStyle?: React.CSSProperties,
-  data: TransferOptionType[][],
-  selectedValues?: (number | string)[][],
-  defaultSelectedValues?: (number | string)[][],
-  oneWay?: boolean | boolean[],
-  showSearch?: boolean | boolean[],
-  showSelectAll?: boolean | boolean[],
-  titles?: React.ReactNode | React.ReactNode[],
-  selectAllLabels?: React.ReactNode | React.ReactNode[],
-  selectInvertLabels?: React.ReactNode | React.ReactNode[],
-  loadMore?: LoadMore[],
-  virtualScroll?: VirtualScroll,
-  filterOption?: (inputValue: string, option: TransferOptionType) => boolean,
-  footerRender?: (index: number) => React.ReactNode,
-  btnRender?: (index: number, direction: TransferDirection) => React.ReactNode,
-  onChange?: (data: TransferOptionType[][]) => void,
-  onSelectChange?: (selectedValues: (number | string)[][], selectedOptions: TransferOptionType[][]) => void,
-}
 
 export default function Transfer({
   className,
@@ -60,7 +29,7 @@ export default function Transfer({
   btnRender,
   onChange,
   onSelectChange
-}: Props) {
+}: TransferProps) {
   const [_selectedValues, setSelectedValues] = useState<(number | string)[][]>(defaultSelectedValues || selectedValues || new Array(data.length).fill([]))
   const [_data, setData] = useState(data)
 

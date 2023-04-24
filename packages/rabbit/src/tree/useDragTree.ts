@@ -1,7 +1,7 @@
 import React, { useRef, useState, useCallback } from 'react'
 
 import { LinkTreeNode, InnerLocation } from '../hooks/useTree/type'
-import { TreeNode } from './index'
+import { TreeNode } from '../types/tree'
 
 type Props = {
   expandHandleWidth: number,

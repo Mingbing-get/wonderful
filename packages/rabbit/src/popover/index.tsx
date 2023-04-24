@@ -1,32 +1,12 @@
 import React, { useRef, useEffect, useState, useMemo, useImperativeHandle, useCallback } from 'react'
 import ReactDOM from 'react-dom'
-import { createPopper, Placement, Instance, VirtualElement } from '@popperjs/core'
+import { createPopper, Instance, VirtualElement } from '@popperjs/core'
 import classNames from 'classnames'
 
-import './index.scss'
-import { InputRef } from 'rc-input'
-export {
-  Placement,
-  Instance
-}
-export type PopoverRef = Instance & {
-  resetVirtualElement: () => void
-}
-export type ArrowType = 'small' | 'large' | 'middle' | 'none'
+import { InputRef } from '../types/input'
+import { PopoverProps, PopoverRef } from '../types/popover'
 
-type Props = {
-  children: React.ReactElement,
-  content: React.ReactNode,
-  trigger?: 'click' | 'hover' | 'focus',
-  arrow?: ArrowType,
-  placement?: Placement,
-  visible?: boolean,
-  delay?: number,
-  widthFollowTarget?: boolean,
-  className?: string,
-  style?: React.CSSProperties,
-  onVisibleChange?: (visible: boolean) => void,
-}
+import './index.scss'
 
 function generateGetBoundingClientRect(x: number, y: number, width: number, height: number) {
   return () => ({
@@ -51,7 +31,7 @@ function Popover({
   className,
   style,
   onVisibleChange
-}: Props, ref?: React.ForwardedRef<PopoverRef | undefined>) {
+}: PopoverProps, ref?: React.ForwardedRef<PopoverRef | undefined>) {
   const targetRef = useRef<HTMLElement | InputRef>(null)
   const perTargetRef = useRef(false)
   const counter = useRef(0)
@@ -206,4 +186,4 @@ function Popover({
   )
 }
 
-export default React.forwardRef<PopoverRef | undefined, Props>(Popover)
+export default React.forwardRef<PopoverRef | undefined, PopoverProps>(Popover)

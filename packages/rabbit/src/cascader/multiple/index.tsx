@@ -14,18 +14,7 @@ import { checkedPathToLinkPath, linkPathToDataPath } from '../../hooks/useTree/u
 import useMultipleDisplay from '../../hooks/useMultipleDisplay'
 import { isSame } from '../../utils'
 
-import { CascaderOption, CascaderBaseProps, DropdownRender, NotFoundContent } from '../index'
-
-export type DisplayRender = (labels: string[][], checkedPath: CascaderOption[][]) => React.ReactNode
-
-type MultipleProps = {
-  defaultValue?: TreeValue[][],
-  value?: TreeValue[][],
-  onChange?: (value: TreeValue[][], checkedPath: CascaderOption[][]) => void,
-  displayRender?: DisplayRender,
-}
-
-type Props = CascaderBaseProps & MultipleProps
+import { CascaderOption, CascaderMultipleProps, CascaderDropdownRender, CascaderNotFoundContent } from '../../types/cascader'
 
 const defaultDisplayRender = (checkedPath: CascaderOption[][], onClose: (data: CascaderOption) => void) => {
   return checkedPath.map((singlePath, index) => {
@@ -39,8 +28,8 @@ const defaultDisplayRender = (checkedPath: CascaderOption[][], onClose: (data: C
     )
   })
 }
-const defaultDropdownRender: DropdownRender = (menus, _) => menus
-const defaultNotFoundContent: NotFoundContent = () => (
+const defaultDropdownRender: CascaderDropdownRender = (menus, _) => menus
+const defaultNotFoundContent: CascaderNotFoundContent = () => (
   <div className='cascader-empty'>
     <Icon type='empty' style={{ fontSize: '4rem' }} />
     <p>无数据...</p>
@@ -72,7 +61,7 @@ export default function MultipleCascader({
   loadData,
   onDropdownVisibleChange,
   onSearch,
-}: Props) {
+}: CascaderMultipleProps) {
   const [showSearchInput, setShowSearchInput] = useState(false)
   const [visiblePopover, setVisiblePopover] = useState(false)
   const valueRef = useRef<TreeValue[][]>([])

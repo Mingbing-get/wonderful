@@ -1,11 +1,11 @@
 import React, { useContext } from 'react'
 
-import { ValueType } from './group'
+import { RadioValueType } from '../types/radio'
 
 export type RadioContext = {
-  value?: ValueType,
-  triggerChange?: (key: ValueType, val: boolean) => void,
-  addValue?: (value: ValueType) => void
+  value?: RadioValueType,
+  triggerChange?: (key: RadioValueType, val: boolean) => void,
+  addValue?: (value: RadioValueType) => void
 }
 
 const radioContext: RadioContext = {}

@@ -2,39 +2,17 @@ import React, { useCallback, useEffect, useState, useRef } from 'react'
 import classNames from 'classnames'
 
 import Input from '../input'
-import Popover, { Placement } from '../popover'
+import Popover from '../popover'
 import Button from '../button'
 import Icon from '../icon'
-import TimePanel, { Props as TimePickerProps } from '../timePicker/panel'
-import Calendar, { Props as CalendarProps } from '../calendar'
+import TimePanel from '../timePicker/panel'
+import Calendar from '../calendar'
 import { formatDateAndTime, dayjs, Dayjs } from '../calendar/utils'
 import DateHeaderRender from './dateHeaderRender'
 
-import './index.scss'
+import { DatePickerProps } from '../types/datePicker'
 
-type Props = {
-  className?: string,
-  style?: React.CSSProperties,
-  popupClassName?: string,
-  popupStyle?: React.CSSProperties,
-  placement?: Placement,
-  defaultValue?: Dayjs,
-  value?: Dayjs,
-  allowClear?: boolean | { clearIcon?: React.ReactNode },
-  disabled?: boolean,
-  inputReadOnly?: boolean,
-  placeholder?: string,
-  suffixIcon?: React.ReactNode,
-  time?: Omit<TimePickerProps, 'value' | 'onChange'>,
-  showNow?: boolean,
-  customFormat?: {
-    format: (dayjs: Dayjs) => string,
-    validate: (timeStr: string) => Dayjs | undefined,
-  },
-  renderExtraFooter?: () => React.ReactNode,
-  onChange?: (date?: Dayjs, dateString?: string) => void,
-  onOpenChange?: (open: boolean) => void,
-} & Pick<CalendarProps, 'headerRender' | 'mode' | 'cellRender' | 'disabledDate'>
+import './index.scss'
 
 export default function DatePicker({
   className,
@@ -59,7 +37,7 @@ export default function DatePicker({
   renderExtraFooter,
   onChange,
   onOpenChange,
-}: Props) {
+}: DatePickerProps) {
   const [_value, setValue] = useState(defaultValue || value)
   const [showValue, setShowValue] = useState(defaultValue || value)
   const [inputValue, setInputValue] = useState('')

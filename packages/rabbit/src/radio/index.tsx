@@ -1,23 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react'
 import classNames from 'classnames'
 
-import Group, { OptionType, ValueType } from './group'
+import Group from './group'
 import { useRadio } from './context'
+import { RadioProps } from '../types/radio'
 
 import './index.scss'
-
-export { OptionType }
-
-type Props = {
-  className?: string,
-  style?: React.CSSProperties,
-  value?: ValueType,
-  disabled?: boolean,
-  checked?: boolean,
-  defaultChecked?: boolean,
-  children: React.ReactNode,
-  onChange?: (checked: boolean) => void
-}
 
 function Radio({
   className,
@@ -28,7 +16,7 @@ function Radio({
   defaultChecked,
   children,
   onChange
-}: Props, ref?: React.ForwardedRef<HTMLDivElement>) {
+}: RadioProps, ref?: React.ForwardedRef<HTMLDivElement>) {
   const [_checked, setChecked] = useState<boolean>(false)
   const { value: _value, triggerChange, addValue } = useRadio()
   const preChecked = useRef<boolean>(false)
@@ -79,6 +67,6 @@ function Radio({
   )
 }
 
-export default React.forwardRef<HTMLDivElement, Props>(Radio)
+export default React.forwardRef<HTMLDivElement, RadioProps>(Radio)
 
 export { Group }

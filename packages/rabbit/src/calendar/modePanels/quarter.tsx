@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 import classNames from 'classnames'
 
-import { PanelProps } from '../index'
+import { CalendarPanelProps } from '../../types/calendar'
 import { isSameDate, Dayjs } from '../utils'
 
 type QuarterType = {
@@ -16,7 +16,7 @@ export default function QuarterPanel({
   cellRender,
   disabledDate,
   onCellClick,
-}: PanelProps) {
+}: CalendarPanelProps) {
 
   const cellData: QuarterType[] = useMemo(() => {
     return new Array(4).fill(1).map((_, index) => {

@@ -2,7 +2,7 @@ import React, { useCallback, useMemo } from 'react'
 import classNames from 'classnames'
 
 import Icon from '../icon'
-import { HeaderRenderProps, CalendarMode } from '../calendar'
+import { CalendarHeaderRenderProps, CalendarMode } from '../types/calendar'
 
 export default function DateHeaderRender({
   mode,
@@ -10,7 +10,7 @@ export default function DateHeaderRender({
   baseMode,
   onChangeDate,
   onChangeMode
-}: HeaderRenderProps) {
+}: CalendarHeaderRenderProps) {
   const nextMode = useMemo(() => getNextMode(mode, baseMode), [mode, baseMode])
   const preMode = useMemo(() => getPreMode(mode, baseMode), [mode, baseMode])
 

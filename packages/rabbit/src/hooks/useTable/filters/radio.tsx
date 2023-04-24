@@ -1,8 +1,9 @@
 import React, { useCallback, useMemo, useState } from 'react'
 
-import { Group as CheckboxGroup, OptionType } from '../../../radio'
+import { Group as CheckboxGroup } from '../../../radio'
 import Button from '../../../button'
 
+import { RadioOptionType } from '../../../types/radio'
 import { FilterRenderProps, DataType } from '../type'
 
 type Props<T extends DataType> = {
@@ -37,8 +38,8 @@ export default function RadioFilter<T extends DataType>({
     closePopover()
   }, [closePopover, filterValue])
 
-  const _options: OptionType[] = useMemo(() => {
-    if (options) return options as OptionType[]
+  const _options: RadioOptionType[] = useMemo(() => {
+    if (options) return options as RadioOptionType[]
 
     const values: string[] = []
     data.forEach(row => {

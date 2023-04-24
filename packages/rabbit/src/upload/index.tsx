@@ -2,33 +2,9 @@ import React, { useState, useEffect } from 'react'
 import Icon from '../icon'
 
 import { toBase64, generateKey, getTypeByPath } from './utils'
+import { UploadProps, MultipleUploadProps, UploadImgDesc } from '../types/upload'
 
 import './index.scss'
-
-type BaseProps = {
-  children?: React.ReactNode;
-}
-type SingleProps = BaseProps & {
-  source?: string;
-  multiple?: false;
-  onChange?: (value?: ImgDesc) => void;
-}
-type MultipleProps = BaseProps & {
-  source?: string[];
-  multiple: true;
-  limit?: number;
-  onChange?: (value: ImgDesc[]) => void;
-}
-
-type Props = SingleProps | MultipleProps
-
-export type ImgDesc = {
-  key: string;
-  type?: string;
-  src?: string;
-  base64?: string;
-  originPath?: string;
-}
 
 function Upload({
   source,
@@ -36,16 +12,16 @@ function Upload({
   multiple,
   onChange,
   ...extra
-}: Props, ref?: React.ForwardedRef<HTMLDivElement>) {
-  const { limit } = extra as Pick<MultipleProps, 'limit'>
+}: UploadProps, ref?: React.ForwardedRef<HTMLDivElement>) {
+  const { limit } = extra as Pick<MultipleUploadProps, 'limit'>
 
-  const [imgList, setImgList] = useState<ImgDesc[]>([])
+  const [imgList, setImgList] = useState<UploadImgDesc[]>([])
   const [showHandle, setShowHandle] = useState(true)
 
   useEffect(() => {
     if (!source) return
     if (multiple) {
-      const imgList: ImgDesc[] = []
+      const imgList: UploadImgDesc[] = []
       source.forEach(src => {
         imgList.push({
           key: generateKey(),
@@ -78,7 +54,7 @@ function Upload({
     }
   }, [imgList])
 
-  function _onChange(newImgList: ImgDesc[]) {
+  function _onChange(newImgList: UploadImgDesc[]) {
     if (multiple) {
       onChange?.(newImgList)
     } else {
@@ -138,4 +114,4 @@ function Upload({
   )
 }
 
-export default React.forwardRef<HTMLDivElement, Props>(Upload)
+export default React.forwardRef<HTMLDivElement, UploadProps>(Upload)

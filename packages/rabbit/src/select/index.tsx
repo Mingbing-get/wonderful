@@ -6,34 +6,10 @@ import Icon from '../icon'
 import Popover from '../popover'
 import Option from './option'
 
+import { SelectOptionType, SelectProps, SelectValueType } from '../types/select'
 import './index.scss'
 
-export type ValueType = number | string;
-export type OptionType<T extends ValueType = ValueType> = {
-  value: T;
-  label?: string;
-  prefix?: React.ReactElement;
-  suffix?: React.ReactElement;
-  className?: string;
-  style?: React.CSSProperties;
-  [k: string]: any;
-  onClick?: (value: T) => void;
-}
-
-type Props<T extends ValueType> = {
-  defaultValue?: T;
-  value?: T;
-  options: OptionType<T>[];
-  className?: string;
-  style?: React.CSSProperties;
-  placeholder?: string;
-  disabled?: boolean;
-  wrapperClassName?: string;
-  wrapperStyle?: React.CSSProperties;
-  onChange?: (value?: T) => void;
-}
-
-export default function Select<T extends ValueType>({ 
+export default function Select<T extends SelectValueType>({ 
   defaultValue,
   value,
   options,
@@ -44,7 +20,7 @@ export default function Select<T extends ValueType>({
   wrapperClassName,
   wrapperStyle,
   onChange
-}: Props<T>) {
+}: SelectProps<T>) {
   const [visible, setVisible] = useState(false)
   const [_value, setValue] = useState<T>()
   const selectWrapperRef = useRef<HTMLDivElement>(null)
@@ -76,7 +52,7 @@ export default function Select<T extends ValueType>({
     selectWrapperRef.current.scrollTop = topDiff - selectWrapperRect.height / 2
   }, [visible])
 
-  const handleClick = useCallback(({ value, onClick }: OptionType<T>) => {
+  const handleClick = useCallback(({ value, onClick }: SelectOptionType<T>) => {
     if (value === _value) return
 
     onChange?.(value)

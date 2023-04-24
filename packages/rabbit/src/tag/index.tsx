@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react'
 import classNames from 'classnames'
 
 import Icon from '../icon'
+import { TagProps } from '../types/tag'
 
 import './index.scss'
 
@@ -12,19 +13,7 @@ const presetColorMap = {
   default: true,
   warning: true,
 }
-type ColorType = keyof (typeof presetColorMap)
-
-type Props = {
-  className?: string,
-  style?: React.CSSProperties,
-  closable?: boolean,
-  closeIcon?: React.ReactNode,
-  color?: string | ColorType,
-  icon?: React.ReactNode,
-  children?: React.ReactNode,
-  onClose?: (e: React.MouseEvent) => void,
-  onCloseCapture?: (e: React.MouseEvent) => void,
-}
+export type TagColorType = keyof (typeof presetColorMap)
 
 function Tag({
   className,
@@ -36,7 +25,7 @@ function Tag({
   children,
   onClose,
   onCloseCapture,
-}: Props, ref?: React.ForwardedRef<HTMLDivElement>) {
+}: TagProps, ref?: React.ForwardedRef<HTMLDivElement>) {
   const [isClose, setClose] = useState(false)
 
   const { presetColor, _color } = useMemo(() => {
@@ -82,4 +71,4 @@ function Tag({
   )
 }
 
-export default React.forwardRef<HTMLDivElement, Props>(Tag)
+export default React.forwardRef<HTMLDivElement, TagProps>(Tag)

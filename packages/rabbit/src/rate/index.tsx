@@ -4,27 +4,9 @@ import classNames from 'classnames'
 import Popover from '../popover'
 import Icon from '../icon'
 import { isFunction } from '../utils'
+import { RateProps, RateCharacterFn } from '../types/rate'
 
 import './index.scss'
-
-export type RateCharacterFn = (index: number) => React.ReactNode
-
-type Props = {
-  allowClear?: boolean,
-  allowHalf?: boolean,
-  character?: React.ReactNode | RateCharacterFn,
-  className?: string,
-  style?: React.CSSProperties,
-  count?: number,
-  defaultValue?: number,
-  value?: number
-  disabled?: boolean,
-  checkColor?: string,
-  unCheckColor?: string,
-  toolTips?: string[],
-  onChange?: (value: number) => void,
-  onHoverChange?: (value: number) => void
-}
 
 function Rate({
   allowClear,
@@ -41,7 +23,7 @@ function Rate({
   toolTips = [],
   onChange,
   onHoverChange
-}: Props, ref?: React.ForwardedRef<HTMLDivElement>) {
+}: RateProps, ref?: React.ForwardedRef<HTMLDivElement>) {
   const [_value, setValue] = useState(-1)
   const [hoverValue, setHoverValue] = useState(-1)
   const valueRef = useRef(-1)
@@ -166,7 +148,7 @@ function Rate({
   )
 }
 
-export default React.forwardRef<HTMLDivElement, Props>(Rate)
+export default React.forwardRef<HTMLDivElement, RateProps>(Rate)
 
 type RenderRateProps = {
   index: number,

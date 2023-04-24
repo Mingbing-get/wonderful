@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 import classNames from 'classnames'
 
-import { PanelProps } from '../index'
+import { CalendarPanelProps } from '../../types/calendar'
 import { isSameDate, Dayjs } from '../utils'
 
 type TenYearTypeType = 'before' | 'current' | 'after'
@@ -19,7 +19,7 @@ export default function TenYearPanel({
   cellRender,
   disabledDate,
   onCellClick,
-}: PanelProps) {
+}: CalendarPanelProps) {
 
   const cellData: TenYearType[] = useMemo(() => {
     const startYear = Math.floor(showDate.year() / 100) * 100 - 10
