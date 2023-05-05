@@ -34,3 +34,35 @@ export * from './transfer'
 export * from './tree'
 export * from './treeSelect'
 export * from './upload'
+
+export {
+  TableRow,
+  TableHeadRow,
+  TableCell,
+  TableHeadCell,
+  Column as TableColumn,
+  HeadColumn as TableHeadColumn,
+  AccessorColumn as TableAccessorColumn,
+  ColumnFilter as TableColumnFilter,
+  ColumnSort as TableColumnSort,
+  FilterRenderProps as TableFilterRenderProps,
+  FilterType as TableFilterType,
+  SortRenderProps as TableSortRenderProps,
+  SortDir as TableSortDir,
+} from '../hooks/useTable/type'
+
+export { FilterMapType as TableFilterMapType, SaveSort as TableSaveSort } from '../hooks/useTable'
+
+export { VirtualScrollY } from '../hooks/useVirtualScrollY'
+
+export {
+  TreeValue,
+  TreeMode,
+  InnerLocation as TreeInnerLocation,
+  BaseTreeNode,
+  LinkTreeNode,
+  MultipleProps as TreeMultipleProps,
+  SingleProps as TreeSingleProps,
+  MultipleReturn as TreeMultipleReturn,
+  SingleReturn as TreeSingleReturn
+} from '../hooks/useTree/type'

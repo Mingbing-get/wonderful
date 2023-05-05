@@ -6,15 +6,7 @@ import useVirtualScrollY from '../hooks/useVirtualScrollY'
 import { ListProps } from '../types/list'
 import './index.scss'
 
-export default function List({
-  className,
-  style,
-  itemClassName,
-  itemStyle,
-  items,
-  virtualScroll,
-  loadMore
-}: ListProps) {
+export default function List({ className, style, itemClassName, itemStyle, items, virtualScroll, loadMore }: ListProps) {
   const [touchBottom, setTouchBottom] = useState(false)
   const [loading, setLoading] = useState(false)
   const [hasMore, setHasMore] = useState(true)
@@ -22,24 +14,15 @@ export default function List({
   const loadingRef = useRef<HTMLDivElement>(null)
   const lastTouchBottom = useRef(0)
 
-  const {
-    handleScroll,
-    startShow,
-    endShow,
-    wrapperStyle,
-    itemsStyle
-  } = useVirtualScrollY(items.length, virtualScroll)
+  const { handleScroll, startShow, endShow, wrapperStyle, itemsStyle } = useVirtualScrollY(items.length, virtualScroll)
 
   useEffect(() => {
     setLoading(false)
   }, [items.length])
 
   useEffect(() => {
-    if (loadMore?.total && items.length >= loadMore.total) {
-      setHasMore(false)
-    } else {
-      setHasMore(true)
-    }
+    const hasMore = !!loadMore?.total && items.length < loadMore.total
+    setHasMore(hasMore)
   }, [items, loadMore])
 
   useEffect(() => {
@@ -84,36 +67,37 @@ export default function List({
     <div
       className={classNames('rabbit-list-wrapper', className)}
       style={{ ...style, ...wrapperStyle }}
-      onScroll={handleWrapperScroll}
-    >
-      <div ref={listItemsRef} className='list-items' style={itemsStyle}>
-        {
-          items.slice(startShow, endShow).map(item => (
-            <div key={item.key} className={classNames('list-item', itemClassName)} style={itemStyle}>
-              {item.component}
-            </div>
-          ))
-        }
+      onScroll={handleWrapperScroll}>
+      <div
+        ref={listItemsRef}
+        className="list-items"
+        style={itemsStyle}>
+        {items.slice(startShow, endShow).map((item) => (
+          <div
+            key={item.key}
+            className={classNames('list-item', itemClassName)}
+            style={itemStyle}>
+            {item.component}
+          </div>
+        ))}
       </div>
-      {
-        touchBottom && loadMore && (
-          !hasMore ? (
-            <div className='rabbit-list-not-more'>
-              {loadMore.notMore || '没有更多...'}
-            </div>
-          ) : (
-            loading ? (
-              <div className='rabbit-list-loading' ref={loadingRef}>
-                {loadMore.loading || <Loading />}
-              </div>
-            ) : (
-              <div className='rabbit-list-load-more' onClick={handleLoadMore}>
-                {loadMore.action}
-              </div>
-            )
-          )
-        )
-      }
+      {touchBottom &&
+        loadMore &&
+        (!hasMore ? (
+          <div className="rabbit-list-not-more">{loadMore.notMore || '没有更多...'}</div>
+        ) : loading ? (
+          <div
+            className="rabbit-list-loading"
+            ref={loadingRef}>
+            {loadMore.loading || <Loading />}
+          </div>
+        ) : (
+          <div
+            className="rabbit-list-load-more"
+            onClick={handleLoadMore}>
+            {loadMore.action}
+          </div>
+        ))}
     </div>
   )
 }

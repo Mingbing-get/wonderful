@@ -1,4 +1,7 @@
 import { Dayjs } from 'dayjs'
+
+export { Dayjs }
+
 export type CalendarMode = 'tenYear' | 'year' | 'quarter' | 'month' | 'week' | 'date'
 
 export type CalendarPanelProps = {
