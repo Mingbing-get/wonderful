@@ -49,17 +49,23 @@ export default function SingleTreeSelect({
 
     const linkPath = checkedPathToLinkPath(false, _checkedPath, treeRef.current.forest)
     if (displayRender) {
-      return displayRender(_checkedPath, linkPath.map(linkNode => linkNode.data))
+      return displayRender(
+        _checkedPath,
+        linkPath.map((linkNode) => linkNode.data)
+      )
     }
 
-    return linkPath.map(linkNode => linkNode.data.label || linkNode.value).join(' / ')
+    return linkPath.map((linkNode) => linkNode.data.label || linkNode.value).join(' / ')
   }, [_checkedPath, displayRender])
 
-  const handleChecked = useCallback((checkedPath: TreeValue[], node: TreeNode, isChecked: boolean) => {
-    setCheckedPath(checkedPath)
-    onChecked?.(checkedPath, node, isChecked)
-    onChange?.(checkedPath)
-  }, [onChecked, onChange])
+  const handleChecked = useCallback(
+    (checkedPath: TreeValue[], node: TreeNode, isChecked: boolean) => {
+      setCheckedPath(checkedPath)
+      onChecked?.(checkedPath, node, isChecked)
+      onChange?.(checkedPath)
+    },
+    [onChecked, onChange]
+  )
 
   const handleClear = useCallback(() => {
     treeRef.current?.clearChecked()
@@ -67,10 +73,13 @@ export default function SingleTreeSelect({
     onChange?.([])
   }, [onChange])
 
-  const handleChangeVisible = useCallback((visible: boolean) => {
-    setVisible(visible)
-    onPopoverVisibleChange?.(visible)
-  }, [onPopoverVisibleChange])
+  const handleChangeVisible = useCallback(
+    (visible: boolean) => {
+      setVisible(visible)
+      onPopoverVisibleChange?.(visible)
+    },
+    [onPopoverVisibleChange]
+  )
 
   if (disabled) {
     return (
@@ -79,12 +88,8 @@ export default function SingleTreeSelect({
         placeholder={placeholder}
         disabled
         style={style}
-        className={classNames('rabbit-tree-select-wrapper', className)}
-        suffix={(
-          <span className='suffix'>
-            {suffixIcon || <Icon type='arrowDown' />}
-          </span>
-        )}
+        className={classNames('rabbit-tree-select-wrapper', 'rabbit-component', className)}
+        suffix={<span className="suffix">{suffixIcon || <Icon type="arrowDown" />}</span>}
       />
     )
   }
@@ -96,7 +101,7 @@ export default function SingleTreeSelect({
       className={popupClassName}
       style={popupStyle}
       widthFollowTarget
-      arrow='none'
+      arrow="none"
       trigger={expandTrigger}
       onVisibleChange={handleChangeVisible}
       content={
@@ -106,30 +111,25 @@ export default function SingleTreeSelect({
           onChecked={handleChecked}
           {...extra}
         />
-      }
-    >
+      }>
       <Input
         value={inputValue}
         placeholder={placeholder}
         readOnly
         style={style}
-        className={classNames('rabbit-tree-select-wrapper', allowClear && _checkedPath.length && 'can-clear' , className)}
-        suffix={(
+        className={classNames('rabbit-tree-select-wrapper', 'rabbit-component', allowClear && _checkedPath.length && 'can-clear', className)}
+        suffix={
           <>
-            {
-              <span className='suffix'>
-                {suffixIcon || <Icon type='arrowDown' />}
+            {<span className="suffix">{suffixIcon || <Icon type="arrowDown" />}</span>}
+            {allowClear && (
+              <span
+                className="clear"
+                onClickCapture={handleClear}>
+                {clearIcon || <Icon type="close" />}
               </span>
-            }
-            {
-              allowClear && (
-                <span className='clear' onClickCapture={handleClear}>
-                  {clearIcon || <Icon type='close' />}
-                </span>
-              )
-            }
+            )}
           </>
-        )}
+        }
       />
     </Popover>
   )

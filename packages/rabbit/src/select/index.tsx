@@ -1,15 +1,15 @@
 import React, { useCallback, useState, useEffect, useRef } from 'react'
 import classNames from 'classnames'
 
-import Input from '../input'
+import Trigger from '../selectTrigger'
+import Panel from '../selectPanel'
 import Icon from '../icon'
 import Popover from '../popover'
-import Option from './option'
 
 import { SelectOptionType, SelectProps, SelectValueType } from '../types/select'
 import './index.scss'
 
-export default function Select<T extends SelectValueType>({ 
+export default function Select<T extends SelectValueType>({
   defaultValue,
   value,
   options,
@@ -19,11 +19,10 @@ export default function Select<T extends SelectValueType>({
   disabled,
   wrapperClassName,
   wrapperStyle,
-  onChange
+  onChange,
 }: SelectProps<T>) {
   const [visible, setVisible] = useState(false)
   const [_value, setValue] = useState<T>()
-  const selectWrapperRef = useRef<HTMLDivElement>(null)
   const initRef = useRef(false)
 
   useEffect(() => setValue(defaultValue), [])
@@ -34,88 +33,80 @@ export default function Select<T extends SelectValueType>({
       if (value === undefined) return
     }
 
-    setValue(old => {
+    setValue((old) => {
       if (value === old) return old
 
       return value
     })
   }, [value])
 
-  useEffect(() => {
-    if (!visible || !selectWrapperRef.current) return
+  const handleClick = useCallback(
+    ({ value, onClick }: SelectOptionType<T>) => {
+      if (value === _value) return
 
-    const selectOption = selectWrapperRef.current.getElementsByClassName('is-select')[0]
-    if (!selectOption) return
+      onChange?.(value)
+      setValue(value)
+      setVisible(false)
+      onClick?.(value)
+    },
+    [_value, onChange]
+  )
 
-    const selectWrapperRect = selectWrapperRef.current.getBoundingClientRect()
-    const topDiff = selectOption.getBoundingClientRect().top - selectWrapperRect.top
-    selectWrapperRef.current.scrollTop = topDiff - selectWrapperRect.height / 2
-  }, [visible])
-
-  const handleClick = useCallback(({ value, onClick }: SelectOptionType<T>) => {
-    if (value === _value) return
-
-    onChange?.(value)
-    setValue(value)
-    setVisible(false)
-    onClick?.(value)
-  }, [_value, onChange])
-
-  const findLabelByValue = useCallback((value?: T) => {
-    if (value === undefined) return
-    const currentOption = options.find(item => item.value === value)
-    return currentOption?.label || currentOption?.value
-  }, [options])
+  const findLabelByValue = useCallback(
+    (value?: T) => {
+      if (value === undefined) return
+      const currentOption = options.find((item) => item.value === value)
+      return currentOption?.label || currentOption?.value
+    },
+    [options]
+  )
 
   if (disabled) {
     return (
-      <Input
+      <Trigger
         placeholder={placeholder}
         className={classNames('rabbit-select', className)}
         style={style}
-        value={findLabelByValue(_value)}
-        readOnly
         disabled
         suffix={
-          <Icon type='arrowDownFill' className={classNames('icon-arrow-down-fill', visible && 'rotate-180')} />
-        }
-      />
+          <Icon
+            type="arrowDownFill"
+            className={classNames('icon-arrow-down-fill', visible && 'rotate-180')}
+          />
+        }>
+        {findLabelByValue(_value)}
+      </Trigger>
     )
   }
 
   return (
     <Popover
       widthFollowTarget
-      arrow="small"
-      className='rabbit-select-popover'
-      trigger='focus'
+      arrow="none"
+      className="rabbit-select-popover"
       visible={visible}
       onVisibleChange={setVisible}
       content={
-        <div ref={selectWrapperRef} className={classNames('rabbit-select-wrapper', wrapperClassName)} style={wrapperStyle}>
-          {
-            options.map(item => (
-              <Option
-                className={classNames({ 'is-select': _value === item.value })}
-                {...item}
-                key={item.value}
-                onClick={value => handleClick(item)}
-              />
-            ))
-          }
-        </div>
-      } 
-    >
-      <Input
+        <Panel
+          options={options}
+          value={_value}
+          wrapperClassName={wrapperClassName}
+          wrapperStyle={wrapperStyle}
+          onClickItem={handleClick}
+        />
+      }>
+      <Trigger
         placeholder={placeholder}
-        className={classNames('rabbit-select', className)}
+        className={classNames('rabbit-select', visible && 'is-focused', className)}
         style={style}
-        value={findLabelByValue(_value)}
-        readOnly
         suffix={
-          <Icon type='arrowDownFill' className={classNames('icon-arrow-down-fill', visible && 'rotate-180')} />
-        }
-      />
+          <Icon
+            type="arrowDownFill"
+            className={classNames('icon-arrow-down-fill', visible && 'rotate-180')}
+          />
+        }>
+        {findLabelByValue(_value)}
+      </Trigger>
     </Popover>
   )
 }

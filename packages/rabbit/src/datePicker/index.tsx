@@ -26,14 +26,14 @@ export default function DatePicker({
   disabled,
   inputReadOnly,
   placeholder,
-  suffixIcon = <Icon type='date' />,
+  suffixIcon = <Icon type="date" />,
   time,
   mode = 'date',
   showNow,
   customFormat,
   disabledDate,
   cellRender,
-  headerRender = props => <DateHeaderRender {...props} />,
+  headerRender = (props) => <DateHeaderRender {...props} />,
   renderExtraFooter,
   onChange,
   onOpenChange,
@@ -46,9 +46,12 @@ export default function DatePicker({
 
   const initRef = useRef(false)
 
-  const _formatDateAndTime = useCallback((value: Dayjs) => {
-    return formatDateAndTime(value, mode, customFormat?.format, time ? (time.format || 'HH:mm:ss') : undefined, time?.customFormat?.format)
-  }, [mode, customFormat, time])
+  const _formatDateAndTime = useCallback(
+    (value: Dayjs) => {
+      return formatDateAndTime(value, mode, customFormat?.format, time ? time.format || 'HH:mm:ss' : undefined, time?.customFormat?.format)
+    },
+    [mode, customFormat, time]
+  )
 
   useEffect(() => {
     if (!initRef.current) {
@@ -56,7 +59,7 @@ export default function DatePicker({
       if (value === undefined) return
     }
 
-    setValue(oldValue => {
+    setValue((oldValue) => {
       if (oldValue?.isSame(value)) return oldValue
 
       return value
@@ -85,11 +88,14 @@ export default function DatePicker({
     setVisible(false)
   }, [onChange, _formatDateAndTime])
 
-  const handleClear = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    e.stopPropagation()
-    setValue(undefined)
-    onChange?.()
-  }, [onChange])
+  const handleClear = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      e.stopPropagation()
+      setValue(undefined)
+      onChange?.()
+    },
+    [onChange]
+  )
 
   const handleConfirm = useCallback(() => {
     setVisible(false)
@@ -101,25 +107,28 @@ export default function DatePicker({
     }
   }, [onChange, showValue, _formatDateAndTime])
 
-  const handleInputBlur = useCallback((value: string) => {
-    setCount(old => old + 1)
-    if (customFormat) {
-      const newDate = customFormat.validate(value)
-      if (newDate) {
-        setValue(newDate)
-        setShowValue(newDate)
-        onChange?.(newDate, _formatDateAndTime(newDate))
+  const handleInputBlur = useCallback(
+    (value: string) => {
+      setCount((old) => old + 1)
+      if (customFormat) {
+        const newDate = customFormat.validate(value)
+        if (newDate) {
+          setValue(newDate)
+          setShowValue(newDate)
+          onChange?.(newDate, _formatDateAndTime(newDate))
+        }
+        return
       }
-      return
-    }
 
-    const newDate = dayjs(value)
-    if (!newDate.isValid()) return
-    
-    setValue(newDate)
-    setShowValue(newDate)
-    onChange?.(newDate, value)
-  }, [onChange, _formatDateAndTime, customFormat])
+      const newDate = dayjs(value)
+      if (!newDate.isValid()) return
+
+      setValue(newDate)
+      setShowValue(newDate)
+      onChange?.(newDate, value)
+    },
+    [onChange, _formatDateAndTime, customFormat]
+  )
 
   if (disabled) {
     return (
@@ -127,13 +136,9 @@ export default function DatePicker({
         value={inputValue}
         placeholder={placeholder}
         disabled={true}
-        className={classNames('rabbit-date-picker', time && 'has-time', className)}
+        className={classNames('rabbit-date-picker', 'rabbit-component', time && 'has-time', className)}
         style={style}
-        suffix={suffixIcon && (
-          <span className='suffix'>
-            {suffixIcon}
-          </span>
-        )}
+        suffix={suffixIcon && <span className="suffix">{suffixIcon}</span>}
       />
     )
   }
@@ -143,13 +148,13 @@ export default function DatePicker({
       visible={visible}
       className={popupClassName}
       style={popupStyle}
-      arrow='none'
-      trigger='focus'
+      arrow="none"
+      trigger="focus"
       placement={placement}
       onVisibleChange={setVisible}
       content={
-        <div className='rabbit-date-picker-panel'>
-          <div className='date-panel-body'>
+        <div className="rabbit-date-picker-panel">
+          <div className="date-panel-body">
             <Calendar
               value={showValue}
               fullscreen={false}
@@ -159,73 +164,60 @@ export default function DatePicker({
               headerRender={headerRender}
               onChange={setShowValue}
             />
-            {
-              time && (
-                <div className='date-picker-panel-time-wrapper'>
-                  <div className='date-picker-panel-time-header'>
-                    {time.customFormat && showValue ?
-                      time.customFormat.format(showValue.clone()) :
-                      showValue?.format(time.format || 'HH:mm:ss')
-                    }
-                  </div>
-                  <TimePanel
-                    {...time}
-                    value={showValue}
-                    onChange={setShowValue}
-                  />
+            {time && (
+              <div className="date-picker-panel-time-wrapper">
+                <div className="date-picker-panel-time-header">
+                  {time.customFormat && showValue ? time.customFormat.format(showValue.clone()) : showValue?.format(time.format || 'HH:mm:ss')}
                 </div>
-              )
-            }
+                <TimePanel
+                  {...time}
+                  value={showValue}
+                  onChange={setShowValue}
+                />
+              </div>
+            )}
           </div>
-          <div className='date-panel-footer'>
-            <div className='extra-footer'>
-              {
-                renderExtraFooter ?
-                  renderExtraFooter() : (
-                    showNow && (
-                      <span className='date-now' onClick={handleChangeNow}>
-                        {time ? '此刻' : '今天'}
-                      </span>
-                    )
-                  )
-              }
+          <div className="date-panel-footer">
+            <div className="extra-footer">
+              {renderExtraFooter
+                ? renderExtraFooter()
+                : showNow && (
+                    <span
+                      className="date-now"
+                      onClick={handleChangeNow}>
+                      {time ? '此刻' : '今天'}
+                    </span>
+                  )}
             </div>
-            <Button type='primary' onClick={handleConfirm}>确定</Button>
+            <Button
+              type="primary"
+              onClick={handleConfirm}>
+              确定
+            </Button>
           </div>
         </div>
-      }
-    >
+      }>
       <Input
         value={inputValue}
         placeholder={placeholder}
         readOnly={inputReadOnly}
-        className={classNames('rabbit-date-picker', _value && allowClear && 'effect-toggle', time && 'has-time', className)}
+        className={classNames('rabbit-date-picker', 'rabbit-component', _value && allowClear && 'effect-toggle', time && 'has-time', className)}
         style={style}
-        onChange={e => setInputValue(e.target.value)}
-        onBlur={e => handleInputBlur(e.currentTarget.value)}
-        onKeyUp={e => e.key === 'Enter' && handleInputBlur(e.currentTarget.value)}
-        suffix={(
+        onChange={(e) => setInputValue(e.target.value)}
+        onBlur={(e) => handleInputBlur(e.currentTarget.value)}
+        onKeyUp={(e) => e.key === 'Enter' && handleInputBlur(e.currentTarget.value)}
+        suffix={
           <>
-            {
-              suffixIcon && (
-                <span className='suffix'>
-                  {suffixIcon}
-                </span>
-              )
-            }
-            {
-              allowClear && (
-                <span className='clear' onClickCapture={handleClear}>
-                  {
-                    allowClear === true ?
-                      <Icon type='close' /> :
-                      allowClear.clearIcon
-                  }
-                </span>
-              )
-            }
+            {suffixIcon && <span className="suffix">{suffixIcon}</span>}
+            {allowClear && (
+              <span
+                className="clear"
+                onClickCapture={handleClear}>
+                {allowClear === true ? <Icon type="close" /> : allowClear.clearIcon}
+              </span>
+            )}
           </>
-        )}
+        }
       />
     </Popover>
   )

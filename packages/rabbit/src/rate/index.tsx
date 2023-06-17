@@ -8,22 +8,25 @@ import { RateProps, RateCharacterFn } from '../types/rate'
 
 import './index.scss'
 
-function Rate({
-  allowClear,
-  allowHalf,
-  character = <Icon type='starFill' />,
-  className,
-  style,
-  count = 5,
-  defaultValue,
-  value,
-  disabled,
-  checkColor = '#fadb14',
-  unCheckColor = 'rgba(0, 0, 0, .06)',
-  toolTips = [],
-  onChange,
-  onHoverChange
-}: RateProps, ref?: React.ForwardedRef<HTMLDivElement>) {
+function Rate(
+  {
+    allowClear,
+    allowHalf,
+    character = <Icon type="starFill" />,
+    className,
+    style,
+    count = 5,
+    defaultValue,
+    value,
+    disabled,
+    checkColor = '#fadb14',
+    unCheckColor = 'rgba(0, 0, 0, .06)',
+    toolTips = [],
+    onChange,
+    onHoverChange,
+  }: RateProps,
+  ref?: React.ForwardedRef<HTMLDivElement>
+) {
   const [_value, setValue] = useState(-1)
   const [hoverValue, setHoverValue] = useState(-1)
   const valueRef = useRef(-1)
@@ -90,60 +93,58 @@ function Rate({
   return (
     <div
       ref={ref}
-      className={classNames('rabbit-rate-wrapper', className)}
-      style={{
-        '--uncheck-color': unCheckColor,
-        '--check-color': checkColor,
-        ...style
-      } as React.CSSProperties}
-    >
-      {
-        new Array(count).fill(1).map((_, index) => {
-          let isHalf = index === _value - 0.5
-          let isChecked = !isHalf && index <= _value
-          if (hoverValue !== -1) {
-            isHalf = index === hoverValue - 0.5
-            isChecked = !isHalf && index <= hoverValue
-          }
+      className={classNames('rabbit-rate-wrapper', 'rabbit-component', className)}
+      style={
+        {
+          '--uncheck-color': unCheckColor,
+          '--check-color': checkColor,
+          ...style,
+        } as React.CSSProperties
+      }>
+      {new Array(count).fill(1).map((_, index) => {
+        let isHalf = index === _value - 0.5
+        let isChecked = !isHalf && index <= _value
+        if (hoverValue !== -1) {
+          isHalf = index === hoverValue - 0.5
+          isChecked = !isHalf && index <= hoverValue
+        }
 
-          const curIcon = isFunction<RateCharacterFn>(character) ? character(index) : character
+        const curIcon = isFunction<RateCharacterFn>(character) ? character(index) : character
 
-          if (!toolTips[index]) {
-            return (
-              <RenderRateRef
-                key={index}
-                index={index}
-                isHalf={isHalf}
-                isChecked={isChecked}
-                curIcon={curIcon}
-                onClickItem={handleClickItem}
-                onMouseEnterItem={handleMouseEnterItem}
-                onMouseLeaveItem={handleMouseLeaveItem}
-              />
-            )
-          }
-          
+        if (!toolTips[index]) {
           return (
-            <Popover
-              content={<span>{toolTips[index]}</span>}
-              trigger='hover'
-              arrow='small'
-              placement='top'
+            <RenderRateRef
               key={index}
-            >
-              <RenderRateRef
-                index={index}
-                isHalf={isHalf}
-                isChecked={isChecked}
-                curIcon={curIcon}
-                onClickItem={handleClickItem}
-                onMouseEnterItem={handleMouseEnterItem}
-                onMouseLeaveItem={handleMouseLeaveItem}
-              />
-            </Popover>
+              index={index}
+              isHalf={isHalf}
+              isChecked={isChecked}
+              curIcon={curIcon}
+              onClickItem={handleClickItem}
+              onMouseEnterItem={handleMouseEnterItem}
+              onMouseLeaveItem={handleMouseLeaveItem}
+            />
           )
-        })
-      }
+        }
+
+        return (
+          <Popover
+            content={<span>{toolTips[index]}</span>}
+            trigger="hover"
+            arrow="small"
+            placement="top"
+            key={index}>
+            <RenderRateRef
+              index={index}
+              isHalf={isHalf}
+              isChecked={isChecked}
+              curIcon={curIcon}
+              onClickItem={handleClickItem}
+              onMouseEnterItem={handleMouseEnterItem}
+              onMouseLeaveItem={handleMouseLeaveItem}
+            />
+          </Popover>
+        )
+      })}
     </div>
   )
 }
@@ -151,40 +152,37 @@ function Rate({
 export default React.forwardRef<HTMLDivElement, RateProps>(Rate)
 
 type RenderRateProps = {
-  index: number,
-  isHalf: boolean,
-  isChecked: boolean,
-  curIcon: React.ReactNode,
-  onClickItem: (index: number, isHalf: boolean, e: React.MouseEvent<HTMLDivElement>) => void,
-  onMouseEnterItem: (index: number, isHalf: boolean, e: React.MouseEvent<HTMLDivElement>) => void,
-  onMouseLeaveItem: (index: number, isHalf: boolean, e: React.MouseEvent<HTMLDivElement>) => void,
+  index: number
+  isHalf: boolean
+  isChecked: boolean
+  curIcon: React.ReactNode
+  onClickItem: (index: number, isHalf: boolean, e: React.MouseEvent<HTMLDivElement>) => void
+  onMouseEnterItem: (index: number, isHalf: boolean, e: React.MouseEvent<HTMLDivElement>) => void
+  onMouseLeaveItem: (index: number, isHalf: boolean, e: React.MouseEvent<HTMLDivElement>) => void
 }
 
-function RenderRate({
-    index,
-    isChecked,
-    isHalf,
-    curIcon,
-    onClickItem,
-    onMouseEnterItem,
-    onMouseLeaveItem
-  }: RenderRateProps,
+function RenderRate(
+  { index, isChecked, isHalf, curIcon, onClickItem, onMouseEnterItem, onMouseLeaveItem }: RenderRateProps,
   ref?: React.ForwardedRef<HTMLDivElement>
 ) {
   return (
-    <div ref={ref} className={classNames('rate-item', isHalf && 'is-half', isChecked && 'is-checked')}>
+    <div
+      ref={ref}
+      className={classNames('rate-item', isHalf && 'is-half', isChecked && 'is-checked')}>
       <div
-        className='rate-item-half'
-        onClick={e => onClickItem(index, true, e)}
-        onMouseEnter={e => onMouseEnterItem(index, true, e)}
-        onMouseLeave={e => onMouseLeaveItem(index, true, e)}
-      >{curIcon}</div>
+        className="rate-item-half"
+        onClick={(e) => onClickItem(index, true, e)}
+        onMouseEnter={(e) => onMouseEnterItem(index, true, e)}
+        onMouseLeave={(e) => onMouseLeaveItem(index, true, e)}>
+        {curIcon}
+      </div>
       <div
-        className='rate-item-all'
-        onClick={e => onClickItem(index, false, e)}
-        onMouseEnter={e => onMouseEnterItem(index, false, e)}
-        onMouseLeave={e => onMouseLeaveItem(index, false, e)}
-      >{curIcon}</div>
+        className="rate-item-all"
+        onClick={(e) => onClickItem(index, false, e)}
+        onMouseEnter={(e) => onMouseEnterItem(index, false, e)}
+        onMouseLeave={(e) => onMouseLeaveItem(index, false, e)}>
+        {curIcon}
+      </div>
     </div>
   )
 }

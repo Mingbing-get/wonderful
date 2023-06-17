@@ -11,19 +11,10 @@ import './index.scss'
 const numberReg = /^(-|\d)\d*$/
 const floatReg = /^(-|\d)\d*\.?\d*$/
 
-function InputNumber({
-  defaultValue,
-  value,
-  step = 1,
-  min,
-  max,
-  showStepBtn = true,
-  suffix,
-  className,
-  onChange,
-  onBlur,
-  ...extra
-}: InputNumberProps, ref: React.ForwardedRef<InputRef>) {
+function InputNumber(
+  { defaultValue, value, step = 1, min, max, showStepBtn = true, suffix, className, onChange, onBlur, ...extra }: InputNumberProps,
+  ref: React.ForwardedRef<InputRef>
+) {
   const [_value, setValue] = useState<number>()
   const preValue = useRef<number>()
 
@@ -47,13 +38,16 @@ function InputNumber({
     preValue.current = defaultValue
   }, [])
 
-  const handleChange = useCallback((val?: string | number) => {
-    if (extra.disabled) return
-    
-    setValue(val as number)
-    onChange?.(val as number)
-    preValue.current = val as number
-  }, [onChange, curReg, extra.disabled])
+  const handleChange = useCallback(
+    (val?: string | number) => {
+      if (extra.disabled) return
+
+      setValue(val as number)
+      onChange?.(val as number)
+      preValue.current = val as number
+    },
+    [onChange, curReg, extra.disabled]
+  )
 
   function handleBlur(e: React.FocusEvent<HTMLInputElement>) {
     const newValue = setValueUsePrevent(_value)
@@ -64,7 +58,7 @@ function InputNumber({
   }
 
   function setValueUsePrevent(value?: number) {
-    if (value && !curReg.test(`${value}`) || value as any === '') return undefined
+    if ((value && !curReg.test(`${value}`)) || (value as any) === '') return undefined
 
     let newValue = Number(value)
     if (min !== undefined && newValue) {
@@ -74,38 +68,36 @@ function InputNumber({
       newValue = Math.min(max, newValue)
     }
 
-    return isNaN(newValue) ? undefined : (
-      step === null ? newValue : Math.round(newValue / step) * step
-    )
+    return isNaN(newValue) ? undefined : step === null ? newValue : Math.round(newValue / step) * step
   }
 
   return (
     <Input
       ref={ref}
       {...extra}
-      className={classNames('rabbit-number-wrapper', className)}
+      className={classNames('rabbit-number-wrapper', 'rabbit-component', className)}
       value={_value}
-      onChange={e => handleChange(e.target.value)}
+      onChange={(e) => handleChange(e.target.value)}
       onBlur={handleBlur}
       suffix={
         <>
-          {
-            suffix && (
-              <>
-                <div className='rabbit-unit-suffix'>
-                  {suffix}
-                </div>
-              </>
-            )
-          }
-          {
-            showStepBtn && (
-              <div className='rabbit-step-wrapper'>
-                <Icon type='arrowUp' onClick={() => handleChange((_value || 0) + (step || 1))} />
-                <Icon type='arrowDown' onClick={() => handleChange((_value || 0) - (step || 1))} />
-              </div>
-            )
-          }
+          {suffix && (
+            <>
+              <div className="rabbit-unit-suffix">{suffix}</div>
+            </>
+          )}
+          {showStepBtn && (
+            <div className="rabbit-step-wrapper">
+              <Icon
+                type="arrowUp"
+                onClick={() => handleChange((_value || 0) + (step || 1))}
+              />
+              <Icon
+                type="arrowDown"
+                onClick={() => handleChange((_value || 0) - (step || 1))}
+              />
+            </div>
+          )}
         </>
       }
     />

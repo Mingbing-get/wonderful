@@ -7,17 +7,10 @@ import { CheckboxProps } from '../types/checkbox'
 
 import './index.scss'
 
-function Checkbox({
-  className,
-  style,
-  disabled,
-  checked,
-  halfChecked,
-  defaultChecked,
-  value,
-  children,
-  onChange
-}: CheckboxProps, ref?: React.ForwardedRef<HTMLDivElement>) {
+function Checkbox(
+  { className, style, disabled, checked, halfChecked, defaultChecked, value, children, onChange }: CheckboxProps,
+  ref?: React.ForwardedRef<HTMLDivElement>
+) {
   const [_checked, setChecked] = useState<boolean>(false)
   const { value: values, triggerChange, addValue } = useCheckbox()
   const preChecked = useRef<boolean>(false)
@@ -62,7 +55,11 @@ function Checkbox({
   }
 
   return (
-    <div ref={ref} className={classNames('rabbit-checkbox-wrapper', className)} style={style} onClick={handleClick}>
+    <div
+      ref={ref}
+      className={classNames('rabbit-checkbox-wrapper', 'rabbit-component', className)}
+      style={style}
+      onClick={handleClick}>
       <div className={classNames('checkbox-control', _checked && 'is-checked', halfChecked && 'is-half-checked', disabled && 'is-disabled')}></div>
       <span>{children}</span>
     </div>

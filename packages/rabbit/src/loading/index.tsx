@@ -5,17 +5,16 @@ import { LoadingProps } from '../types/loading'
 
 import './index.scss'
 
-function Loading({
-  size = 1,
-  color
-}: LoadingProps, ref?: React.ForwardedRef<HTMLSpanElement>) {
+function Loading({ size = 1, color }: LoadingProps, ref?: React.ForwardedRef<HTMLSpanElement>) {
   return (
     <span
       ref={ref}
-      className='rabbit-loading-wrapper'
-      style={{ width: `${size}rem`, height: `${size}rem`, color }}
-    >
-      <Icon type='loading' style={{ fontSize: `${size}rem` }} />
+      className="rabbit-loading-wrapper rabbit-component"
+      style={{ width: `${size}rem`, height: `${size}rem`, color }}>
+      <Icon
+        type="loading"
+        style={{ fontSize: `${size}rem` }}
+      />
     </span>
   )
 }

@@ -21,6 +21,8 @@ export * from './progress'
 export * from './radio'
 export * from './rate'
 export * from './select'
+export * from './selectPanel'
+export * from './selectTrigger'
 export * from './slider'
 export * from './steps'
 export * from './switch'
@@ -64,5 +66,5 @@ export {
   MultipleProps as TreeMultipleProps,
   SingleProps as TreeSingleProps,
   MultipleReturn as TreeMultipleReturn,
-  SingleReturn as TreeSingleReturn
+  SingleReturn as TreeSingleReturn,
 } from '../hooks/useTree/type'

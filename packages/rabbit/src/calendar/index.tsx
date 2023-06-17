@@ -23,14 +23,14 @@ export default function Calendar({
   disabledDate,
   headerRender = (props) => <HeaderRender {...props} />,
   onChange,
-  onPanelChange
+  onPanelChange,
 }: CalendarProps) {
   const [showDate, setShowDate] = useState(defaultValue || value || dayjs())
   const [_value, setValue] = useState(defaultValue || value)
   const [_mode, setMode] = useState(mode)
 
   useEffect(() => {
-    setValue(oldValue => {
+    setValue((oldValue) => {
       if (oldValue?.isSame(value)) return oldValue
 
       setShowDate(value || dayjs())
@@ -49,42 +49,48 @@ export default function Calendar({
       quarter: QuarterPanel,
       month: MonthPanel,
       week: WeekPanel,
-      date: DatePanel
+      date: DatePanel,
     }[_mode]
   }, [_mode])
 
-  const handleCellClick = useCallback((date: Dayjs, innerMode: CalendarMode) => {
-    setValue(oldDate => {
-      if (isSameDate(innerMode, oldDate, date)) return oldDate
-      onChange?.(date.clone(), formatDateByMode(date, mode))
-      setShowDate(date.clone())
-      return date
-    })
+  const handleCellClick = useCallback(
+    (date: Dayjs, innerMode: CalendarMode) => {
+      setValue((oldDate) => {
+        if (isSameDate(innerMode, oldDate, date)) return oldDate
+        onChange?.(date.clone(), formatDateByMode(date, mode))
+        setShowDate(date.clone())
+        return date
+      })
 
-    const nextMode = getNextMode(innerMode, mode)
-    if (nextMode && nextMode !== innerMode) {
-      setMode(nextMode as CalendarMode)
-    }
-  }, [onChange, mode])
+      const nextMode = getNextMode(innerMode, mode)
+      if (nextMode && nextMode !== innerMode) {
+        setMode(nextMode as CalendarMode)
+      }
+    },
+    [onChange, mode]
+  )
 
-  const handleChangeMode = useCallback((mode: CalendarMode) => {
-    setMode((oldMode) => {
-      if (mode === oldMode) return oldMode
+  const handleChangeMode = useCallback(
+    (mode: CalendarMode) => {
+      setMode((oldMode) => {
+        if (mode === oldMode) return oldMode
 
-      onPanelChange?.(showDate, mode)
-      return mode
-    })
-  }, [showDate, onPanelChange])
+        onPanelChange?.(showDate, mode)
+        return mode
+      })
+    },
+    [showDate, onPanelChange]
+  )
 
   return (
-    <div className={classNames('rabbit-calendar-wrapper', fullscreen && 'is-full-screen')}>
-      <div className='rabbit-calendar-header'>
+    <div className={classNames('rabbit-calendar-wrapper', 'rabbit-component', fullscreen && 'is-full-screen')}>
+      <div className="rabbit-calendar-header">
         {headerRender({
           date: showDate,
           mode: _mode,
           baseMode: mode,
           onChangeDate: setShowDate,
-          onChangeMode: handleChangeMode
+          onChangeMode: handleChangeMode,
         })}
       </div>
       <Panel

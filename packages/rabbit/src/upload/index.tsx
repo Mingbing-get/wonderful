@@ -6,13 +6,7 @@ import { UploadProps, MultipleUploadProps, UploadImgDesc } from '../types/upload
 
 import './index.scss'
 
-function Upload({
-  source,
-  children,
-  multiple,
-  onChange,
-  ...extra
-}: UploadProps, ref?: React.ForwardedRef<HTMLDivElement>) {
+function Upload({ source, children, multiple, onChange, ...extra }: UploadProps, ref?: React.ForwardedRef<HTMLDivElement>) {
   const { limit } = extra as Pick<MultipleUploadProps, 'limit'>
 
   const [imgList, setImgList] = useState<UploadImgDesc[]>([])
@@ -22,18 +16,20 @@ function Upload({
     if (!source) return
     if (multiple) {
       const imgList: UploadImgDesc[] = []
-      source.forEach(src => {
+      source.forEach((src) => {
         imgList.push({
           key: generateKey(),
-          src
+          src,
         })
       })
       setImgList(imgList)
     } else {
-      setImgList([{
-        key: generateKey(),
-        src: source
-      }])
+      setImgList([
+        {
+          key: generateKey(),
+          src: source,
+        },
+      ])
     }
   }, [])
 
@@ -65,22 +61,25 @@ function Upload({
   async function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
     if (!file) return
-    
+
     const path = e.target.value
     const base64 = await toBase64(file)
     e.target.value = ''
-    const newImgList = [...imgList, {
-      key: generateKey(),
-      type: getTypeByPath(path),
-      originPath: path,
-      base64: base64 as string
-    }]
+    const newImgList = [
+      ...imgList,
+      {
+        key: generateKey(),
+        type: getTypeByPath(path),
+        originPath: path,
+        base64: base64 as string,
+      },
+    ]
     setImgList(newImgList)
     _onChange(newImgList)
   }
 
   function handleDelete(key: string) {
-    const index = imgList.findIndex(item => item.key === key)
+    const index = imgList.findIndex((item) => item.key === key)
     if (index === -1) return
 
     imgList.splice(index, 1)
@@ -89,27 +88,34 @@ function Upload({
   }
 
   return (
-    <div className='rabbit-image-picker-wrapper' ref={ref}>
-      {
-        imgList.map(item => (
-          <div className='image-picker-item' key={item.key}>
-            <img src={item.src || item.base64}/>
-            <div className='image-picker-action'>
-              <span onClick={() => handleDelete(item.key)}>
-                <Icon type='delete' style={{ color: 'red' }} />
-              </span>
-            </div>
+    <div
+      className="rabbit-image-picker-wrapper rabbit-component"
+      ref={ref}>
+      {imgList.map((item) => (
+        <div
+          className="image-picker-item"
+          key={item.key}>
+          <img src={item.src || item.base64} />
+          <div className="image-picker-action">
+            <span onClick={() => handleDelete(item.key)}>
+              <Icon
+                type="delete"
+                style={{ color: 'red' }}
+              />
+            </span>
           </div>
-        ))
-      }
-      {
-        showHandle && (
-          <label className='image-picker-handle'>
-            {children}
-            <input type='file' accept='image/*' onChange={handleChange} />
-          </label>
-        )
-      }
+        </div>
+      ))}
+      {showHandle && (
+        <label className="image-picker-handle">
+          {children}
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleChange}
+          />
+        </label>
+      )}
     </div>
   )
 }

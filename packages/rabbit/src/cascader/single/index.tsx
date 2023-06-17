@@ -18,8 +18,11 @@ import { InputRef } from 'rc-input'
 const defaultDisplayRender: CascaderSingleDisplayRender = (labels, _) => labels.join(' / ')
 const defaultDropdownRender: CascaderDropdownRender = (menus, _) => menus
 const defaultNotFoundContent: CascaderNotFoundContent = () => (
-  <div className='cascader-empty'>
-    <Icon type='empty' style={{ fontSize: '4rem' }} />
+  <div className="cascader-empty">
+    <Icon
+      type="empty"
+      style={{ fontSize: '4rem' }}
+    />
     <p>无数据...</p>
   </div>
 )
@@ -57,20 +60,13 @@ export default function SingleCascader({
   const valueRef = useRef<TreeValue[]>([])
   const linkForestRef = useRef<LinkTreeNode<CascaderOption>[]>([])
 
-  const {
-    setChecked,
-    setExpandNode,
-    changeCheckedPath,
-    clearChecked,
-    linkForest,
-    checkedPath,
-  } = useTree({
+  const { setChecked, setExpandNode, changeCheckedPath, clearChecked, linkForest, checkedPath } = useTree({
     multiple: false,
     expandSingle: true,
     mode,
     defaultCheckedPath: defaultValue,
     forest: options,
-    loadData
+    loadData,
   })
 
   const checkedLinkNodePath = useMemo(() => {
@@ -93,7 +89,7 @@ export default function SingleCascader({
 
     const values: TreeValue[] = []
     const checkedPath: CascaderOption[] = []
-    checkedLinkNodePath.forEach(linkNode => {
+    checkedLinkNodePath.forEach((linkNode) => {
       values.push(linkNode.value)
       checkedPath.push(linkNode.data)
     })
@@ -108,55 +104,64 @@ export default function SingleCascader({
     changeCheckedPath?.(value)
   }, [value])
 
-  const _displayRender = useCallback((checkedLinkNodePath: LinkTreeNode<CascaderOption>[]) => {
-    const labels: string[] = []
-    const checkedPath: CascaderOption[] = []
-    checkedLinkNodePath.forEach(linkNode => {
-      labels.push(linkNode.data.label || `${linkNode.value}`)
-      checkedPath.push(linkNode.data)
-    })
-    return displayRender(labels, checkedPath)
-  }, [displayRender])
+  const _displayRender = useCallback(
+    (checkedLinkNodePath: LinkTreeNode<CascaderOption>[]) => {
+      const labels: string[] = []
+      const checkedPath: CascaderOption[] = []
+      checkedLinkNodePath.forEach((linkNode) => {
+        labels.push(linkNode.data.label || `${linkNode.value}`)
+        checkedPath.push(linkNode.data)
+      })
+      return displayRender(labels, checkedPath)
+    },
+    [displayRender]
+  )
 
-  const handleChangeVisible = useCallback((visible: boolean) => {
-    setVisiblePopover(visible)
-    onDropdownVisibleChange?.(visible)
+  const handleChangeVisible = useCallback(
+    (visible: boolean) => {
+      setVisiblePopover(visible)
+      onDropdownVisibleChange?.(visible)
 
-    if (!showSearch) return
-    setShowSearchInput(visible)
-    if (visible) {
-      inputRef.current?.focus()
-    } else {
-      setSearchText('')
-    }
-  }, [showSearch, onDropdownVisibleChange])
+      if (!showSearch) return
+      setShowSearchInput(visible)
+      if (visible) {
+        inputRef.current?.focus()
+      } else {
+        setSearchText('')
+      }
+    },
+    [showSearch, onDropdownVisibleChange]
+  )
 
-  const handleChecked = useCallback((data: CascaderOption, checked: boolean, closePopover: boolean = true) => {
-    setChecked(data, checked)
-    closePopover && setVisiblePopover(false)
-  }, [setChecked])
+  const handleChecked = useCallback(
+    (data: CascaderOption, checked: boolean, closePopover: boolean = true) => {
+      setChecked(data, checked)
+      closePopover && setVisiblePopover(false)
+    },
+    [setChecked]
+  )
 
   if (disabled) {
     return (
       <div
-        className={classNames('rabbit-cascader-wrapper is-disabled', className)}
-        style={style}
-      >
+        className={classNames('rabbit-cascader-wrapper rabbit-component is-disabled', className)}
+        style={style}>
         <div className={classNames('cascader-trigger')}>
-          <div className={classNames('cascader-value', checkedLinkNodePath.length === 0 && 'show-placeholder')}>{
-            checkedLinkNodePath.length > 0 ?
-              _displayRender(checkedLinkNodePath) :
-              placeholder
-          }</div>
+          <div className={classNames('cascader-value', checkedLinkNodePath.length === 0 && 'show-placeholder')}>
+            {checkedLinkNodePath.length > 0 ? _displayRender(checkedLinkNodePath) : placeholder}
+          </div>
           <Input
             ref={inputRef}
             value={searchText}
-            onChange={e => setSearchText(e.target.value)}
+            onChange={(e) => setSearchText(e.target.value)}
             onClick={(e) => e.stopPropagation()}
           />
         </div>
-        <span className='cascader-icon'>
-          <Icon className='cascader-arrow' type={showSearchInput ? 'search' : 'arrowDown'} />
+        <span className="cascader-icon">
+          <Icon
+            className="cascader-arrow"
+            type={showSearchInput ? 'search' : 'arrowDown'}
+          />
         </span>
       </div>
     )
@@ -164,11 +169,10 @@ export default function SingleCascader({
 
   return (
     <div
-      className={classNames('rabbit-cascader-wrapper', allowClear && 'allow-clear', className)}
-      style={style}
-    >
+      className={classNames('rabbit-cascader-wrapper', 'rabbit-component', allowClear && 'allow-clear', className)}
+      style={style}>
       <Popover
-        arrow='none'
+        arrow="none"
         className={popupClassName}
         style={popupStyle}
         trigger={expandTrigger}
@@ -176,46 +180,56 @@ export default function SingleCascader({
         placement={placement}
         onVisibleChange={handleChangeVisible}
         content={
-          linkForest.length === 0 ?
-            notFoundContent() :
-            ((showSearchInput && searchText) ?
-              dropdownRender(<SearchPanel
-                searchText={searchText}
-                linkForest={linkForest}
-                mode={mode}
-                setChecked={handleChecked}
-              />, 'search')
-              :
-              dropdownRender(<Panel
-                linkForest={linkForest}
-                mode={mode}
-                expandIcon={expandIcon}
-                expandTrigger={expandTrigger}
-                setChecked={handleChecked}
-                setExpandNode={setExpandNode}
-              />, 'option'))
-        }
-      >
+          linkForest.length === 0
+            ? notFoundContent()
+            : showSearchInput && searchText
+            ? dropdownRender(
+                <SearchPanel
+                  searchText={searchText}
+                  linkForest={linkForest}
+                  mode={mode}
+                  setChecked={handleChecked}
+                />,
+                'search'
+              )
+            : dropdownRender(
+                <Panel
+                  linkForest={linkForest}
+                  mode={mode}
+                  expandIcon={expandIcon}
+                  expandTrigger={expandTrigger}
+                  setChecked={handleChecked}
+                  setExpandNode={setExpandNode}
+                />,
+                'option'
+              )
+        }>
         <div className={classNames('cascader-trigger', showSearchInput && 'show-input')}>
-          <div className={classNames('cascader-value', checkedLinkNodePath.length === 0 && 'show-placeholder')}>{
-            checkedLinkNodePath.length > 0 ?
-            _displayRender(checkedLinkNodePath) :
-            placeholder
-          }</div>
+          <div className={classNames('cascader-value', checkedLinkNodePath.length === 0 && 'show-placeholder')}>
+            {checkedLinkNodePath.length > 0 ? _displayRender(checkedLinkNodePath) : placeholder}
+          </div>
           <Input
             ref={inputRef}
             value={searchText}
-            onChange={e => setSearchText(e.target.value)}
+            onChange={(e) => setSearchText(e.target.value)}
             onClickCapture={(e) => e.stopPropagation()}
           />
         </div>
       </Popover>
-      <span className='cascader-icon'>
-        <span className='cascader-arrow'>
-          { suffixIcon || <Icon type={showSearchInput ? 'search' : 'arrowDown'} /> }
-        </span>
-        <span className='cascader-clear' onClick={(e) => { clearChecked(); e.stopPropagation() }}>
-          { clearIcon || <Icon className='cascader-close' type='close' /> }
+      <span className="cascader-icon">
+        <span className="cascader-arrow">{suffixIcon || <Icon type={showSearchInput ? 'search' : 'arrowDown'} />}</span>
+        <span
+          className="cascader-clear"
+          onClick={(e) => {
+            clearChecked()
+            e.stopPropagation()
+          }}>
+          {clearIcon || (
+            <Icon
+              className="cascader-close"
+              type="close"
+            />
+          )}
         </span>
       </span>
     </div>

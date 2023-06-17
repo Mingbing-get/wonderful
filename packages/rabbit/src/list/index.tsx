@@ -65,7 +65,7 @@ export default function List({ className, style, itemClassName, itemStyle, items
 
   return (
     <div
-      className={classNames('rabbit-list-wrapper', className)}
+      className={classNames('rabbit-list-wrapper', 'rabbit-component', className)}
       style={{ ...style, ...wrapperStyle }}
       onScroll={handleWrapperScroll}>
       <div

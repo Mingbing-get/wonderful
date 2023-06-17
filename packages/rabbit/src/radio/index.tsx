@@ -7,16 +7,7 @@ import { RadioProps } from '../types/radio'
 
 import './index.scss'
 
-function Radio({
-  className,
-  style,
-  value,
-  disabled,
-  checked,
-  defaultChecked,
-  children,
-  onChange
-}: RadioProps, ref?: React.ForwardedRef<HTMLDivElement>) {
+function Radio({ className, style, value, disabled, checked, defaultChecked, children, onChange }: RadioProps, ref?: React.ForwardedRef<HTMLDivElement>) {
   const [_checked, setChecked] = useState<boolean>(false)
   const { value: _value, triggerChange, addValue } = useRadio()
   const preChecked = useRef<boolean>(false)
@@ -60,7 +51,11 @@ function Radio({
   }
 
   return (
-    <div ref={ref} className={classNames('rabbit-radio-wrapper', className)} style={style} onClick={handleClick}>
+    <div
+      ref={ref}
+      className={classNames('rabbit-radio-wrapper', 'rabbit-component', className)}
+      style={style}
+      onClick={handleClick}>
       <div className={classNames('radio-control', _checked && 'is-checked', disabled && 'is-disabled')}></div>
       <span>{children}</span>
     </div>

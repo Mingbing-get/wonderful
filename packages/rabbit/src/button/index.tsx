@@ -6,17 +6,7 @@ import { ButtonProps } from '../types/button'
 
 import './index.scss'
 
-function Button({
-  type,
-  loading,
-  block,
-  disabled,
-  ghost,
-  children,
-  style,
-  className,
-  onClick
-}: ButtonProps, ref?: React.ForwardedRef<HTMLDivElement>) {
+function Button({ type, loading, block, disabled, ghost, children, style, className, onClick }: ButtonProps, ref?: React.ForwardedRef<HTMLDivElement>) {
   function handleClick(e: React.MouseEvent<HTMLDivElement>) {
     if (disabled || loading) return
     onClick?.(e)
@@ -26,6 +16,7 @@ function Button({
     <div
       className={classNames(
         'rabbit-button-wrapper',
+        'rabbit-component',
         type && `type-${type}`,
         block && 'is-block',
         disabled && 'is-disabled',
@@ -35,12 +26,9 @@ function Button({
       )}
       style={style}
       onClick={handleClick}
-      ref={ref}
-    >
-      <span className='button-content'>
-        {children}
-      </span>
-      <span className='loading-mask'>
+      ref={ref}>
+      <span className="button-content">{children}</span>
+      <span className="loading-mask">
         <Loading />
       </span>
     </div>

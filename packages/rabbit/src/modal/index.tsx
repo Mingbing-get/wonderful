@@ -21,7 +21,7 @@ export default function Modal({
   className,
   onClose,
   onVisibleChange,
-  getContainer = () => document.body
+  getContainer = () => document.body,
 }: ModalProps) {
   const [_visible, setVisible] = useState(!!visible)
   const [hidden, setHidden] = useState(!visible)
@@ -34,7 +34,7 @@ export default function Modal({
       } else {
         setTimeout(() => {
           setHidden(false)
-        }, 60);
+        }, 60)
         setVisible(true)
       }
     }
@@ -61,58 +61,52 @@ export default function Modal({
   function delaySetVisible(visible: boolean) {
     setTimeout(() => {
       setVisible(visible)
-    }, animationTime);
+    }, animationTime)
   }
 
   if (!_visible) return <></>
 
-  const containerRect = getContainer() === document.body ? {
-    left: 0,
-    top: 0,
-    width: '100vw',
-    height: '100vh'
-  } : getContainer().getBoundingClientRect()
+  const containerRect =
+    getContainer() === document.body
+      ? {
+          left: 0,
+          top: 0,
+          width: '100vw',
+          height: '100vh',
+        }
+      : getContainer().getBoundingClientRect()
 
   return ReactDOM.createPortal(
-    <div
-      className={classNames('rabbit-modal-wrapper', `placement-${placement}`)}
-    >
+    <div className={classNames('rabbit-modal-wrapper', 'rabbit-component', `placement-${placement}`)}>
       <div
         className={classNames('modal-container', className)}
-        style={{ width: containerRect.width, height: containerRect.height, left: containerRect.left, top: containerRect.top }}
-      >
+        style={{ width: containerRect.width, height: containerRect.height, left: containerRect.left, top: containerRect.top }}>
         <div
           className={classNames('modal-content', { 'is-hidden': hidden })}
-          style={{ ...(style || {}) , width, height, '--animation-time': `${animationTime / 1000}s` } as any}
-        >
-          {
-            header && (
-              <div className='modal-header'>
-                <div>
-                  {header}
-                </div>
-                <Icon
-                  type='close'
-                  style={{ fontSize: '1.5rem' }}
-                  onClick={handleClose}
-                />
-              </div>
-            )
-          }
-          <div className='modal-body'>
-            {content}
-          </div>
-          {
-            footer && (
-              <div className='modal-footer'>
-                {
-                  footer.map(({ type, text, onClick }, index) => (
-                    <Button key={index} type={type} onClick={() => handleFooterButton(onClick)}>{text}</Button>
-                  ))
-                }
-              </div>
-            )
-          }
+          style={{ ...(style || {}), width, height, '--animation-time': `${animationTime / 1000}s` } as any}>
+          {header && (
+            <div className="modal-header">
+              <div>{header}</div>
+              <Icon
+                type="close"
+                style={{ fontSize: '1.5rem' }}
+                onClick={handleClose}
+              />
+            </div>
+          )}
+          <div className="modal-body">{content}</div>
+          {footer && (
+            <div className="modal-footer">
+              {footer.map(({ type, text, onClick }, index) => (
+                <Button
+                  key={index}
+                  type={type}
+                  onClick={() => handleFooterButton(onClick)}>
+                  {text}
+                </Button>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>,

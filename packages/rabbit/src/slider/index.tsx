@@ -6,16 +6,7 @@ import './index.scss'
 
 let preRate = 0
 
-export default function Slider({
-  min = 0,
-  max = 100,
-  step = 1,
-  value,
-  showLabel = true,
-  className,
-  style,
-  onChange
-}: SliderProps) {
+export default function Slider({ min = 0, max = 100, step = 1, value, showLabel = true, className, style, onChange }: SliderProps) {
   const [selectRate, setSelectRate] = useState(0)
   const [startX, setStartX] = useState(-1)
 
@@ -38,7 +29,7 @@ export default function Slider({
 
   function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
     if (startX === -1) return
-    changeRate(preRate + (e.clientX - startX) / getTrickWidth() * 100)
+    changeRate(preRate + ((e.clientX - startX) / getTrickWidth()) * 100)
   }
 
   function handleMouseUp() {
@@ -49,7 +40,7 @@ export default function Slider({
     if (!trick.current) return
 
     const trickRect = trick.current.getBoundingClientRect()
-    changeRate((e.clientX - trickRect.left) / trickRect.width * 100)
+    changeRate(((e.clientX - trickRect.left) / trickRect.width) * 100)
   }
 
   function changeRate(newRate: number) {
@@ -68,30 +59,32 @@ export default function Slider({
 
   function valueToRate(value?: number): number {
     if (value === undefined) return 0
-    return (value - min) / (max - min) * 100
+    return ((value - min) / (max - min)) * 100
   }
 
   function rateToValue(rate: number): number {
-    const exactValue = min + (max - min) * rate / 100
+    const exactValue = min + ((max - min) * rate) / 100
     return Math.floor(exactValue / step) * step
   }
 
   return (
     <div
-      className={classNames('rabbit-slider-wrapper', className)}
-      style={style}
-    >
-      {showLabel && <span className='slider-label'>{min}</span>}
-      <div className='slider-trick' ref={trick} onClick={handleClickTrick}>
+      className={classNames('rabbit-slider-wrapper', 'rabbit-component', className)}
+      style={style}>
+      {showLabel && <span className="slider-label">{min}</span>}
+      <div
+        className="slider-trick"
+        ref={trick}
+        onClick={handleClickTrick}>
         <div
-          className='slider-select'
+          className="slider-select"
           style={{ width: `${selectRate}%` }}
         />
         <div
-          className='slider-bar'
+          className="slider-bar"
           style={{ left: `${selectRate}%` }}
           onMouseDown={handleMouseDown}
-          onClick={e => e.stopPropagation()}
+          onClick={(e) => e.stopPropagation()}
         />
         <div
           className={classNames('slider-mask', startX !== -1 && 'is-mouse-down')}
@@ -100,7 +93,11 @@ export default function Slider({
           onMouseLeave={handleMouseUp}
         />
       </div>
-      {showLabel && <span className='slider-label'>{rateToValue(selectRate).toFixed(decimalCount)}/{max}</span>}
+      {showLabel && (
+        <span className="slider-label">
+          {rateToValue(selectRate).toFixed(decimalCount)}/{max}
+        </span>
+      )}
     </div>
   )
 }

@@ -9,22 +9,15 @@ let newOffset = 0
 let hasChange = false
 
 type Props = {
-  refDom: React.RefObject<HTMLElement>;
-  min?: number;
-  max?: number;
-  onChange?: (value: number) => void;
-  onStart?: () => void;
-  onEnd?: () => void;
+  refDom: React.RefObject<HTMLElement>
+  min?: number
+  max?: number
+  onChange?: (value: number) => void
+  onStart?: () => void
+  onEnd?: () => void
 }
 
-function Bar({
-  refDom,
-  min,
-  max,
-  onChange,
-  onStart,
-  onEnd
-}: Props, ref?: React.ForwardedRef<HTMLDivElement>) {
+function Bar({ refDom, min, max, onChange, onStart, onEnd }: Props, ref?: React.ForwardedRef<HTMLDivElement>) {
   const [isMouseDown, setIsMouseDown] = useState(false)
   const [refDomRect, setRefDomRect] = useState<DOMRect>()
   const [offset, setOffset] = useState(0)
@@ -89,18 +82,17 @@ function Bar({
   return (
     <div
       ref={ref}
-      className='bar-wrapper'
+      className="bar-wrapper rabbit-component "
       onMouseDown={handleMouseDown}
       onTouchStart={handleMouseDown}
       style={{
         height: refDomRect.height,
         top: refDomRect.top,
-        left: refDomRect.left + offset - 2
-      }}
-    >
-      <div className='bar-handle' />
+        left: refDomRect.left + offset - 2,
+      }}>
+      <div className="bar-handle" />
       <div
-        className='bar-mask'
+        className="bar-mask"
         style={{ width: isMouseDown ? '100vw' : 0 }}
         onMouseMove={handleMouseMove}
         onTouchMove={handleMouseMove}
@@ -112,7 +104,7 @@ function Bar({
   )
 }
 
-const BarWidthRef = React.forwardRef<HTMLDivElement ,Props>(Bar)
+const BarWidthRef = React.forwardRef<HTMLDivElement, Props>(Bar)
 
 function PortalBar(props: Props, ref?: React.ForwardedRef<HTMLDivElement>) {
   const wrapper = useRef(document.createElement('div'))
@@ -125,7 +117,13 @@ function PortalBar(props: Props, ref?: React.ForwardedRef<HTMLDivElement>) {
     }
   }, [])
 
-  return createPortal(<BarWidthRef {...props} ref={ref} />, wrapper.current as HTMLDivElement)
+  return createPortal(
+    <BarWidthRef
+      {...props}
+      ref={ref}
+    />,
+    wrapper.current as HTMLDivElement
+  )
 }
 
 export default React.forwardRef<HTMLDivElement, Props>(PortalBar)

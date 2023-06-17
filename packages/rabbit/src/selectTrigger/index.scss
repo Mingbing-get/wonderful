@@ -1,0 +1,36 @@
+.rabbit-select-trigger {
+  display: inline-flex;
+  padding: 0 4px;
+  border: 1px solid var(--rabbit-border-color-base);
+  border-radius: 4px;
+  align-items: center;
+  box-sizing: border-box;
+  height: var(--rabbit-input-height-base);
+  min-width: var(--rabbit-input-min-width);
+  justify-content: space-between;
+  background-color: #fff;
+
+  white-space: nowrap;
+  word-break: keep-all;
+
+  .trigger-placeholder {
+    color: grey;
+    white-space: nowrap;
+    word-break: keep-all;
+  }
+
+  .trigger-suffix {
+    display: inline-flex;
+    align-items: center;
+    padding-left: 2px;
+  }
+
+  &.is-focused {
+    border-color: var(--rabbit-primary-5);
+  }
+  &.is-disabled {
+    color: var(--rabbit-disabled-color);
+    background-color: var(--rabbit-disabled-bg-color);
+    cursor: not-allowed;
+  }
+}

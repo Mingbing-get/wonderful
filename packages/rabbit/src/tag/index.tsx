@@ -13,19 +13,12 @@ const presetColorMap = {
   default: true,
   warning: true,
 }
-export type TagColorType = keyof (typeof presetColorMap)
+export type TagColorType = keyof typeof presetColorMap
 
-function Tag({
-  className,
-  style,
-  closable,
-  closeIcon,
-  color = 'default',
-  icon,
-  children,
-  onClose,
-  onCloseCapture,
-}: TagProps, ref?: React.ForwardedRef<HTMLDivElement>) {
+function Tag(
+  { className, style, closable, closeIcon, color = 'default', icon, children, onClose, onCloseCapture }: TagProps,
+  ref?: React.ForwardedRef<HTMLDivElement>
+) {
   const [isClose, setClose] = useState(false)
 
   const { presetColor, _color } = useMemo(() => {
@@ -48,25 +41,24 @@ function Tag({
 
   return (
     <span
-      className={classNames('rabbit-tag-wrapper', presetColor && `tag-${presetColor}`, className)}
+      className={classNames('rabbit-tag-wrapper', 'rabbit-component', presetColor && `tag-${presetColor}`, className)}
       style={{ backgroundColor: _color, ...style }}
-      ref={ref}
-    >
-      {
-        icon && (
-          <span className='tag-icon'>{icon}</span>
-        )
-      }
+      ref={ref}>
+      {icon && <span className="tag-icon">{icon}</span>}
       {children}
-      {
-        closable && (
-          <span className='tag-close' onClickCapture={handleCloseCapture} onClick={handleClose}>
-            {closeIcon || (
-              <Icon type='close' className='tag-close-icon' />
-            )}
-          </span>
-        )
-      }
+      {closable && (
+        <span
+          className="tag-close"
+          onClickCapture={handleCloseCapture}
+          onClick={handleClose}>
+          {closeIcon || (
+            <Icon
+              type="close"
+              className="tag-close-icon"
+            />
+          )}
+        </span>
+      )}
     </span>
   )
 }

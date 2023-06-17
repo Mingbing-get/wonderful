@@ -1,43 +1,11 @@
-.rabbit-select-wrapper {
-  min-width: var(--rabbit-input-min-width);
-  max-height: 12rem;
-  overflow-y: auto;
-  padding: 0.5rem 0;
-  display: flex;
-  flex-direction: column;
-  font-size: 0.875rem;
-}
-
-.rabbit-select-option {
-  display: flex;
-  padding: 0.25rem 0.5rem;
-  width: 100%;
-  cursor: pointer;
-
-  &:hover {
-    background-color: var(--rabbit-hover-color);
-  }
-  &.is-select {
-    background-color: var(--rabbit-primary-4);
-    font-weight: 600;
-  }
-}
-
-.rabbit-select {
-  cursor: pointer;
-  input {
-    cursor: pointer;
-  }
-}
-
-.rabbit-popper-wrapper.rabbit-select-popover {
-  padding: 0;
-}
-
 .icon-arrow-down-fill {
   color: #ccc;
   transition: transform 0.2s linear;
   &.rotate-180 {
     transform: rotateZ(180deg);
   }
+}
+
+.rabbit-popper-wrapper.rabbit-select-popover {
+  padding: 0;
 }

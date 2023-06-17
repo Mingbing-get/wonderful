@@ -6,19 +6,14 @@ import { CollapsePanelProps, CollapseProps } from '../types/collapse'
 
 import './index.scss'
 
-function Collapse({
-  className,
-  style,
-  isOpenOnly,
-  children
-}: CollapseProps) {
+function Collapse({ className, style, isOpenOnly, children }: CollapseProps) {
   const [childTypeError, setChildTypeError] = useState(false)
   const [panels, setPanels] = useState<CollapsePanelProps[]>([])
   const [openKeys, setOpenKeys] = useState<React.Key[]>([])
 
   useEffect(() => {
     const opens: React.Key[] = [...openKeys]
-    const panels =  React.Children.map(children, (child, i) => {
+    const panels = React.Children.map(children, (child, i) => {
       if (child.type !== Panel) {
         setChildTypeError(true)
       }
@@ -39,7 +34,7 @@ function Collapse({
   }
 
   function handleToggleOpen(key: React.Key, fn?: (key: React.Key) => void) {
-    const index = openKeys.findIndex(item => item === key)
+    const index = openKeys.findIndex((item) => item === key)
 
     if (index === -1) {
       if (isOpenOnly) {
@@ -56,17 +51,17 @@ function Collapse({
   }
 
   return (
-    <div className={classNames('rabbit-collapse-wrapper', className)} style={style}>
-      {
-        panels.map(({ isOpen, onToggleOpen, ...extra }) => (
-          <Panel
-            {...extra}
-            key={extra.panelKey}
-            isOpen={openKeys.includes(extra.panelKey)}
-            onToggleOpen={key => handleToggleOpen(key, onToggleOpen)}
-          />
-        ))
-      }
+    <div
+      className={classNames('rabbit-collapse-wrapper', 'rabbit-component', className)}
+      style={style}>
+      {panels.map(({ isOpen, onToggleOpen, ...extra }) => (
+        <Panel
+          {...extra}
+          key={extra.panelKey}
+          isOpen={openKeys.includes(extra.panelKey)}
+          onToggleOpen={(key) => handleToggleOpen(key, onToggleOpen)}
+        />
+      ))}
     </div>
   )
 }

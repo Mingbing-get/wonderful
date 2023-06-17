@@ -7,11 +7,11 @@ import './index.scss'
 
 function defaultFormat(percent: number, status: ProgressStatus) {
   if (status === 'normal') return `${percent}%`
-  if (status === 'error') return <Icon type='close' />
-  return <Icon type='right' />
+  if (status === 'error') return <Icon type="close" />
+  return <Icon type="right" />
 }
 
-export default function Progress({ 
+export default function Progress({
   type = 'line',
   percent,
   hiddenInfo = false,
@@ -40,17 +40,16 @@ export default function Progress({
   const ChartRender = useMemo(() => {
     return {
       line: ProgressLine,
-      circle: ProgressCircle
+      circle: ProgressCircle,
     }[type]
   }, [type])
 
   return (
     <div
-      className={classNames('rabbit-progress-wrapper', `type-${type}`)}
+      className={classNames('rabbit-progress-wrapper', 'rabbit-component', `type-${type}`)}
       style={{
-        width: (extra as any).width || 'auto'
-      }}
-    >
+        width: (extra as any).width || 'auto',
+      }}>
       <ChartRender
         percent={_percent}
         status={_status}
@@ -67,17 +66,7 @@ export default function Progress({
   )
 }
 
-function ProgressLine({
-  percent,
-  status,
-  strokeColor,
-  successColor,
-  errorColor,
-  strokeWidth,
-  trailColor,
-  hiddenInfo,
-  format
-}: Required<ProgressBaseProps>) {
+function ProgressLine({ percent, status, strokeColor, successColor, errorColor, strokeWidth, trailColor, hiddenInfo, format }: Required<ProgressBaseProps>) {
   const lineColor = useMemo(() => {
     let currentColor = strokeColor
     if (status === 'success') currentColor = successColor
@@ -89,21 +78,26 @@ function ProgressLine({
     for (const key in currentColor) {
       res.push(`${currentColor[key]} ${key}%`)
     }
-    return `linear-gradient(to right, ${res.join(',') })`
+    return `linear-gradient(to right, ${res.join(',')})`
   }, [strokeColor, status, successColor, errorColor])
 
   return (
     <>
-      <div className='progress-line' style={{ height: strokeWidth, backgroundColor: trailColor }}>
-        <div className='progress-line-complete' style={{ background: lineColor, width: `${percent}%` }} />
+      <div
+        className="progress-line"
+        style={{ height: strokeWidth, backgroundColor: trailColor }}>
+        <div
+          className="progress-line-complete"
+          style={{ background: lineColor, width: `${percent}%` }}
+        />
       </div>
-      {
-        !hiddenInfo && (
-          <span className='progress-info' style={{ color: lineColor }} >
-            {format(percent, status)}
-          </span>
-        )
-      }
+      {!hiddenInfo && (
+        <span
+          className="progress-info"
+          style={{ color: lineColor }}>
+          {format(percent, status)}
+        </span>
+      )}
     </>
   )
 }
@@ -119,7 +113,7 @@ export function ProgressCircle({
   hiddenInfo,
   gapDegree = 0,
   startPosition = 'top',
-  format
+  format,
 }: Required<ProgressBaseProps> & Omit<ProgressCircleProps, 'type' | 'width'>) {
   const r = 50
   const lineColor = useMemo(() => {
@@ -139,44 +133,48 @@ export function ProgressCircle({
   }, [strokeWidth])
 
   const gap = useMemo(() => {
-    return Math.PI * 2 * (r - strokeWidth / 2) * gapDegree / 360
+    return (Math.PI * 2 * (r - strokeWidth / 2) * gapDegree) / 360
   }, [gapDegree, strokeWidth])
-  
+
   const baseRotate = useMemo(() => {
     return {
       top: -90,
       right: 0,
       bottom: 90,
-      left: 180
+      left: 180,
     }[startPosition]
   }, [startPosition])
 
   return (
     <>
       <svg
-        className='progress-circle'
-        viewBox={`${-r} ${-r} ${2*r} ${2*r}`}
-        style={{ transform: `rotate(${baseRotate + gapDegree / 2}deg)` }}
-      >
-        {
-          !colorIsString(lineColor) && (
-            <defs>
-              <linearGradient id={linearGradientId} x1='100%' y1='0%' x2='0%' y2='0%'>
-                {
-                  Object.keys(lineColor).map(key => (
-                    <stop key={key} offset={`${key}%`} stopColor={lineColor[key as any as number]} />
-                  ))
-                }
-              </linearGradient>
-            </defs>
-          )
-        }
+        className="progress-circle"
+        viewBox={`${-r} ${-r} ${2 * r} ${2 * r}`}
+        style={{ transform: `rotate(${baseRotate + gapDegree / 2}deg)` }}>
+        {!colorIsString(lineColor) && (
+          <defs>
+            <linearGradient
+              id={linearGradientId}
+              x1="100%"
+              y1="0%"
+              x2="0%"
+              y2="0%">
+              {Object.keys(lineColor).map((key) => (
+                <stop
+                  key={key}
+                  offset={`${key}%`}
+                  stopColor={lineColor[key as any as number]}
+                />
+              ))}
+            </linearGradient>
+          </defs>
+        )}
         <circle
           strokeWidth={strokeWidth}
           r={r - strokeWidth / 2}
           cx={0}
           cy={0}
-          strokeLinecap='round'
+          strokeLinecap="round"
           stroke={trailColor}
           fillOpacity={0}
           strokeDasharray={`${perimeter - gap} ${gap}`}
@@ -187,20 +185,20 @@ export function ProgressCircle({
           r={r - strokeWidth / 2}
           cx={0}
           cy={0}
-          strokeLinecap='round'
+          strokeLinecap="round"
           stroke={colorIsString(lineColor) ? lineColor : `url(#${linearGradientId})`}
           fillOpacity={0}
-          strokeDasharray={`${(perimeter - gap) * percent / 100} ${perimeter}`}
+          strokeDasharray={`${((perimeter - gap) * percent) / 100} ${perimeter}`}
           strokeDashoffset={0}
         />
       </svg>
-      {
-        !hiddenInfo && (
-          <span className='progress-info' style={{ color: colorIsString(lineColor) ? lineColor : '' }} >
-            {format(percent, status)}
-          </span>
-        )
-      }
+      {!hiddenInfo && (
+        <span
+          className="progress-info"
+          style={{ color: colorIsString(lineColor) ? lineColor : '' }}>
+          {format(percent, status)}
+        </span>
+      )}
     </>
   )
 }

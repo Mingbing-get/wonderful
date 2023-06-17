@@ -7,14 +7,10 @@ import Checkbox from '.'
 
 import './group.scss'
 
-function Group<T extends CheckboxValueType>({
-  className,
-  style,
-  value,
-  defaultValue,
-  onChange,
-  ...extra
-}: CheckboxGroupProps<T>, ref?: React.ForwardedRef<HTMLDivElement>) {
+function Group<T extends CheckboxValueType>(
+  { className, style, value, defaultValue, onChange, ...extra }: CheckboxGroupProps<T>,
+  ref?: React.ForwardedRef<HTMLDivElement>
+) {
   const [_value, setValue] = useState<CheckboxValueType[]>([])
 
   useEffect(() => {
@@ -27,7 +23,11 @@ function Group<T extends CheckboxValueType>({
     setValue(value)
   }, [value])
 
-  const { options: _options, useOptions, children: _children } = useMemo(() => {
+  const {
+    options: _options,
+    useOptions,
+    children: _children,
+  } = useMemo(() => {
     const options = (extra as any).options
     if (options) return { options: options as CheckboxOptionType[], useOptions: true }
 
@@ -36,47 +36,53 @@ function Group<T extends CheckboxValueType>({
     return { options: [], useOptions: false, children }
   }, [extra])
 
-  const handleChange = useCallback((key: CheckboxValueType, val: boolean) => {
-    const newValue = [..._value]
-    if (val && !newValue.includes(key)) {
-      newValue.push(key)
-    }
-    if (!val) {
-      const index = newValue.findIndex(item => item === key)
-      if (index !== -1) {
-        newValue.splice(index, 1)
+  const handleChange = useCallback(
+    (key: CheckboxValueType, val: boolean) => {
+      const newValue = [..._value]
+      if (val && !newValue.includes(key)) {
+        newValue.push(key)
       }
-    }
+      if (!val) {
+        const index = newValue.findIndex((item) => item === key)
+        if (index !== -1) {
+          newValue.splice(index, 1)
+        }
+      }
 
-    setValue(newValue)
-    onChange?.(newValue as T[])
-  }, [_value, onChange])
-
-  const providerValue: CheckboxContext = useMemo(() => ({
-    value: _value,
-    addValue: (val) => {
-      if (_value.includes(val)) return
-      setValue(oldVal => [...oldVal, val])
+      setValue(newValue)
+      onChange?.(newValue as T[])
     },
-    triggerChange: handleChange
-  }), [_value, handleChange])
+    [_value, onChange]
+  )
+
+  const providerValue: CheckboxContext = useMemo(
+    () => ({
+      value: _value,
+      addValue: (val) => {
+        if (_value.includes(val)) return
+        setValue((oldVal) => [...oldVal, val])
+      },
+      triggerChange: handleChange,
+    }),
+    [_value, handleChange]
+  )
 
   return (
-    <CheckboxProvider value={providerValue} >
-      <div ref={ref} className={classNames('rabbit-checkbox-group-wrapper', useOptions && 'use-options', className)} style={style}>
-        {
-          useOptions ? _options.map(item => (
-            <Checkbox
-              key={item.value}
-              disabled={item.disabled}
-              value={item.value}
-            >
-              {item.label || `${item.value}`}
-            </Checkbox>
-          ))
-          :
-          _children
-        }
+    <CheckboxProvider value={providerValue}>
+      <div
+        ref={ref}
+        className={classNames('rabbit-checkbox-group-wrapper', 'rabbit-component', useOptions && 'use-options', className)}
+        style={style}>
+        {useOptions
+          ? _options.map((item) => (
+              <Checkbox
+                key={item.value}
+                disabled={item.disabled}
+                value={item.value}>
+                {item.label || `${item.value}`}
+              </Checkbox>
+            ))
+          : _children}
       </div>
     </CheckboxProvider>
   )

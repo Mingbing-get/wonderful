@@ -7,24 +7,23 @@ import { MessageProps } from '../types/message'
 
 import './index.scss'
 
-function Message({
-  type = 'info',
-  content,
-  icon,
-}: Omit<MessageProps, 'delay' | 'displayTime'>) {
+function Message({ type = 'info', content, icon }: Omit<MessageProps, 'delay' | 'displayTime'>) {
   const _icon = useMemo(() => {
     if (icon) return icon
     return {
-      'success': 'success',
-      'info': 'info',
-      'warn': 'warn',
-      'error': 'error'
+      success: 'success',
+      info: 'info',
+      warn: 'warn',
+      error: 'error',
     }[type] as IconType
   }, [type, icon])
 
   return (
-    <div className={classNames('rabbit-message-wrapper', `type-${type}`)}>
-      <Icon type={_icon} style={{ fontSize: '1.2rem' }} />
+    <div className={classNames('rabbit-message-wrapper', 'rabbit-component', `type-${type}`)}>
+      <Icon
+        type={_icon}
+        style={{ fontSize: '1.2rem' }}
+      />
       <p>{content}</p>
     </div>
   )
@@ -39,31 +38,31 @@ class MessageFactory {
 
   info({ delay = 0, ...props }: Omit<MessageProps, 'type'>) {
     delay === 0
-      ? this.createInstance({...props, type: 'info'})
+      ? this.createInstance({ ...props, type: 'info' })
       : setTimeout(() => {
-        this.createInstance({ ...props, type: 'info' })
-      }, delay);
+          this.createInstance({ ...props, type: 'info' })
+        }, delay)
   }
   success({ delay = 0, ...props }: Omit<MessageProps, 'type'>) {
     delay === 0
       ? this.createInstance({ ...props, type: 'success' })
       : setTimeout(() => {
-        this.createInstance({ ...props, type: 'success' })
-      }, delay);
+          this.createInstance({ ...props, type: 'success' })
+        }, delay)
   }
   warn({ delay = 0, ...props }: Omit<MessageProps, 'type'>) {
     delay === 0
       ? this.createInstance({ ...props, type: 'warn' })
       : setTimeout(() => {
-        this.createInstance({ ...props, type: 'warn' })
-      }, delay);
+          this.createInstance({ ...props, type: 'warn' })
+        }, delay)
   }
   error({ delay = 0, ...props }: Omit<MessageProps, 'type'>) {
     delay === 0
       ? this.createInstance({ ...props, type: 'error' })
       : setTimeout(() => {
-        this.createInstance({ ...props, type: 'error' })
-      }, delay);
+          this.createInstance({ ...props, type: 'error' })
+        }, delay)
   }
 
   private createInstance({ displayTime = 3000, ...extra }: Omit<MessageProps, 'id' | 'delay'>) {
@@ -71,33 +70,48 @@ class MessageFactory {
     const lastInstanceBottom = this.getLastInstanceBottom()
     const div = document.createElement('div')
     div.id = id
-    div.setAttribute('style', this.createStyle(this.mergeWrapperStyle({
-      top: `${lastInstanceBottom}px`,
-      opacity: 0
-    })))
+    div.setAttribute(
+      'style',
+      this.createStyle(
+        this.mergeWrapperStyle({
+          top: `${lastInstanceBottom}px`,
+          opacity: 0,
+        })
+      )
+    )
     document.body.appendChild(div)
 
     createRoot(div).render(<Message {...extra} />)
 
     this.effectDivList.push(div)
     setTimeout(() => {
-      div.setAttribute('style', this.createStyle(this.mergeWrapperStyle({
-        top: `${lastInstanceBottom}px`,
-        opacity: 1,
-        transform: 'translate(-50%, 1rem)'
-      })))
-    });
+      div.setAttribute(
+        'style',
+        this.createStyle(
+          this.mergeWrapperStyle({
+            top: `${lastInstanceBottom}px`,
+            opacity: 1,
+            transform: 'translate(-50%, 1rem)',
+          })
+        )
+      )
+    })
 
     setTimeout(() => {
-      div.setAttribute('style', this.createStyle(this.mergeWrapperStyle({
-        top: `${lastInstanceBottom}px`,
-        opacity: 0
-      })))
+      div.setAttribute(
+        'style',
+        this.createStyle(
+          this.mergeWrapperStyle({
+            top: `${lastInstanceBottom}px`,
+            opacity: 0,
+          })
+        )
+      )
       this.hasInstanceDestroy()
       setTimeout(() => {
         div.remove()
-      }, 200);
-    }, displayTime);
+      }, 200)
+    }, displayTime)
   }
 
   private hasInstanceDestroy() {
@@ -118,7 +132,7 @@ class MessageFactory {
       transition: 'all 0.2s linear',
       width: 'fit-content',
       transform: 'translate(-50%, 0)',
-      ...(style || {})
+      ...(style || {}),
     }
   }
 
