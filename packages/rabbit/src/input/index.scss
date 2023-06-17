@@ -5,6 +5,7 @@
   border-radius: var(--rabbit-border-radius-base);
   --input-space: 0.125rem;
   padding: 0 var(--input-space);
+  background-color: #fff;
 
   &.is-disabled {
     background-color: var(--rabbit-disabled-bg-color);
