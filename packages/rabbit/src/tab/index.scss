@@ -1,13 +1,20 @@
 .rabbit-tab-wrapper {
   .rabbit-tab-title-wrapper {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background-color: #fff;
     display: flex;
     flex-direction: row;
     border-bottom: 1px solid var(--rabbit-border-color-base);
     width: 100%;
     overflow-x: auto;
+    padding: 0.25rem;
 
     .rabbit-tab-title {
       padding: 0.3125rem 0;
+      word-break: keep-all;
+      white-space: nowrap;
       cursor: pointer;
 
       &:not(:first-child) {

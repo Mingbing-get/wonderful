@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import classNames from 'classnames'
 import Icon from '../icon'
 
 import { toBase64, generateKey, getTypeByPath } from './utils'
@@ -6,7 +7,7 @@ import { UploadProps, MultipleUploadProps, UploadImgDesc } from '../types/upload
 
 import './index.scss'
 
-function Upload({ source, children, multiple, onChange, ...extra }: UploadProps, ref?: React.ForwardedRef<HTMLDivElement>) {
+function Upload({ source, children, multiple, onChange, style, className, ...extra }: UploadProps, ref?: React.ForwardedRef<HTMLDivElement>) {
   const { limit } = extra as Pick<MultipleUploadProps, 'limit'>
 
   const [imgList, setImgList] = useState<UploadImgDesc[]>([])
@@ -89,7 +90,8 @@ function Upload({ source, children, multiple, onChange, ...extra }: UploadProps,
 
   return (
     <div
-      className="rabbit-image-picker-wrapper rabbit-component"
+      className={classNames('rabbit-image-picker-wrapper', 'rabbit-component', className)}
+      style={style}
       ref={ref}>
       {imgList.map((item) => (
         <div
