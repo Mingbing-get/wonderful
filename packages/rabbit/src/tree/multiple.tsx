@@ -16,7 +16,7 @@ import { MultipleTreeProps, TreeLabelRender, TreeRef, TreeNode } from '../types/
 
 type ChangeRecord = { node: TreeNode; res: boolean }
 
-const defaultLabelRender: TreeLabelRender = (node) => node.label || node.value
+const defaultLabelRender: TreeLabelRender<{}> = (node) => node.label || node.value
 
 function MultipleTree(
   {

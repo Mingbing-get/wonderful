@@ -15,7 +15,7 @@ import { SingleTreeProps, TreeNode, TreeLabelRender, TreeRef } from '../types/tr
 
 type ChangeRecord = { node: TreeNode; res: boolean }
 
-const defaultLabelRender: TreeLabelRender = (node) => node.label || node.value
+const defaultLabelRender: TreeLabelRender<{}> = (node) => node.label || node.value
 
 function SingleTree(
   {

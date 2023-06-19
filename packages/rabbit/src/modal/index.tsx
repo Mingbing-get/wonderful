@@ -19,6 +19,8 @@ export default function Modal({
   placement = 'center',
   style,
   className,
+  zIndex,
+  preventMouseOver,
   onClose,
   onVisibleChange,
   getContainer = () => document.body,
@@ -77,7 +79,10 @@ export default function Modal({
       : getContainer().getBoundingClientRect()
 
   return ReactDOM.createPortal(
-    <div className={classNames('rabbit-modal-wrapper', 'rabbit-component', `placement-${placement}`)}>
+    <div
+      className={classNames('rabbit-modal-wrapper', 'rabbit-component', `placement-${placement}`)}
+      style={{ zIndex }}
+      onMouseOver={(e) => preventMouseOver && e.preventDefault()}>
       <div
         className={classNames('modal-container', className)}
         style={{ width: containerRect.width, height: containerRect.height, left: containerRect.left, top: containerRect.top }}>
