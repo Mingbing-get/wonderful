@@ -35,7 +35,7 @@ const baseData: TreeNode[] = [
     label: '0-1',
     value: '0-1',
     children: [
-      { label: '0-1-0-0', value: '0-1-0-0', disabled: true, },
+      { label: '0-1-0-0', value: '0-1-0-0', disabled: true },
       { label: '0-1-0-1', value: '0-1-0-1' },
       { label: '0-1-0-2', value: '0-1-0-2' },
     ],
@@ -50,7 +50,7 @@ function createTreeNode(levelCount: number, dep: number, pre: string = ''): Tree
   return new Array(levelCount).fill(0).map((_, index) => ({
     value: `${pre}-${index}`,
     label: `${pre}-${index}`,
-    children: dep === 0 ? undefined : createTreeNode(levelCount, dep - 1, `${pre}-${index}`)
+    children: dep === 0 ? undefined : createTreeNode(levelCount, dep - 1, `${pre}-${index}`),
   }))
 }
 
@@ -71,30 +71,36 @@ export default function ExampleTree() {
       <Tree
         data={data}
         expandPath={expandPath}
-        onChecked={(checkedPath, node, isChecked) => { console.log(checkedPath, node, isChecked)}}
-        onExpand={(expandPath, node, isExpand) => { console.log(expandPath, node, isExpand)}}
+        onChecked={(checkedPath, node, isChecked) => {
+          console.log(checkedPath, node, isChecked)
+        }}
+        onExpand={(expandPath, node, isExpand) => {
+          console.log(expandPath, node, isExpand)
+        }}
       />
       <Tree
         data={data}
         showLine
         renderLabelIcon={(_, isExpand, isLeaf) => {
-          if (isLeaf) return <Icon type='file' />
-          if (isExpand) return <Icon type='folderOpen' />
-          return <Icon type='folder' />
+          if (isLeaf) return <Icon type="file" />
+          if (isExpand) return <Icon type="folderOpen" />
+          return <Icon type="folder" />
         }}
       />
       <Tree
         data={data}
-        loadData={node => {
+        loadData={(node) => {
           setTimeout(() => {
-            node.children = [{
-              value: node.value + '-1',
-              label: node.label + '-1',
-              isLeft: true
-            }]
+            node.children = [
+              {
+                value: node.value + '-1',
+                label: node.label + '-1',
+                isLeft: true,
+              },
+            ]
 
             setData([...data])
-          }, 2000);
+          }, 2000)
         }}
       />
       <Tree
@@ -109,18 +115,14 @@ export default function ExampleTree() {
         data={virtualData}
         virtualScroll={{
           height: 400,
-          itemHeight: 30
+          itemHeight: 30,
         }}
       />
       <Tree
         data={data}
-        renderExtra={(path, parentNode) => (
-          <Input />
-        )}
+        renderExtra={(path, parentNode) => <Input />}
       />
-      <MultipleTree
-        data={data}
-      />
+      <MultipleTree data={data} />
       <MultipleTree
         data={data}
         draggable
@@ -129,17 +131,13 @@ export default function ExampleTree() {
         data={virtualData}
         virtualScroll={{
           height: 400,
-          itemHeight: 30
+          itemHeight: 30,
         }}
       />
       <MultipleTree
         data={data}
         draggable
-        renderExtra={(path, parentNode) => (
-          parentNode?.value === '0-0' ?
-          false :
-          <Input />
-        )}
+        renderExtra={(path, parentNode) => (parentNode?.value === '0-0' ? false : <Input />)}
       />
     </div>
   )

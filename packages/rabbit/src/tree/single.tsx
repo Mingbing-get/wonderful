@@ -1,48 +1,39 @@
-import React, { useMemo, useCallback, useRef, useEffect, useImperativeHandle } from 'react'
+import React, { useMemo, useCallback, useRef, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import classNames from 'classnames'
 
 import { isSame } from '../utils'
-import useTree from '../hooks/useTree'
 import { getPathFromLinkTreeNode } from '../hooks/useTree/utils'
 import useVirtualScrollY from '../hooks/useVirtualScrollY'
 import { LinkTreeNode, TreeValue } from '../hooks/useTree/type'
+import { useSingleTree } from './context'
 
 import Icon from '../icon'
 
 import useDragTree from './useDragTree'
-import { SingleTreeProps, TreeNode, TreeLabelRender, TreeRef } from '../types/tree'
+import { SingleTreeProps, TreeNode, TreeLabelRender } from '../types/tree'
 
 type ChangeRecord = { node: TreeNode; res: boolean }
 
 const defaultLabelRender: TreeLabelRender<{}> = (node) => node.label || node.value
 
-function SingleTree(
-  {
-    className,
-    itemClassName,
-    style,
-    data,
-    defaultCheckedPath,
-    checkedPath,
-    defaultExpandPath,
-    expandPath,
-    draggable,
-    showLine,
-    expandIcon,
-    draggleIcon = true,
-    virtualScroll,
-    renderLabelIcon,
-    renderExtra,
-    labelRender = defaultLabelRender,
-    loadData,
-    onChecked,
-    onExpand,
-    onCanMove,
-    onMove,
-  }: SingleTreeProps,
-  ref: React.ForwardedRef<TreeRef>
-) {
+export default function SingleTree({
+  className,
+  itemClassName,
+  style,
+  checkedPath,
+  expandPath,
+  draggable,
+  showLine,
+  expandIcon,
+  draggleIcon = true,
+  virtualScroll,
+  renderLabelIcon,
+  renderExtra,
+  labelRender = defaultLabelRender,
+  onChecked,
+  onExpand,
+}: SingleTreeProps) {
   const hookCheckedPathRef = useRef<TreeValue[]>([])
   const hookExpandPathRef = useRef<TreeValue[][]>([])
   const curCheckedRef = useRef<ChangeRecord>()
@@ -63,27 +54,7 @@ function SingleTree(
     canMove: hookCanMove,
     move,
     clearChecked,
-  } = useTree({
-    multiple: false,
-    forest: data,
-    defaultCheckedPath: defaultCheckedPath,
-    defaultExpandPath: defaultExpandPath,
-    mode: 'unlink',
-    loadData,
-    onCanMove,
-    onMove,
-  })
-
-  useImperativeHandle(
-    ref,
-    () => ({
-      forest: linkForest,
-      setChecked,
-      setExpandNode,
-      clearChecked,
-    }),
-    [linkForest, setChecked, setExpandNode, clearChecked]
-  )
+  } = useSingleTree()
 
   useEffect(() => {
     hookCheckedPathRef.current = hookCheckedPath
@@ -282,5 +253,3 @@ function SingleTree(
     </div>
   )
 }
-
-export default React.forwardRef<TreeRef, SingleTreeProps>(SingleTree)

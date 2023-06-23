@@ -4,6 +4,7 @@ import classNames from 'classnames'
 import MultipleTree from '../tree/multiple'
 import { TreeValue } from '../hooks/useTree/type'
 import { checkedPathToLinkPath } from '../hooks/useTree/utils'
+import { useMultipleTree } from '../tree/context'
 import useMultipleDisplay from '../hooks/useMultipleDisplay'
 import Popover from '../popover'
 import Input from '../input'
@@ -11,7 +12,7 @@ import Icon from '../icon'
 import Tag from '../tag'
 
 import { PopoverRef } from '../types/popover'
-import { TreeNode, TreeRef } from '../types/tree'
+import { TreeNode } from '../types/tree'
 import { MultipleTreeSelectProps } from '../types/treeSelect'
 
 const defaultDisplayRender = (checkedPath: TreeNode[][], onClose: (data: TreeNode) => void) => {
@@ -56,10 +57,10 @@ export default function MultipleTreeSelect({
 }: MultipleTreeSelectProps) {
   const [visible, setVisible] = useState(false)
   const [_checkedPath, setCheckedPath] = useState(defaultCheckedPath || checkedPath || [])
-  const treeRef = useRef<TreeRef>()
-  const preTreeRef = useRef<TreeRef>()
   const popoverRef = useRef<PopoverRef>()
   const initRef = useRef(false)
+
+  const { clearChecked, setChecked, linkForest } = useMultipleTree<TreeNode>()
 
   useEffect(() => {
     if (!initRef.current) {
@@ -69,19 +70,13 @@ export default function MultipleTreeSelect({
     setCheckedPath(checkedPath || [])
   }, [checkedPath])
 
-  useEffect(() => {
-    if (!treeRef.current) return
-    preTreeRef.current = treeRef.current
-  }, [treeRef.current])
-
   const _displayRender = useCallback(
     (checkedPath?: TreeValue[][]) => {
-      const curTree = treeRef.current || preTreeRef.current
-      if (!curTree || !checkedPath) return
+      if (!linkForest || !checkedPath) return
 
       const labels: string[][] = []
       const data: TreeNode[][] = []
-      const checkedLinkNodePath = checkedPathToLinkPath(true, checkedPath, curTree.forest)
+      const checkedLinkNodePath = checkedPathToLinkPath(true, checkedPath, linkForest)
       checkedLinkNodePath.forEach((linkPath) => {
         labels.push(linkPath.map((linkNode) => linkNode.data.label || `${linkNode.value}`))
         data.push(linkPath.map((linkNode) => linkNode.data))
@@ -90,7 +85,7 @@ export default function MultipleTreeSelect({
       return displayRender ? displayRender(labels, data) : defaultDisplayRender(data, onClose)
 
       function onClose(data: TreeNode) {
-        curTree?.setChecked(data, false)
+        setChecked?.(data, false)
         setCheckedPath((checkedPath) => {
           return checkedPath.filter((singlePath) => {
             return data.value !== singlePath[singlePath.length - 1]
@@ -98,7 +93,7 @@ export default function MultipleTreeSelect({
         })
       }
     },
-    [displayRender]
+    [displayRender, setChecked, linkForest]
   )
 
   const { component } = useMultipleDisplay({
@@ -119,11 +114,11 @@ export default function MultipleTreeSelect({
   const handleClear = useCallback(
     (e: React.MouseEvent) => {
       e.stopPropagation()
-      treeRef.current?.clearChecked()
+      clearChecked?.()
       setCheckedPath([])
       onChange?.([])
     },
-    [onChange]
+    [onChange, clearChecked]
   )
 
   const handleChangeVisible = useCallback(
@@ -171,7 +166,6 @@ export default function MultipleTreeSelect({
         onVisibleChange={handleChangeVisible}
         content={
           <MultipleTree
-            ref={treeRef}
             defaultCheckedPath={_checkedPath}
             onChecked={handleChecked}
             {...extra}

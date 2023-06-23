@@ -4,11 +4,12 @@ import classNames from 'classnames'
 import SingleTree from '../tree/single'
 import { TreeValue } from '../hooks/useTree/type'
 import { checkedPathToLinkPath } from '../hooks/useTree/utils'
+import { useSingleTree } from '../tree/context'
 import Popover from '../popover'
 import Input from '../input'
 import Icon from '../icon'
 
-import { TreeNode, TreeRef } from '../types/tree'
+import { TreeNode } from '../types/tree'
 import { SingleTreeSelectProps } from '../types/treeSelect'
 
 export default function SingleTreeSelect({
@@ -33,8 +34,9 @@ export default function SingleTreeSelect({
 }: SingleTreeSelectProps) {
   const [visible, setVisible] = useState(false)
   const [_checkedPath, setCheckedPath] = useState(defaultCheckedPath || checkedPath || [])
-  const treeRef = useRef<TreeRef>()
   const initRef = useRef(false)
+
+  const { linkForest, clearChecked } = useSingleTree<TreeNode>()
 
   useEffect(() => {
     if (!initRef.current) {
@@ -45,9 +47,9 @@ export default function SingleTreeSelect({
   }, [checkedPath])
 
   const inputValue = useMemo(() => {
-    if (!treeRef.current || !_checkedPath) return ''
+    if (!linkForest || !_checkedPath) return ''
 
-    const linkPath = checkedPathToLinkPath(false, _checkedPath, treeRef.current.forest)
+    const linkPath = checkedPathToLinkPath(false, _checkedPath, linkForest)
     if (displayRender) {
       return displayRender(
         _checkedPath,
@@ -56,7 +58,7 @@ export default function SingleTreeSelect({
     }
 
     return linkPath.map((linkNode) => linkNode.data.label || linkNode.value).join(' / ')
-  }, [_checkedPath, displayRender])
+  }, [_checkedPath, linkForest, displayRender])
 
   const handleChecked = useCallback(
     (checkedPath: TreeValue[], node: TreeNode, isChecked: boolean) => {
@@ -68,10 +70,10 @@ export default function SingleTreeSelect({
   )
 
   const handleClear = useCallback(() => {
-    treeRef.current?.clearChecked()
+    clearChecked?.()
     setCheckedPath([])
     onChange?.([])
-  }, [onChange])
+  }, [onChange, clearChecked])
 
   const handleChangeVisible = useCallback(
     (visible: boolean) => {
@@ -106,7 +108,6 @@ export default function SingleTreeSelect({
       onVisibleChange={handleChangeVisible}
       content={
         <SingleTree
-          ref={treeRef}
           defaultCheckedPath={_checkedPath}
           onChecked={handleChecked}
           {...extra}

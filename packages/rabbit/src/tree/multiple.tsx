@@ -1,50 +1,40 @@
-import React, { useMemo, useCallback, useRef, useEffect, useImperativeHandle } from 'react'
+import React, { useMemo, useCallback, useRef, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import classNames from 'classnames'
 
 import { isSame } from '../utils'
-import useTree from '../hooks/useTree'
 import { getPathFromLinkTreeNode } from '../hooks/useTree/utils'
 import useVirtualScrollY from '../hooks/useVirtualScrollY'
 import { LinkTreeNode, TreeValue } from '../hooks/useTree/type'
+import { useMultipleTree } from './context'
 
 import Icon from '../icon'
 import Checkbox from '../checkbox'
 
 import useDragTree from './useDragTree'
-import { MultipleTreeProps, TreeLabelRender, TreeRef, TreeNode } from '../types/tree'
+import { MultipleTreeProps, TreeLabelRender, TreeNode } from '../types/tree'
 
 type ChangeRecord = { node: TreeNode; res: boolean }
 
 const defaultLabelRender: TreeLabelRender<{}> = (node) => node.label || node.value
 
-function MultipleTree(
-  {
-    className,
-    itemClassName,
-    style,
-    data,
-    defaultCheckedPath,
-    checkedPath,
-    defaultExpandPath,
-    expandPath,
-    draggable,
-    showLine,
-    expandIcon,
-    draggleIcon = true,
-    virtualScroll,
-    mode = 'ordinary',
-    renderLabelIcon,
-    renderExtra,
-    labelRender = defaultLabelRender,
-    loadData,
-    onChecked,
-    onExpand,
-    onCanMove,
-    onMove,
-  }: MultipleTreeProps,
-  ref: React.ForwardedRef<TreeRef>
-) {
+export default function MultipleTree({
+  className,
+  itemClassName,
+  style,
+  checkedPath,
+  expandPath,
+  draggable,
+  showLine,
+  expandIcon,
+  draggleIcon = true,
+  virtualScroll,
+  renderLabelIcon,
+  renderExtra,
+  labelRender = defaultLabelRender,
+  onChecked,
+  onExpand,
+}: MultipleTreeProps) {
   const hookCheckedPathRef = useRef<TreeValue[][]>([])
   const hookExpandPathRef = useRef<TreeValue[][]>([])
   const curCheckedRef = useRef<ChangeRecord>()
@@ -65,27 +55,7 @@ function MultipleTree(
     canMove: hookCanMove,
     move,
     clearChecked,
-  } = useTree({
-    multiple: true,
-    forest: data,
-    defaultCheckedPath: checkedPath || defaultCheckedPath,
-    defaultExpandPath: expandPath || defaultExpandPath,
-    mode,
-    loadData,
-    onCanMove,
-    onMove,
-  })
-
-  useImperativeHandle(
-    ref,
-    () => ({
-      forest: linkForest,
-      setChecked,
-      setExpandNode,
-      clearChecked,
-    }),
-    [linkForest, setChecked, setExpandNode, clearChecked]
-  )
+  } = useMultipleTree()
 
   useEffect(() => {
     hookCheckedPathRef.current = hookCheckedPath
@@ -287,5 +257,3 @@ function MultipleTree(
     </div>
   )
 }
-
-export default React.forwardRef<TreeRef, MultipleTreeProps>(MultipleTree)

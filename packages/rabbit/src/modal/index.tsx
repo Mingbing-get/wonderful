@@ -82,7 +82,7 @@ export default function Modal({
     <div
       className={classNames('rabbit-modal-wrapper', 'rabbit-component', `placement-${placement}`)}
       style={{ zIndex }}
-      onMouseOver={(e) => preventMouseOver && e.preventDefault()}>
+      onMouseOverCapture={(e) => preventMouseOver && e.preventDefault()}>
       <div
         className={classNames('modal-container', className)}
         style={{ width: containerRect.width, height: containerRect.height, left: containerRect.left, top: containerRect.top }}>
