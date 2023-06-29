@@ -3,7 +3,8 @@ import classNames from 'classnames'
 
 import { LinkTreeNode } from '../../hooks/useTree/type'
 import { searchTextFromBaseTree } from '../../hooks/useTree/utils'
-import { CascaderOption } from '../../types/cascader'
+import { useMultipleTree } from '../../tree/context'
+import { TreeNode } from '../../types/tree'
 
 import CheckBox from '../../checkbox'
 
@@ -12,16 +13,16 @@ type SearchPath = {
   disabled?: boolean
   checked?: boolean
   halfChecked?: boolean
-  path: LinkTreeNode<CascaderOption>[]
+  path: LinkTreeNode<TreeNode>[]
 }
 
 type Props = {
   searchText: string
-  linkForest: LinkTreeNode<CascaderOption>[]
-  setChecked: (data: CascaderOption, checked: boolean, closePopover?: boolean) => void
 }
 
-export default function SearchPanel({ searchText, linkForest, setChecked }: Props) {
+export default function SearchPanel({ searchText }: Props) {
+  const { linkForest, setChecked } = useMultipleTree<TreeNode>()
+
   const searchPath = useMemo(() => {
     const searchLinkPathList = searchTextFromBaseTree(linkForest, ['label', 'value'], [searchText, searchText], 'unlink')
 

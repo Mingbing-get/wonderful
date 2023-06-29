@@ -49,17 +49,11 @@ export default function HandlePopover({ target, content, placement = 'bottom', a
     }, 0)
   }, [target, arrowRef.current])
 
-  useEffect(() => {
-    document.addEventListener('scroll', () => {
-      requestAnimationFrame(resetVirtualElement)
+  const getTargetLocationAndSize = useCallback(() => {
+    requestAnimationFrame(() => {
+      popperInstance.current?.forceUpdate()
     })
 
-    return () => {
-      popperInstance.current?.destroy()
-    }
-  }, [])
-
-  const getTargetLocationAndSize = useCallback(() => {
     if (!target) return { top: 0, left: 0, width: 0, height: 0 }
     return target.getBoundingClientRect()
   }, [target])
@@ -68,6 +62,18 @@ export default function HandlePopover({ target, content, placement = 'bottom', a
     const { left, top, width, height } = getTargetLocationAndSize()
     virtualElement.current.getBoundingClientRect = generateGetBoundingClientRect(left, top, width, height) as any
   }, [getTargetLocationAndSize])
+
+  useEffect(() => {
+    function reset() {
+      requestAnimationFrame(resetVirtualElement)
+    }
+    document.addEventListener('scroll', reset)
+
+    return () => {
+      popperInstance.current?.destroy()
+      document.removeEventListener('scroll', reset)
+    }
+  }, [resetVirtualElement])
 
   return (
     <>

@@ -5,39 +5,7 @@
   border-radius: var(--rabbit-border-radius-base);
   overflow: hidden;
   cursor: pointer;
-  .cascader-trigger {
-    position: relative;
-    flex: 1;
-    .cascader-value {
-      display: flex;
-      align-items: center;
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      padding: 0 0.2rem;
-      background-color: #fff;
-      text-align: center;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      .cascader-tag:not(:last-child) {
-        margin-right: 0.2rem;
-      }
-      &.show-placeholder {
-        color: var(--rabbit-border-color-base);
-      }
-    }
-    .rabbit-input-wrapper {
-      border: none;
-    }
-    &.show-input {
-      .cascader-value {
-        opacity: 0.1;
-        z-index: -1;
-      }
-    }
-  }
+
   .cascader-icon {
     padding: 0 0.2rem;
     .cascader-clear {
@@ -53,17 +21,9 @@
     .cascader-arrow {
       display: none;
     }
-  
+
     .cascader-clear {
       display: inline-block;
-    }
-  }
-  &.is-disabled {
-    background-color: var(--rabbit-disabled-bg-color);
-    cursor: not-allowed;
-    .cascader-trigger .cascader-value {
-      background-color: transparent;
-      color: var(--rabbit-disabled-color);
     }
   }
 }
@@ -145,24 +105,24 @@
     .match-text {
       color: var(--rabbit-error-color);
     }
-    .rabbit-checkbox-wrapper>span {
+    .rabbit-checkbox-wrapper > span {
       display: none;
     }
     &:hover {
       background-color: var(--rabbit-hover-color);
     }
-  
+
     &.is-checked {
       color: #fff;
       background-color: var(--rabbit-primary-color);
     }
-  
+
     &.is-disabled {
       color: var(--rabbit-disabled-color);
       background-color: #fff;
       cursor: not-allowed;
     }
-  
+
     &:not(:last-of-type) {
       margin-bottom: 0.2rem;
     }

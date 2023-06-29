@@ -1,11 +1,11 @@
 import React, { useState, useRef, useMemo, useCallback, useEffect } from 'react'
 import classNames from 'classnames'
 
-import Input from '../../input'
 import Icon from '../../icon'
 import Popover from '../../popover'
 import Panel from './panel'
 import SearchPanel from './searchPanel'
+import WithSearchTrigger from '../withSearchTrigger'
 
 import useTree from '../../hooks/useTree'
 import { LinkTreeNode, TreeValue } from '../../hooks/useTree/type'
@@ -144,32 +144,22 @@ export default function SingleCascader({
   if (disabled) {
     return (
       <div
-        className={classNames('rabbit-cascader-wrapper rabbit-component is-disabled', className)}
+        className={classNames('rabbit-cascader-wrapper rabbit-component', className)}
         style={style}>
-        <div className={classNames('cascader-trigger')}>
-          <div className={classNames('cascader-value', checkedLinkNodePath.length === 0 && 'show-placeholder')}>
-            {checkedLinkNodePath.length > 0 ? _displayRender(checkedLinkNodePath) : placeholder}
-          </div>
-          <Input
-            ref={inputRef}
-            value={searchText}
-            onChange={(e) => setSearchText(e.target.value)}
-            onClick={(e) => e.stopPropagation()}
-          />
-        </div>
-        <span className="cascader-icon">
-          <Icon
-            className="cascader-arrow"
-            type={showSearchInput ? 'search' : 'arrowDown'}
-          />
-        </span>
+        <WithSearchTrigger
+          disabled
+          showPlaceholder={checkedLinkNodePath.length === 0}
+          placeholder={placeholder}
+          displayValue={_displayRender(checkedLinkNodePath)}
+          suffixIcon={suffixIcon}
+        />
       </div>
     )
   }
 
   return (
     <div
-      className={classNames('rabbit-cascader-wrapper', 'rabbit-component', allowClear && 'allow-clear', className)}
+      className={classNames('rabbit-cascader-wrapper', 'rabbit-component', className)}
       style={style}>
       <Popover
         arrow="none"
@@ -204,34 +194,20 @@ export default function SingleCascader({
                 'option'
               )
         }>
-        <div className={classNames('cascader-trigger', showSearchInput && 'show-input')}>
-          <div className={classNames('cascader-value', checkedLinkNodePath.length === 0 && 'show-placeholder')}>
-            {checkedLinkNodePath.length > 0 ? _displayRender(checkedLinkNodePath) : placeholder}
-          </div>
-          <Input
-            ref={inputRef}
-            value={searchText}
-            onChange={(e) => setSearchText(e.target.value)}
-            onClickCapture={(e) => e.stopPropagation()}
-          />
-        </div>
+        <WithSearchTrigger
+          allowClear={allowClear}
+          showSearchInput={showSearchInput}
+          showPlaceholder={checkedLinkNodePath.length === 0}
+          placeholder={placeholder}
+          displayValue={_displayRender(checkedLinkNodePath)}
+          searchText={searchText}
+          clearIcon={clearIcon}
+          suffixIcon={suffixIcon}
+          inputRef={inputRef}
+          onChangeSearch={setSearchText}
+          onClear={clearChecked}
+        />
       </Popover>
-      <span className="cascader-icon">
-        <span className="cascader-arrow">{suffixIcon || <Icon type={showSearchInput ? 'search' : 'arrowDown'} />}</span>
-        <span
-          className="cascader-clear"
-          onClick={(e) => {
-            clearChecked()
-            e.stopPropagation()
-          }}>
-          {clearIcon || (
-            <Icon
-              className="cascader-close"
-              type="close"
-            />
-          )}
-        </span>
-      </span>
     </div>
   )
 }

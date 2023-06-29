@@ -1,29 +1,28 @@
 import React, { useMemo, useCallback } from 'react'
 import classNames from 'classnames'
 
-import { LinkTreeNode } from '../../hooks/useTree/type'
+import { LinkTreeNode, TreeMode } from '../../hooks/useTree/type'
 import { searchTextFromBaseTree } from '../../hooks/useTree/utils'
-import { CascaderOption } from '../../types/cascader'
-
-import CheckBox from '../../checkbox'
+import { useSingleTree } from '../../tree/context'
+import { TreeNode } from '../../types/tree'
 
 type SearchPath = {
   texts: string[]
   disabled?: boolean
   checked?: boolean
-  halfChecked?: boolean
-  path: LinkTreeNode<CascaderOption>[]
+  path: LinkTreeNode<TreeNode>[]
 }
 
 type Props = {
   searchText: string
-  linkForest: LinkTreeNode<CascaderOption>[]
-  setChecked: (data: CascaderOption, checked: boolean, closePopover?: boolean) => void
+  mode: TreeMode
 }
 
-export default function SearchPanel({ searchText, linkForest, setChecked }: Props) {
+export default function SingleSearchPanel({ searchText, mode }: Props) {
+  const { linkForest, setChecked } = useSingleTree<TreeNode>()
+
   const searchPath = useMemo(() => {
-    const searchLinkPathList = searchTextFromBaseTree(linkForest, ['label', 'value'], [searchText, searchText], 'unlink')
+    const searchLinkPathList = searchTextFromBaseTree(linkForest, ['label', 'value'], [searchText, searchText], mode)
 
     return searchLinkPathList.map((linkTreePath) => {
       const onePath = linkTreePath.reduce(
@@ -43,36 +42,29 @@ export default function SearchPanel({ searchText, linkForest, setChecked }: Prop
       return {
         ...onePath,
         checked: linkTreePath[linkTreePath.length - 1].checked,
-        halfChecked: linkTreePath[linkTreePath.length - 1].halfChecked,
         path: linkTreePath,
       } as SearchPath
     })
   }, [searchText, linkForest])
 
   const handleClickItem = useCallback(
-    (searchPath: SearchPath, checked: boolean) => {
+    (searchPath: SearchPath) => {
       if (searchPath.disabled) return
 
-      setChecked(searchPath.path[searchPath.path.length - 1].data, checked)
+      setChecked(searchPath.path[searchPath.path.length - 1].data, true)
     },
     [setChecked]
   )
 
   return (
-    <div className="cascader-search-panel">
+    <div className="tree-select-search-panel">
       {searchPath.map((item, index) => (
         <div
-          className={classNames('search-panel-item', item.disabled && 'is-disabled')}
-          key={index}>
-          <CheckBox
-            disabled={item.disabled}
-            checked={item.checked}
-            halfChecked={item.halfChecked}
-            onChange={(checked) => handleClickItem(item, checked)}>
-            ''
-          </CheckBox>
-          <div dangerouslySetInnerHTML={{ __html: item.texts.join(' / ') }} />
-        </div>
+          className={classNames('search-panel-item', item.disabled && 'is-disabled', item.checked && 'is-checked')}
+          key={index}
+          dangerouslySetInnerHTML={{ __html: item.texts.join(' / ') }}
+          onClick={() => handleClickItem(item)}
+        />
       ))}
     </div>
   )

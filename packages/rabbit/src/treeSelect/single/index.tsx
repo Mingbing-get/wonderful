@@ -1,16 +1,19 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import classNames from 'classnames'
 
-import SingleTree from '../tree/single'
-import { TreeValue } from '../hooks/useTree/type'
-import { checkedPathToLinkPath } from '../hooks/useTree/utils'
-import { useSingleTree } from '../tree/context'
-import Popover from '../popover'
-import Input from '../input'
-import Icon from '../icon'
+import SingleTree from '../../tree/single'
+import WithSearchTrigger from '../../cascader/withSearchTrigger'
+import SingleSearchPanel from './searchPanel'
+import { TreeValue } from '../../hooks/useTree/type'
+import { checkedPathToLinkPath } from '../../hooks/useTree/utils'
+import { useSingleTree } from '../../tree/context'
+import Popover from '../../popover'
+import Input from '../../input'
+import Icon from '../../icon'
 
-import { TreeNode } from '../types/tree'
-import { SingleTreeSelectProps } from '../types/treeSelect'
+import { TreeNode } from '../../types/tree'
+import { SingleTreeSelectProps } from '../../types/treeSelect'
+import { InputRef } from 'rc-input'
 
 export default function SingleTreeSelect({
   style,
@@ -20,6 +23,7 @@ export default function SingleTreeSelect({
   placeholder,
   allowClear,
   disabled,
+  showSearch,
   suffixIcon,
   placement,
   clearIcon,
@@ -32,18 +36,20 @@ export default function SingleTreeSelect({
   displayRender,
   ...extra
 }: SingleTreeSelectProps) {
+  const [showSearchInput, setShowSearchInput] = useState(false)
+  const [searchText, setSearchText] = useState('')
   const [visible, setVisible] = useState(false)
-  const [_checkedPath, setCheckedPath] = useState(defaultCheckedPath || checkedPath || [])
+  const inputRef = useRef<InputRef>(null)
   const initRef = useRef(false)
 
-  const { linkForest, clearChecked } = useSingleTree<TreeNode>()
+  const { linkForest, clearChecked, checkedPath: _checkedPath, changeCheckedPath } = useSingleTree<TreeNode>()
 
   useEffect(() => {
     if (!initRef.current) {
       initRef.current = true
       if (checkedPath === undefined) return
     }
-    setCheckedPath(checkedPath || [])
+    changeCheckedPath(checkedPath || [])
   }, [checkedPath])
 
   const inputValue = useMemo(() => {
@@ -62,7 +68,6 @@ export default function SingleTreeSelect({
 
   const handleChecked = useCallback(
     (checkedPath: TreeValue[], node: TreeNode, isChecked: boolean) => {
-      setCheckedPath(checkedPath)
       onChecked?.(checkedPath, node, isChecked)
       onChange?.(checkedPath)
     },
@@ -71,7 +76,6 @@ export default function SingleTreeSelect({
 
   const handleClear = useCallback(() => {
     clearChecked?.()
-    setCheckedPath([])
     onChange?.([])
   }, [onChange, clearChecked])
 
@@ -79,6 +83,14 @@ export default function SingleTreeSelect({
     (visible: boolean) => {
       setVisible(visible)
       onPopoverVisibleChange?.(visible)
+
+      if (!showSearch) return
+      setShowSearchInput(visible)
+      if (visible) {
+        inputRef.current?.focus()
+      } else {
+        setSearchText('')
+      }
     },
     [onPopoverVisibleChange]
   )
@@ -107,30 +119,32 @@ export default function SingleTreeSelect({
       trigger={expandTrigger}
       onVisibleChange={handleChangeVisible}
       content={
-        <SingleTree
-          defaultCheckedPath={_checkedPath}
-          onChecked={handleChecked}
-          {...extra}
-        />
+        showSearchInput && searchText ? (
+          <SingleSearchPanel
+            mode="unlink"
+            searchText={searchText}
+          />
+        ) : (
+          <SingleTree
+            onChecked={handleChecked}
+            {...extra}
+          />
+        )
       }>
-      <Input
-        value={inputValue}
-        placeholder={placeholder}
-        readOnly
+      <WithSearchTrigger
+        className={classNames('rabbit-tree-select-wrapper', className)}
         style={style}
-        className={classNames('rabbit-tree-select-wrapper', 'rabbit-component', allowClear && _checkedPath.length && 'can-clear', className)}
-        suffix={
-          <>
-            {<span className="suffix">{suffixIcon || <Icon type="arrowDown" />}</span>}
-            {allowClear && (
-              <span
-                className="clear"
-                onClickCapture={handleClear}>
-                {clearIcon || <Icon type="close" />}
-              </span>
-            )}
-          </>
-        }
+        allowClear={allowClear}
+        showSearchInput={showSearchInput}
+        showPlaceholder={!inputValue}
+        placeholder={placeholder}
+        displayValue={inputValue}
+        searchText={searchText}
+        clearIcon={clearIcon}
+        suffixIcon={suffixIcon}
+        inputRef={inputRef}
+        onChangeSearch={setSearchText}
+        onClear={handleClear}
       />
     </Popover>
   )

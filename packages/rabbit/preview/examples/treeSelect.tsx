@@ -77,6 +77,7 @@ export default function ExampleTreeSelect() {
       />
       <TreeSelect
         allowClear
+        showSearch
         data={data}
         showLine
       />
@@ -120,6 +121,7 @@ export default function ExampleTreeSelect() {
       />
       <MultipleTreeSelect
         allowClear
+        showSearch
         data={data}
         showLine
       />

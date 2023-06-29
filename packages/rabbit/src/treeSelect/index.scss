@@ -1,24 +1,68 @@
 .rabbit-tree-select-wrapper {
-  .clear {
-    display: none;
-    cursor: pointer;
+  border: 1px solid var(--rabbit-border-color-base);
+  border-radius: var(--rabbit-border-radius-base);
+  overflow: hidden;
+
+  &.is-multiple {
+    display: flex;
+    align-items: center;
   }
-  &.can-clear {
-    &:hover {
-      .clear {
-        display: inline-block;
-      }
-      .suffix {
-        display: none;
+
+  .tree-select-icon {
+    padding: 0 0.2rem;
+    .tree-select-clear {
+      display: none;
+      cursor: pointer;
+      .tree-select-close {
+        border-radius: 50%;
+        background-color: rgba(0, 0, 0, 0.1);
       }
     }
   }
+  &.allow-clear:hover {
+    .tree-select-arrow {
+      display: none;
+    }
 
-  &.is-multiple {
-    border: 1px solid var(--rabbit-border-color-base);
-    border-radius: var(--rabbit-border-radius-base);
-    overflow: hidden;
+    .tree-select-clear {
+      display: inline-block;
+    }
+  }
+}
+
+.tree-select-search-panel {
+  display: flex;
+  flex-direction: column;
+
+  .search-panel-item {
     display: flex;
     align-items: center;
+    padding: 0.2rem 0.4rem;
+    cursor: pointer;
+    border-radius: var(--rabbit-border-radius-base);
+    .match-text {
+      color: var(--rabbit-error-color);
+    }
+    .rabbit-checkbox-wrapper > span {
+      display: none;
+    }
+    &:hover {
+      background-color: var(--rabbit-hover-color);
+    }
+
+    &.is-checked {
+      color: #fff;
+      background-color: var(--rabbit-primary-color);
+    }
+
+    &.is-disabled {
+      color: var(--rabbit-disabled-color);
+      background-color: #fff;
+      cursor: not-allowed;
+    }
+
+    &:not(:last-of-type) {
+      margin-bottom: 0.2rem;
+    }
   }
 }

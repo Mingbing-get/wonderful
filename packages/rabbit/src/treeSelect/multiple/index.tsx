@@ -1,19 +1,20 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import classNames from 'classnames'
 
-import MultipleTree from '../tree/multiple'
-import { TreeValue } from '../hooks/useTree/type'
-import { checkedPathToLinkPath } from '../hooks/useTree/utils'
-import { useMultipleTree } from '../tree/context'
-import useMultipleDisplay from '../hooks/useMultipleDisplay'
-import Popover from '../popover'
-import Input from '../input'
-import Icon from '../icon'
-import Tag from '../tag'
+import MultipleTree from '../../tree/multiple'
+import { TreeValue } from '../../hooks/useTree/type'
+import { checkedPathToLinkPath } from '../../hooks/useTree/utils'
+import { useMultipleTree } from '../../tree/context'
+import useMultipleDisplay from '../../hooks/useMultipleDisplay'
+import SearchPanel from './searchPanel'
+import Popover from '../../popover'
+import Input from '../../input'
+import Icon from '../../icon'
+import Tag from '../../tag'
 
-import { PopoverRef } from '../types/popover'
-import { TreeNode } from '../types/tree'
-import { MultipleTreeSelectProps } from '../types/treeSelect'
+import { PopoverRef } from '../../types/popover'
+import { TreeNode } from '../../types/tree'
+import { MultipleTreeSelectProps } from '../../types/treeSelect'
 
 const defaultDisplayRender = (checkedPath: TreeNode[][], onClose: (data: TreeNode) => void) => {
   return checkedPath.map((singlePath, index) => {
@@ -43,6 +44,7 @@ export default function MultipleTreeSelect({
   placeholder,
   allowClear,
   disabled,
+  showSearch,
   suffixIcon,
   placement,
   clearIcon,
@@ -55,19 +57,19 @@ export default function MultipleTreeSelect({
   displayRender,
   ...extra
 }: MultipleTreeSelectProps) {
+  const [showSearchInput, setShowSearchInput] = useState(false)
   const [visible, setVisible] = useState(false)
-  const [_checkedPath, setCheckedPath] = useState(defaultCheckedPath || checkedPath || [])
   const popoverRef = useRef<PopoverRef>()
   const initRef = useRef(false)
 
-  const { clearChecked, setChecked, linkForest } = useMultipleTree<TreeNode>()
+  const { clearChecked, setChecked, linkForest, checkedPath: _checkedPath, changeCheckedPath } = useMultipleTree<TreeNode>()
 
   useEffect(() => {
     if (!initRef.current) {
       initRef.current = true
       if (checkedPath === undefined) return
     }
-    setCheckedPath(checkedPath || [])
+    changeCheckedPath(checkedPath || [])
   }, [checkedPath])
 
   const _displayRender = useCallback(
@@ -86,25 +88,19 @@ export default function MultipleTreeSelect({
 
       function onClose(data: TreeNode) {
         setChecked?.(data, false)
-        setCheckedPath((checkedPath) => {
-          return checkedPath.filter((singlePath) => {
-            return data.value !== singlePath[singlePath.length - 1]
-          })
-        })
       }
     },
     [displayRender, setChecked, linkForest]
   )
 
-  const { component } = useMultipleDisplay({
+  const { component, inputRef, searchText, setSearchText } = useMultipleDisplay({
     hasValue: _checkedPath.length > 0,
-    showSearchInput: false,
+    showSearchInput: showSearchInput,
     children: _checkedPath.length > 0 ? _displayRender(_checkedPath) : placeholder,
   })
 
   const handleChecked = useCallback(
     (checkedPath: TreeValue[][], node: TreeNode, isChecked: boolean) => {
-      setCheckedPath(checkedPath)
       onChecked?.(checkedPath, node, isChecked)
       onChange?.(checkedPath)
     },
@@ -115,7 +111,6 @@ export default function MultipleTreeSelect({
     (e: React.MouseEvent) => {
       e.stopPropagation()
       clearChecked?.()
-      setCheckedPath([])
       onChange?.([])
     },
     [onChange, clearChecked]
@@ -125,8 +120,16 @@ export default function MultipleTreeSelect({
     (visible: boolean) => {
       setVisible(visible)
       onPopoverVisibleChange?.(visible)
+
+      if (!showSearch) return
+      setShowSearchInput(visible)
+      if (visible) {
+        inputRef.current?.focus()
+      } else {
+        setSearchText('')
+      }
     },
-    [onPopoverVisibleChange]
+    [showSearch, onPopoverVisibleChange]
   )
 
   useEffect(() => {
@@ -152,7 +155,7 @@ export default function MultipleTreeSelect({
 
   return (
     <div
-      className={classNames('rabbit-tree-select-wrapper is-multiple', 'rabbit-component', allowClear && _checkedPath.length && 'can-clear', className)}
+      className={classNames('rabbit-tree-select-wrapper is-multiple', 'rabbit-component', allowClear && _checkedPath.length && 'allow-clear', className)}
       style={style}>
       <Popover
         ref={popoverRef}
@@ -165,22 +168,33 @@ export default function MultipleTreeSelect({
         trigger={expandTrigger}
         onVisibleChange={handleChangeVisible}
         content={
-          <MultipleTree
-            defaultCheckedPath={_checkedPath}
-            onChecked={handleChecked}
-            {...extra}
-          />
+          showSearchInput && searchText ? (
+            <SearchPanel searchText={searchText} />
+          ) : (
+            <MultipleTree
+              onChecked={handleChecked}
+              {...extra}
+            />
+          )
         }>
         {component}
       </Popover>
-      <span className="suffix">{suffixIcon || <Icon type="arrowDown" />}</span>
-      {allowClear && (
+      <span className="tree-select-icon">
+        <span className="tree-select-arrow">{suffixIcon || <Icon type={showSearchInput ? 'search' : 'arrowDown'} />}</span>
         <span
-          className="clear"
-          onClickCapture={handleClear}>
-          {clearIcon || <Icon type="close" />}
+          className="tree-select-clear"
+          onClick={(e) => {
+            clearChecked()
+            e.stopPropagation()
+          }}>
+          {clearIcon || (
+            <Icon
+              className="tree-select-close"
+              type="close"
+            />
+          )}
         </span>
-      )}
+      </span>
     </div>
   )
 }
