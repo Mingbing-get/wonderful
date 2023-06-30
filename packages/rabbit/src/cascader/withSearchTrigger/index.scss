@@ -33,7 +33,9 @@
     &.show-input {
       .with-search-value {
         opacity: 0.1;
-        z-index: -1;
+        word-break: keep-all;
+        white-space: nowrap;
+        overflow-x: auto;
       }
     }
   }

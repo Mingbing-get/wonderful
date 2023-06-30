@@ -60,6 +60,9 @@ export default function SingleCascader({
   const valueRef = useRef<TreeValue[]>([])
   const linkForestRef = useRef<LinkTreeNode<CascaderOption>[]>([])
 
+  const onChangeRef = useRef(onChange)
+  const onSearchRef = useRef(onSearch)
+
   const { setChecked, setExpandNode, changeCheckedPath, clearChecked, linkForest, checkedPath } = useTree({
     multiple: false,
     expandSingle: true,
@@ -79,13 +82,21 @@ export default function SingleCascader({
   }, [checkedPath, linkForest])
 
   useEffect(() => {
-    if (!searchText) return
-
-    onSearch?.(searchText)
-  }, [searchText, onSearch])
+    onSearchRef.current = onSearch
+  }, [onSearch])
 
   useEffect(() => {
-    if (!onChange) return
+    if (!searchText) return
+
+    onSearchRef?.current?.(searchText)
+  }, [searchText])
+
+  useEffect(() => {
+    onChangeRef.current = onChange
+  }, [onChange])
+
+  useEffect(() => {
+    if (!onChangeRef.current) return
 
     const values: TreeValue[] = []
     const checkedPath: CascaderOption[] = []
@@ -94,8 +105,8 @@ export default function SingleCascader({
       checkedPath.push(linkNode.data)
     })
 
-    onChange(values, checkedPath)
-  }, [checkedLinkNodePath, onChange])
+    onChangeRef.current(values, checkedPath)
+  }, [checkedLinkNodePath])
 
   useEffect(() => {
     if (!value) return

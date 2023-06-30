@@ -1,8 +1,8 @@
 import React, { useMemo, useCallback } from 'react'
 import classNames from 'classnames'
 
-import { LinkTreeNode, TreeMode } from '../../hooks/useTree/type'
-import { searchTextFromBaseTree } from '../../hooks/useTree/utils'
+import { LinkTreeNode, TreeMode, TreeValue } from '../../hooks/useTree/type'
+import { searchTextFromBaseTree, linkPathToCheckedPath } from '../../hooks/useTree/utils'
 import { useSingleTree } from '../../tree/context'
 import { TreeNode } from '../../types/tree'
 
@@ -16,9 +16,10 @@ type SearchPath = {
 type Props = {
   searchText: string
   mode: TreeMode
+  onChecked?: (checkedPath: TreeValue[], node: TreeNode<{}>, isChecked: boolean) => void
 }
 
-export default function SingleSearchPanel({ searchText, mode }: Props) {
+export default function SingleSearchPanel({ searchText, mode, onChecked }: Props) {
   const { linkForest, setChecked } = useSingleTree<TreeNode>()
 
   const searchPath = useMemo(() => {
@@ -52,8 +53,9 @@ export default function SingleSearchPanel({ searchText, mode }: Props) {
       if (searchPath.disabled) return
 
       setChecked(searchPath.path[searchPath.path.length - 1].data, true)
+      onChecked?.(linkPathToCheckedPath(false, searchPath.path), searchPath.path[searchPath.path.length - 1].data, true)
     },
-    [setChecked]
+    [setChecked, onChecked]
   )
 
   return (

@@ -107,15 +107,6 @@ export default function MultipleTreeSelect({
     [onChecked, onChange]
   )
 
-  const handleClear = useCallback(
-    (e: React.MouseEvent) => {
-      e.stopPropagation()
-      clearChecked?.()
-      onChange?.([])
-    },
-    [onChange, clearChecked]
-  )
-
   const handleChangeVisible = useCallback(
     (visible: boolean) => {
       setVisible(visible)
@@ -169,7 +160,10 @@ export default function MultipleTreeSelect({
         onVisibleChange={handleChangeVisible}
         content={
           showSearchInput && searchText ? (
-            <SearchPanel searchText={searchText} />
+            <SearchPanel
+              searchText={searchText}
+              onChecked={handleChecked}
+            />
           ) : (
             <MultipleTree
               onChecked={handleChecked}

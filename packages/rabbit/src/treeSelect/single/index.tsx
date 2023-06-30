@@ -42,6 +42,8 @@ export default function SingleTreeSelect({
   const inputRef = useRef<InputRef>(null)
   const initRef = useRef(false)
 
+  const onChangeRef = useRef(onChange)
+
   const { linkForest, clearChecked, checkedPath: _checkedPath, changeCheckedPath } = useSingleTree<TreeNode>()
 
   useEffect(() => {
@@ -51,6 +53,16 @@ export default function SingleTreeSelect({
     }
     changeCheckedPath(checkedPath || [])
   }, [checkedPath])
+
+  useEffect(() => {
+    onChangeRef.current = onChange
+  }, [onChange, onChecked])
+
+  useEffect(() => {
+    if (!onChangeRef.current) return
+
+    onChangeRef.current(_checkedPath)
+  }, [_checkedPath])
 
   const inputValue = useMemo(() => {
     if (!linkForest || !_checkedPath) return ''
@@ -65,19 +77,6 @@ export default function SingleTreeSelect({
 
     return linkPath.map((linkNode) => linkNode.data.label || linkNode.value).join(' / ')
   }, [_checkedPath, linkForest, displayRender])
-
-  const handleChecked = useCallback(
-    (checkedPath: TreeValue[], node: TreeNode, isChecked: boolean) => {
-      onChecked?.(checkedPath, node, isChecked)
-      onChange?.(checkedPath)
-    },
-    [onChecked, onChange]
-  )
-
-  const handleClear = useCallback(() => {
-    clearChecked?.()
-    onChange?.([])
-  }, [onChange, clearChecked])
 
   const handleChangeVisible = useCallback(
     (visible: boolean) => {
@@ -123,10 +122,11 @@ export default function SingleTreeSelect({
           <SingleSearchPanel
             mode="unlink"
             searchText={searchText}
+            onChecked={onChecked}
           />
         ) : (
           <SingleTree
-            onChecked={handleChecked}
+            onChecked={onChecked}
             {...extra}
           />
         )
@@ -144,7 +144,7 @@ export default function SingleTreeSelect({
         suffixIcon={suffixIcon}
         inputRef={inputRef}
         onChangeSearch={setSearchText}
-        onClear={handleClear}
+        onClear={clearChecked}
       />
     </Popover>
   )

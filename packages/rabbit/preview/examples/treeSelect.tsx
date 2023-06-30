@@ -60,7 +60,9 @@ export default function ExampleTreeSelect() {
   const [data, setData] = useState(baseData)
 
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 19%)', justifyContent: 'space-between', gridRowGap: 20 }}>
+    <div
+      style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 19%)', justifyContent: 'space-between', gridRowGap: 20 }}
+      onClick={(e) => e.stopPropagation()}>
       <TreeSelect
         allowClear
         data={data}
@@ -80,6 +82,12 @@ export default function ExampleTreeSelect() {
         showSearch
         data={data}
         showLine
+        onChecked={(checkedPath, node, isChecked) => {
+          console.log(checkedPath, node, isChecked)
+        }}
+        onChange={(checkedPath) => {
+          console.log(checkedPath)
+        }}
       />
       <TreeSelect
         placeholder="请选择"
@@ -124,6 +132,12 @@ export default function ExampleTreeSelect() {
         showSearch
         data={data}
         showLine
+        onChecked={(checkedPath, node, isChecked) => {
+          console.log(checkedPath, node, isChecked)
+        }}
+        onChange={(checkedPath) => {
+          console.log(checkedPath)
+        }}
       />
       <MultipleTreeSelect
         placeholder="请选择"

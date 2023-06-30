@@ -1,8 +1,8 @@
-import React, { useMemo, useCallback } from 'react'
+import React, { useMemo, useCallback, useRef, useEffect } from 'react'
 import classNames from 'classnames'
 
-import { LinkTreeNode } from '../../hooks/useTree/type'
-import { searchTextFromBaseTree } from '../../hooks/useTree/utils'
+import { LinkTreeNode, TreeValue } from '../../hooks/useTree/type'
+import { searchTextFromBaseTree, linkPathToCheckedPath } from '../../hooks/useTree/utils'
 import { useMultipleTree } from '../../tree/context'
 import { TreeNode } from '../../types/tree'
 
@@ -18,10 +18,12 @@ type SearchPath = {
 
 type Props = {
   searchText: string
+  onChecked?: (checkedPath: TreeValue[][], node: TreeNode, isChecked: boolean) => void
 }
 
-export default function SearchPanel({ searchText }: Props) {
-  const { linkForest, setChecked } = useMultipleTree<TreeNode>()
+export default function SearchPanel({ searchText, onChecked }: Props) {
+  const curNodeRef = useRef<{ node: TreeNode; isChecked: boolean }>()
+  const { linkForest, setChecked, checkedPath } = useMultipleTree<TreeNode>()
 
   const searchPath = useMemo(() => {
     const searchLinkPathList = searchTextFromBaseTree(linkForest, ['label', 'value'], [searchText, searchText], 'unlink')
@@ -50,11 +52,22 @@ export default function SearchPanel({ searchText }: Props) {
     })
   }, [searchText, linkForest])
 
+  useEffect(() => {
+    if (!curNodeRef.current) return
+
+    onChecked?.(checkedPath, curNodeRef.current.node, curNodeRef.current.isChecked)
+    curNodeRef.current = undefined
+  }, [checkedPath, onChecked])
+
   const handleClickItem = useCallback(
     (searchPath: SearchPath, checked: boolean) => {
       if (searchPath.disabled) return
 
       setChecked(searchPath.path[searchPath.path.length - 1].data, checked)
+      curNodeRef.current = {
+        node: searchPath.path[searchPath.path.length - 1].data,
+        isChecked: checked,
+      }
     },
     [setChecked]
   )

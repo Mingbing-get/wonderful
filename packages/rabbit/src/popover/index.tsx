@@ -69,16 +69,24 @@ function Popover(
   }, [isHidden, arrowRef.current])
 
   useEffect(() => {
-    document.addEventListener('click', () => {
+    function clickHandle(e: MouseEvent) {
       if (!['click', 'focus'].includes(trigger)) return
+
+      let curNode: Node | null = e.target as Node
+      while (curNode) {
+        if (curNode === displayRef.current) return
+        curNode = curNode.parentNode
+      }
       setIsHidden(true)
-    })
-    document.addEventListener('scroll', () => {
-      requestAnimationFrame(resetVirtualElement)
-    })
+    }
+
+    document.addEventListener('click', clickHandle, true)
+    document.addEventListener('scroll', resetVirtualElement)
 
     return () => {
       popperInstance.current?.destroy()
+      document.removeEventListener('click', clickHandle, true)
+      document.removeEventListener('scroll', resetVirtualElement)
     }
   }, [])
 
@@ -86,46 +94,76 @@ function Popover(
     if (!getTargetElement() || perTargetRef.current) return
     perTargetRef.current = true
 
-    trigger === 'click' && getTargetElement().addEventListener('click', toggleShow)
+    function handleMouseenter() {
+      counter.current++
+      setIsHidden(false)
+      setTimeout(() => {
+        counter.current--
+      }, delay)
+    }
 
-    trigger === 'hover' &&
-      (getTargetElement().addEventListener('mouseenter', () => {
-        counter.current++
-        setIsHidden(false)
-        setTimeout(() => {
-          counter.current--
-        }, delay)
-      }),
-      getTargetElement().addEventListener('mouseleave', () => {
-        setTimeout(() => {
-          if (counter.current === 0) setIsHidden(true)
-        }, delay)
-      }))
+    function handleMouseLeave() {
+      setTimeout(() => {
+        if (counter.current === 0) setIsHidden(true)
+      }, delay)
+    }
 
-    trigger === 'focus' &&
-      (getTargetElement().addEventListener('focus', () => setIsHidden(false)),
-      getTargetElement().addEventListener('click', (e) => {
-        e.stopPropagation()
-        return false
-      }))
+    function setHidden() {
+      setIsHidden(false)
+    }
+
+    function stopPropagation(e: MouseEvent) {
+      e.stopPropagation()
+      return false
+    }
+
+    if (trigger === 'click') {
+      getTargetElement().addEventListener('click', toggleShow, true)
+    }
+
+    if (trigger === 'hover') {
+      getTargetElement().addEventListener('mouseenter', handleMouseenter)
+      getTargetElement().addEventListener('mouseleave', handleMouseLeave)
+    }
+
+    if (trigger === 'focus') {
+      getTargetElement().addEventListener('focus', setHidden)
+      getTargetElement().addEventListener('click', stopPropagation)
+    }
+
+    return () => {
+      // getTargetElement()?.removeEventListener('click', toggleShow, true)
+      // getTargetElement()?.removeEventListener('mouseenter', handleMouseenter)
+      // getTargetElement()?.removeEventListener('mouseleave', handleMouseLeave)
+      // getTargetElement()?.removeEventListener('focus', setHidden)
+      // getTargetElement()?.removeEventListener('click', stopPropagation)
+    }
   }, [targetRef.current])
 
   useEffect(() => {
-    if (!displayRef.current) return
+    if (!displayRef.current || trigger !== 'hover') return
 
-    trigger === 'hover' &&
-      (displayRef.current.addEventListener('mouseenter', () => {
-        counter.current++
-        setIsHidden(false)
-        setTimeout(() => {
-          counter.current--
-        }, delay)
-      }),
-      displayRef.current.addEventListener('mouseleave', () => {
-        setTimeout(() => {
-          if (counter.current === 0) setIsHidden(true)
-        }, delay)
-      }))
+    function handleMouseenter() {
+      counter.current++
+      setIsHidden(false)
+      setTimeout(() => {
+        counter.current--
+      }, delay)
+    }
+
+    function handleMouseleave() {
+      setTimeout(() => {
+        if (counter.current === 0) setIsHidden(true)
+      }, delay)
+    }
+
+    displayRef.current.addEventListener('mouseenter', handleMouseenter)
+    displayRef.current.addEventListener('mouseleave', handleMouseleave)
+
+    return () => {
+      // displayRef.current?.removeEventListener('mouseenter', handleMouseenter)
+      // displayRef.current?.removeEventListener('mouseleave', handleMouseleave)
+    }
   }, [displayRef.current])
 
   const getTargetElement = useCallback(() => {
@@ -157,6 +195,7 @@ function Popover(
 
   function toggleShow(e: MouseEvent) {
     setIsHidden((isHidden) => !isHidden)
+    console.log(1111111111)
     e.stopPropagation()
     return false
   }
@@ -175,8 +214,7 @@ function Popover(
           <div
             className={classNames('rabbit-popper-wrapper', 'rabbit-component', arrow === 'none' && 'not-arrow', className)}
             style={{ ...style, minWidth: widthFollowTarget ? `${getTargetElement().getBoundingClientRect().width}px` : '' }}
-            ref={displayRef}
-            onClick={(e) => e.stopPropagation()}>
+            ref={displayRef}>
             {content}
             <div
               className={classNames('rabbit-arrow', { 'is-small': arrow === 'small', 'is-large': arrow === 'large' })}
