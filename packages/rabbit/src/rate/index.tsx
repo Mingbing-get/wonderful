@@ -24,6 +24,7 @@ function Rate(
     toolTips = [],
     onChange,
     onHoverChange,
+    ...extra
   }: RateProps,
   ref?: React.ForwardedRef<HTMLDivElement>
 ) {
@@ -92,6 +93,7 @@ function Rate(
 
   return (
     <div
+      {...extra}
       ref={ref}
       className={classNames('rabbit-rate-wrapper', 'rabbit-component', className)}
       style={

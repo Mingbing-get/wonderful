@@ -5,9 +5,10 @@ import './index.scss'
 
 import { SelectTriggerProps } from '../types/selectTrigger'
 
-function SelectTrigger({ placeholder, className, style, children, suffix, disabled }: SelectTriggerProps, ref?: ForwardedRef<HTMLSpanElement>) {
+function SelectTrigger({ placeholder, className, style, children, suffix, disabled, ...extra }: SelectTriggerProps, ref?: ForwardedRef<HTMLSpanElement>) {
   return (
     <span
+      {...extra}
       ref={ref}
       className={classNames('rabbit-select-trigger', 'rabbit-component', disabled && 'is-disabled', className)}
       style={style}>

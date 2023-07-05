@@ -37,7 +37,7 @@ export type TreeBaseProps<T extends object = {}> = {
   onExpand?: (expandPath: TreeValue[][], node: TreeNode<T>, isExpand: boolean) => void
   onCanMove?: (node: TreeNode<T>, target: TreeNode<T>, location: InnerLocation) => boolean
   onMove?: (data: TreeNode<T>[], node: TreeNode<T>, target: TreeNode<T>, location: InnerLocation) => void
-}
+} & Omit<React.HTMLAttributes<HTMLDivElement>, 'children' | 'value' | 'defaultValue' | 'onChange'>
 
 export type SingleTreeProps<T extends object = {}> = TreeBaseProps<T> & {
   defaultCheckedPath?: TreeValue[]

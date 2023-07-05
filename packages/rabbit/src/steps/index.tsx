@@ -22,6 +22,7 @@ export default function Steps({
   status = 'process',
   type = 'default',
   onClick,
+  ...extra
 }: StepsProps) {
   const stepsWrapperRef = useRef<HTMLDivElement>(null)
   const [lines, setLines] = useState<LineType[]>([])
@@ -84,6 +85,7 @@ export default function Steps({
 
   return (
     <div
+      {...extra}
       ref={stepsWrapperRef}
       className={classNames('rabbit-steps-wrapper', 'rabbit-component', `direction-${type === 'inline' ? 'horizontal' : direction}`, className)}
       style={style}>

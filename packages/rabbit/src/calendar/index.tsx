@@ -19,11 +19,13 @@ export default function Calendar({
   defaultValue,
   fullscreen = true,
   mode = 'date',
+  className,
   cellRender,
   disabledDate,
   headerRender = (props) => <HeaderRender {...props} />,
   onChange,
   onPanelChange,
+  ...extra
 }: CalendarProps) {
   const [showDate, setShowDate] = useState(defaultValue || value || dayjs())
   const [_value, setValue] = useState(defaultValue || value)
@@ -83,7 +85,9 @@ export default function Calendar({
   )
 
   return (
-    <div className={classNames('rabbit-calendar-wrapper', 'rabbit-component', fullscreen && 'is-full-screen')}>
+    <div
+      {...extra}
+      className={classNames('rabbit-calendar-wrapper', 'rabbit-component', fullscreen && 'is-full-screen', className)}>
       <div className="rabbit-calendar-header">
         {headerRender({
           date: showDate,

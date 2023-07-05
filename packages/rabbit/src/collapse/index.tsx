@@ -6,7 +6,7 @@ import { CollapsePanelProps, CollapseProps } from '../types/collapse'
 
 import './index.scss'
 
-function Collapse({ className, style, isOpenOnly, children }: CollapseProps) {
+function Collapse({ className, isOpenOnly, children, ...extra }: CollapseProps) {
   const [childTypeError, setChildTypeError] = useState(false)
   const [panels, setPanels] = useState<CollapsePanelProps[]>([])
   const [openKeys, setOpenKeys] = useState<React.Key[]>([])
@@ -53,7 +53,7 @@ function Collapse({ className, style, isOpenOnly, children }: CollapseProps) {
   return (
     <div
       className={classNames('rabbit-collapse-wrapper', 'rabbit-component', className)}
-      style={style}>
+      {...extra}>
       {panels.map(({ isOpen, onToggleOpen, ...extra }) => (
         <Panel
           {...extra}

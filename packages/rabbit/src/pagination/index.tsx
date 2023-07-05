@@ -29,6 +29,7 @@ export default function Pagination({
   showTotal,
   onChange,
   onPageSizeChange,
+  ...extra
 }: PaginationProps) {
   const [jumperPage, setJumperPage] = useState<number>()
   const [_current, setCurrent] = useState(defaultCurrent || current || 0)
@@ -221,6 +222,7 @@ export default function Pagination({
 
   return (
     <div
+      {...extra}
       className={classNames('rabbit-pagination-wrapper', 'rabbit-component', disabled && 'is-disabled', className)}
       style={style}>
       {showTotal && <div className="pagination-total">{showTotal(total, range)}</div>}

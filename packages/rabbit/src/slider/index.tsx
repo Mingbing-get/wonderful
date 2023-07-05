@@ -6,7 +6,7 @@ import './index.scss'
 
 let preRate = 0
 
-export default function Slider({ min = 0, max = 100, step = 1, value, showLabel = true, className, style, onChange }: SliderProps) {
+export default function Slider({ min = 0, max = 100, step = 1, value, showLabel = true, className, style, onChange, ...extra }: SliderProps) {
   const [selectRate, setSelectRate] = useState(0)
   const [startX, setStartX] = useState(-1)
 
@@ -69,6 +69,7 @@ export default function Slider({ min = 0, max = 100, step = 1, value, showLabel 
 
   return (
     <div
+      {...extra}
       className={classNames('rabbit-slider-wrapper', 'rabbit-component', className)}
       style={style}>
       {showLabel && <span className="slider-label">{min}</span>}

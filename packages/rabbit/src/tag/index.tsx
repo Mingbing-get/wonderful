@@ -16,7 +16,7 @@ const presetColorMap = {
 export type TagColorType = keyof typeof presetColorMap
 
 function Tag(
-  { className, style, closable, closeIcon, color = 'default', icon, children, onClose, onCloseCapture }: TagProps,
+  { className, style, closable, closeIcon, color = 'default', icon, children, onClose, onCloseCapture, ...extra }: TagProps,
   ref?: React.ForwardedRef<HTMLDivElement>
 ) {
   const [isClose, setClose] = useState(false)
@@ -41,6 +41,7 @@ function Tag(
 
   return (
     <span
+      {...extra}
       className={classNames('rabbit-tag-wrapper', 'rabbit-component', presetColor && `tag-${presetColor}`, className)}
       style={{ backgroundColor: _color, ...style }}
       ref={ref}>

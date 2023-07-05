@@ -8,7 +8,7 @@ import Checkbox from '.'
 import './group.scss'
 
 function Group<T extends CheckboxValueType>(
-  { className, style, value, defaultValue, onChange, ...extra }: CheckboxGroupProps<T>,
+  { className, value, defaultValue, onChange, ...extra }: CheckboxGroupProps<T>,
   ref?: React.ForwardedRef<HTMLDivElement>
 ) {
   const [_value, setValue] = useState<CheckboxValueType[]>([])
@@ -34,6 +34,12 @@ function Group<T extends CheckboxValueType>(
     const children = (extra as any).children as React.ReactNode
 
     return { options: [], useOptions: false, children }
+  }, [extra])
+
+  const extraProps = useMemo(() => {
+    const { options, children, ...extraProps } = extra as any
+
+    return extraProps
   }, [extra])
 
   const handleChange = useCallback(
@@ -72,7 +78,7 @@ function Group<T extends CheckboxValueType>(
       <div
         ref={ref}
         className={classNames('rabbit-checkbox-group-wrapper', 'rabbit-component', useOptions && 'use-options', className)}
-        style={style}>
+        {...extraProps}>
         {useOptions
           ? _options.map((item) => (
               <Checkbox

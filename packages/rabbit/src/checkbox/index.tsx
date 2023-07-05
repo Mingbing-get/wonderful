@@ -8,7 +8,7 @@ import { CheckboxProps } from '../types/checkbox'
 import './index.scss'
 
 function Checkbox(
-  { className, style, disabled, checked, halfChecked, defaultChecked, value, children, onChange }: CheckboxProps,
+  { className, disabled, checked, halfChecked, defaultChecked, value, children, onChange, ...extra }: CheckboxProps,
   ref?: React.ForwardedRef<HTMLDivElement>
 ) {
   const [_checked, setChecked] = useState<boolean>(false)
@@ -58,7 +58,7 @@ function Checkbox(
     <div
       ref={ref}
       className={classNames('rabbit-checkbox-wrapper', 'rabbit-component', className)}
-      style={style}
+      {...extra}
       onClick={handleClick}>
       <div className={classNames('checkbox-control', _checked && 'is-checked', halfChecked && 'is-half-checked', disabled && 'is-disabled')}></div>
       <span>{children}</span>

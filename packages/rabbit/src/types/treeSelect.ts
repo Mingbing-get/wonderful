@@ -14,7 +14,7 @@ export type TreeSelectBaseProps = {
   clearIcon?: React.ReactNode
   expandTrigger?: 'hover' | 'click'
   onPopoverVisibleChange?: (visible: boolean) => void
-}
+} & Omit<React.HTMLAttributes<HTMLDivElement>, 'value' | 'defaultValue' | 'onChange' | 'children'>
 
 export type MultipleTreeSelectProps = {
   onChange?: (checkedPath: TreeValue[][]) => void

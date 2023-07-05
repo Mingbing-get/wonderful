@@ -50,7 +50,6 @@ const defaultNotFoundContent: CascaderNotFoundContent = () => (
 export default function MultipleCascader({
   className,
   popupClassName,
-  style,
   popupStyle,
   options,
   mode = 'ordinary',
@@ -72,6 +71,7 @@ export default function MultipleCascader({
   loadData,
   onDropdownVisibleChange,
   onSearch,
+  ...extra
 }: CascaderMultipleProps) {
   const [showSearchInput, setShowSearchInput] = useState(false)
   const [visiblePopover, setVisiblePopover] = useState(false)
@@ -167,7 +167,7 @@ export default function MultipleCascader({
     return (
       <div
         className={classNames('rabbit-cascader-wrapper rabbit-component is-disabled', className)}
-        style={style}>
+        {...extra}>
         <div className={classNames('cascader-trigger')}>
           <div className={classNames('cascader-value', checkedLinkNodePath.length === 0 && 'show-placeholder')}>
             {checkedLinkNodePath.length > 0 ? _displayRender(checkedLinkNodePath) : placeholder}
@@ -190,7 +190,7 @@ export default function MultipleCascader({
   return (
     <div
       className={classNames('rabbit-cascader-wrapper rabbit-component', allowClear && 'allow-clear', className)}
-      style={style}>
+      {...extra}>
       <Popover
         ref={popoverRef}
         arrow="none"

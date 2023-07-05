@@ -34,6 +34,24 @@ export default function SingleTreeSelect({
   onChange,
   onPopoverVisibleChange,
   displayRender,
+
+  itemClassName,
+  data,
+  defaultExpandPath,
+  expandPath,
+  draggable,
+  showLine,
+  expandIcon,
+  draggleIcon,
+  virtualScroll,
+  renderLabelIcon,
+  renderExtra,
+  labelRender,
+  loadData,
+  onExpand,
+  onCanMove,
+  onMove,
+
   ...extra
 }: SingleTreeSelectProps) {
   const [showSearchInput, setShowSearchInput] = useState(false)
@@ -97,6 +115,7 @@ export default function SingleTreeSelect({
   if (disabled) {
     return (
       <Input
+        {...extra}
         value={inputValue}
         placeholder={placeholder}
         disabled
@@ -127,11 +146,27 @@ export default function SingleTreeSelect({
         ) : (
           <SingleTree
             onChecked={onChecked}
-            {...extra}
+            itemClassName={itemClassName}
+            data={data}
+            defaultExpandPath={defaultExpandPath}
+            expandPath={expandPath}
+            draggable={draggable}
+            showLine={showLine}
+            expandIcon={expandIcon}
+            draggleIcon={draggleIcon}
+            virtualScroll={virtualScroll}
+            renderLabelIcon={renderLabelIcon}
+            renderExtra={renderExtra}
+            labelRender={labelRender}
+            loadData={loadData}
+            onExpand={onExpand}
+            onCanMove={onCanMove}
+            onMove={onMove}
           />
         )
       }>
       <WithSearchTrigger
+        {...extra}
         className={classNames('rabbit-tree-select-wrapper', className)}
         style={style}
         allowClear={allowClear}

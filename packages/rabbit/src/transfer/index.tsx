@@ -29,6 +29,7 @@ export default function Transfer({
   btnRender,
   onChange,
   onSelectChange,
+  ...extra
 }: TransferProps) {
   const [_selectedValues, setSelectedValues] = useState<(number | string)[][]>(defaultSelectedValues || selectedValues || new Array(data.length).fill([]))
   const [_data, setData] = useState(data)
@@ -102,6 +103,7 @@ export default function Transfer({
 
   return (
     <div
+      {...extra}
       className={classNames('rabbit-transfer-wrapper', 'rabbit-component', className)}
       style={style}>
       {_data.map((panelData, index) => (

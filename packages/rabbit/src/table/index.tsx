@@ -29,6 +29,7 @@ export default function Table<T extends DataType = DataType>({
   onFooterRow,
   onFilter,
   onSort,
+  ...extra
 }: TableProps<T>) {
   const [page, setPage] = useState<PageConfig>()
   const [renderTableCount, reRenderTable] = useState(0)
@@ -136,6 +137,7 @@ export default function Table<T extends DataType = DataType>({
 
   return (
     <div
+      {...extra}
       className={classNames('rabbit-table-wrapper', 'rabbit-component', scroll?.x && 'can-scroll-x', scrollX && 'is-scroll-x', className)}
       ref={wrapperRef}
       style={style}>

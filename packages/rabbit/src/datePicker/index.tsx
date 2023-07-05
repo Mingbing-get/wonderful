@@ -37,6 +37,7 @@ export default function DatePicker({
   renderExtraFooter,
   onChange,
   onOpenChange,
+  ...extra
 }: DatePickerProps) {
   const [_value, setValue] = useState(defaultValue || value)
   const [showValue, setShowValue] = useState(defaultValue || value)
@@ -133,6 +134,7 @@ export default function DatePicker({
   if (disabled) {
     return (
       <Input
+        {...extra}
         value={inputValue}
         placeholder={placeholder}
         disabled={true}
@@ -149,7 +151,6 @@ export default function DatePicker({
       className={popupClassName}
       style={popupStyle}
       arrow="none"
-      trigger="focus"
       placement={placement}
       onVisibleChange={setVisible}
       content={
@@ -198,6 +199,7 @@ export default function DatePicker({
         </div>
       }>
       <Input
+        {...extra}
         value={inputValue}
         placeholder={placeholder}
         readOnly={inputReadOnly}

@@ -7,7 +7,7 @@ import { InputRef } from 'rc-input'
 
 import './index.scss'
 
-interface Props {
+interface Props extends Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> {
   className?: string
   style?: React.CSSProperties
   showSearchInput?: boolean
@@ -40,6 +40,7 @@ function WithSearchTrigger(
     disabled,
     onChangeSearch,
     onClear,
+    ...extra
   }: Props,
   ref?: ForwardedRef<HTMLDivElement>
 ) {
@@ -59,6 +60,7 @@ function WithSearchTrigger(
 
   return (
     <div
+      {...extra}
       ref={ref}
       style={style}
       className={classNames('rabbit-with-search-trigger-wrapper rabbit-component', className, allowClear && 'allow-clear', disabled && 'is-disabled')}>

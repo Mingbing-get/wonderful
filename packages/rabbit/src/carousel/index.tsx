@@ -27,6 +27,7 @@ function Carousel(
     customPaging,
     afterChange,
     beforeChange,
+    ...extra
   }: CarouselProps,
   ref?: React.ForwardedRef<CarouselRef>
 ) {
@@ -208,6 +209,7 @@ function Carousel(
 
   return (
     <div
+      {...extra}
       className={classNames('rabbit-carousel-wrapper', 'rabbit-component', `effect-${effect}`, className)}
       onMouseEnter={() => pause()}
       onMouseLeave={() => start()}

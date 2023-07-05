@@ -5,21 +5,13 @@ import Icon from '../icon'
 
 import { CollapsePanelProps } from '../types/collapse'
 
-export default function Panel({
-  header,
-  panelKey,
-  isOpen = false,
-  children,
-  className,
-  style,
-  onToggleOpen
-}: CollapsePanelProps) {
+export default function Panel({ header, panelKey, isOpen = false, children, className, onToggleOpen, ...extra }: CollapsePanelProps) {
   const contentRef = useRef<HTMLDivElement>(null)
   const preOpen = useRef(false)
 
   const [contentStyle, setContentStyle] = useState<React.CSSProperties>()
   const [delayIsOpen, setDelayIsOpen] = useState<boolean>(isOpen)
-  
+
   useEffect(() => {
     if (!contentRef.current) return
 
@@ -28,23 +20,23 @@ export default function Panel({
       setTimeout(() => {
         if (!contentRef.current) return
         setContentStyle({
-          height: contentRef.current.scrollHeight
+          height: contentRef.current.scrollHeight,
         })
         delaySetContentStyle(200, {
-          height: 'auto'
+          height: 'auto',
         })
-      }, 0);
+      }, 0)
     } else if (preOpen.current) {
       setContentStyle({
-        height: contentRef.current.scrollHeight
+        height: contentRef.current.scrollHeight,
       })
       delaySetContentStyle(60, {
-        height: 0
+        height: 0,
       })
       setTimeout(() => setDelayIsOpen(false), 260)
     } else {
       setContentStyle({
-        height: 0
+        height: 0,
       })
     }
 
@@ -58,20 +50,26 @@ export default function Panel({
   function delaySetContentStyle(delay: number, style?: React.CSSProperties) {
     setTimeout(() => {
       setContentStyle(style)
-    }, delay);
+    }, delay)
   }
 
   return (
-    <div className={classNames('rabbit-collapse-panel', isOpen && 'is-open', className)} style={style}>
-      <div className='collapse-header' onClick={handleClick}>
+    <div
+      className={classNames('rabbit-collapse-panel', isOpen && 'is-open', className)}
+      {...extra}>
+      <div
+        className="collapse-header"
+        onClick={handleClick}>
         <div>{header}</div>
-        <Icon type='arrowDown' className='icon-arrow-down' />
+        <Icon
+          type="arrowDown"
+          className="icon-arrow-down"
+        />
       </div>
       <div
         ref={contentRef}
-        className='collapse-content'
-        style={contentStyle}
-      >
+        className="collapse-content"
+        style={contentStyle}>
         {delayIsOpen && children}
       </div>
     </div>

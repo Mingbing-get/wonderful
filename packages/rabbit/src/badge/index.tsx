@@ -1,11 +1,12 @@
 import React, { useMemo } from 'react'
+import classNames from 'classnames'
 
 import { BadgeProps } from '../types/badge'
 
 import './index.scss'
 
 function Badge(
-  { children, color = 'var(--rabbit-error-color)', count, dot, offsetRight = 0, offsetTop = 0, overflowCount = 99, showZero }: BadgeProps,
+  { children, className, color = 'var(--rabbit-error-color)', count, dot, offsetRight = 0, offsetTop = 0, overflowCount = 99, showZero, ...extra }: BadgeProps,
   ref?: React.ForwardedRef<HTMLDivElement>
 ) {
   const { showCount, showNode } = useMemo(() => {
@@ -20,7 +21,8 @@ function Badge(
   return (
     <div
       ref={ref}
-      className="rabbit-component rabbit-badge-wrapper">
+      className={classNames('rabbit-component rabbit-badge-wrapper', className)}
+      {...extra}>
       {children}
       {(showZero || count !== 0) && (
         <span

@@ -74,9 +74,10 @@ function Popover(
 
       let curNode: Node | null = e.target as Node
       while (curNode) {
-        if (curNode === displayRef.current) return
+        if (curNode === displayRef.current || curNode === targetRef.current) return
         curNode = curNode.parentNode
       }
+
       setIsHidden(true)
     }
 
@@ -128,7 +129,7 @@ function Popover(
 
     if (trigger === 'focus') {
       getTargetElement().addEventListener('focus', setHidden)
-      getTargetElement().addEventListener('click', stopPropagation)
+      getTargetElement().addEventListener('click', stopPropagation, true)
     }
 
     return () => {
@@ -195,7 +196,6 @@ function Popover(
 
   function toggleShow(e: MouseEvent) {
     setIsHidden((isHidden) => !isHidden)
-    console.log(1111111111)
     e.stopPropagation()
     return false
   }

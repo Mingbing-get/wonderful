@@ -22,92 +22,107 @@ export default function Menu({
   triggerSubMenuAction = 'click',
   onClick,
   onOpenChange,
-  onSelect
+  onSelect,
+  ...extra
 }: MenuProps) {
   const [_openPath, setOpenPath] = useState(defaultOpenPath || [])
   const [selectPath, setSelectPath] = useState(defaultSelectedPath || [])
   const keepShow = useRef<string[]>([])
 
-  const handleClickItem = useCallback((item: MenuItem, mode: MenuMode, e: React.MouseEvent<HTMLDivElement>) => {
-    if (item.disabled) return
+  const handleClickItem = useCallback(
+    (item: MenuItem, mode: MenuMode, e: React.MouseEvent<HTMLDivElement>) => {
+      if (item.disabled) return
 
-    const curItem = findItemByKeyFromForest(items, item.key)
-    if (!curItem) return
+      const curItem = findItemByKeyFromForest(items, item.key)
+      if (!curItem) return
 
-    if (triggerSubMenuAction === 'click' && mode !== 'inline') {
-      setTimeout(() => setOpenPath?.(curItem.path), 0);
+      if (triggerSubMenuAction === 'click' && mode !== 'inline') {
+        setTimeout(() => setOpenPath?.(curItem.path), 0)
+        onOpenChange?.(curItem.path)
+      }
+      setSelectPath(curItem.path)
+      onSelect?.(item, curItem.path, e)
+      onClick?.(item, curItem.path, e)
+    },
+    [items, triggerSubMenuAction, onOpenChange, onSelect, onClick]
+  )
+
+  const handleMouseEnter = useCallback(
+    (item: MenuItem, mode: MenuMode) => {
+      if (triggerSubMenuAction !== 'hover' || mode === 'inline') return
+      keepShow.current.push(item.key)
+      setTimeout(() => {
+        const index = keepShow.current.findIndex((_item) => _item === item.key)
+        if (index === -1) return
+
+        keepShow.current.splice(index, 1)
+      }, delay)
+
+      if (item.disabled) return
+
+      const curItem = findItemByKeyFromForest(items, item.key)
+      if (!curItem) return
+
+      setOpenPath(curItem.path)
       onOpenChange?.(curItem.path)
-    }
-    setSelectPath(curItem.path)
-    onSelect?.(item, curItem.path, e)
-    onClick?.(item, curItem.path, e)
-  }, [items, triggerSubMenuAction, onOpenChange, onSelect, onClick])
+    },
+    [items, triggerSubMenuAction, onOpenChange]
+  )
 
-  const handleMouseEnter = useCallback((item: MenuItem, mode: MenuMode) => {
-    if (triggerSubMenuAction !== 'hover' || mode === 'inline') return
-    keepShow.current.push(item.key)
-    setTimeout(() => {
-      const index = keepShow.current.findIndex(_item => _item === item.key)
-      if (index === -1) return
+  const handleMouseLeave = useCallback(
+    (item: MenuItem, mode: MenuMode) => {
+      if (triggerSubMenuAction !== 'hover' || mode === 'inline') return
 
-      keepShow.current.splice(index, 1)
-    }, delay);
+      setTimeout(() => {
+        if (keepShow.current.length === 0) {
+          setOpenPath([])
+          onOpenChange?.([])
+          return
+        }
+        if (keepShow.current.includes(item.key)) return
 
-    if (item.disabled) return
+        setOpenPath((openPath) => {
+          const index = openPath.findIndex((key) => key === item.key)
+          if (index === -1) return openPath
 
-    const curItem = findItemByKeyFromForest(items, item.key)
-    if (!curItem) return
+          const _openPath = openPath.slice(0, index)
+          onOpenChange?.(_openPath)
+          return _openPath
+        })
+      }, delay)
+    },
+    [triggerSubMenuAction, onOpenChange]
+  )
 
-    setOpenPath(curItem.path)
-    onOpenChange?.(curItem.path)
-  }, [items, triggerSubMenuAction, onOpenChange])
-
-  const handleMouseLeave = useCallback((item: MenuItem, mode: MenuMode) => {
-    if (triggerSubMenuAction !== 'hover' || mode === 'inline') return
-
-    setTimeout(() => {
-      if (keepShow.current.length === 0) {
+  const handlePopoverChangeVisible = useCallback(
+    (visible: boolean) => {
+      if (!visible) {
         setOpenPath([])
         onOpenChange?.([])
-        return
       }
-      if (keepShow.current.includes(item.key)) return
+    },
+    [onOpenChange]
+  )
 
-      setOpenPath(openPath => {
-        const index = openPath.findIndex(key => key === item.key)
-        if (index === -1) return openPath
-
-        const _openPath = openPath.slice(0, index)
-        onOpenChange?.(_openPath)
-        return _openPath
+  const handleToggleOpen = useCallback(
+    (item: MenuItem) => {
+      setOpenPath((openPath) => {
+        const index = openPath.findIndex((key) => key === item.key)
+        let newOpenPath: string[]
+        if (index === -1) {
+          newOpenPath = [...openPath, item.key]
+        } else {
+          newOpenPath = openPath.slice(0, index)
+        }
+        onOpenChange?.(newOpenPath)
+        return newOpenPath
       })
-    }, delay);
-  }, [triggerSubMenuAction, onOpenChange])
-
-  const handlePopoverChangeVisible = useCallback((visible: boolean) => {
-    if (!visible) {
-
-      setOpenPath([])
-      onOpenChange?.([])
-    }
-  }, [onOpenChange])
-
-  const handleToggleOpen = useCallback((item: MenuItem) => {
-    setOpenPath(openPath => {
-      const index = openPath.findIndex(key => key === item.key)
-      let newOpenPath: string[]
-      if (index === -1) {
-        newOpenPath = [...openPath, item.key]
-      } else {
-        newOpenPath = openPath.slice(0, index)
-      }
-      onOpenChange?.(newOpenPath)
-      return newOpenPath
-    })
-  }, [onOpenChange])
+    },
+    [onOpenChange]
+  )
 
   useEffect(() => {
-    setOpenPath(oldOpenPath => {
+    setOpenPath((oldOpenPath) => {
       if (openPath && isSame(oldOpenPath, openPath)) {
         return oldOpenPath
       }
@@ -117,7 +132,7 @@ export default function Menu({
   }, [openPath])
 
   useEffect(() => {
-    setSelectPath(oldSelectPath => {
+    setSelectPath((oldSelectPath) => {
       if (selectedPath && isSame(oldSelectPath, selectedPath)) {
         return oldSelectPath
       }
@@ -126,20 +141,24 @@ export default function Menu({
     })
   }, [selectedPath])
 
-  const value: MenuContext = useMemo(() => ({
-    items,
-    openPath: _openPath,
-    selectPath,
-    onToggleOpen: handleToggleOpen,
-    onClickItem: handleClickItem,
-    onMouseEnter: handleMouseEnter,
-    onMouseLeave: handleMouseLeave,
-    onPopoverChangeVisible: handlePopoverChangeVisible,
-  }), [items, _openPath, selectPath, handleClickItem, handleMouseEnter, handleMouseLeave, handlePopoverChangeVisible, handleToggleOpen])
+  const value: MenuContext = useMemo(
+    () => ({
+      items,
+      openPath: _openPath,
+      selectPath,
+      onToggleOpen: handleToggleOpen,
+      onClickItem: handleClickItem,
+      onMouseEnter: handleMouseEnter,
+      onMouseLeave: handleMouseLeave,
+      onPopoverChangeVisible: handlePopoverChangeVisible,
+    }),
+    [items, _openPath, selectPath, handleClickItem, handleMouseEnter, handleMouseLeave, handlePopoverChangeVisible, handleToggleOpen]
+  )
 
   return (
     <MenuProvider value={value}>
       <MenuMain
+        {...extra}
         className={className}
         style={style}
         items={items}

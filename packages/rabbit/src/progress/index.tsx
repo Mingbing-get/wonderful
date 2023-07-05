@@ -37,6 +37,12 @@ export default function Progress({
     return status
   }, [_percent, status])
 
+  const { childExtra, extraProps } = useMemo(() => {
+    const { width, gapDegree, startPosition, ...extraProps } = extra as any
+
+    return { childExtra: { width, gapDegree, startPosition }, extraProps }
+  }, [extra])
+
   const ChartRender = useMemo(() => {
     return {
       line: ProgressLine,
@@ -46,9 +52,10 @@ export default function Progress({
 
   return (
     <div
+      {...extraProps}
       className={classNames('rabbit-progress-wrapper', 'rabbit-component', `type-${type}`)}
       style={{
-        width: (extra as any).width || 'auto',
+        width: childExtra.width || 'auto',
       }}>
       <ChartRender
         percent={_percent}
@@ -60,7 +67,7 @@ export default function Progress({
         trailColor={trailColor}
         successColor={successColor}
         errorColor={errorColor}
-        {...extra}
+        {...childExtra}
       />
     </div>
   )

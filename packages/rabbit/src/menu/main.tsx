@@ -15,9 +15,9 @@ type Props = {
   theme: MenuTheme
   level: number
   inlineLevel?: number
-}
+} & React.HTMLAttributes<HTMLDivElement>
 
-export default function MenuMain({ items, style, className, mode, theme, level, inlineLevel = 0 }: Props) {
+export default function MenuMain({ items, style, className, mode, theme, level, inlineLevel = 0, ...extra }: Props) {
   const { openPath, selectPath, onClickItem, onMouseEnter, onMouseLeave, onPopoverChangeVisible, onToggleOpen } = useMenu()
 
   function hasChildren(item: MenuItem): item is MenuSubMenuType {
@@ -27,7 +27,8 @@ export default function MenuMain({ items, style, className, mode, theme, level, 
   return (
     <div
       className={classNames('rabbit-menu-wrapper', 'rabbit-component', `menu-theme-${theme}`, `menu-mode-${mode}`, level !== 0 && 'no-border-right', className)}
-      style={style}>
+      style={style}
+      {...extra}>
       {items.map((item) => (
         <div
           className={classNames(

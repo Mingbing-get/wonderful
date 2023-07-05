@@ -6,7 +6,7 @@ import useVirtualScrollY from '../hooks/useVirtualScrollY'
 import { ListProps } from '../types/list'
 import './index.scss'
 
-export default function List({ className, style, itemClassName, itemStyle, items, virtualScroll, loadMore }: ListProps) {
+export default function List({ className, style, itemClassName, itemStyle, items, virtualScroll, loadMore, ...extra }: ListProps) {
   const [touchBottom, setTouchBottom] = useState(false)
   const [loading, setLoading] = useState(false)
   const [hasMore, setHasMore] = useState(true)
@@ -67,7 +67,8 @@ export default function List({ className, style, itemClassName, itemStyle, items
     <div
       className={classNames('rabbit-list-wrapper', 'rabbit-component', className)}
       style={{ ...style, ...wrapperStyle }}
-      onScroll={handleWrapperScroll}>
+      onScroll={handleWrapperScroll}
+      {...extra}>
       <div
         ref={listItemsRef}
         className="list-items"

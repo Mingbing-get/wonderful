@@ -5,7 +5,7 @@ import Loading from '../loading'
 import { TimeLineProps, TimelineItemType } from '../types/timeLine'
 import './index.scss'
 
-export default function Timeline({ className, style, items, mode = 'right', pending }: TimeLineProps) {
+export default function Timeline({ className, style, items, mode = 'right', pending, ...extra }: TimeLineProps) {
   const pendItem = useMemo(() => {
     if (pending === true) {
       return {
@@ -67,6 +67,7 @@ export default function Timeline({ className, style, items, mode = 'right', pend
 
   return (
     <div
+      {...extra}
       className={classNames('rabbit-timeline-wrapper', 'rabbit-component', className)}
       style={style}>
       {_items.map((item, index) => (

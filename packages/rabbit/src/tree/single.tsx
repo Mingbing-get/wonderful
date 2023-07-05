@@ -33,6 +33,7 @@ export default function SingleTree({
   labelRender = defaultLabelRender,
   onChecked,
   onExpand,
+  ...extra
 }: SingleTreeProps) {
   const hookCheckedPathRef = useRef<TreeValue[]>([])
   const hookExpandPathRef = useRef<TreeValue[][]>([])
@@ -220,6 +221,7 @@ export default function SingleTree({
 
   return (
     <div
+      {...extra}
       ref={treeWrapperRef}
       className={classNames('rabbit-tree-wrapper', 'rabbit-component', className)}
       style={{ ...style, ...wrapperStyle }}

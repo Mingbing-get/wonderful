@@ -34,6 +34,7 @@ export default function TimePicker({
   renderExtraFooter,
   onChange,
   onOpenChange,
+  ...extra
 }: TimePickerProps) {
   const [visible, setVisible] = useState(false)
   const [_value, setValue] = useState(defaultValue || value)
@@ -140,6 +141,7 @@ export default function TimePicker({
   if (disabled) {
     return (
       <Input
+        {...extra}
         value={_value?.format(format)}
         className={classNames('rabbit-time-picker', 'rabbit-component', className)}
         style={style}
@@ -156,7 +158,6 @@ export default function TimePicker({
       className={popupClassName}
       style={popupStyle}
       arrow="none"
-      trigger="focus"
       placement={placement}
       content={
         <div className="rabbit-time">
@@ -187,6 +188,7 @@ export default function TimePicker({
       }
       onVisibleChange={handleVisibleChange}>
       <Input
+        {...extra}
         value={inputValue}
         className={classNames('rabbit-time-picker', 'rabbit-component', _value && allowClear && 'effect-toggle', className)}
         style={style}

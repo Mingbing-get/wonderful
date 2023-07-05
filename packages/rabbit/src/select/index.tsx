@@ -20,6 +20,7 @@ export default function Select<T extends SelectValueType>({
   wrapperClassName,
   wrapperStyle,
   onChange,
+  ...extra
 }: SelectProps<T>) {
   const [visible, setVisible] = useState(false)
   const [_value, setValue] = useState<T>()
@@ -64,6 +65,7 @@ export default function Select<T extends SelectValueType>({
   if (disabled) {
     return (
       <Trigger
+        {...extra}
         placeholder={placeholder}
         className={classNames('rabbit-select', className)}
         style={style}
@@ -96,6 +98,7 @@ export default function Select<T extends SelectValueType>({
         />
       }>
       <Trigger
+        {...extra}
         placeholder={placeholder}
         className={classNames('rabbit-select', visible && 'is-focused', className)}
         style={style}

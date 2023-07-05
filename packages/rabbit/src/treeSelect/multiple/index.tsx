@@ -55,6 +55,24 @@ export default function MultipleTreeSelect({
   onChange,
   onPopoverVisibleChange,
   displayRender,
+
+  itemClassName,
+  data,
+  defaultExpandPath,
+  expandPath,
+  draggable,
+  showLine,
+  expandIcon,
+  draggleIcon,
+  virtualScroll,
+  renderLabelIcon,
+  renderExtra,
+  labelRender,
+  loadData,
+  onExpand,
+  onCanMove,
+  onMove,
+
   ...extra
 }: MultipleTreeSelectProps) {
   const [showSearchInput, setShowSearchInput] = useState(false)
@@ -135,6 +153,7 @@ export default function MultipleTreeSelect({
   if (disabled) {
     return (
       <Input
+        {...extra}
         placeholder={placeholder}
         disabled
         style={style}
@@ -146,6 +165,7 @@ export default function MultipleTreeSelect({
 
   return (
     <div
+      {...extra}
       className={classNames('rabbit-tree-select-wrapper is-multiple', 'rabbit-component', allowClear && _checkedPath.length && 'allow-clear', className)}
       style={style}>
       <Popover
@@ -166,8 +186,23 @@ export default function MultipleTreeSelect({
             />
           ) : (
             <MultipleTree
-              onChecked={handleChecked}
-              {...extra}
+              onChecked={onChecked}
+              itemClassName={itemClassName}
+              data={data}
+              defaultExpandPath={defaultExpandPath}
+              expandPath={expandPath}
+              draggable={draggable}
+              showLine={showLine}
+              expandIcon={expandIcon}
+              draggleIcon={draggleIcon}
+              virtualScroll={virtualScroll}
+              renderLabelIcon={renderLabelIcon}
+              renderExtra={renderExtra}
+              labelRender={labelRender}
+              loadData={loadData}
+              onExpand={onExpand}
+              onCanMove={onCanMove}
+              onMove={onMove}
             />
           )
         }>

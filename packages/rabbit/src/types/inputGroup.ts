@@ -1,6 +1,1 @@
-
-export type InputGroupProps = {
-  children: React.ReactNode,
-  className?: string,
-  style?: React.CSSProperties,
-}
+export type InputGroupProps = React.HTMLAttributes<HTMLDivElement>

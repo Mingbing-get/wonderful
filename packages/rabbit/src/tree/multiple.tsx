@@ -34,6 +34,7 @@ export default function MultipleTree({
   labelRender = defaultLabelRender,
   onChecked,
   onExpand,
+  ...extra
 }: MultipleTreeProps) {
   const hookCheckedPathRef = useRef<TreeValue[][]>([])
   const hookExpandPathRef = useRef<TreeValue[][]>([])
@@ -224,6 +225,7 @@ export default function MultipleTree({
 
   return (
     <div
+      {...extra}
       ref={treeWrapperRef}
       className={classNames('rabbit-tree-wrapper', 'rabbit-component', className)}
       style={{ ...style, ...wrapperStyle }}

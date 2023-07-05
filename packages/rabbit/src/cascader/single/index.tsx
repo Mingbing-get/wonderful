@@ -30,7 +30,6 @@ const defaultNotFoundContent: CascaderNotFoundContent = () => (
 export default function SingleCascader({
   className,
   popupClassName,
-  style,
   popupStyle,
   options,
   mode = 'ordinary',
@@ -52,6 +51,7 @@ export default function SingleCascader({
   loadData,
   onDropdownVisibleChange,
   onSearch,
+  ...extra
 }: CascaderSingleProps) {
   const [showSearchInput, setShowSearchInput] = useState(false)
   const [visiblePopover, setVisiblePopover] = useState(false)
@@ -156,7 +156,7 @@ export default function SingleCascader({
     return (
       <div
         className={classNames('rabbit-cascader-wrapper rabbit-component', className)}
-        style={style}>
+        {...extra}>
         <WithSearchTrigger
           disabled
           showPlaceholder={checkedLinkNodePath.length === 0}
@@ -171,7 +171,7 @@ export default function SingleCascader({
   return (
     <div
       className={classNames('rabbit-cascader-wrapper', 'rabbit-component', className)}
-      style={style}>
+      {...extra}>
       <Popover
         arrow="none"
         className={popupClassName}

@@ -7,10 +7,7 @@ import { RadioGroupProps, RadioValueType, RadioOptionType } from '../types/radio
 
 import './group.scss'
 
-function Group<T extends RadioValueType>(
-  { className, style, value, defaultValue, onChange, ...extra }: RadioGroupProps<T>,
-  ref?: React.ForwardedRef<HTMLDivElement>
-) {
+function Group<T extends RadioValueType>({ className, value, defaultValue, onChange, ...extra }: RadioGroupProps<T>, ref?: React.ForwardedRef<HTMLDivElement>) {
   const [_value, setValue] = useState<RadioValueType>()
 
   useEffect(() => {
@@ -34,6 +31,11 @@ function Group<T extends RadioValueType>(
     const children = (extra as any).children as React.ReactNode
 
     return { options: [], useOptions: false, children }
+  }, [extra])
+
+  const extraProps = useMemo(() => {
+    const { options, children, ...extraProps } = extra as any
+    return extraProps
   }, [extra])
 
   const handleChange = useCallback(
@@ -67,7 +69,7 @@ function Group<T extends RadioValueType>(
       <div
         ref={ref}
         className={classNames('rabbit-radio-group-wrapper', 'rabbit-component', useOptions && 'use-options', className)}
-        style={style}>
+        {...extraProps}>
         {useOptions
           ? _options.map((item) => (
               <Checkbox

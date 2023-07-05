@@ -5,7 +5,7 @@ import TabItem from './item'
 import { TabProps, TabItemProps } from '../types/tab'
 import './index.scss'
 
-export default function Tab({ defaultActiveKey, onChange, children, className, style }: TabProps) {
+export default function Tab({ defaultActiveKey, onChange, children, className, style, ...extra }: TabProps) {
   const [childTypeError, setChildTypeError] = useState(false)
   const [activeKey, setActiveKey] = useState(defaultActiveKey)
   const [items, setItems] = useState<TabItemProps[]>([])
@@ -45,6 +45,7 @@ export default function Tab({ defaultActiveKey, onChange, children, className, s
 
   return (
     <div
+      {...extra}
       className={classNames('rabbit-tab-wrapper', 'rabbit-component', className)}
       style={style}>
       <div className="rabbit-tab-title-wrapper">
