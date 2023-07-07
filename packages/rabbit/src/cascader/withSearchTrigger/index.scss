@@ -19,6 +19,9 @@
       text-align: center;
       overflow: hidden;
       text-overflow: ellipsis;
+      word-break: keep-all;
+      white-space: nowrap;
+
       .with-search-tag:not(:last-child) {
         margin-right: 0.2rem;
       }

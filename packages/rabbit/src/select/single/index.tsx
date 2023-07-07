@@ -1,12 +1,12 @@
 import React, { useCallback, useState, useEffect, useRef } from 'react'
 import classNames from 'classnames'
 
-import Trigger from '../selectTrigger'
-import Panel from '../selectPanel'
-import Icon from '../icon'
-import Popover from '../popover'
+import Trigger from '../../selectTrigger'
+import Panel from '../../selectPanel'
+import Icon from '../../icon'
+import Popover from '../../popover'
 
-import { SelectOptionType, SelectProps, SelectValueType } from '../types/select'
+import { SelectOptionType, SelectProps, SelectValueType } from '../../types/select'
 import './index.scss'
 
 export default function Select<T extends SelectValueType>({

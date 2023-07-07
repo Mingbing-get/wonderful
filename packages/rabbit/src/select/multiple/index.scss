@@ -1,0 +1,21 @@
+.rabbit-multiple-select-wrapper {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--rabbit-border-color-base);
+  border-radius: var(--rabbit-border-radius-base);
+  overflow: hidden;
+  cursor: pointer;
+
+  .select-icon {
+    padding: 0 0.2rem;
+  }
+
+  &.is-disabled {
+    background-color: var(--rabbit-disabled-bg-color);
+    cursor: not-allowed;
+  }
+}
+
+.rabbit-popper-wrapper.rabbit-multiple-select-popover {
+  padding: 0;
+}

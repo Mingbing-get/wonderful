@@ -10,9 +10,7 @@ export type SelectOptionType<T extends SelectValueType = SelectValueType> = {
   onClick?: (value: T) => void
 }
 
-export type SelectProps<T extends SelectValueType> = {
-  defaultValue?: T
-  value?: T
+export type BaseSelectProps<T extends SelectValueType> = {
   options: SelectOptionType<T>[]
   className?: string
   style?: React.CSSProperties
@@ -20,5 +18,17 @@ export type SelectProps<T extends SelectValueType> = {
   disabled?: boolean
   wrapperClassName?: string
   wrapperStyle?: React.CSSProperties
-  onChange?: (value?: T) => void
 } & Omit<React.HTMLAttributes<HTMLSpanElement>, 'onChange' | 'defaultValue' | 'value' | 'children'>
+
+export type SelectProps<T extends SelectValueType> = {
+  defaultValue?: T
+  value?: T
+  onChange?: (value?: T) => void
+} & BaseSelectProps<T>
+
+export type MultipleSelectProps<T extends SelectValueType> = {
+  defaultValue?: T[]
+  value?: T[]
+  showSearch?: boolean
+  onChange?: (value: T[]) => void
+} & BaseSelectProps<T>

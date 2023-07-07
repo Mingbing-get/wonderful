@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react'
 import classNames from 'classnames'
 
-import Select from '../select'
+import { Select } from '../select'
 import InputNumber from '../inputNumber'
 import Icon from '../icon'
 import { PaginationProps, PaginationItemRender } from '../types/pagination'

@@ -34,6 +34,14 @@ export default function MultipleTree({
   labelRender = defaultLabelRender,
   onChecked,
   onExpand,
+
+  data,
+  defaultChecked,
+  defaultCheckedPath,
+  defaultExpandPath,
+  onMove,
+  onCanMove,
+  loadData,
   ...extra
 }: MultipleTreeProps) {
   const hookCheckedPathRef = useRef<TreeValue[][]>([])

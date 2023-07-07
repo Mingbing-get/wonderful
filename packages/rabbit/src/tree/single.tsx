@@ -33,6 +33,14 @@ export default function SingleTree({
   labelRender = defaultLabelRender,
   onChecked,
   onExpand,
+
+  data,
+  defaultChecked,
+  defaultCheckedPath,
+  defaultExpandPath,
+  onMove,
+  onCanMove,
+  loadData,
   ...extra
 }: SingleTreeProps) {
   const hookCheckedPathRef = useRef<TreeValue[]>([])
