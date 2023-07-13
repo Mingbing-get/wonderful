@@ -36,6 +36,7 @@ import ExampleTimePicker from './examples/timePicker'
 import ExampleDatePicker from './examples/datePicker'
 import ExampleTransfer from './examples/transfer'
 import ExampleSteps from './examples/steps'
+import ExampleColorPicker from './examples/colorPicker'
 
 type ComponentTreeNode = TreeNode<{
   component?: React.ReactNode
@@ -49,14 +50,14 @@ const treeData: ComponentTreeNode[] = [
       {
         value: 'icon',
         label: '图标',
-        component: <ExampleIcon />
+        component: <ExampleIcon />,
       },
       {
         value: 'button',
         label: '按钮',
-        component: <ExampleButton />
-      }
-    ]
+        component: <ExampleButton />,
+      },
+    ],
   },
   {
     value: 'nav',
@@ -65,19 +66,19 @@ const treeData: ComponentTreeNode[] = [
       {
         value: 'menu',
         label: '导航菜单',
-        component: <ExampleMenu />
+        component: <ExampleMenu />,
       },
       {
         value: 'pagination',
         label: '分页',
-        component: <ExamplePagination />
+        component: <ExamplePagination />,
       },
       {
         value: 'steps',
         label: '步骤条',
-        component: <ExampleSteps />
-      }
-    ]
+        component: <ExampleSteps />,
+      },
+    ],
   },
   {
     value: 'data-input',
@@ -86,79 +87,84 @@ const treeData: ComponentTreeNode[] = [
       {
         value: 'cascader',
         label: '级联选择',
-        component: <ExampleCascader />
+        component: <ExampleCascader />,
       },
       {
         value: 'checkbox',
         label: '多选框',
-        component: <ExampleCheckbox />
+        component: <ExampleCheckbox />,
       },
       {
         value: 'input',
         label: '输入框',
-        component: <ExampleInput />
+        component: <ExampleInput />,
       },
       {
         value: 'inputNumber',
         label: '数字输入框',
-        component: <ExampleInputNumber />
+        component: <ExampleInputNumber />,
       },
       {
         value: 'radio',
         label: '单选框',
-        component: <ExampleRadio />
+        component: <ExampleRadio />,
       },
       {
         value: 'rate',
         label: '评分',
-        component: <ExampleRate />
+        component: <ExampleRate />,
       },
       {
         value: 'select',
         label: '选择器',
-        component: <ExampleSelect />
+        component: <ExampleSelect />,
       },
       {
         value: 'slider',
         label: '滑动输入条',
-        component: <ExampleSlider />
+        component: <ExampleSlider />,
       },
       {
         value: 'switch',
         label: '开关',
-        component: <ExampleSwitch />
+        component: <ExampleSwitch />,
       },
       {
         value: 'upload',
         label: '上传',
-        component: <ExampleUpload />
+        component: <ExampleUpload />,
       },
       {
         value: 'calendar',
         label: '日历',
-        component: <ExampleCalendar />
+        component: <ExampleCalendar />,
       },
       {
         value: 'timePicker',
         label: '时间选择器',
-        component: <ExampleTimePicker />
+        component: <ExampleTimePicker />,
       },
       {
         value: 'datePicker',
         label: '日期选择器',
-        component: <ExampleDatePicker />
+        component: <ExampleDatePicker />,
       },
       {
         value: 'transfer',
         label: '穿梭框',
-        component: <ExampleTransfer />
+        component: <ExampleTransfer />,
       },
       {
         value: 'treeSelect',
         label: '树形选择器',
-        component: <ExampleTreeSelect />
-      }
-    ]
+        component: <ExampleTreeSelect />,
+      },
+      {
+        value: 'colorPicker',
+        label: '颜色选择器',
+        component: <ExampleColorPicker />,
+      },
+    ],
   },
   {
     value: 'data-display',
@@ -167,59 +173,59 @@ const treeData: ComponentTreeNode[] = [
       {
         value: 'badge',
         label: '徽章',
-        component: <ExampleBadge />
+        component: <ExampleBadge />,
       },
       {
         value: 'carousel',
         label: '轮播',
-        component: <ExampleCarousel />
+        component: <ExampleCarousel />,
       },
       {
         value: 'collapse',
         label: '折叠面板',
-        component: <ExampleCollapse />
+        component: <ExampleCollapse />,
       },
       {
         value: 'popover',
         label: '气泡卡片',
-        component: <ExamplePopover />
+        component: <ExamplePopover />,
       },
       {
         value: 'tab',
         label: '标签页',
-        component: <ExampleTab />
+        component: <ExampleTab />,
       },
       {
         value: 'tag',
         label: '标签',
-        component: <ExampleTag />
+        component: <ExampleTag />,
       },
       {
         value: 'tree',
         label: '树形控件',
-        component: <ExampleTree />
+        component: <ExampleTree />,
       },
       {
         value: 'timeline',
         label: '时间线',
-        component: <ExampleTimeline />
+        component: <ExampleTimeline />,
       },
       {
         value: 'list',
         label: '列表',
-        component: <ExampleList />
+        component: <ExampleList />,
       },
       {
         value: 'tour',
         label: '导游',
-        component: <ExampleTour />
+        component: <ExampleTour />,
       },
       {
         value: 'table',
         label: '表格',
-        component: <ExampleTable />
-      }
-    ]
+        component: <ExampleTable />,
+      },
+    ],
   },
   {
     value: 'feedback',
@@ -228,29 +234,29 @@ const treeData: ComponentTreeNode[] = [
       {
         value: 'message',
         label: '全局提示',
-        component: <ExampleMessage />
+        component: <ExampleMessage />,
       },
       {
         value: 'modal',
         label: '对话框',
-        component: <ExampleModal />
+        component: <ExampleModal />,
       },
       {
         value: 'loading',
         label: '加载中',
-        component: <ExampleLoading />
+        component: <ExampleLoading />,
       },
       {
         value: 'progress',
         label: '进度条',
-        component: <ExampleProgress />
-      }
-    ]
+        component: <ExampleProgress />,
+      },
+    ],
   },
 ]
 
 function mergeValueAndLabel(baseData: ComponentTreeNode[]) {
-  baseData.forEach(node => {
+  baseData.forEach((node) => {
     if (!node.children) {
       node.label = `${node.value} ${node.label}`
     } else {
@@ -269,23 +275,21 @@ export default function ExampleRender() {
   }, [])
 
   return (
-    <div className='rabbit-preview-wrapper'>
-      <div className='nav'>
+    <div className="rabbit-preview-wrapper">
+      <div className="nav">
         <Tree
           defaultCheckedPath={['data-input', 'treeSelect']}
           defaultExpandPath={[['data-input']]}
           data={treeData}
           onChecked={handleChecked}
           renderLabelIcon={(_, isExpand, isLeaf) => {
-            if (isLeaf) return <Icon type='component' />
-            if (isExpand) return <Icon type='folderOpen' />
-            return <Icon type='folder' />
+            if (isLeaf) return <Icon type="component" />
+            if (isExpand) return <Icon type="folderOpen" />
+            return <Icon type="folder" />
           }}
         />
       </div>
-      <div className='preview'>
-        {currentShow}
-      </div>
+      <div className="preview">{currentShow}</div>
     </div>
   )
 }

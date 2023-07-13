@@ -1,0 +1,17 @@
+.rabbit-color-picker-wrapper {
+  display: inline-block;
+  border-radius: 4px;
+  width: fit-content;
+  .color-picker-display {
+    height: 16px;
+    width: 28px;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    background-color: #fff;
+    cursor: pointer;
+  }
+}
+
+.rabbit-color-picker-popover-wrapper.rabbit-popper-wrapper {
+  padding: 0;
+}

@@ -42,9 +42,10 @@ function InputNumber(
     (val?: string | number) => {
       if (extra.disabled) return
 
-      setValue(val as number)
-      onChange?.(val as number)
-      preValue.current = val as number
+      const _val = val === '' ? undefined : val
+      setValue(_val as number)
+      onChange?.(_val as number)
+      preValue.current = _val as number
     },
     [onChange, curReg, extra.disabled]
   )
@@ -58,7 +59,7 @@ function InputNumber(
   }
 
   function setValueUsePrevent(value?: number) {
-    if ((value && !curReg.test(`${value}`)) || (value as any) === '') return undefined
+    if ((value && !curReg.test(`${value}`)) || value === undefined) return undefined
 
     let newValue = Number(value)
     if (min !== undefined && newValue) {

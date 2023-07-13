@@ -12,9 +12,9 @@
     "@popperjs/core": "^2.11.6",
     "dayjs": "^1.11.7",
     "rc-input": "^0.1.4",
-    "react-table": "^7.8.0"
+    "react-color": "^2.19.3"
   },
   "devDependencies": {
-    "@types/react-table": "^7.7.14"
+    "@types/react-color": "^3.0.6"
   }
 }
