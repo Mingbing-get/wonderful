@@ -4,4 +4,4 @@ export type ColorPickerProps = {
   value?: string
   children?: React.ReactNode
   onChange?: (value?: string) => void
-} & Omit<React.HTMLAttributes<HTMLDivElement>, 'value' | 'color' | 'defaultValue' | 'children'>
+} & Omit<React.HTMLAttributes<HTMLDivElement>, 'value' | 'color' | 'defaultValue' | 'children' | 'onChange'>
