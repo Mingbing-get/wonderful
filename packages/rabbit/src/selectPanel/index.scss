@@ -14,7 +14,7 @@
   width: 100%;
   cursor: pointer;
 
-  &:hover {
+  &.is-hover {
     background-color: var(--rabbit-hover-color);
   }
   &.is-select {

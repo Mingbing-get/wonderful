@@ -8,6 +8,7 @@ export type SelectOptionType<T extends SelectValueType = SelectValueType> = {
   style?: React.CSSProperties
   [k: string]: any
   onClick?: (value: T) => void
+  onMouseEnter?: (value: T) => void
 }
 
 export type BaseSelectProps<T extends SelectValueType> = {

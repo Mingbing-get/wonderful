@@ -1,6 +1,10 @@
 import React from 'react'
 import { Select, MultipleSelect } from '../../../rabbit/src'
 
+function getOptions(count: number) {
+  return new Array(count).fill(1).map((_, index) => ({ value: index + 1, label: `l-${index + 1}` }))
+}
+
 export default function ExampleSelect() {
   return (
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 23%)', justifyContent: 'space-between' }}>
@@ -22,20 +26,7 @@ export default function ExampleSelect() {
       />
       <Select
         allowClear
-        options={[
-          {
-            value: 1,
-            label: 'l-1',
-          },
-          {
-            value: 2,
-            label: 'l-2',
-          },
-          {
-            value: 3,
-            label: 'l-3',
-          },
-        ]}
+        options={getOptions(100)}
       />
       <Select
         disabled
