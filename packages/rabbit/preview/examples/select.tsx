@@ -21,6 +21,23 @@ export default function ExampleSelect() {
         ]}
       />
       <Select
+        allowClear
+        options={[
+          {
+            value: 1,
+            label: 'l-1',
+          },
+          {
+            value: 2,
+            label: 'l-2',
+          },
+          {
+            value: 3,
+            label: 'l-3',
+          },
+        ]}
+      />
+      <Select
         disabled
         options={[
           {
@@ -55,6 +72,7 @@ export default function ExampleSelect() {
       />
       <MultipleSelect
         showSearch
+        onChange={console.log}
         options={[
           {
             value: 1,

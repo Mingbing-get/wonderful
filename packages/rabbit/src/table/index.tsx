@@ -75,7 +75,7 @@ export default function Table<T extends DataType = DataType>({
     }
 
     setPage({
-      page: pagination.defaultCurrent || pagination.current || 0,
+      page: pagination.total ? 0 : pagination.defaultCurrent || pagination.current || 0,
       pageSize: pagination.defaultPageSize || pagination.pageSize || 10,
     })
   }, [pagination])
@@ -103,7 +103,7 @@ export default function Table<T extends DataType = DataType>({
         if (oldPage?.page === current) return oldPage
 
         return {
-          page: current,
+          page: pagination.total ? 0 : current,
           pageSize: oldPage?.pageSize || pageSize,
         }
       })
@@ -120,7 +120,7 @@ export default function Table<T extends DataType = DataType>({
         if (oldPage?.pageSize === pageSize) return oldPage
 
         return {
-          page: oldPage?.page || current,
+          page: pagination.total ? 0 : oldPage?.page || current,
           pageSize,
         }
       })

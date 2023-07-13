@@ -20,12 +20,7 @@ const newPerson = (d: number) => {
     age: Math.floor(Math.random() * 30),
     visits: Math.floor(Math.random() * 100),
     progress: Math.floor(Math.random() * 100),
-    status:
-      statusChance > 0.66
-        ? 'relationship'
-        : statusChance > 0.33
-          ? 'complicated'
-          : 'single',
+    status: statusChance > 0.66 ? 'relationship' : statusChance > 0.33 ? 'complicated' : 'single',
   }
 }
 
@@ -63,7 +58,7 @@ export default function ExampleTable() {
                 }
               } else if (index < 4) {
                 return {
-                  rowSpan: 0
+                  rowSpan: 0,
                 }
               }
             },
@@ -87,9 +82,9 @@ export default function ExampleTable() {
             Header: 'Age',
             accessor: 'age',
             sort: {
-              sortValue: 'desc'
+              sortValue: 'desc',
             },
-            width: 50
+            width: 50,
           },
           {
             Header: 'Visits',
@@ -100,15 +95,15 @@ export default function ExampleTable() {
               if (index === 2) {
                 return {
                   rowSpan: 2,
-                  colSpan: 2
+                  colSpan: 2,
                 }
               }
               if (index === 3) {
                 return {
-                  rowSpan: 0
+                  rowSpan: 0,
                 }
               }
-            }
+            },
           },
           {
             Header: 'Status',
@@ -116,29 +111,29 @@ export default function ExampleTable() {
             onCell: (_, index) => {
               if (index === 3 || index === 2) {
                 return {
-                  rowSpan: 0
+                  rowSpan: 0,
                 }
               }
             },
             filter: {
-              render: 'checkbox'
+              render: 'checkbox',
             },
             sort: {
               customSort: (curRow, nextRow, dir) => {
                 if (dir === 'none') return 0
 
                 const statusList = ['relationship', 'single', 'complicated']
-                const curIndex = statusList.findIndex(item => item === curRow.data['status'])
-                const nextIndex = statusList.findIndex(item => item === nextRow.data['status'])
+                const curIndex = statusList.findIndex((item) => item === curRow.data['status'])
+                const nextIndex = statusList.findIndex((item) => item === nextRow.data['status'])
                 const dirIndex = dir === 'asc' ? 1 : -1
                 return (curIndex - nextIndex) * dirIndex
-              }
-            }
+              },
+            },
           },
           {
             Header: 'Profile Progress',
             accessor: 'progress',
-            sort: {}
+            sort: {},
           },
         ],
       },
@@ -150,23 +145,23 @@ export default function ExampleTable() {
             columns: [
               {
                 Header: 'dep2',
-                accessor: 'depKey'
+                accessor: 'depKey',
               },
               {
                 Header: 'dep21',
                 accessor: 'depKey1',
-                Footer: 'dep21 footer'
-              }
-            ]
-          }
-        ]
+                Footer: 'dep21 footer',
+              },
+            ],
+          },
+        ],
       },
       {
         Header: 'Add',
         accessor: 'other',
         fixed: 'right',
-        width: 100
-      }
+        width: 100,
+      },
     ],
     []
   )
@@ -185,7 +180,7 @@ export default function ExampleTable() {
       },
       onAllSelectedChange(ids: string[]) {
         console.log(ids)
-      }
+      },
     }
   }, [])
 
@@ -195,7 +190,17 @@ export default function ExampleTable() {
         columns={columns}
         data={data}
         pagination={{
-          hideOnSinglePage: true
+          hideOnSinglePage: true,
+        }}
+        rowSelection={rowSelection}
+      />
+      <br />
+      <Table
+        columns={columns}
+        data={data}
+        pagination={{
+          total: 100,
+          hideOnSinglePage: true,
         }}
         rowSelection={rowSelection}
       />
@@ -214,7 +219,7 @@ export default function ExampleTable() {
           scroll={{ x: 1500 }}
           virtualScrollY={{
             itemHeight: 42,
-            height: 500
+            height: 500,
           }}
         />
       </div>

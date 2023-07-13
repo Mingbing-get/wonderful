@@ -17,6 +17,7 @@ export default function Select<T extends SelectValueType>({
   style,
   placeholder,
   disabled,
+  allowClear,
   wrapperClassName,
   wrapperStyle,
   onChange,
@@ -51,6 +52,16 @@ export default function Select<T extends SelectValueType>({
       onClick?.(value)
     },
     [_value, onChange]
+  )
+
+  const handleClear = useCallback(
+    (e: React.MouseEvent<HTMLSpanElement>) => {
+      e.stopPropagation()
+
+      onChange?.(undefined)
+      setValue(undefined)
+    },
+    [onChange]
   )
 
   const findLabelByValue = useCallback(
@@ -100,13 +111,22 @@ export default function Select<T extends SelectValueType>({
       <Trigger
         {...extra}
         placeholder={placeholder}
-        className={classNames('rabbit-select', visible && 'is-focused', className)}
+        className={classNames('rabbit-select', _value && allowClear && 'has-value', visible && 'is-focused', className)}
         style={style}
         suffix={
-          <Icon
-            type="arrowDownFill"
-            className={classNames('icon-arrow-down-fill', visible && 'rotate-180')}
-          />
+          <>
+            {allowClear && (
+              <Icon
+                className="icon-close"
+                type="close"
+                onClickCapture={handleClear}
+              />
+            )}
+            <Icon
+              type="arrowDownFill"
+              className={classNames('icon-arrow-down-fill', visible && 'rotate-180')}
+            />
+          </>
         }>
         {findLabelByValue(_value)}
       </Trigger>

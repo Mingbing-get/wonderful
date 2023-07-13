@@ -9,3 +9,22 @@
 .rabbit-popper-wrapper.rabbit-select-popover {
   padding: 0;
 }
+
+.rabbit-select {
+  .icon-close {
+    display: none;
+    background-color: var(--rabbit-disabled-bg-color);
+    border-radius: 50%;
+    &:hover {
+      color: var(--rabbit-error-color);
+    }
+  }
+  &.has-value:hover {
+    .icon-close {
+      display: inline-block;
+    }
+    .icon-arrow-down-fill {
+      display: none;
+    }
+  }
+}

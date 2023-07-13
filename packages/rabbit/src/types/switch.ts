@@ -3,4 +3,4 @@ export type SwitchProps = {
   yesText?: string
   noText?: string
   onChange?: (value: boolean) => void
-} & Omit<React.HTMLAttributes<HTMLDivElement>, 'value' | 'onChange' | 'onClick' | 'children'>
+} & Omit<React.HTMLAttributes<HTMLDivElement>, 'value' | 'defaultValue' | 'onChange' | 'onClick' | 'children'>

@@ -23,6 +23,7 @@ export type BaseSelectProps<T extends SelectValueType> = {
 export type SelectProps<T extends SelectValueType> = {
   defaultValue?: T
   value?: T
+  allowClear?: boolean
   onChange?: (value?: T) => void
 } & BaseSelectProps<T>
 

@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import classNames from 'classnames'
 
 import Tag from '../../tag'
@@ -42,8 +42,16 @@ export default function MultipleSelect<T extends SelectValueType>({
   ...extra
 }: MultipleSelectProps<T>) {
   const [_value, setValue] = useState(defaultValue || value || [])
+  const [triggerChange, setTriggerChange] = useState(false)
   const [visiblePopover, setVisiblePopover] = useState(false)
   const [showSearchInput, setShowSearchInput] = useState(false)
+
+  useEffect(() => {
+    if (!triggerChange) return
+
+    setTriggerChange(false)
+    onChange?.(_value)
+  }, [onChange, triggerChange, _value])
 
   const checkedOptions = useMemo(() => {
     return options.filter((option) => _value.includes(option.value))
@@ -58,16 +66,16 @@ export default function MultipleSelect<T extends SelectValueType>({
           if (old.includes(key)) return old
 
           const newValue = [...old, key]
-          onChange?.(newValue)
+          setTriggerChange(true)
           return newValue
         }
 
         const newValue = old.filter((item) => item !== key)
-        onChange?.(newValue)
+        setTriggerChange(true)
         return newValue
       })
     },
-    [onChange, disabled]
+    [disabled]
   )
 
   const _displayRender = useCallback(
