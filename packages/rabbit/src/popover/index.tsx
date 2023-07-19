@@ -29,6 +29,7 @@ function Popover(
     visible,
     widthFollowTarget,
     delay = 500,
+    hoverOpenDelay = 0,
     className,
     style,
     onVisibleChange,
@@ -38,6 +39,7 @@ function Popover(
   const targetRef = useRef<HTMLElement | InputRef>(null)
   const perTargetRef = useRef(false)
   const counter = useRef(0)
+  const hoverTimer = useRef<number>()
   const displayRef = useRef<HTMLDivElement>(null)
   const arrowRef = useRef<HTMLDivElement>(null)
   const popperInstance = useRef<Instance>()
@@ -96,14 +98,17 @@ function Popover(
     perTargetRef.current = true
 
     function handleMouseenter() {
-      counter.current++
-      setIsHidden(false)
-      setTimeout(() => {
-        counter.current--
-      }, delay)
+      hoverTimer.current = setTimeout(() => {
+        counter.current++
+        setIsHidden(false)
+        setTimeout(() => {
+          counter.current--
+        }, delay)
+      }, hoverOpenDelay)
     }
 
     function handleMouseLeave() {
+      clearTimeout(hoverTimer.current)
       setTimeout(() => {
         if (counter.current === 0) setIsHidden(true)
       }, delay)
