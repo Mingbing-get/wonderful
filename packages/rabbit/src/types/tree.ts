@@ -42,6 +42,7 @@ export type TreeBaseProps<T extends object = {}> = {
 export type SingleTreeProps<T extends object = {}> = TreeBaseProps<T> & {
   defaultCheckedPath?: TreeValue[]
   checkedPath?: TreeValue[]
+  disableSelect?: boolean
   onChecked?: (checkedPath: TreeValue[], node: TreeNode<T>, isChecked: boolean) => void
 }
 

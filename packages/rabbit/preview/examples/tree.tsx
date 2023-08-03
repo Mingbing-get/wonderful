@@ -113,6 +113,7 @@ export default function ExampleTree() {
       />
       <Tree
         data={virtualData}
+        disableSelect
         virtualScroll={{
           height: 400,
           itemHeight: 30,

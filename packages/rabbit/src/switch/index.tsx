@@ -4,7 +4,7 @@ import { SwitchProps } from '../types/switch'
 
 import './index.scss'
 
-export default function Switch({ value = false, yesText, noText, onChange, ...extra }: SwitchProps) {
+export default function Switch({ value = false, yesText, noText, disabled, onChange, ...extra }: SwitchProps) {
   const [_value, setValue] = useState(value)
 
   useEffect(() => {
@@ -13,6 +13,8 @@ export default function Switch({ value = false, yesText, noText, onChange, ...ex
   }, [value])
 
   function handleClick() {
+    if (disabled) return
+
     setValue(!_value)
     onChange?.(!_value)
   }
@@ -20,7 +22,7 @@ export default function Switch({ value = false, yesText, noText, onChange, ...ex
   return (
     <div
       {...extra}
-      className={classNames('rabbit-switch-wrapper', 'rabbit-component', _value && 'is-yes')}
+      className={classNames('rabbit-switch-wrapper', 'rabbit-component', _value && 'is-yes', disabled && 'is-disabled')}
       onClick={handleClick}>
       <div className="switch-trick">
         <span className="switch-text">{_value ? yesText : noText}</span>

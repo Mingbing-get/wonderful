@@ -28,6 +28,7 @@ export default function SingleTree({
   expandIcon,
   draggleIcon = true,
   virtualScroll,
+  disableSelect,
   renderLabelIcon,
   renderExtra,
   labelRender = defaultLabelRender,
@@ -128,12 +129,12 @@ export default function SingleTree({
 
   const toggleChecked = useCallback(
     (linkNode: LinkTreeNode<TreeNode>) => {
-      if (linkNode.disabled) return
+      if (linkNode.disabled || disableSelect) return
 
       curCheckedRef.current = { node: linkNode.data, res: !linkNode.checked }
       setChecked(linkNode.data, !linkNode.checked)
     },
-    [setChecked]
+    [setChecked, disableSelect]
   )
 
   const renderOptions = useMemo(() => {
