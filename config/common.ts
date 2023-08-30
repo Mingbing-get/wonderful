@@ -31,6 +31,7 @@ export default function getConfig(name: string, needTs?: boolean): UserConfig {
         output: [
           {
             format: 'es',
+            assetFileNames: 'index.[ext]',
           },
           {
             format: 'umd',
