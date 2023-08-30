@@ -6,19 +6,20 @@ const pkg = require(path.resolve(`package.json`))
 run()
 
 async function run() {
-  const directories = fs.readdirSync('packages').filter(f => {
+  const directories = fs.readdirSync('packages').filter((f) => {
     return fs.statSync(`packages/${f}`).isDirectory()
   })
 
-  const executing = [];
-  directories.forEach(directoryName => {
+  const executing = []
+  directories.forEach((directoryName) => {
+    if (directoryName === 'types') return
     executing.push(build(directoryName))
   })
   await Promise.all(executing)
-  await build('types')
+  await copyTypes()
 
   const addJson = []
-  directories.forEach(directoryName => {
+  directories.forEach((directoryName) => {
     addJson.push(addPackageJson(directoryName))
   })
   addJson.push(addMainPackageJson())
@@ -29,19 +30,22 @@ async function run() {
 
 async function build(target) {
   const { execa } = await import('execa')
-  await execa(
-    'rollup',
-    [
-      '-c',
-      '--environment',
-      [
-        `TARGET:${target}`,
-      ]
-        .filter(Boolean)
-        .join(',')
-    ],
-    { stdio: 'inherit' }
-  )
+  await execa('npm', ['run', `build:${target}`], { stdio: 'inherit' })
+}
+
+async function copyTypes() {
+  const dir = path.resolve(__dirname, '../dist/types/types')
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir)
+  }
+  const sourceDir = path.resolve(__dirname, '../packages/types')
+
+  fs.readdirSync(sourceDir).filter((f) => {
+    const filePath = path.resolve(sourceDir, f)
+    if (fs.statSync(filePath).isFile() && f !== 'package.json') {
+      fs.copyFileSync(filePath, path.resolve(dir, f))
+    }
+  })
 }
 
 async function addPackageJson(name) {
@@ -51,12 +55,12 @@ async function addPackageJson(name) {
   const data = {
     name: name,
     version: pkg.version,
-    main: "index.js",
-    module: "index.js",
+    main: 'index.js',
+    module: 'index.js',
     types: `../types/${name}/src/index.d.ts`,
     keywords: [],
-    author: "",
-    license: "ISC"
+    author: '',
+    license: 'ISC',
   }
 
   return new Promise((resolve, reject) => {
@@ -82,7 +86,7 @@ async function addMainPackageJson() {
     dependencies: pkg.dependencies,
     peerDependencies: pkg.peerDependencies,
     repository: pkg.repository,
-    homepage: pkg.homepage
+    homepage: pkg.homepage,
   }
 
   return new Promise((resolve, reject) => {

@@ -1,7 +1,7 @@
 const path = require('path')
 const ts = require('rollup-plugin-typescript2')
 const nodeResolve = require('@rollup/plugin-node-resolve')
-const babel =  require('@rollup/plugin-babel')
+const babel = require('@rollup/plugin-babel')
 const commonjs = require('@rollup/plugin-commonjs')
 const scss = require('rollup-plugin-scss')
 const url = require('@rollup/plugin-url')
@@ -13,49 +13,49 @@ const { getBabelOutputPlugin } = babel
 
 const packagesDir = path.resolve(__dirname, 'packages')
 const packageDir = path.resolve(packagesDir, process.env.TARGET)
-const resolve = p => path.resolve(packageDir, p)
+const resolve = (p) => path.resolve(packageDir, p)
 const pkg = require(resolve(`package.json`))
 const name = path.basename(packageDir)
 
 const outputConfigs = {
   'esm-bundler': {
     file: path.resolve(__dirname, `dist/${name}/index.esm-bundler.js`),
-    format: `es`
+    format: `es`,
   },
   'esm-browser': {
     file: path.resolve(__dirname, `dist/${name}/index.esm-browser.js`),
-    format: `es`
+    format: `es`,
   },
   esm: {
     file: path.resolve(__dirname, `dist/${name}/index.js`),
-    format: `es`
+    format: `es`,
   },
   cjs: {
     file: path.resolve(__dirname, `dist/${name}/index.cjs.js`),
-    format: `cjs`
+    format: `cjs`,
   },
   global: {
     file: path.resolve(__dirname, `dist/${name}/index.global.js`),
-    format: `iife`
+    format: `iife`,
   },
   umd: {
     file: path.resolve(__dirname, `dist/${name}/index.umd.js`),
     format: `umd`,
-    name: name
+    name: name,
   },
   // runtime-only builds, for main "vue" package only
   'esm-bundler-runtime': {
     file: path.resolve(__dirname, `dist/${name}/index.runtime.esm-bundler.js`),
-    format: `es`
+    format: `es`,
   },
   'esm-browser-runtime': {
     file: path.resolve(__dirname, `dist/${name}/index.runtime.esm-browser.js`),
-    format: 'es'
+    format: 'es',
   },
   'global-runtime': {
     file: path.resolve(__dirname, `dist/${name}/index.runtime.global.js`),
-    format: 'iife'
-  }
+    format: 'iife',
+  },
 }
 
 const packageFormats = ['esm']
@@ -67,10 +67,12 @@ function createConfig(format, output) {
   }
 
   output.sourcemap = true
-  output.plugins = [getBabelOutputPlugin({
-    presets: ['@babel/preset-env'],
-    allowAllFormats: true,
-  })]
+  output.plugins = [
+    getBabelOutputPlugin({
+      presets: ['@babel/preset-env'],
+      allowAllFormats: true,
+    }),
+  ]
   output.format = format
 
   if (process.env.TARGET === 'types') {
@@ -99,16 +101,17 @@ function createConfig(format, output) {
     input: resolve('src/index.ts'),
     output,
     acornInjectPlugins: [jsx()],
+    external: ['react', 'react-dom'],
     plugins: [
       clear({
-        targets: [path.resolve(output.file, '../')]
+        targets: [path.resolve(output.file, '../')],
       }),
       nodeResolve(),
       url({
         fileName: '[dirname][hash][extname]',
         limit: 0,
         publicPath: `node_modules/wonderful-marrow/${process.env.TARGET}/`,
-        destDir: path.resolve(output.file, '../')
+        destDir: path.resolve(output.file, '../'),
       }),
       scss(),
       ts({
@@ -123,14 +126,14 @@ function createConfig(format, output) {
       }),
       commonjs(),
       babel({
-        exclude: "**/node_modules/**",
+        exclude: 'node_modules/**',
         presets: ['@babel/preset-react'],
         babelHelpers: 'bundled',
         extensions: ['.js', '.jsx', '.es6', '.es', '.mjs', '.ts', '.tsx'],
       }),
-      excludeDependenciesFromBundle(),
-    ]
+      // excludeDependenciesFromBundle(),
+    ],
   }
 }
 
-module.exports = packageFormats.map(format => createConfig(format, outputConfigs[format]))
+module.exports = packageFormats.map((format) => createConfig(format, outputConfigs[format]))

@@ -27,7 +27,7 @@ export default class AudioController {
 
   private startTime?: Date
   private lastStartTime: number
-  private playingTimer?: number
+  private playingTimer?: number | NodeJS.Timeout
 
   constructor() {
     this.audioCtx = new AudioContext()
@@ -88,7 +88,7 @@ export default class AudioController {
     this.beforeChangeBuffer()
     return new Promise((resolve, reject) => {
       fetch(src)
-        .then(res => res.arrayBuffer())
+        .then((res) => res.arrayBuffer())
         .then((buffer) => this.decodeAudioFromArrayBuffer(buffer))
         .then((message) => {
           this.afterChangeBuffer()
@@ -119,10 +119,14 @@ export default class AudioController {
 
   decodeAudioFromArrayBuffer(buffer: ArrayBuffer) {
     return new Promise((resolve, reject) => {
-      this.audioCtx.decodeAudioData(buffer, (audioBuffer) => {
-        this.addAudioBuffer(audioBuffer)
-        resolve('ok')
-      }, reject)
+      this.audioCtx.decodeAudioData(
+        buffer,
+        (audioBuffer) => {
+          this.addAudioBuffer(audioBuffer)
+          resolve('ok')
+        },
+        reject
+      )
     })
   }
 
@@ -153,7 +157,7 @@ export default class AudioController {
 
     return {
       buffer: [this.sourceNode.buffer.getChannelData(0), this.sourceNode.buffer.getChannelData(1)],
-      sampleRate: this.sourceNode.buffer.sampleRate
+      sampleRate: this.sourceNode.buffer.sampleRate,
     }
   }
 
@@ -200,11 +204,11 @@ export default class AudioController {
   // start,end (ms)
   selectParagraph(start: number, end: number) {
     const curBuffer = this.sourceNode.buffer
-    const _start = Math.floor(start / 1000 * this.audioCtx.sampleRate)
+    const _start = Math.floor((start / 1000) * this.audioCtx.sampleRate)
     if (!curBuffer || curBuffer.length <= _start) return
 
     this.beforeChangeBuffer()
-    const _end = Math.min(Math.ceil(end / 1000 * this.audioCtx.sampleRate), curBuffer.length)
+    const _end = Math.min(Math.ceil((end / 1000) * this.audioCtx.sampleRate), curBuffer.length)
 
     const audioBufferCopy = this.audioCtx.createBuffer(2, _end - _start, curBuffer.sampleRate)
     audioBufferCopy.copyToChannel(curBuffer.getChannelData(0).slice(_start, _end), 0, 0)
@@ -217,12 +221,12 @@ export default class AudioController {
   // start,end (ms)
   deleteParagraph(start: number, end: number) {
     const curBuffer = this.sourceNode.buffer
-    const _start = Math.floor(start / 1000 * this.audioCtx.sampleRate)
+    const _start = Math.floor((start / 1000) * this.audioCtx.sampleRate)
     if (!curBuffer || curBuffer.length <= _start) return
-    
+
     this.beforeChangeBuffer()
     const totalLen = curBuffer.length
-    const _end = Math.min(Math.ceil(end / 1000 * this.audioCtx.sampleRate), totalLen)
+    const _end = Math.min(Math.ceil((end / 1000) * this.audioCtx.sampleRate), totalLen)
 
     const audioBufferCopy = this.audioCtx.createBuffer(2, _start + (totalLen - end), curBuffer.sampleRate)
     audioBufferCopy.copyToChannel(curBuffer.getChannelData(0).slice(0, _start), 0, 0)
@@ -241,7 +245,7 @@ export default class AudioController {
 
     this.beforeChangeBuffer()
     const curBuffer = this.sourceNode.buffer || this.audioCtx.createBuffer(2, 0, this.audioCtx.sampleRate)
-    const _location = Math.min(Math.floor(location / 1000 * this.audioCtx.sampleRate), curBuffer.length)
+    const _location = Math.min(Math.floor((location / 1000) * this.audioCtx.sampleRate), curBuffer.length)
     const audioBufferCopy = this.audioCtx.createBuffer(2, curBuffer.length + channel1Data.length, curBuffer.sampleRate)
 
     audioBufferCopy.copyToChannel(curBuffer.getChannelData(0).slice(0, _location), 0, 0)
@@ -295,7 +299,7 @@ export default class AudioController {
       this.tempStatus = 'running'
       return
     }
-    
+
     if (this.status !== 'suspended') {
       this.createSourceNode(this.sourceNode.buffer || undefined)
     }
@@ -317,7 +321,7 @@ export default class AudioController {
     if (this.status !== 'running') return
 
     if (this.startTime) {
-      this.currentTime = this.lastStartTime + new Date().getTime()  - this.startTime.getTime()
+      this.currentTime = this.lastStartTime + new Date().getTime() - this.startTime.getTime()
       this.startTime = undefined
       this.changeStatus('pause')
     }
@@ -374,7 +378,10 @@ export default class AudioController {
   addListener(eventType: AudioChangeStatus, listener: AudioChangeStatusListener): void
   addListener(eventType: AudioChangeCurrentTime, listener: AudioChangeCurrentTimeListener): void
   addListener(eventType: AudioEventType, listener: AudioListener): void
-  addListener(eventType: AudioEventType | AudioChangeCurrentTime | AudioChangeStatus, listener: AudioListener | AudioChangeCurrentTimeListener | AudioChangeStatusListener) {
+  addListener(
+    eventType: AudioEventType | AudioChangeCurrentTime | AudioChangeStatus,
+    listener: AudioListener | AudioChangeCurrentTimeListener | AudioChangeStatusListener
+  ) {
     if (this.listenerMap[eventType]) {
       this.listenerMap[eventType].push(listener as any)
     } else {
@@ -383,14 +390,14 @@ export default class AudioController {
   }
 
   trigger(eventType: AudioEventType) {
-    this.listenerMap[eventType]?.forEach(fn => fn(this.audioCtx, this.sourceNode, this.analyser))
+    this.listenerMap[eventType]?.forEach((fn) => fn(this.audioCtx, this.sourceNode, this.analyser))
   }
 
   triggerChangeCurrentTime() {
-    this.listenerMap['changeCurrentTime']?.forEach(fn => fn(this.currentTime))
+    this.listenerMap['changeCurrentTime']?.forEach((fn) => fn(this.currentTime))
   }
 
   triggerChangeStatus(preStatus: StatusType) {
-    this.listenerMap['changeStatus']?.forEach(fn => fn(preStatus, this.status))
+    this.listenerMap['changeStatus']?.forEach((fn) => fn(preStatus, this.status))
   }
 }

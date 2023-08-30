@@ -40,7 +40,7 @@ function Carousel(
   const currentRef = useRef(0)
   const totalRef = useRef(0)
   const touchStart = useRef(-1)
-  const timer = useRef<number>()
+  const timer = useRef<number | NodeJS.Timeout>()
 
   const { iframeRef, width } = useResize()
 

@@ -41,4 +41,4 @@ export type MenuProps = {
   onClick?: MenuClick
   onOpenChange?: MenuOpenChange
   onSelect?: MenuSelect
-} & Omit<React.HTMLAttributes<HTMLDivElement>, 'children' | 'onClick'>
+} & Omit<React.HTMLAttributes<HTMLDivElement>, 'children' | 'onClick' | 'onSelect'>

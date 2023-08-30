@@ -1,6 +1,6 @@
 {
   "name": "wonderful-marrow",
-  "version": "2.2.6",
+  "version": "2.2.7",
   "workspaces": {
     "packages": [
       "packages/audio",
@@ -28,18 +28,15 @@
     "./tsconfig.json",
     "./rollup.config.js"
   ],
-  "exports": {
-    ".": {
-      "audio/": "./packages/audio/src/",
-      "build/": "./packages/build/src/",
-      "generate/": "./packages/generate/src/",
-      "marrow/": "./packages/marrow/src/",
-      "rabbit/": "./packages/rabbit/src/",
-      "render/": "./packages/render/src/"
-    }
-  },
   "scripts": {
     "build": "npm run generate:icon && node scripts/build.js",
+    "build:rabbit": "tsc && vite build -c config/vite.rabbit.ts",
+    "build:audio": "tsc && vite build -c config/vite.build.ts",
+    "build:build": "tsc && vite build -c config/vite.audio.ts",
+    "build:generate": "tsc && vite build -c config/vite.generate.ts",
+    "build:marrow": "tsc && vite build -c config/vite.marrow.ts",
+    "build:render": "tsc && vite build -c config/vite.render.ts",
+    "build:utils": "tsc && vite build -c config/vite.utils.ts",
     "preview": "node scripts/preview.js",
     "preview:render": "node scripts/preview.js render",
     "preview:build": "node scripts/preview.js build",
@@ -61,7 +58,9 @@
     "@rollup/plugin-node-resolve": "^15.0.1",
     "@rollup/plugin-url": "^8.0.1",
     "@types/animejs": "^3.1.6",
+    "@types/node": "^20.5.7",
     "@types/react-dom": "^18.0.8",
+    "@vitejs/plugin-react": "^4.0.4",
     "acorn-jsx": "^5.3.2",
     "chalk": "^5.1.2",
     "core-js": "^3.26.1",
@@ -75,7 +74,9 @@
     "rollup-plugin-scss": "^3.0.0",
     "rollup-plugin-typescript2": "^0.34.1",
     "sass": "^1.56.1",
-    "typescript": "^4.8.4"
+    "typescript": "^4.8.4",
+    "vite": "^4.4.9",
+    "vite-plugin-dts": "^3.5.3"
   },
   "dependencies": {
     "@popperjs/core": "^2.11.6",

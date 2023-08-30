@@ -1,4 +1,4 @@
-import { Placement, Instance } from '@popperjs/core'
+import type { Placement, Instance } from '@popperjs/core'
 
 export { Placement, Instance }
 export type PopoverRef = Instance & {

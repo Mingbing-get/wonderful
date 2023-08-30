@@ -38,7 +38,7 @@ export * from './treeSelect'
 export * from './upload'
 export * from './colorPicker'
 
-export {
+export type {
   TableRow,
   TableHeadRow,
   TableCell,
@@ -54,11 +54,11 @@ export {
   SortDir as TableSortDir,
 } from '../hooks/useTable/type'
 
-export { FilterMapType as TableFilterMapType, SaveSort as TableSaveSort } from '../hooks/useTable'
+export type { FilterMapType as TableFilterMapType, SaveSort as TableSaveSort } from '../hooks/useTable'
 
-export { VirtualScrollY } from '../hooks/useVirtualScrollY'
+export type { VirtualScrollY } from '../hooks/useVirtualScrollY'
 
-export {
+export type {
   TreeValue,
   TreeMode,
   InnerLocation as TreeInnerLocation,

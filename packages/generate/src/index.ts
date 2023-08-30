@@ -2,13 +2,15 @@ import html2canvas from 'html2canvas'
 
 export type StatusType = 'running' | 'pause' | 'inactive'
 export type VideoType = 'webm'
-export type StopType = {
-  action: 'download',
-  type: VideoType
-} | {
-  action: 'function',
-  fn: (data: Blob[]) => void
-}
+export type StopType =
+  | {
+      action: 'download'
+      type: VideoType
+    }
+  | {
+      action: 'function'
+      fn: (data: Blob[]) => void
+    }
 
 export default class Generate {
   private canvas: HTMLCanvasElement
@@ -18,7 +20,7 @@ export default class Generate {
   private data: Blob[]
   private base64List: string[]
   private type: VideoType
-  private startInterval?: number
+  private startInterval?: number | NodeJS.Timeout
   private status: StatusType
 
   constructor() {
@@ -41,7 +43,7 @@ export default class Generate {
 
   private initRecorder(canvas: HTMLCanvasElement): MediaRecorder {
     const stream = canvas.captureStream(60)
-    
+
     const recorder = new MediaRecorder(stream, {
       // videoBitsPerSecond: 8500000
     })
@@ -52,13 +54,9 @@ export default class Generate {
       }
     }
 
-    recorder.onstart = () => {
+    recorder.onstart = () => {}
 
-    }
-
-    recorder.onstop = () => {
-
-    }
+    recorder.onstop = () => {}
 
     return recorder
   }
@@ -107,8 +105,8 @@ export default class Generate {
       method: 'POST',
       body: this.base64List.join(' '),
       headers: {
-        contentType: 'text/plain'
-      }
+        contentType: 'text/plain',
+      },
     })
   }
 
@@ -117,14 +115,24 @@ export default class Generate {
     if (!this.recordBox || !ctx) return
 
     const c = await html2canvas(this.recordBox)
-    ctx.drawImage(c, 0, 0, this.canvas.width * window.devicePixelRatio, this.canvas.height * window.devicePixelRatio, 0, 0, this.canvas.width, this.canvas.height)
+    ctx.drawImage(
+      c,
+      0,
+      0,
+      this.canvas.width * window.devicePixelRatio,
+      this.canvas.height * window.devicePixelRatio,
+      0,
+      0,
+      this.canvas.width,
+      this.canvas.height
+    )
   }
 
   download() {
     const url = URL.createObjectURL(new Blob(this.data, { type: `video/${this.type}` }))
     const element = document.createElement('a')
     element.setAttribute('href', url)
-    element.setAttribute('download', "")
+    element.setAttribute('download', '')
     element.style.display = 'none'
     document.body.appendChild(element)
     element.click()

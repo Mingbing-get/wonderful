@@ -31,10 +31,10 @@ export default class MarrowController {
 
   private isSetAutoPlay: boolean
   private startPlayTime?: Date
-  private playingTimer?: number
+  private playingTimer?: number | NodeJS.Timeout
   private listenerMap: ListenerMap
   private lastStartTime: number
-  
+
   constructor(totalTime?: number, currentTime?: number) {
     this.audioController = new AudioController()
     this.audioController.addListener('changeStatus', (preStatus, status) => {
@@ -66,7 +66,7 @@ export default class MarrowController {
         this.animeInstances[key].play()
       }
     }
-    
+
     if (this.audioController.getStatus() === 'running') {
       this.audioController.pause()
     }
@@ -87,7 +87,7 @@ export default class MarrowController {
       this.animeInstances[key].pause()
     }
     this.audioController.pause()
-    
+
     if (this.startPlayTime) {
       this.currentTime = this.lastStartTime + new Date().getTime() - this.startPlayTime.getTime()
       if (this.currentTime > this.totalTime) {
@@ -117,7 +117,7 @@ export default class MarrowController {
       this.animeInstances[key].restart()
     }
     this.audioController.restart()
-    
+
     this.startPlayTime = new Date()
     this.isPlay = true
     this.currentTime = 0
@@ -132,7 +132,7 @@ export default class MarrowController {
     const parent = info.target?.parentNode as HTMLElement
     this.infoMap[id] = {
       ...info,
-      parent
+      parent,
     }
 
     this.totalTime = 0
@@ -140,7 +140,7 @@ export default class MarrowController {
       const instance = this.animeInstances[key]
       let curInstanceTime = instance.duration
       if (Object.prototype.toString.call(instance.loop) === '[object Number]') {
-        curInstanceTime *= (instance.loop as number)
+        curInstanceTime *= instance.loop as number
       }
 
       if (curInstanceTime > this.totalTime) {
@@ -191,7 +191,7 @@ export default class MarrowController {
   }
 
   triggerOnce(eventType: OnceEventType) {
-    this.listenerMap[eventType]?.forEach(fn => fn())
+    this.listenerMap[eventType]?.forEach((fn) => fn())
   }
 
   triggerChangeCurrentTime() {
@@ -209,7 +209,7 @@ export default class MarrowController {
       }
     }
 
-    this.listenerMap['changeCurrentTime']?.forEach(fn => fn(this.currentTime))
+    this.listenerMap['changeCurrentTime']?.forEach((fn) => fn(this.currentTime))
   }
 
   private isComplete(animate: AnimeInstance): boolean {
@@ -231,7 +231,7 @@ export default class MarrowController {
       this.triggerChangeCurrentTime()
     }, 60)
   }
-  
+
   private destroyPlayingTimer() {
     clearInterval(this.playingTimer)
     this.playingTimer = 0
