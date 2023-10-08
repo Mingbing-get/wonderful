@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import classNames from 'classnames'
 
 import { MenuItem, MenuSubMenuType, MenuMode, MenuTheme } from '../types/menu'
@@ -23,6 +23,20 @@ export default function MenuMain({ items, style, className, mode, theme, level, 
   function hasChildren(item: MenuItem): item is MenuSubMenuType {
     return !!(item as MenuSubMenuType).children?.length
   }
+
+  useEffect(() => {
+    if (mode === 'inline') return
+
+    function closePopover() {
+      onPopoverChangeVisible?.(false)
+    }
+
+    window.addEventListener('click', closePopover)
+
+    return () => {
+      window.removeEventListener('click', closePopover)
+    }
+  }, [mode, onPopoverChangeVisible])
 
   return (
     <div
@@ -80,10 +94,10 @@ export default function MenuMain({ items, style, className, mode, theme, level, 
                 />
               }
               visible={true}
+              preventControlVisible
               arrow="none"
               placement="bottom-start"
-              className="rabbit-menu-popover"
-              onVisibleChange={onPopoverChangeVisible}>
+              className="rabbit-menu-popover">
               <span className="menu-item-position"></span>
             </Popover>
           )}

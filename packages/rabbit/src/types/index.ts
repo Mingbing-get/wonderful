@@ -17,6 +17,7 @@ export * from './message'
 export * from './modal'
 export * from './pagination'
 export * from './popover'
+export * from './popoverHandle'
 export * from './progress'
 export * from './radio'
 export * from './rate'
@@ -69,3 +70,5 @@ export type {
   MultipleReturn as TreeMultipleReturn,
   SingleReturn as TreeSingleReturn,
 } from '../hooks/useTree/type'
+
+export * from '../popoverInstance/type'

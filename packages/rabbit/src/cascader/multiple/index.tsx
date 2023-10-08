@@ -141,8 +141,7 @@ export default function MultipleCascader({
   useEffect(() => {
     setTimeout(() => {
       requestAnimationFrame(() => {
-        popoverRef.current?.resetVirtualElement()
-        popoverRef.current?.update()
+        popoverRef.current?.forceUpdate()
       })
     })
   }, [checkedLinkNodePath])

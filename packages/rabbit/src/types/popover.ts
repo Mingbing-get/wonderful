@@ -1,10 +1,9 @@
-import type { Placement, Instance } from '@popperjs/core'
+import type { Placement, PopoverOffset } from '../popoverInstance/type'
+import Instance from '../popoverInstance'
+import { PopoverArrowType } from './popoverHandle'
 
-export { Placement, Instance }
-export type PopoverRef = Instance & {
-  resetVirtualElement: () => void
-}
-export type PopoverArrowType = 'small' | 'large' | 'middle' | 'none'
+export { Placement }
+export type PopoverRef = Instance
 
 export type PopoverProps = {
   children: React.ReactElement
@@ -12,7 +11,9 @@ export type PopoverProps = {
   trigger?: 'click' | 'hover' | 'focus'
   arrow?: PopoverArrowType
   placement?: Placement
+  offset?: PopoverOffset
   visible?: boolean
+  preventControlVisible?: boolean
   delay?: number
   hoverOpenDelay?: number
   widthFollowTarget?: boolean

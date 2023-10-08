@@ -13,9 +13,6 @@
     background-color: #fff;
     border: 1px solid var(--rabbit-border-color-base);
   }
-  &.is-small {
-    --border-width: 0.875rem;
-  }
 }
 
 .rabbit-popper-wrapper {
@@ -33,13 +30,16 @@
     }
   }
 
+  &.is-small {
+    --border-width: 0.875rem;
+  }
+
   &[data-popper-placement^='top'] {
-    margin-bottom: calc(0.8 * var(--border-width)) !important;
+    margin-bottom: calc(var(--border-width)) !important;
     &.not-arrow {
       margin-bottom: 0.4rem !important;
     }
     .rabbit-arrow {
-      top: 100%;
       &::after {
         transform: translateY(-65%) rotate(45deg);
       }
@@ -47,7 +47,7 @@
   }
 
   &[data-popper-placement^='bottom'] {
-    margin-top: calc(0.8 * var(--border-width)) !important;
+    margin-top: calc(var(--border-width)) !important;
     &.not-arrow {
       margin-top: 0.4rem !important;
     }
@@ -60,7 +60,7 @@
   }
 
   &[data-popper-placement^='left'] {
-    margin-right: calc(0.8 * var(--border-width)) !important;
+    margin-right: calc(var(--border-width)) !important;
     &.not-arrow {
       margin-right: 0.4rem !important;
     }
@@ -73,7 +73,7 @@
   }
 
   &[data-popper-placement^='right'] {
-    margin-left: calc(0.8 * var(--border-width)) !important;
+    margin-left: calc(var(--border-width)) !important;
     &.not-arrow {
       margin-left: 0.4rem !important;
     }

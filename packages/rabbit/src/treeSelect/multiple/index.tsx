@@ -144,8 +144,7 @@ export default function MultipleTreeSelect({
   useEffect(() => {
     setTimeout(() => {
       requestAnimationFrame(() => {
-        popoverRef.current?.resetVirtualElement()
-        popoverRef.current?.update()
+        popoverRef.current?.forceUpdate()
       })
     })
   }, [_checkedPath])

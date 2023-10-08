@@ -53,3 +53,4 @@ export { default as useResize } from './hooks/useResize'
 export { default as useTree } from './hooks/useTree'
 
 export { default as responseRegister } from './responseRegister'
+export { default as PopoverInstance } from './popoverInstance'

@@ -1,92 +1,56 @@
-import React, { useRef, useEffect, useCallback } from 'react'
+import React, { useRef, useEffect, ForwardedRef, useImperativeHandle, forwardRef } from 'react'
 import ReactDOM from 'react-dom'
-import { createPopper, Placement, Instance, VirtualElement } from '@popperjs/core'
 import classNames from 'classnames'
 
-export type PopoverArrowType = 'small' | 'large' | 'middle' | 'none'
+import PopoverInstance from '../popoverInstance'
+import { PopoverHandleProps } from '../types/popoverHandle'
 
-export type PopoverProps = {
-  target?: HTMLElement
-  content: React.ReactNode
-  arrow?: PopoverArrowType
-  placement?: Placement
-  widthFollowTarget?: boolean
-  className?: string
-  style?: React.CSSProperties
-}
+import './index.scss'
 
-import '../popover/index.scss'
-
-function generateGetBoundingClientRect(x: number, y: number, width: number, height: number) {
-  return () => ({
-    width: width,
-    height: height,
-    top: y,
-    right: x,
-    bottom: y,
-    left: x,
-  })
-}
-
-export default function HandlePopover({ target, content, placement = 'bottom', arrow = 'middle', widthFollowTarget, className, style }: PopoverProps) {
+function HandlePopover(
+  { target, content, placement = 'bottom', arrow = 'middle', widthFollowTarget, className, style, offset, onChangeWrapper }: PopoverHandleProps,
+  ref?: ForwardedRef<PopoverInstance | undefined>
+) {
   const displayRef = useRef<HTMLDivElement>(null)
   const arrowRef = useRef<HTMLDivElement>(null)
-  const popperInstance = useRef<Instance>()
-  const virtualElement = useRef<VirtualElement>({
-    getBoundingClientRect: generateGetBoundingClientRect(0, 0, 0, 0),
-  } as VirtualElement)
+  const popperInstance = useRef(new PopoverInstance())
+
+  useImperativeHandle(ref, () => popperInstance.current, [])
 
   useEffect(() => {
-    setTimeout(() => {
-      if (!displayRef.current || !arrowRef.current) return
+    if (!displayRef.current || !arrowRef.current) return
 
-      resetVirtualElement()
-
-      popperInstance.current = createPopper(virtualElement.current, displayRef.current, {
-        placement: placement,
-        modifiers: [{ name: 'arrow', options: { element: arrowRef.current } }],
-      })
-    }, 0)
-  }, [target, arrowRef.current])
-
-  const getTargetLocationAndSize = useCallback(() => {
-    requestAnimationFrame(() => {
-      popperInstance.current?.forceUpdate()
+    onChangeWrapper?.(displayRef.current)
+    popperInstance.current.updateConfig(target, displayRef.current, {
+      placement: placement,
+      arrow: arrowRef.current,
+      offset,
     })
-
-    if (!target) return { top: 0, left: 0, width: 0, height: 0 }
-    return target.getBoundingClientRect()
-  }, [target])
-
-  const resetVirtualElement = useCallback(() => {
-    const { left, top, width, height } = getTargetLocationAndSize()
-    virtualElement.current.getBoundingClientRect = generateGetBoundingClientRect(left, top, width, height) as any
-  }, [getTargetLocationAndSize])
+  }, [target, offset, arrowRef.current])
 
   useEffect(() => {
-    function reset() {
-      requestAnimationFrame(resetVirtualElement)
-    }
-    document.addEventListener('scroll', reset)
-
     return () => {
       popperInstance.current?.destroy()
-      document.removeEventListener('scroll', reset)
     }
-  }, [resetVirtualElement])
+  }, [])
 
   return (
     <>
       {target &&
         ReactDOM.createPortal(
           <div
-            className={classNames('rabbit-popper-wrapper', 'rabbit-component', arrow === 'none' && 'not-arrow', className)}
+            className={classNames(
+              'rabbit-popper-wrapper',
+              'rabbit-component',
+              { 'not-arrow': arrow === 'none', 'is-small': arrow === 'small', 'is-large': arrow === 'large' },
+              className
+            )}
             style={{ ...style, minWidth: widthFollowTarget ? `${target.getBoundingClientRect().width}px` : '' }}
             ref={displayRef}
             onClick={(e) => e.stopPropagation()}>
             {content}
             <div
-              className={classNames('rabbit-arrow', { 'is-small': arrow === 'small', 'is-large': arrow === 'large' })}
+              className="rabbit-arrow"
               ref={arrowRef}
             />
           </div>,
@@ -95,3 +59,5 @@ export default function HandlePopover({ target, content, placement = 'bottom', a
     </>
   )
 }
+
+export default forwardRef(HandlePopover)
