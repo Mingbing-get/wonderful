@@ -10,6 +10,8 @@ interface EnvInfo {
   targetRect: ElementRect
 }
 
+const controlCssKeys = ['left', 'right', 'top', 'bottom']
+
 export default class PopoverInstance {
   private target: VirtualElement | undefined
   private popper: HTMLElement | undefined
@@ -135,8 +137,13 @@ export default class PopoverInstance {
     const strList: string[] = []
 
     for (const key in style) {
-      const v = ['left', 'right', 'top', 'bottom'].includes(key) ? `${style[key]}px` : style[key]
-      strList.push(`${key}: ${v}`)
+      let v = style[key]
+      if (controlCssKeys.includes(key)) {
+        if (typeof v === 'number') {
+          v = `${v}px`
+        }
+      }
+      strList.push(`${key}:${v}`)
     }
 
     return strList.join(';')
@@ -150,7 +157,7 @@ export default class PopoverInstance {
     const styleList = styleStr.split(';')
     styleList.forEach((item) => {
       const itemSplit = item.split(':')
-      if (itemSplit.length < 2) return
+      if (itemSplit.length < 2 || controlCssKeys.includes(itemSplit[0])) return
 
       style[itemSplit[0]] = itemSplit.splice(1).join(':')
     })

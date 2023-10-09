@@ -29,6 +29,8 @@ function HandlePopover(
   }, [target, offset, arrowRef.current])
 
   useEffect(() => {
+    popperInstance.current = new PopoverInstance()
+
     return () => {
       popperInstance.current?.destroy()
     }
