@@ -12,6 +12,7 @@ import Icon from '../icon'
 
 import useDragTree from './useDragTree'
 import { SingleTreeProps, TreeNode, TreeLabelRender } from '../types/tree'
+import compatible from '../compatible'
 
 type ChangeRecord = { node: TreeNode; res: boolean }
 
@@ -99,12 +100,12 @@ export default function SingleTree({
   useEffect(() => {
     if (!treeWrapperRef.current) return
 
-    const expandHandle = treeWrapperRef.current.getElementsByClassName('expand-handle')[0] as HTMLSpanElement
+    const expandHandle = compatible.getElementsByClassName(treeWrapperRef.current, 'expand-handle')[0] as HTMLSpanElement
     if (expandHandle) {
       expandHandleWidth.current = expandHandle.offsetWidth
     }
 
-    const draggleHandle = treeWrapperRef.current.getElementsByClassName('draggle-handle')[0] as HTMLSpanElement
+    const draggleHandle = compatible.getElementsByClassName(treeWrapperRef.current, 'draggle-handle')[0] as HTMLSpanElement
     if (draggleHandle) {
       draggleHandleWidth.current = draggleHandle.offsetWidth
     }
@@ -259,7 +260,7 @@ export default function SingleTree({
             <span className="circle"></span>
             <span className="line"></span>
           </div>,
-          document.body
+          compatible.getBody()
         )}
     </div>
   )

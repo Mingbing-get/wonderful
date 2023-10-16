@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
 
+import compatible from '../compatible'
+
 import './index.scss'
 
 let startMoveLocation = 0
@@ -25,7 +27,7 @@ function Bar({ refDom, min, max, onChange, onStart, onEnd }: Props, ref?: React.
   useEffect(() => {
     if (!refDom.current) return
 
-    setRefDomRect(refDom.current.getBoundingClientRect())
+    setRefDomRect(compatible.getBoundingClientRect(refDom.current))
   }, [refDom.current])
 
   useEffect(() => {
@@ -110,10 +112,10 @@ function PortalBar(props: Props, ref?: React.ForwardedRef<HTMLDivElement>) {
   const wrapper = useRef(document.createElement('div'))
 
   useEffect(() => {
-    document.body.appendChild(wrapper.current)
+    compatible.appendChild(document.body, wrapper.current)
 
     return () => {
-      document.body.removeChild(wrapper.current)
+      compatible.removeChild(document.body, wrapper.current)
     }
   }, [])
 

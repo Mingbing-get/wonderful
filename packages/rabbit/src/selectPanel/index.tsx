@@ -1,5 +1,7 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react'
 import classNames from 'classnames'
+
+import compatible from '../compatible'
 import { SelectValueType } from '../types/select'
 import { SelectPanelProps } from '../types/selectPanel'
 import Option from './option'
@@ -50,11 +52,11 @@ export default function Panel<T extends SelectValueType>({ wrapperClassName, val
   useEffect(() => {
     requestAnimationFrame(() => {
       if (!selectWrapperRef.current) return
-      const selectOption = selectWrapperRef.current.getElementsByClassName('is-hover')[0]
+      const selectOption = compatible.getElementsByClassName(selectWrapperRef.current, 'is-hover')[0]
       if (!selectOption) return
 
-      const selectWrapperRect = selectWrapperRef.current.getBoundingClientRect()
-      const topDiff = selectOption.getBoundingClientRect().top - selectWrapperRect.top
+      const selectWrapperRect = compatible.getBoundingClientRect(selectWrapperRef.current)
+      const topDiff = compatible.getBoundingClientRect(selectOption).top - selectWrapperRect.top
       selectWrapperRef.current.scrollTop = topDiff - selectWrapperRect.height / 2 + selectWrapperRef.current.scrollTop
     })
   }, [refresh])

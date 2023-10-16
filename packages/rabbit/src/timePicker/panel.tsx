@@ -2,53 +2,48 @@ import React, { useMemo, useCallback, useEffect, useRef } from 'react'
 import dayjs, { Dayjs } from 'dayjs'
 import classNames from 'classnames'
 
+import compatible from '../compatible'
 import { TimePickerProps, TimePickerType } from '../types/timePicker'
 
 import './panel.scss'
 
 type OptionType = {
-  num: number,
-  dayjs: Dayjs,
+  num: number
+  dayjs: Dayjs
   disabled?: boolean
 }
 export type Props = Pick<TimePickerProps, 'disabledTime' | 'value' | 'format' | 'customFormat' | 'hourStep' | 'minuteStep' | 'secondStep'> & {
-  onChange?: (time: Dayjs, timeString: string) => void,
+  onChange?: (time: Dayjs, timeString: string) => void
 }
 
-export default function TimePanel({
-  value,
-  format = 'HH:mm:ss',
-  customFormat,
-  hourStep = 1,
-  minuteStep = 1,
-  secondStep = 1,
-  disabledTime,
-  onChange
-}: Props) {
+export default function TimePanel({ value, format = 'HH:mm:ss', customFormat, hourStep = 1, minuteStep = 1, secondStep = 1, disabledTime, onChange }: Props) {
+  const getOption = useCallback(
+    (timeType: TimePickerType, step: number) => {
+      const total = {
+        hour: 24,
+        minute: 60,
+        second: 60,
+      }[timeType]
 
-  const getOption = useCallback((timeType: TimePickerType, step: number) => {
-    const total = {
-      'hour': 24,
-      'minute': 60,
-      'second': 60
-    }[timeType]
+      return new Array(Math.floor(total / step)).fill(1).map((_, index) => ({
+        num: index * step,
+        disabled: disabledTime?.(index * step, timeType),
+        dayjs: (value || dayjs().hour(0).minute(0).second(0)).set(timeType, index * step),
+      }))
+    },
+    [disabledTime, value]
+  )
 
-    return new Array(Math.floor(total / step)).fill(1).map((_, index) => ({
-      num: index * step,
-      disabled: disabledTime?.(index * step, timeType),
-      dayjs: (value || dayjs().hour(0).minute(0).second(0)).set(timeType, index * step)
-    }))
-  }, [disabledTime, value])
+  const handleClick = useCallback(
+    (option: OptionType) => {
+      if (option.disabled) return
+      if (option.dayjs.hour() === value?.hour() && option.dayjs.minute() === value?.minute() && option.dayjs.second() === value?.second()) return
 
-  const handleClick = useCallback((option: OptionType) => {
-    if (option.disabled) return
-    if (option.dayjs.hour() === value?.hour() &&
-      option.dayjs.minute() === value?.minute() &&
-      option.dayjs.second() === value?.second()) return
-    
-    onChange?.(option.dayjs, customFormat ? customFormat.format(option.dayjs.clone()) : option.dayjs.format(format))
-  }, [format, onChange, value, customFormat])
-  
+      onChange?.(option.dayjs, customFormat ? customFormat.format(option.dayjs.clone()) : option.dayjs.format(format))
+    },
+    [format, onChange, value, customFormat]
+  )
+
   const hours: OptionType[] = useMemo(() => {
     return getOption('hour', hourStep)
   }, [getOption, hourStep])
@@ -65,12 +60,12 @@ export default function TimePanel({
     return {
       hour: format.includes('HH'),
       minute: format.includes('mm'),
-      second: format.includes('ss')
+      second: format.includes('ss'),
     }
   }, [format])
 
   return (
-    <div className='rabbit-time-panel'>
+    <div className="rabbit-time-panel">
       <ItemWrapperRender
         options={hours}
         visible={showItem.hour}
@@ -94,33 +89,28 @@ export default function TimePanel({
 }
 
 function fixedTo(num: number, count: number) {
-  return `${new Array(count).fill(0).join('') }${num}`.substr(-count)
+  return `${new Array(count).fill(0).join('')}${num}`.substr(-count)
 }
 
 type ItemWrapperProps = {
-  options: OptionType[],
-  value?: number,
-  visible: boolean,
-  onClick: (option: OptionType) => void,
+  options: OptionType[]
+  value?: number
+  visible: boolean
+  onClick: (option: OptionType) => void
 }
 
-function ItemWrapperRender({
-  options,
-  value,
-  visible,
-  onClick,
-}: ItemWrapperProps) {
+function ItemWrapperRender({ options, value, visible, onClick }: ItemWrapperProps) {
   const wrapperRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     setTimeout(() => {
       if (!value || !wrapperRef.current) return
 
-      const selectedItem = wrapperRef.current.getElementsByClassName('is-selected')[0]
+      const selectedItem = compatible.getElementsByClassName(wrapperRef.current, 'is-selected')[0]
       if (!selectedItem) return
 
-      const itemWrapperRect = wrapperRef.current.getBoundingClientRect()
-      const topDiff = selectedItem.getBoundingClientRect().top - itemWrapperRect.top
+      const itemWrapperRect = compatible.getBoundingClientRect(wrapperRef.current)
+      const topDiff = compatible.getBoundingClientRect(selectedItem).top - itemWrapperRect.top
       wrapperRef.current.scrollTop = topDiff - itemWrapperRect.height / 2 + wrapperRef.current.scrollTop
     })
   }, [value])
@@ -128,16 +118,17 @@ function ItemWrapperRender({
   if (!visible) return <></>
 
   return (
-    <div className='time-item-wrapper' ref={wrapperRef}>
-      {
-        options.map(option => (
-          <span
-            onClick={() => onClick(option)}
-            key={option.num}
-            className={classNames('time-item', option.disabled && 'is-disabled', value === option.num && 'is-selected')}
-          >{fixedTo(option.num, 2)}</span>
-        ))
-      }
+    <div
+      className="time-item-wrapper"
+      ref={wrapperRef}>
+      {options.map((option) => (
+        <span
+          onClick={() => onClick(option)}
+          key={option.num}
+          className={classNames('time-item', option.disabled && 'is-disabled', value === option.num && 'is-selected')}>
+          {fixedTo(option.num, 2)}
+        </span>
+      ))}
     </div>
   )
 }

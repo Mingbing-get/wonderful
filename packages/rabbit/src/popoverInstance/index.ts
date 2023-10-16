@@ -1,5 +1,6 @@
 import { VirtualElement, PopoverOption, PopoverDir, ElementRect, Placement } from './type'
 import debounceAndThrottle from './debounceAndThrottle'
+import compatible from '../compatible'
 
 export * from './type'
 
@@ -66,10 +67,10 @@ export default class PopoverInstance {
     if (!this.target || !this.popper) return
 
     const envInfo: EnvInfo = {
-      clientHeight: window.innerHeight,
-      clientWidth: window.innerWidth,
-      popperRect: this.popper.getBoundingClientRect(),
-      targetRect: this.adjustOffset(this.target.getBoundingClientRect()),
+      clientHeight: compatible.getClient().innerHeight,
+      clientWidth: compatible.getClient().innerWidth,
+      popperRect: compatible.getBoundingClientRect(this.popper),
+      targetRect: this.adjustOffset(compatible.getBoundingClientRect(this.target)),
     }
 
     if (placement === 'right') {
@@ -108,7 +109,7 @@ export default class PopoverInstance {
     }
     const dir = this.getDir(placement)
 
-    const targetRect = this.adjustOffset(this.target.getBoundingClientRect())
+    const targetRect = this.adjustOffset(compatible.getBoundingClientRect(this.target))
     const clientHeight = window.innerHeight
     const clientWidth = window.innerWidth
 

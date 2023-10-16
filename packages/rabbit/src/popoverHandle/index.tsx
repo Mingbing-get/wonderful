@@ -2,6 +2,7 @@ import React, { useRef, useEffect, ForwardedRef, useImperativeHandle, forwardRef
 import ReactDOM from 'react-dom'
 import classNames from 'classnames'
 
+import compatible from '../compatible'
 import PopoverInstance from '../popoverInstance'
 import { PopoverHandleProps } from '../types/popoverHandle'
 
@@ -47,7 +48,7 @@ function HandlePopover(
               { 'not-arrow': arrow === 'none', 'is-small': arrow === 'small', 'is-large': arrow === 'large' },
               className
             )}
-            style={{ ...style, minWidth: widthFollowTarget ? `${target.getBoundingClientRect().width}px` : '' }}
+            style={{ ...style, minWidth: widthFollowTarget ? `${compatible.getBoundingClientRect(target).width}px` : '' }}
             ref={displayRef}
             onClick={(e) => e.stopPropagation()}>
             {content}
@@ -56,7 +57,7 @@ function HandlePopover(
               ref={arrowRef}
             />
           </div>,
-          document.body
+          compatible.getBody()
         )}
     </>
   )

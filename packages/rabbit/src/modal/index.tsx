@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import ReactDOM from 'react-dom'
 import classNames from 'classnames'
 
+import compatible from '../compatible'
 import Icon from '../icon'
 import Button from '../button'
 import { ModalProps } from '../types/modal'
@@ -23,7 +24,7 @@ export default function Modal({
   preventMouseOver,
   onClose,
   onVisibleChange,
-  getContainer = () => document.body,
+  getContainer = () => compatible.getBody(),
 }: ModalProps) {
   const [_visible, setVisible] = useState(!!visible)
   const [hidden, setHidden] = useState(!visible)
@@ -69,14 +70,14 @@ export default function Modal({
   if (!_visible) return <></>
 
   const containerRect =
-    getContainer() === document.body
+    getContainer() === compatible.getBody()
       ? {
           left: 0,
           top: 0,
           width: '100vw',
           height: '100vh',
         }
-      : getContainer().getBoundingClientRect()
+      : compatible.getBoundingClientRect(getContainer())
 
   return ReactDOM.createPortal(
     <div

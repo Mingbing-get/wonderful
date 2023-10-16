@@ -1,5 +1,6 @@
 import React, { useRef, useState, useCallback } from 'react'
 
+import compatible from '../compatible'
 import { LinkTreeNode, InnerLocation } from '../hooks/useTree/type'
 import { TreeNode } from '../types/tree'
 
@@ -42,7 +43,7 @@ export default function useDragTree({ expandHandleWidth, draggleHandleWidth, sto
         return
       }
 
-      const { top, height, left, width } = e.currentTarget.getBoundingClientRect()
+      const { top, height, left, width } = compatible.getBoundingClientRect(e.currentTarget)
       const y = e.clientY
       const isTop = y - top < height / 2
 

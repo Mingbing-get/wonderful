@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react'
 import classNames from 'classnames'
+
+import compatible from '../compatible'
 import { SliderProps } from '../types/slider'
 
 import './index.scss'
@@ -39,7 +41,7 @@ export default function Slider({ min = 0, max = 100, step = 1, value, showLabel 
   function handleClickTrick(e: React.MouseEvent<HTMLDivElement>) {
     if (!trick.current) return
 
-    const trickRect = trick.current.getBoundingClientRect()
+    const trickRect = compatible.getBoundingClientRect(trick.current)
     changeRate(((e.clientX - trickRect.left) / trickRect.width) * 100)
   }
 

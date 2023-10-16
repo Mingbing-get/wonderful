@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo, useCallback } from 'react'
 import { createPortal } from 'react-dom'
 import classNames from 'classnames'
 
+import compatible from '../compatible'
 import Icon from '../icon'
 import Modal from '../modal'
 import Popover from '../popover'
@@ -39,7 +40,7 @@ export default function Tour({ steps, open = false, arrow, placement, current = 
     const targetElement = currentStep.target()
     if (!targetElement) return
 
-    const targetReact = targetElement.getBoundingClientRect()
+    const targetReact = compatible.getBoundingClientRect(targetElement)
     return {
       width: targetReact.width + 2 * padding,
       height: targetReact.height + 2 * padding,
@@ -182,6 +183,6 @@ export default function Tour({ steps, open = false, arrow, placement, current = 
         />
       </Popover>
     </div>,
-    document.body
+    compatible.getBody()
   )
 }

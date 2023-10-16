@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import classNames from 'classnames'
 
+import compatible from '../compatible'
 import Icon from '../icon'
 import StepsItem from './item'
 import { StepsProps, StepsStatus } from '../types/steps'
@@ -30,41 +31,41 @@ export default function Steps({
   useEffect(() => {
     if (!stepsWrapperRef.current) return
 
-    const items = stepsWrapperRef.current.getElementsByClassName('rabbit-steps-item')
-    const wrapperRect = stepsWrapperRef.current.getBoundingClientRect()
-    const firstIcon = items[0].getElementsByClassName('steps-dot')[0].getBoundingClientRect()
+    const items = compatible.getElementsByClassName(stepsWrapperRef.current, 'rabbit-steps-item')
+    const wrapperRect = compatible.getBoundingClientRect(stepsWrapperRef.current)
+    const firstIcon = compatible.getBoundingClientRect(compatible.getElementsByClassName(items[0], 'steps-dot')[0])
     const lines: LineType[] = []
     if (type === 'inline') {
       ;[...items].forEach((item, index) => {
         if (index === items.length - 1) return
 
-        const itemRect = item.getElementsByClassName('default-dot')[0].getBoundingClientRect()
+        const itemRect = compatible.getBoundingClientRect(compatible.getElementsByClassName(item, 'default-dot')[0])
         lines.push({
           left: itemRect.right - wrapperRect.left + 2,
           top: '0.2rem',
-          width: items[index + 1].getElementsByClassName('default-dot')[0].getBoundingClientRect().left - itemRect.right - 4,
+          width: compatible.getBoundingClientRect(compatible.getElementsByClassName(items[index + 1], 'default-dot')[0]).left - itemRect.right - 4,
         })
       })
     } else if (direction === 'horizontal') {
       ;[...items].forEach((item, index) => {
         if (index === items.length - 1) return
 
-        const itemRect = item.getBoundingClientRect()
+        const itemRect = compatible.getBoundingClientRect(item)
         lines.push({
           left: itemRect.right - wrapperRect.left + 4,
           top: firstIcon.height / 2,
-          width: items[index + 1].getBoundingClientRect().left - itemRect.right - 8,
+          width: compatible.getBoundingClientRect(items[index + 1]).left - itemRect.right - 8,
         })
       })
     } else if (direction === 'vertical') {
       ;[...items].forEach((item, index) => {
         if (index === items.length - 1) return
 
-        const itemRect = item.getElementsByClassName('steps-dot')[0].getBoundingClientRect()
+        const itemRect = compatible.getBoundingClientRect(compatible.getElementsByClassName(item, 'steps-dot')[0])
         lines.push({
           left: firstIcon.width / 2,
           top: itemRect.bottom - wrapperRect.top + 4,
-          width: items[index + 1].getBoundingClientRect().top - itemRect.bottom - 8,
+          width: compatible.getBoundingClientRect(items[index + 1]).top - itemRect.bottom - 8,
         })
       })
     }

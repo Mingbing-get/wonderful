@@ -2,6 +2,7 @@ import React, { useMemo } from 'react'
 import { createRoot } from 'react-dom/client'
 import classNames from 'classnames'
 
+import compatible from '../compatible'
 import Icon, { IconType } from '../icon'
 import { MessageProps } from '../types/message'
 
@@ -79,7 +80,7 @@ class MessageFactory {
         })
       )
     )
-    document.body.appendChild(div)
+    compatible.appendChild(document.body, div)
 
     createRoot(div).render(<Message {...extra} />)
 
@@ -121,7 +122,7 @@ class MessageFactory {
   private getLastInstanceBottom(): number {
     if (this.effectDivList.length === 0) return 0
     const lastInstance = this.effectDivList[this.effectDivList.length - 1]
-    return lastInstance.getBoundingClientRect().bottom
+    return compatible.getBoundingClientRect(lastInstance).bottom
   }
 
   private mergeWrapperStyle(style?: Record<string, string | number>) {
