@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import classNames from 'classnames'
 
+import compatible from '../compatible'
+import { toBase64 } from '../tobase64'
 import { IconProps } from '../types/icon'
 
 import './index.scss'
@@ -318,7 +320,7 @@ export type IconType = keyof typeof pathMap
 
 export const pathKeys = Object.keys(pathMap) as IconType[]
 
-function Icon({ type, className, ...extra }: IconProps, ref?: React.ForwardedRef<SVGSVGElement>) {
+function IconWeb({ type, className, ...extra }: IconProps, ref?: React.ForwardedRef<SVGSVGElement>) {
   return (
     <svg
       className={classNames('rabbit-icon', 'rabbit-component', className)}
@@ -328,6 +330,44 @@ function Icon({ type, className, ...extra }: IconProps, ref?: React.ForwardedRef
       {...extra}
       ref={ref}
       dangerouslySetInnerHTML={{ __html: pathMap[type] }}></svg>
+  )
+}
+
+const IconWebWithRef = React.forwardRef(IconWeb)
+
+function IconWeapp({ type, className, ...extra }: IconProps, ref?: React.ForwardedRef<any>) {
+  const src = useMemo(() => {
+    const svgStr = `<svg viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">${pathMap[type]}</svg>`
+    return `data:image/svg+xml;base64,${toBase64(svgStr)}`
+  }, [type])
+
+  return (
+    <div
+      ref={ref}
+      className={classNames('rabbit-icon', 'rabbit-component', className)}
+      {...extra}>
+      <img src={src} />
+    </div>
+  )
+}
+
+const IconWeappWithRef = React.forwardRef(IconWeapp)
+
+function Icon(props: IconProps, ref?: React.ForwardedRef<SVGSVGElement>) {
+  if (compatible.getPlatform() === 'web') {
+    return (
+      <IconWebWithRef
+        {...props}
+        ref={ref}
+      />
+    )
+  }
+
+  return (
+    <IconWeappWithRef
+      {...props}
+      ref={ref}
+    />
   )
 }
 

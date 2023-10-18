@@ -72,3 +72,4 @@ export type {
 } from '../hooks/useTree/type'
 
 export * from '../popoverInstance/type'
+export * from '../compatible'

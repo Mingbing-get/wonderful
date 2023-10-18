@@ -28,6 +28,8 @@ export interface RemoveChild {
   (parentNode: Node, childNode: Node): void
 }
 
+export type Platform = 'web' | 'weapp'
+
 interface CompatibleRegister {
   getBoundingClientRect: GetBoundingClientRect
   getClient: GetClient
@@ -38,6 +40,8 @@ interface CompatibleRegister {
 }
 
 class Compatible implements CompatibleRegister {
+  private platform: Platform = 'web'
+
   getBoundingClientRect(dom: HTMLElement | VirtualElement) {
     return dom.getBoundingClientRect() as DOMRect
   }
@@ -64,6 +68,14 @@ class Compatible implements CompatibleRegister {
 
   register<K extends keyof CompatibleRegister, V extends CompatibleRegister[K]>(key: K, fn: V) {
     this[key] = fn as any
+  }
+
+  setPlatform(platform: Platform) {
+    this.platform = platform
+  }
+
+  getPlatform() {
+    return this.platform
   }
 }
 
