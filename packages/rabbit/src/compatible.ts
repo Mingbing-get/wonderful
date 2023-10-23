@@ -1,3 +1,5 @@
+import React from 'react'
+import { createRoot } from 'react-dom/client'
 import { VirtualElement } from './popoverInstance'
 
 export interface GetBoundingClientRect {
@@ -28,6 +30,10 @@ export interface RemoveChild {
   (parentNode: Node, childNode: Node): void
 }
 
+export interface RenderRoot {
+  (child: React.ReactNode, container: HTMLElement): void
+}
+
 export type Platform = 'web' | 'weapp'
 
 interface CompatibleRegister {
@@ -37,6 +43,7 @@ interface CompatibleRegister {
   getBody: GetBody
   appendChild: AppendChild
   removeChild: RemoveChild
+  renderRoot: RenderRoot
 }
 
 class Compatible implements CompatibleRegister {
@@ -64,6 +71,10 @@ class Compatible implements CompatibleRegister {
 
   removeChild(parentNode: Node, childNode: Node) {
     parentNode.removeChild(childNode)
+  }
+
+  renderRoot(child: React.ReactNode, container: HTMLElement) {
+    createRoot(container).render(child)
   }
 
   register<K extends keyof CompatibleRegister, V extends CompatibleRegister[K]>(key: K, fn: V) {

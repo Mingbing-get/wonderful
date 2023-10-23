@@ -1,5 +1,4 @@
 import React, { useMemo } from 'react'
-import { createRoot } from 'react-dom/client'
 import classNames from 'classnames'
 
 import compatible from '../compatible'
@@ -80,9 +79,8 @@ class MessageFactory {
         })
       )
     )
-    compatible.appendChild(document.body, div)
-
-    createRoot(div).render(<Message {...extra} />)
+    compatible.appendChild(compatible.getBody(), div)
+    compatible.renderRoot(<Message {...extra} />, div)
 
     this.effectDivList.push(div)
     setTimeout(() => {
@@ -133,6 +131,7 @@ class MessageFactory {
       transition: 'all 0.2s linear',
       width: 'fit-content',
       transform: 'translate(-50%, 0)',
+      'z-index': 100,
       ...(style || {}),
     }
   }
