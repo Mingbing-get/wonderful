@@ -36,14 +36,14 @@ export default function useDragTree({ expandHandleWidth, draggleHandleWidth, sto
   }, [])
 
   const handleDragOver = useCallback(
-    (e: React.DragEvent<HTMLDivElement>, linkNode: LinkTreeNode<TreeNode>) => {
+    async (e: React.DragEvent<HTMLDivElement>, linkNode: LinkTreeNode<TreeNode>) => {
       e.preventDefault()
       if (linkNode === dragLinkNode.current || !dragLinkNode.current) {
         setTipStyle(undefined)
         return
       }
 
-      const { top, height, left, width } = compatible.getBoundingClientRect(e.currentTarget)
+      const { top, height, left, width } = await compatible.getBoundingClientRect(e.currentTarget)
       const y = e.clientY
       const isTop = y - top < height / 2
 

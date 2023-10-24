@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { VirtualElement } from './popoverInstance'
 
 export interface GetBoundingClientRect {
-  (dom: HTMLElement): DOMRect
+  (dom: HTMLElement): Promise<DOMRect>
 }
 
 export interface Client {
@@ -49,7 +49,7 @@ interface CompatibleRegister {
 class Compatible implements CompatibleRegister {
   private platform: Platform = 'web'
 
-  getBoundingClientRect(dom: HTMLElement | VirtualElement) {
+  async getBoundingClientRect(dom: HTMLElement | VirtualElement) {
     return dom.getBoundingClientRect() as DOMRect
   }
 

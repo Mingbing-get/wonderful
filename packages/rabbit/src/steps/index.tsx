@@ -4,7 +4,7 @@ import classNames from 'classnames'
 import compatible from '../compatible'
 import Icon from '../icon'
 import StepsItem from './item'
-import { StepsProps, StepsStatus } from '../types/steps'
+import { StepsProps, StepsStatus, StepsDirection, StepsType } from '../types/steps'
 import './index.scss'
 
 type LineType = {
@@ -28,49 +28,56 @@ export default function Steps({
   const stepsWrapperRef = useRef<HTMLDivElement>(null)
   const [lines, setLines] = useState<LineType[]>([])
 
-  useEffect(() => {
+  const updateLine = useCallback(async (direction: StepsDirection, type: StepsType) => {
     if (!stepsWrapperRef.current) return
 
-    const items = compatible.getElementsByClassName(stepsWrapperRef.current, 'rabbit-steps-item')
-    const wrapperRect = compatible.getBoundingClientRect(stepsWrapperRef.current)
-    const firstIcon = compatible.getBoundingClientRect(compatible.getElementsByClassName(items[0], 'steps-dot')[0])
+    const items = [...compatible.getElementsByClassName(stepsWrapperRef.current, 'rabbit-steps-item')]
+    const wrapperRect = await compatible.getBoundingClientRect(stepsWrapperRef.current)
+    const firstIcon = await compatible.getBoundingClientRect(compatible.getElementsByClassName(items[0], 'steps-dot')[0])
     const lines: LineType[] = []
     if (type === 'inline') {
-      ;[...items].forEach((item, index) => {
+      for (let index = 0; index < items.length; index++) {
+        const item = items[index]
         if (index === items.length - 1) return
 
-        const itemRect = compatible.getBoundingClientRect(compatible.getElementsByClassName(item, 'default-dot')[0])
+        const itemRect = await compatible.getBoundingClientRect(compatible.getElementsByClassName(item, 'default-dot')[0])
         lines.push({
           left: itemRect.right - wrapperRect.left + 2,
           top: '0.2rem',
-          width: compatible.getBoundingClientRect(compatible.getElementsByClassName(items[index + 1], 'default-dot')[0]).left - itemRect.right - 4,
+          width: (await compatible.getBoundingClientRect(compatible.getElementsByClassName(items[index + 1], 'default-dot')[0])) .left - itemRect.right - 4,
         })
-      })
+      }
     } else if (direction === 'horizontal') {
-      ;[...items].forEach((item, index) => {
+      for (let index = 0; index < items.length; index++) {
+        const item = items[index]
         if (index === items.length - 1) return
 
-        const itemRect = compatible.getBoundingClientRect(item)
+        const itemRect = await compatible.getBoundingClientRect(item)
         lines.push({
           left: itemRect.right - wrapperRect.left + 4,
           top: firstIcon.height / 2,
-          width: compatible.getBoundingClientRect(items[index + 1]).left - itemRect.right - 8,
+          width: (await compatible.getBoundingClientRect(items[index + 1])).left - itemRect.right - 8,
         })
-      })
+      }
     } else if (direction === 'vertical') {
-      ;[...items].forEach((item, index) => {
+      for (let index = 0; index < items.length; index++) {
+        const item = items[index]
         if (index === items.length - 1) return
 
-        const itemRect = compatible.getBoundingClientRect(compatible.getElementsByClassName(item, 'steps-dot')[0])
+        const itemRect = await compatible.getBoundingClientRect(compatible.getElementsByClassName(item, 'steps-dot')[0])
         lines.push({
           left: firstIcon.width / 2,
           top: itemRect.bottom - wrapperRect.top + 4,
-          width: compatible.getBoundingClientRect(items[index + 1]).top - itemRect.bottom - 8,
+          width: (await compatible.getBoundingClientRect(items[index + 1])).top - itemRect.bottom - 8,
         })
-      })
+      }
     }
 
     setLines(lines)
+  }, [])
+
+  useEffect(() => {
+    updateLine(direction, type)
   }, [stepsWrapperRef.current, direction, type])
 
   const getStatus = useCallback(

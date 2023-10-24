@@ -4,17 +4,16 @@ type ResizeListener = (clientWidth: number) => void
 type listenerType = 'rem2px' | 'breakpoint'
 
 const listenerList: Record<listenerType, ResizeListener[]> = {} as any
-let clientWidth: number = 0
 
-window.addEventListener('resize', (e) => {
-  clientWidth = compatible.getBoundingClientRect(document.documentElement).width || compatible.getClient().innerWidth
+window.addEventListener('resize', async (e) => {
+  const clientWidth = (await compatible.getBoundingClientRect(document.documentElement)).width || compatible.getClient().innerWidth
   for (const key in listenerList) {
     listenerList[key as listenerType].forEach((fn) => fn(clientWidth))
   }
 })
-clientWidth = compatible.getBoundingClientRect(document.documentElement).width || compatible.getClient().innerWidth
 
-export function resizeListenerRegister(type: listenerType, fn: ResizeListener, execute?: boolean) {
+export async function resizeListenerRegister(type: listenerType, fn: ResizeListener, execute?: boolean) {
+  const clientWidth = (await compatible.getBoundingClientRect(document.documentElement)).width || compatible.getClient().innerWidth
   if (listenerList[type]) {
     listenerList[type].push(fn)
   } else {

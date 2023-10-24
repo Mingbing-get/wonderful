@@ -7,7 +7,7 @@ import Icon from '../icon'
 import Modal from '../modal'
 import Popover from '../popover'
 import Button from '../button'
-import { TourProps } from '../types/tour'
+import { TourProps, TourStepType } from '../types/tour'
 import { ButtonProps } from '../types/button'
 
 import './index.scss'
@@ -18,6 +18,7 @@ export default function Tour({ steps, open = false, arrow, placement, current = 
   const [_open, setOpen] = useState(open)
   const [_current, setCurrent] = useState(current)
   const [showPopover, setShowPopover] = useState(true)
+  const [itemLocation, setItemLocation] = useState({width: 0, height: 0, left: 0, top: 0})
 
   useEffect(() => {
     setOpen(open)
@@ -34,19 +35,23 @@ export default function Tour({ steps, open = false, arrow, placement, current = 
     }, 0)
   }, [_current])
 
-  const itemLocation = useMemo(() => {
-    const currentStep = steps[_current]
+  const reComputedLocation = useCallback(async (current: number, steps: TourStepType[]) => {
+    const currentStep = steps[current]
 
     const targetElement = currentStep.target()
     if (!targetElement) return
 
-    const targetReact = compatible.getBoundingClientRect(targetElement)
-    return {
+    const targetReact = await compatible.getBoundingClientRect(targetElement)
+    setItemLocation({
       width: targetReact.width + 2 * padding,
       height: targetReact.height + 2 * padding,
       left: targetReact.left - padding,
       top: targetReact.top - padding,
-    }
+    })
+  }, [])
+
+  useEffect(() => {
+    reComputedLocation(_current, steps)
   }, [_current, steps])
 
   const handleChange = useCallback(

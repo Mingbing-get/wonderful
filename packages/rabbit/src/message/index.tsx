@@ -65,9 +65,9 @@ class MessageFactory {
         }, delay)
   }
 
-  private createInstance({ displayTime = 3000, ...extra }: Omit<MessageProps, 'id' | 'delay'>) {
+  private async createInstance({ displayTime = 3000, ...extra }: Omit<MessageProps, 'id' | 'delay'>) {
     const id = this.generateId()
-    const lastInstanceBottom = this.getLastInstanceBottom()
+    const lastInstanceBottom = await this.getLastInstanceBottom()
     const div = document.createElement('div')
     div.id = id
     div.setAttribute(
@@ -117,10 +117,10 @@ class MessageFactory {
     // 不做
   }
 
-  private getLastInstanceBottom(): number {
+  private async getLastInstanceBottom(): Promise<number> {
     if (this.effectDivList.length === 0) return 0
     const lastInstance = this.effectDivList[this.effectDivList.length - 1]
-    return compatible.getBoundingClientRect(lastInstance).bottom
+    return (await compatible.getBoundingClientRect(lastInstance)).bottom
   }
 
   private mergeWrapperStyle(style?: Record<string, string | number>) {

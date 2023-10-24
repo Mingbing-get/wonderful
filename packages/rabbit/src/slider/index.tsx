@@ -38,10 +38,10 @@ export default function Slider({ min = 0, max = 100, step = 1, value, showLabel 
     setStartX(-1)
   }
 
-  function handleClickTrick(e: React.MouseEvent<HTMLDivElement>) {
+  async function handleClickTrick(e: React.MouseEvent<HTMLDivElement>) {
     if (!trick.current) return
 
-    const trickRect = compatible.getBoundingClientRect(trick.current)
+    const trickRect = await compatible.getBoundingClientRect(trick.current)
     changeRate(((e.clientX - trickRect.left) / trickRect.width) * 100)
   }
 

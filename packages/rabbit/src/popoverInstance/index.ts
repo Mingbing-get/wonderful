@@ -63,14 +63,14 @@ export default class PopoverInstance {
     window.addEventListener('resize', this.listenerCb)
   }
 
-  private updatePopper(placement: Placement, end: boolean = false) {
+  private async updatePopper(placement: Placement, end: boolean = false) {
     if (!this.target || !this.popper) return
 
     const envInfo: EnvInfo = {
       clientHeight: compatible.getClient().innerHeight,
       clientWidth: compatible.getClient().innerWidth,
-      popperRect: compatible.getBoundingClientRect(this.popper),
-      targetRect: this.adjustOffset(compatible.getBoundingClientRect(this.target)),
+      popperRect: await compatible.getBoundingClientRect(this.popper),
+      targetRect: this.adjustOffset(await compatible.getBoundingClientRect(this.target)),
     }
 
     if (placement === 'right') {
@@ -100,7 +100,7 @@ export default class PopoverInstance {
     }
   }
 
-  private updateArrow(placement: Placement) {
+  private async updateArrow(placement: Placement) {
     if (!this.option.arrow || !this.target) return
 
     const style: Record<string, any> = {
@@ -109,7 +109,7 @@ export default class PopoverInstance {
     }
     const dir = this.getDir(placement)
 
-    const targetRect = this.adjustOffset(compatible.getBoundingClientRect(this.target))
+    const targetRect = this.adjustOffset(await compatible.getBoundingClientRect(this.target))
     const clientHeight = window.innerHeight
     const clientWidth = window.innerWidth
 

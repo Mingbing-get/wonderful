@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, ForwardedRef, useImperativeHandle, forwardRef } from 'react'
+import React, { useRef, useState, useEffect, ForwardedRef, useImperativeHandle, forwardRef } from 'react'
 import ReactDOM from 'react-dom'
 import classNames from 'classnames'
 
@@ -15,6 +15,7 @@ function HandlePopover(
   const displayRef = useRef<HTMLDivElement>(null)
   const arrowRef = useRef<HTMLDivElement>(null)
   const popperInstance = useRef(new PopoverInstance())
+  const [targetWidth, setTargetWidth] = useState(0)
 
   useImperativeHandle(ref, () => popperInstance.current, [])
 
@@ -37,6 +38,16 @@ function HandlePopover(
     }
   }, [])
 
+  useEffect(() => {
+    if (!target) return
+
+    requestAnimationFrame(() => {
+      compatible.getBoundingClientRect(target).then(domRect => {
+        setTargetWidth(domRect.width)
+      })
+    })
+  }, [target])
+
   return (
     <>
       {target &&
@@ -48,7 +59,7 @@ function HandlePopover(
               { 'not-arrow': arrow === 'none', 'is-small': arrow === 'small', 'is-large': arrow === 'large' },
               className
             )}
-            style={{ ...style, minWidth: widthFollowTarget ? `${compatible.getBoundingClientRect(target).width}px` : '' }}
+            style={{ ...style, minWidth: widthFollowTarget ? `${targetWidth}px` : '' }}
             ref={displayRef}
             onClick={(e) => e.stopPropagation()}>
             {content}

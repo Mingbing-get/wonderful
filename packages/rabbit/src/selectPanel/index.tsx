@@ -50,13 +50,13 @@ export default function Panel<T extends SelectValueType>({ wrapperClassName, val
   }, [options, onClickItem])
 
   useEffect(() => {
-    requestAnimationFrame(() => {
+    requestAnimationFrame(async () => {
       if (!selectWrapperRef.current) return
       const selectOption = compatible.getElementsByClassName(selectWrapperRef.current, 'is-hover')[0]
       if (!selectOption) return
 
-      const selectWrapperRect = compatible.getBoundingClientRect(selectWrapperRef.current)
-      const topDiff = compatible.getBoundingClientRect(selectOption).top - selectWrapperRect.top
+      const selectWrapperRect = await compatible.getBoundingClientRect(selectWrapperRef.current)
+      const topDiff = (await compatible.getBoundingClientRect(selectOption)).top - selectWrapperRect.top
       selectWrapperRef.current.scrollTop = topDiff - selectWrapperRect.height / 2 + selectWrapperRef.current.scrollTop
     })
   }, [refresh])

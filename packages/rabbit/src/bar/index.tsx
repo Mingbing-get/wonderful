@@ -27,7 +27,9 @@ function Bar({ refDom, min, max, onChange, onStart, onEnd }: Props, ref?: React.
   useEffect(() => {
     if (!refDom.current) return
 
-    setRefDomRect(compatible.getBoundingClientRect(refDom.current))
+    compatible.getBoundingClientRect(refDom.current).then(domRect => {
+      setRefDomRect(domRect)
+    })
   }, [refDom.current])
 
   useEffect(() => {

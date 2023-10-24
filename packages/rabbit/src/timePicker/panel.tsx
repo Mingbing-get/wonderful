@@ -103,14 +103,14 @@ function ItemWrapperRender({ options, value, visible, onClick }: ItemWrapperProp
   const wrapperRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    setTimeout(() => {
+    setTimeout(async () => {
       if (!value || !wrapperRef.current) return
 
       const selectedItem = compatible.getElementsByClassName(wrapperRef.current, 'is-selected')[0]
       if (!selectedItem) return
 
-      const itemWrapperRect = compatible.getBoundingClientRect(wrapperRef.current)
-      const topDiff = compatible.getBoundingClientRect(selectedItem).top - itemWrapperRect.top
+      const itemWrapperRect = await compatible.getBoundingClientRect(wrapperRef.current)
+      const topDiff = (await compatible.getBoundingClientRect(selectedItem)).top - itemWrapperRect.top
       wrapperRef.current.scrollTop = topDiff - itemWrapperRect.height / 2 + wrapperRef.current.scrollTop
     })
   }, [value])
