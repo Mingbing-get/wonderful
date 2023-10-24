@@ -101,8 +101,18 @@ function Popover(
     }
   }, [targetRef.current])
 
+  const getTargetElement = useCallback(() => {
+    return (targetRef.current as InputRef)?.input || (targetRef.current as HTMLElement)
+  }, [targetRef.current])
+
   useEffect(() => {
-    if (!displayRef.current || trigger !== 'hover' || preventControlVisible) return
+    setTarget(getTargetElement())
+  }, [targetRef.current, getTargetElement])
+
+  const handleChangeWrapper = useCallback((dom: HTMLDivElement) => {
+    displayRef.current = dom
+
+    if (!dom || trigger !== 'hover' || preventControlVisible) return
 
     function handleMouseenter() {
       counter.current++
@@ -118,25 +128,8 @@ function Popover(
       }, delay)
     }
 
-    displayRef.current.addEventListener('mouseenter', handleMouseenter)
-    displayRef.current.addEventListener('mouseleave', handleMouseleave)
-
-    return () => {
-      // displayRef.current?.removeEventListener('mouseenter', handleMouseenter)
-      // displayRef.current?.removeEventListener('mouseleave', handleMouseleave)
-    }
-  }, [displayRef.current])
-
-  const getTargetElement = useCallback(() => {
-    return (targetRef.current as InputRef)?.input || (targetRef.current as HTMLElement)
-  }, [targetRef.current])
-
-  useEffect(() => {
-    setTarget(getTargetElement())
-  }, [targetRef.current, getTargetElement])
-
-  const handleChangeWrapper = useCallback((dom: HTMLDivElement) => {
-    displayRef.current = dom
+    dom.addEventListener('mouseenter', handleMouseenter)
+    dom.addEventListener('mouseleave', handleMouseleave)
   }, [])
 
   function toggleShow(e: MouseEvent) {
