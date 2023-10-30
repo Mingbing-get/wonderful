@@ -3,7 +3,7 @@ import classNames from 'classnames'
 
 import Input from '../../input'
 import Icon from '../../icon'
-import { InputRef } from 'rc-input'
+import { InputRef } from '../../types/input'
 
 import './index.scss'
 

@@ -17,6 +17,15 @@
     border: 1px solid var(--rabbit-border-color-base);
     border-radius: var(--rabbit-border-radius-base);
     overflow: hidden;
+
+    .fact-width-dom {
+      position: absolute;
+      width: 100%;
+      height: 0;
+      opacity: 0;
+      z-index: -100000;
+      min-width: 100%;
+    }
   }
 
   table {
@@ -24,7 +33,8 @@
     text-align: center;
     border-collapse: collapse;
   }
-  td, th {
+  td,
+  th {
     background-color: #fff;
     position: relative;
     &::before {
@@ -119,10 +129,11 @@
   }
 
   &.can-scroll-x {
-    td,th {
+    td,
+    th {
       &.first-right-fixed {
         z-index: 2;
-  
+
         &::after {
           left: 0;
           top: 0;
@@ -135,10 +146,11 @@
       }
     }
     &.is-scroll-x {
-      td, th {
+      td,
+      th {
         &.last-left-fixed {
           z-index: 2;
-      
+
           &::after {
             right: 0;
             top: 0;

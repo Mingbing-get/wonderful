@@ -42,7 +42,7 @@ export default function Table<T extends DataType = DataType>({
   const filterBodyRef = useRef<TableRow<T>[]>([])
   const _bodyRef = useRef<TableRow<T>[]>([])
 
-  const { width, iframeRef } = useResize()
+  const { width, domRef: factWidthDom } = useResize<HTMLDivElement>()
   const { scrollX } = useSyncScrollX(syncScrollXDomList)
 
   const { selectionData, selectionColumns } = useTableRowSelection({
@@ -142,8 +142,9 @@ export default function Table<T extends DataType = DataType>({
       ref={wrapperRef}
       style={style}>
       <div className="rabbit-table-content">
-        <iframe
-          ref={iframeRef}
+        <div
+          className="fact-width-dom"
+          ref={factWidthDom}
           style={{ width: scroll?.x }}
         />
         <div

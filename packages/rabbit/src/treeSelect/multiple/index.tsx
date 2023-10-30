@@ -165,7 +165,13 @@ export default function MultipleTreeSelect({
   return (
     <div
       {...extra}
-      className={classNames('rabbit-tree-select-wrapper is-multiple', 'rabbit-component', allowClear && _checkedPath.length && 'allow-clear', className)}
+      className={classNames(
+        'rabbit-tree-select-wrapper is-multiple',
+        'rabbit-component',
+        visible && 'is-focus',
+        allowClear && _checkedPath.length && 'allow-clear',
+        className
+      )}
       style={style}>
       <Popover
         ref={popoverRef}

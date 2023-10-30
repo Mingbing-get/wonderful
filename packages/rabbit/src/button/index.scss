@@ -7,6 +7,7 @@
   cursor: pointer;
   text-align: center;
   overflow: hidden;
+  transition: box-shadow 0.2s linear;
 
   .loading-mask {
     position: absolute;
@@ -25,23 +26,25 @@
     width: 100%;
   }
 
-  @each $name, $color in 
-    (primary, var(--rabbit-primary-color)),
-    (danger, var(--rabbit-error-color)),
-    (success, var(--rabbit-success-color)),
-    (warning, var(--rabbit-warning-color)) {
-      &.type-#{$name} {
-          color: #fff;
-          background-color: $color;
-          border-color: $color;
-      
-          &.is-ghost {
-            color: $color;
-            background-color: transparent;
-            border-color: $color;
-          }
-        }
+  @each $name, $color in (primary, var(--rabbit-primary-color)), (danger, var(--rabbit-error-color)), (success, var(--rabbit-success-color)),
+    (warning, var(--rabbit-warning-color))
+  {
+    &.type-#{$name} {
+      color: #fff;
+      background-color: $color;
+      border-color: $color;
+
+      &.is-ghost {
+        color: $color;
+        background-color: transparent;
+        border-color: $color;
+      }
+
+      &.transition-shadow {
+        box-shadow: 0 0 6px 0 $color;
+      }
     }
+  }
 
   &.is-disabled {
     background-color: var(--rabbit-disabled-bg-color);

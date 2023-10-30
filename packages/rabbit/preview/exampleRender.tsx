@@ -268,7 +268,7 @@ function mergeValueAndLabel(baseData: ComponentTreeNode[]) {
 mergeValueAndLabel(treeData)
 
 export default function ExampleRender() {
-  const [currentShow, setCurrentShow] = useState<React.ReactNode>(<ExamplePopover />)
+  const [currentShow, setCurrentShow] = useState<React.ReactNode>(<ExampleInput />)
 
   const handleChecked = useCallback((_: any, node: ComponentTreeNode) => {
     setCurrentShow(node.component)
@@ -278,8 +278,8 @@ export default function ExampleRender() {
     <div className="rabbit-preview-wrapper">
       <div className="nav">
         <Tree
-          defaultCheckedPath={['data-display', 'popover']}
-          defaultExpandPath={[['data-display']]}
+          defaultCheckedPath={['data-input', 'input']}
+          defaultExpandPath={[['data-input']]}
           data={treeData}
           onChecked={handleChecked}
           renderLabelIcon={(_, isExpand, isLeaf) => {

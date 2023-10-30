@@ -6,6 +6,12 @@
   --input-space: 0.125rem;
   padding: 0 var(--input-space);
   background-color: #fff;
+  display: flex;
+  align-items: center;
+
+  &.is-focus {
+    border-color: var(--rabbit-primary-color);
+  }
 
   &.is-disabled {
     background-color: var(--rabbit-disabled-bg-color);
@@ -25,33 +31,27 @@
     text-overflow: ellipsis;
   }
 
-  .input-affix-wrapper {
+  .rabbit-input-prefix {
     display: flex;
-    flex-direction: row;
-    height: 100%;
-
-    .input-prefix {
-      display: flex;
-      align-items: center;
-      margin-left: -0.125rem;
-      margin-right: var(--input-space);
-      border-top-left-radius: var(--rabbit-border-radius-base);
-      border-bottom-left-radius: var(--rabbit-border-radius-base);
-      overflow: hidden;
-    }
-
-    .input-suffix {
-      display: flex;
-      align-items: center;
-      margin-left: var(--input-space);
-      margin-right: -0.125rem;
-      border-top-right-radius: var(--rabbit-border-radius-base);
-      border-bottom-right-radius: var(--rabbit-border-radius-base);
-      overflow: hidden;
-    }
+    align-items: center;
+    margin-left: -0.125rem;
+    margin-right: var(--input-space);
+    border-top-left-radius: var(--rabbit-border-radius-base);
+    border-bottom-left-radius: var(--rabbit-border-radius-base);
+    overflow: hidden;
   }
 
-  .input-clear-icon {
+  .rabbit-input-suffix {
+    display: flex;
+    align-items: center;
+    margin-left: var(--input-space);
+    margin-right: -0.125rem;
+    border-top-right-radius: var(--rabbit-border-radius-base);
+    border-bottom-right-radius: var(--rabbit-border-radius-base);
+    overflow: hidden;
+  }
+
+  .rabbit-input-clear {
     background-color: rgba(0, 0, 0, 0.1);
     display: none;
     align-items: center;
@@ -63,7 +63,7 @@
     cursor: pointer;
   }
   &:hover {
-    .input-clear-icon {
+    .rabbit-input-clear {
       display: flex;
     }
   }

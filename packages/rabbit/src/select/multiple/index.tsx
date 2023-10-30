@@ -122,7 +122,7 @@ export default function MultipleSelect<T extends SelectValueType>({
 
   return (
     <div
-      className={classNames('rabbit-multiple-select-wrapper rabbit-component', disabled && 'is-disabled', className)}
+      className={classNames('rabbit-multiple-select-wrapper rabbit-component', disabled && 'is-disabled', visiblePopover && 'is-focus', className)}
       style={style}
       {...extra}>
       {disabled ? (

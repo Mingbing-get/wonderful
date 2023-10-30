@@ -1,4 +1,15 @@
-import type { InputProps as rcInputProps, InputRef } from 'rc-input'
+export interface CommonInputProps {
+  prefix?: React.ReactNode
+  suffix?: React.ReactNode
+  inputClassName?: string
+  inputStyle?: React.CSSProperties
+  allowClear?:
+    | boolean
+    | {
+        clearIcon?: React.ReactNode
+      }
+}
 
-export type InputProps = Omit<rcInputProps, 'prefixCls'>
-export { InputRef }
+export interface InputProps extends CommonInputProps, Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size' | 'prefix'> {}
+
+export type InputRef = HTMLInputElement | null

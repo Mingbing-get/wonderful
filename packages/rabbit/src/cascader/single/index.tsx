@@ -13,7 +13,7 @@ import { checkedPathToLinkPath } from '../../hooks/useTree/utils'
 import { isSame } from '../../utils'
 
 import { CascaderOption, CascaderSingleProps, CascaderSingleDisplayRender, CascaderDropdownRender, CascaderNotFoundContent } from '../../types/cascader'
-import { InputRef } from 'rc-input'
+import { InputRef } from '../../types/input'
 
 const defaultDisplayRender: CascaderSingleDisplayRender = (labels, _) => labels.join(' / ')
 const defaultDropdownRender: CascaderDropdownRender = (menus, _) => menus
@@ -170,7 +170,7 @@ export default function SingleCascader({
 
   return (
     <div
-      className={classNames('rabbit-cascader-wrapper', 'rabbit-component', className)}
+      className={classNames('rabbit-cascader-wrapper', 'rabbit-component', visiblePopover && 'is-focus', className)}
       {...extra}>
       <Popover
         arrow="none"

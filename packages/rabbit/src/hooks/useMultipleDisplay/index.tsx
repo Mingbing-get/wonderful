@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react'
 import classNames from 'classnames'
-import { InputRef } from 'rc-input'
+import { InputRef } from '../../types/input'
 
 import compatible from '../../compatible'
 import Input from '../../input'
@@ -27,9 +27,11 @@ export default function useMultipleDisplay({ hasValue, showSearchInput, children
     setTimeout(() => {
       if (!valueWrapperRef.current) {
         setWrapperHeight('auto')
-      } else {
-        setWrapperHeight(compatible.getBoundingClientRect(valueWrapperRef.current).height || 'auto')
+        return
       }
+      compatible.getBoundingClientRect(valueWrapperRef.current).then((rectDom) => {
+        setWrapperHeight(rectDom.height || 'auto')
+      })
     })
   }, [children, hasValue])
 

@@ -1,32 +1,42 @@
-import { useState, useRef, useEffect, useCallback } from 'react'
-import useDebounceAndThrottle from '../useDebounceAndThrottle'
+import { useState, useRef, useEffect } from 'react'
+import compatible from '../../compatible'
 
-import './index.scss'
-
-export default function useResize() {
-  const [width, setWidth] = useState<number>()
-  const iframeRef = useRef<HTMLIFrameElement>(null)
-
-  const changeSize = useCallback(() => {
-    setWidth(oldWidth => {
-      if (!iframeRef.current) return oldWidth
-      const width = iframeRef.current.offsetWidth
-      return width
-    })
-  }, [])
-
-  const resizeCb = useDebounceAndThrottle(changeSize)
+export default function useResize<T extends HTMLElement>() {
+  const [width, setWidth] = useState<number>(0)
+  const resizeObserverRef = useRef<ResizeObserver>()
+  const domRef = useRef<T>(null)
 
   useEffect(() => {
-    if (!iframeRef.current) return
-    iframeRef.current.setAttribute('class', 'rabbit-table-iframe')
-    iframeRef.current.contentWindow?.addEventListener('resize', resizeCb)
+    resizeObserverRef.current = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        if (entry.target !== domRef.current) {
+          continue
+        }
 
-    setWidth(iframeRef.current.offsetWidth)
-  }, [iframeRef.current])
+        if (entry.contentBoxSize) {
+          setWidth(entry.contentBoxSize[0].inlineSize)
+        } else {
+          setWidth(entry.contentRect.width)
+        }
+      }
+    })
+
+    return () => {
+      resizeObserverRef.current?.disconnect()
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!domRef.current) return
+
+    resizeObserverRef.current?.observe(domRef.current)
+    compatible.getBoundingClientRect(domRef.current).then((domRect) => {
+      setWidth(domRect.width)
+    })
+  }, [domRef.current])
 
   return {
     width,
-    iframeRef
+    domRef,
   }
 }

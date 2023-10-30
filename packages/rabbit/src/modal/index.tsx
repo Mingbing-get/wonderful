@@ -10,6 +10,16 @@ import { ModalProps } from '../types/modal'
 import './index.scss'
 const animationTime = 200
 
+interface ContainerRect {
+  left: number | string
+  top: number | string
+  width: number | string
+  height: number | string
+  [x: string]: any
+}
+
+const bodyContainerRect: ContainerRect = { left: 0, top: 0, width: '100vw', height: '100vh' }
+
 export default function Modal({
   header,
   content,
@@ -28,6 +38,7 @@ export default function Modal({
 }: ModalProps) {
   const [_visible, setVisible] = useState(!!visible)
   const [hidden, setHidden] = useState(!visible)
+  const [containerRect, setContainerRect] = useState<ContainerRect>(bodyContainerRect)
 
   useEffect(() => {
     if (_visible !== visible && visible !== undefined) {
@@ -49,6 +60,16 @@ export default function Modal({
     }
   }, [_visible])
 
+  useEffect(() => {
+    if (getContainer() === compatible.getBody()) {
+      setContainerRect(bodyContainerRect)
+    } else {
+      compatible.getBoundingClientRect(getContainer()).then((domRect) => {
+        setContainerRect(domRect)
+      })
+    }
+  }, [getContainer])
+
   function handleClose() {
     setHidden(true)
     delaySetVisible(false)
@@ -68,16 +89,6 @@ export default function Modal({
   }
 
   if (!_visible) return <></>
-
-  const containerRect =
-    getContainer() === compatible.getBody()
-      ? {
-          left: 0,
-          top: 0,
-          width: '100vw',
-          height: '100vh',
-        }
-      : compatible.getBoundingClientRect(getContainer())
 
   return ReactDOM.createPortal(
     <div

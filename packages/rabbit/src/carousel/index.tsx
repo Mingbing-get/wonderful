@@ -31,7 +31,6 @@ function Carousel(
   }: CarouselProps,
   ref?: React.ForwardedRef<CarouselRef>
 ) {
-  const [carouselShowWidth, setCarouselShowWidth] = useState(0)
   const [current, setCurrent] = useState(0)
   const [factCurrent, setFactCurrent] = useState(0)
   const [_speed, setSpeed] = useState(0)
@@ -42,13 +41,7 @@ function Carousel(
   const touchStart = useRef(-1)
   const timer = useRef<number | NodeJS.Timeout>()
 
-  const { iframeRef, width } = useResize()
-
-  useEffect(() => {
-    if (!width) return
-
-    setCarouselShowWidth(width)
-  }, [width])
+  const { width: carouselShowWidth, domRef: wrapperRef } = useResize<HTMLDivElement>()
 
   const carouselItems = useMemo(() => {
     if (!children) return
@@ -216,8 +209,8 @@ function Carousel(
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
-      style={style}>
-      <iframe ref={iframeRef} />
+      style={style}
+      ref={wrapperRef}>
       <div
         className="carousel-scroll"
         style={

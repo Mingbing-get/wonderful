@@ -12,7 +12,7 @@ import Icon from '../../icon'
 
 import { TreeNode } from '../../types/tree'
 import { SingleTreeSelectProps } from '../../types/treeSelect'
-import { InputRef } from 'rc-input'
+import { InputRef } from '../../types/input'
 
 export default function SingleTreeSelect({
   style,
@@ -166,7 +166,7 @@ export default function SingleTreeSelect({
       }>
       <WithSearchTrigger
         {...extra}
-        className={classNames('rabbit-tree-select-wrapper', className)}
+        className={classNames('rabbit-tree-select-wrapper', visible && 'is-focus', className)}
         style={style}
         allowClear={allowClear}
         showSearchInput={showSearchInput}

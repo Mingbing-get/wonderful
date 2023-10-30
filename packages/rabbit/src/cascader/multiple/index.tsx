@@ -188,7 +188,7 @@ export default function MultipleCascader({
 
   return (
     <div
-      className={classNames('rabbit-cascader-wrapper rabbit-component', allowClear && 'allow-clear', className)}
+      className={classNames('rabbit-cascader-wrapper rabbit-component', visiblePopover && 'is-focus', allowClear && 'allow-clear', className)}
       {...extra}>
       <Popover
         ref={popoverRef}

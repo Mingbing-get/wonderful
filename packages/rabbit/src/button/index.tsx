@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import classNames from 'classnames'
 
 import Loading from '../loading'
@@ -7,9 +7,17 @@ import { ButtonProps } from '../types/button'
 import './index.scss'
 
 function Button({ type, loading, block, disabled, ghost, children, className, onClick, ...extra }: ButtonProps, ref?: React.ForwardedRef<HTMLDivElement>) {
+  const [addBoxShadow, setAddBoxShadow] = useState(false)
+
   function handleClick(e: React.MouseEvent<HTMLDivElement>) {
     if (disabled || loading) return
     onClick?.(e)
+
+    setAddBoxShadow(true)
+
+    setTimeout(() => {
+      setAddBoxShadow(false)
+    }, 200)
   }
 
   return (
@@ -22,6 +30,7 @@ function Button({ type, loading, block, disabled, ghost, children, className, on
         disabled && 'is-disabled',
         loading && 'is-loading',
         ghost && 'is-ghost',
+        addBoxShadow && 'transition-shadow',
         className
       )}
       onClick={handleClick}

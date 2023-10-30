@@ -26,6 +26,9 @@
       display: inline-block;
     }
   }
+  &.is-focus {
+    border-color: var(--rabbit-primary-color);
+  }
 }
 
 .cascader-empty {

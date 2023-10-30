@@ -8,6 +8,10 @@
     align-items: center;
   }
 
+  &.is-focus {
+    border-color: var(--rabbit-primary-color);
+  }
+
   .tree-select-icon {
     padding: 0 0.2rem;
     .tree-select-clear {

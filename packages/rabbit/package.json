@@ -10,7 +10,6 @@
   "license": "ISC",
   "dependencies": {
     "dayjs": "^1.11.7",
-    "rc-input": "^0.1.4",
     "react-color": "^2.19.3"
   },
   "devDependencies": {

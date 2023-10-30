@@ -10,6 +10,10 @@
     padding: 0 0.2rem;
   }
 
+  &.is-focus {
+    border-color: var(--rabbit-primary-color);
+  }
+
   &.is-disabled {
     background-color: var(--rabbit-disabled-bg-color);
     cursor: not-allowed;
