@@ -1,7 +1,6 @@
 import React, { useRef, useEffect, useState, useMemo, useCallback } from 'react'
 import PopoverHandle from '../popoverHandle'
 
-import { InputRef } from '../types/input'
 import { PopoverProps, PopoverRef } from '../types/popover'
 
 function Popover(
@@ -10,7 +9,7 @@ function Popover(
 ) {
   const [target, setTarget] = useState<HTMLElement>()
 
-  const targetRef = useRef<HTMLElement | InputRef>(null)
+  const targetRef = useRef<HTMLElement>(null)
   const perTargetRef = useRef(false)
   const counter = useRef(0)
   const hoverTimer = useRef<number | NodeJS.Timeout>()
@@ -102,7 +101,7 @@ function Popover(
   }, [targetRef.current])
 
   const getTargetElement = useCallback(() => {
-    return (targetRef.current as InputRef)?.input || (targetRef.current as HTMLElement)
+    return targetRef.current as HTMLElement
   }, [targetRef.current])
 
   useEffect(() => {
