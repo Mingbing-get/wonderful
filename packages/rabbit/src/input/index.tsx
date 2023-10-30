@@ -46,7 +46,7 @@ function Input(
   useEffect(() => {
     if (value === undefined) return
 
-    setInputValue(value)
+    setInputValue(value === 0 || value ? value : '')
   }, [value])
 
   useImperativeHandle(ref, () => inputRef.current as HTMLInputElement, [])
