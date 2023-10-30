@@ -1,5 +1,5 @@
 .rabbit-input-wrapper {
-  height: var(--rabbit-input-height-base);
+  min-height: var(--rabbit-input-height-base);
   border: 1px solid var(--rabbit-border-color-base);
   min-width: var(--rabbit-input-min-width);
   border-radius: var(--rabbit-border-radius-base);
@@ -39,6 +39,7 @@
     border-top-left-radius: var(--rabbit-border-radius-base);
     border-bottom-left-radius: var(--rabbit-border-radius-base);
     overflow: hidden;
+    max-height: 100%;
   }
 
   .rabbit-input-suffix {
@@ -49,6 +50,7 @@
     border-top-right-radius: var(--rabbit-border-radius-base);
     border-bottom-right-radius: var(--rabbit-border-radius-base);
     overflow: hidden;
+    max-height: 100%;
   }
 
   .rabbit-input-clear {

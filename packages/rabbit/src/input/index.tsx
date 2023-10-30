@@ -44,7 +44,9 @@ function Input(
   }, [])
 
   useEffect(() => {
-    setInputValue(value || '')
+    if (value === undefined) return
+
+    setInputValue(value)
   }, [value])
 
   useImperativeHandle(ref, () => inputRef.current as HTMLInputElement, [])
@@ -59,7 +61,7 @@ function Input(
         className={inputClassName}
         style={inputStyle}
         ref={inputRef}
-        defaultValue={defaultValue || value}
+        defaultValue={defaultValue}
         onFocus={handleFocus}
         onBlur={handleBlur}
       />

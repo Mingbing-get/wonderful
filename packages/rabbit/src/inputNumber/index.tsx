@@ -15,7 +15,7 @@ function InputNumber(
   { defaultValue, value, step = 1, min, max, showStepBtn = true, suffix, className, onChange, onBlur, ...extra }: InputNumberProps,
   ref: React.ForwardedRef<InputRef>
 ) {
-  const [_value, setValue] = useState<number>()
+  const [_value, setValue] = useState<number | ''>()
   const preValue = useRef<number>()
 
   const curReg = useMemo(() => {
@@ -52,13 +52,14 @@ function InputNumber(
 
   function handleBlur(e: React.FocusEvent<HTMLInputElement>) {
     const newValue = setValueUsePrevent(_value)
-    setValue(newValue)
+
+    setValue(newValue === undefined ? '' : newValue)
     onChange?.(newValue)
     preValue.current = newValue
     onBlur?.(e)
   }
 
-  function setValueUsePrevent(value?: number) {
+  function setValueUsePrevent(value?: number | '') {
     if ((value && !curReg.test(`${value}`)) || value === undefined) return undefined
 
     let newValue = Number(value)

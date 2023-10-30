@@ -147,7 +147,14 @@ export default function MultipleSelect<T extends SelectValueType>({
         </Popover>
       )}
       <span className="select-icon">
-        <span className="select-arrow">{<Icon type={showSearchInput ? 'search' : 'arrowDown'} />}</span>
+        <span className="select-arrow">
+          {
+            <Icon
+              className={classNames('icon-arrow-down-fill', visiblePopover && !showSearchInput && 'rotate-180')}
+              type={showSearchInput ? 'search' : 'arrowDownFill'}
+            />
+          }
+        </span>
       </span>
     </div>
   )

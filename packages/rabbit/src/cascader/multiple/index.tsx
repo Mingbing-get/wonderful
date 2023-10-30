@@ -226,7 +226,14 @@ export default function MultipleCascader({
         {component}
       </Popover>
       <span className="cascader-icon">
-        <span className="cascader-arrow">{suffixIcon || <Icon type={showSearchInput ? 'search' : 'arrowDown'} />}</span>
+        <span className="cascader-arrow">
+          {suffixIcon || (
+            <Icon
+              className={classNames('icon-arrow-down-fill')}
+              type={showSearchInput ? 'search' : 'arrowDownFill'}
+            />
+          )}
+        </span>
         <span
           className="cascader-clear"
           onClick={(e) => {

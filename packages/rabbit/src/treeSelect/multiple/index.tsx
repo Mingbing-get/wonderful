@@ -214,7 +214,14 @@ export default function MultipleTreeSelect({
         {component}
       </Popover>
       <span className="tree-select-icon">
-        <span className="tree-select-arrow">{suffixIcon || <Icon type={showSearchInput ? 'search' : 'arrowDown'} />}</span>
+        <span className="tree-select-arrow">
+          {suffixIcon || (
+            <Icon
+              className={classNames('icon-arrow-down-fill')}
+              type={showSearchInput ? 'search' : 'arrowDownFill'}
+            />
+          )}
+        </span>
         <span
           className="tree-select-clear"
           onClick={(e) => {

@@ -74,7 +74,14 @@ function WithSearchTrigger(
         />
       </div>
       <span className="with-search-icon">
-        <span className="with-search-arrow">{suffixIcon || <Icon type={showSearchInput ? 'search' : 'arrowDown'} />}</span>
+        <span className="with-search-arrow">
+          {suffixIcon || (
+            <Icon
+              className={classNames('icon-arrow-down-fill')}
+              type={showSearchInput ? 'search' : 'arrowDownFill'}
+            />
+          )}
+        </span>
         <span
           className="with-search-clear"
           onClickCapture={(e) => {

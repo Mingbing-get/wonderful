@@ -9,4 +9,8 @@ import './index.scss'
 responseRegister()
 // compatible.setPlatform('weapp')
 
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(<ExampleRender />)
+ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+  <React.StrictMode>
+    <ExampleRender />
+  </React.StrictMode>
+)
