@@ -71,5 +71,7 @@ export type {
   SingleReturn as TreeSingleReturn,
 } from '../hooks/useTree/type'
 
+export * from '../colorPicker/base/type'
+
 export * from '../popoverInstance/type'
 export * from '../compatible'

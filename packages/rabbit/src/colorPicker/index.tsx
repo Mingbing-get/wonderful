@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { SketchPicker, ColorResult } from 'react-color'
 import classNames from 'classnames'
 
+import BaseColorPicker from './base'
 import Popover from '../popover'
 import { ColorPickerProps } from '../types/colorPicker'
 
@@ -15,9 +15,9 @@ export default function ColorPicker({ className, style, value, children, onChang
   }, [value])
 
   const handleChange = useCallback(
-    (newColor: ColorResult) => {
-      setValue(newColor.hex)
-      onChange?.(newColor.hex)
+    (newColor?: string) => {
+      setValue(newColor)
+      onChange?.(newColor)
     },
     [onChange]
   )
@@ -28,8 +28,8 @@ export default function ColorPicker({ className, style, value, children, onChang
       placement="top"
       arrow="small"
       content={
-        <SketchPicker
-          color={_value}
+        <BaseColorPicker
+          value={_value}
           onChange={handleChange}
         />
       }>

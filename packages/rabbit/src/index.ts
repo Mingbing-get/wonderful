@@ -1,8 +1,7 @@
 import './index.scss'
 export * from './types'
 export { dayjs } from './calendar/utils'
-export { SketchPicker } from 'react-color'
-export type { SketchPickerProps } from 'react-color'
+export { default as BaseColorPicker } from './colorPicker/base'
 
 export { default as Icon, pathKeys as iconPathKeys } from './icon'
 export { default as Loading } from './loading'
