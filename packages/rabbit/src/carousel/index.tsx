@@ -148,19 +148,16 @@ function Carousel(
   )
 
   function handleNext() {
-    stop()
     next()
     start()
   }
 
   function handlePrev() {
-    stop()
     prev()
     start()
   }
 
   function handleGoTo(slideNumber: number) {
-    stop()
     goTo(slideNumber, true)
     start()
   }

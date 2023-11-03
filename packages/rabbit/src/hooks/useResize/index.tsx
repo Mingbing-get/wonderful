@@ -7,6 +7,8 @@ export default function useResize<T extends HTMLElement>() {
   const domRef = useRef<T>(null)
 
   useEffect(() => {
+    if (typeof ResizeObserver !== 'function') return
+
     resizeObserverRef.current = new ResizeObserver((entries) => {
       for (const entry of entries) {
         if (entry.target !== domRef.current) {
