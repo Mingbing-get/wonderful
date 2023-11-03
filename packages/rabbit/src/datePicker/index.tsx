@@ -214,7 +214,7 @@ export default function DatePicker({
             {allowClear && (
               <span
                 className="clear"
-                onClickCapture={handleClear}>
+                onClick={handleClear}>
                 {allowClear === true ? <Icon type="close" /> : allowClear.clearIcon}
               </span>
             )}

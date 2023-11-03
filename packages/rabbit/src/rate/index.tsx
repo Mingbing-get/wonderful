@@ -159,17 +159,19 @@ type RenderRateProps = {
   isChecked: boolean
   curIcon: React.ReactNode
   onClickItem: (index: number, isHalf: boolean, e: React.MouseEvent<HTMLDivElement>) => void
+  onMouseEnter?: (e: React.MouseEvent<HTMLDivElement>) => void
   onMouseEnterItem: (index: number, isHalf: boolean, e: React.MouseEvent<HTMLDivElement>) => void
   onMouseLeaveItem: (index: number, isHalf: boolean, e: React.MouseEvent<HTMLDivElement>) => void
 }
 
 function RenderRate(
-  { index, isChecked, isHalf, curIcon, onClickItem, onMouseEnterItem, onMouseLeaveItem }: RenderRateProps,
+  { index, isChecked, isHalf, curIcon, onClickItem, onMouseEnter, onMouseEnterItem, onMouseLeaveItem }: RenderRateProps,
   ref?: React.ForwardedRef<HTMLDivElement>
 ) {
   return (
     <div
       ref={ref}
+      onMouseEnter={onMouseEnter}
       className={classNames('rate-item', isHalf && 'is-half', isChecked && 'is-checked')}>
       <div
         className="rate-item-half"

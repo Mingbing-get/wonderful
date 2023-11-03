@@ -17,7 +17,7 @@ function defaultDisplayRender<T extends SelectValueType>(checkedPath: SelectOpti
         className="multiple-display-tag"
         closable={!!onClose}
         key={option.value}
-        onCloseCapture={(e) => {
+        onClose={(e) => {
           onClose?.(option)
           e.stopPropagation()
         }}>

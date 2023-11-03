@@ -119,7 +119,7 @@ export default function Select<T extends SelectValueType>({
               <Icon
                 className="icon-close"
                 type="close"
-                onClickCapture={handleClear}
+                onClick={handleClear}
               />
             )}
             <Icon

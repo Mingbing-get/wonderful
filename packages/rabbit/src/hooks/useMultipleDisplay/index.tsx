@@ -50,7 +50,7 @@ export default function useMultipleDisplay({ hasValue, showSearchInput, children
           ref={inputRef}
           value={searchText}
           onChange={(e) => setSearchText(e.target.value)}
-          onClickCapture={(e) => e.stopPropagation()}
+          onClick={(e) => e.stopPropagation()}
         />
       </div>
     )

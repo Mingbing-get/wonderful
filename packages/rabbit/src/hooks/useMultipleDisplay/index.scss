@@ -17,6 +17,7 @@
     text-overflow: ellipsis;
     overflow-x: auto;
     flex-wrap: wrap;
+    z-index: 1;
 
     .multiple-display-tag:not(:last-child) {
       margin-right: 0.2rem;

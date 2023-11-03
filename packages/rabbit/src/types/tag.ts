@@ -9,5 +9,4 @@ export type TagProps = {
   icon?: React.ReactNode
   children?: React.ReactNode
   onClose?: (e: React.MouseEvent) => void
-  onCloseCapture?: (e: React.MouseEvent) => void
 } & React.HTMLAttributes<HTMLSpanElement>

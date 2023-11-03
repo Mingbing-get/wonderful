@@ -27,7 +27,7 @@ const defaultDisplayRender = (checkedPath: CascaderOption[][], onClose: (data: C
         className="multiple-display-tag"
         closable
         key={curLastNode?.value}
-        onCloseCapture={(e) => {
+        onClose={(e) => {
           onClose(curLastNode)
           e.stopPropagation()
         }}>

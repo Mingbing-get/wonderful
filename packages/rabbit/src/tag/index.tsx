@@ -16,7 +16,7 @@ const presetColorMap = {
 export type TagColorType = keyof typeof presetColorMap
 
 function Tag(
-  { className, style, closable, closeIcon, color = 'default', icon, children, onClose, onCloseCapture, ...extra }: TagProps,
+  { className, style, closable, closeIcon, color = 'default', icon, children, onClose, ...extra }: TagProps,
   ref?: React.ForwardedRef<HTMLDivElement>
 ) {
   const [isClose, setClose] = useState(false)
@@ -32,11 +32,6 @@ function Tag(
     onClose?.(e)
   }
 
-  function handleCloseCapture(e: React.MouseEvent<HTMLSpanElement>) {
-    setClose(true)
-    onCloseCapture?.(e)
-  }
-
   if (isClose) return <></>
 
   return (
@@ -50,7 +45,6 @@ function Tag(
       {closable && (
         <span
           className="tag-close"
-          onClickCapture={handleCloseCapture}
           onClick={handleClose}>
           {closeIcon || (
             <Icon

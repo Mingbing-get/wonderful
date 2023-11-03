@@ -70,7 +70,7 @@ function WithSearchTrigger(
           ref={inputRef}
           value={_searchText}
           onChange={handleChangeSearchText}
-          onClickCapture={(e) => e.stopPropagation()}
+          onClick={(e) => e.stopPropagation()}
         />
       </div>
       <span className="with-search-icon">
@@ -84,7 +84,7 @@ function WithSearchTrigger(
         </span>
         <span
           className="with-search-clear"
-          onClickCapture={(e) => {
+          onClick={(e) => {
             onClear?.()
             e.stopPropagation()
           }}>
