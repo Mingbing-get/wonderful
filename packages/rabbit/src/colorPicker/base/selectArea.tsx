@@ -37,8 +37,9 @@ export default function SelectArea({ style, className, value, onChange }: Props)
       if (!areaRef.current) return
 
       const { width, height, left, top } = await compatible.getBoundingClientRect(areaRef.current)
-      const rx = e.clientX - left
-      const ry = e.clientY - top
+      const { clientX, clientY } = compatible.getClientFromMouseEvent(e)
+      const rx = clientX - left
+      const ry = clientY - top
 
       const colorValue = hsvaObjectToRgbaObject({ h: hsvValue.h, s: rx / width, v: (height - ry) / height, a: hsvValue.a })
       onChange?.(colorObjectToHex(colorValue))

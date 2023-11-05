@@ -26,7 +26,7 @@ export default function TrickBar({ style, className, rate, onChange }: Props) {
     function mouseMove(e: MouseEvent) {
       if (!mouseDownRef.current) return
 
-      changeRef.current(e.clientX)
+      changeRef.current(compatible.getClientFromMouseEvent(e as any).clientX)
     }
 
     function mouseUp(e: MouseEvent) {
@@ -57,7 +57,7 @@ export default function TrickBar({ style, className, rate, onChange }: Props) {
 
   const handleClickTrick = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
-      handleChange(e.clientX)
+      handleChange(compatible.getClientFromMouseEvent(e).clientX)
     },
     [handleChange]
   )

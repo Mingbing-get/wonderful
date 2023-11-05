@@ -40,18 +40,18 @@ export default function useMultipleDisplay({ hasValue, showSearchInput, children
       <div
         className={classNames('multiple-display-trigger', showSearchInput && 'show-input')}
         style={{ height: wrapperHeight }}>
-        <div
-          ref={valueWrapperRef}
-          className={classNames('multiple-display-value', !hasValue && 'show-placeholder')}
-          style={{ height: !hasValue ? '100%' : 'auto' }}>
-          {children}
-        </div>
         <Input
           ref={inputRef}
           value={searchText}
           onChange={(e) => setSearchText(e.target.value)}
           onClick={(e) => e.stopPropagation()}
         />
+        <div
+          ref={valueWrapperRef}
+          className={classNames('multiple-display-value', !hasValue && 'show-placeholder')}
+          style={{ height: !hasValue ? '100%' : 'auto' }}>
+          {children}
+        </div>
       </div>
     )
   }, [showSearchInput, wrapperHeight, hasValue, children, searchText])

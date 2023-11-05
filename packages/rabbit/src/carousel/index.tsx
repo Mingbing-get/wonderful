@@ -166,7 +166,7 @@ function Carousel(
     e.stopPropagation()
     if (effect === 'fade') return
 
-    touchStart.current = e.targetTouches[0].clientX
+    touchStart.current = (e.targetTouches || e.touches)[0].clientX
     pause()
     setSpeed(0)
   }
@@ -175,7 +175,7 @@ function Carousel(
     e.stopPropagation()
     if (touchStart.current === -1) return
 
-    setOffset(e.targetTouches[0].clientX - touchStart.current)
+    setOffset((e.targetTouches || e.touches)[0].clientX - touchStart.current)
   }
 
   function handleTouchEnd(e: React.TouchEvent) {
@@ -185,16 +185,20 @@ function Carousel(
     start()
     setOffset(0)
     setSpeed(speed)
-    touchStart.current = -1
 
     const dis = Math.abs(e.changedTouches[0].clientX - touchStart.current)
-    if (dis < carouselShowWidth / 3) return
+    
+    if (dis < carouselShowWidth / 3) {
+      touchStart.current = -1
+      return
+    }
 
     if (e.changedTouches[0].clientX < touchStart.current) {
       next()
     } else {
       prev()
     }
+    touchStart.current = -1
   }
 
   return (

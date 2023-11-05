@@ -34,6 +34,10 @@ export interface RenderRoot {
   (child: React.ReactNode, container: HTMLElement): void
 }
 
+export interface GetClientFromMouseEvent {
+  (e: React.MouseEvent): { clientX: number, clientY: number }
+}
+
 export type Platform = 'web' | 'weapp'
 
 interface CompatibleRegister {
@@ -44,6 +48,7 @@ interface CompatibleRegister {
   appendChild: AppendChild
   removeChild: RemoveChild
   renderRoot: RenderRoot
+  getClientFromMouseEvent: GetClientFromMouseEvent
 }
 
 class Compatible implements CompatibleRegister {
@@ -75,6 +80,10 @@ class Compatible implements CompatibleRegister {
 
   renderRoot(child: React.ReactNode, container: HTMLElement) {
     createRoot(container).render(child)
+  }
+
+  getClientFromMouseEvent(e: React.MouseEvent) {
+    return { clientX: e.clientX, clientY: e.clientY }
   }
 
   register<K extends keyof CompatibleRegister, V extends CompatibleRegister[K]>(key: K, fn: V) {

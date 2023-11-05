@@ -104,7 +104,7 @@ export default class PopoverInstance {
     if (!this.option.arrow || !this.target) return
 
     const style: Record<string, any> = {
-      ...this.stringToStyle(this.option.arrow.getAttribute('style')),
+      ...this.stringToStyle(this.option.arrow.getAttribute('style'), ['top', 'left', 'right', 'bottom']),
       position: 'fixed',
     }
     const dir = this.getDir(placement)
@@ -150,7 +150,7 @@ export default class PopoverInstance {
     return strList.join(';')
   }
 
-  private stringToStyle(styleStr?: string | null) {
+  private stringToStyle(styleStr?: string | null, excludeKeys?: string[]) {
     if (!styleStr) return {}
 
     const style: Record<string, any> = {}
@@ -159,6 +159,8 @@ export default class PopoverInstance {
     styleList.forEach((item) => {
       const itemSplit = item.split(':')
       if (itemSplit.length < 2 || controlCssKeys.includes(itemSplit[0])) return
+
+      if (excludeKeys?.includes(itemSplit[0].trim())) return
 
       style[itemSplit[0]] = itemSplit.splice(1).join(':')
     })
@@ -170,13 +172,18 @@ export default class PopoverInstance {
     if (!this.popper) return
 
     const _style = {
-      ...this.stringToStyle(this.popper.getAttribute('style')),
+      ...this.stringToStyle(this.popper.getAttribute('style'), ['top', 'left', 'right', 'bottom']),
       position: 'fixed',
       ...style,
     }
 
     this.popper.setAttribute('style', this.styleToString(_style))
-    this.popper.setAttribute('data-popper-placement', placement)
+    const dir = this.getDir(placement)
+    const classList = this.popper.classList
+    ;['top', 'left', 'right', 'bottom'].forEach(item => {
+      classList.remove(`popper-placement-${item}`)
+    })
+    this.popper.classList.add(`popper-placement-${dir}`)
     this.updateArrow(placement)
   }
 

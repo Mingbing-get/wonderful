@@ -64,7 +64,7 @@ function Popover(
         if (counter.current === 0) setIsHidden(true)
       }, delay)
     }
-
+    
     compatible.getBody().addEventListener('click', clickHandle)
     compatible.getBody().addEventListener('mousemove', handleMouseMove)
 

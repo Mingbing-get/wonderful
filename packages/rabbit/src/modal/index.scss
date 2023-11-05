@@ -22,6 +22,7 @@
     background-color: #fff;
     box-shadow: var(--rabbit-box-shadow-base);
     padding: 0.5rem 1rem;
+    box-sizing: border-box;
 
     .modal-header {
       padding-bottom: 0.5rem;

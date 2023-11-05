@@ -26,12 +26,12 @@ export default function Slider({ min = 0, max = 100, step = 1, value, showLabel 
 
   function handleMouseDown(e: React.MouseEvent<HTMLDivElement>) {
     preRate = selectRate
-    setStartX(e.clientX)
+    setStartX(compatible.getClientFromMouseEvent(e).clientX)
   }
 
   function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
     if (startX === -1) return
-    changeRate(preRate + ((e.clientX - startX) / getTrickWidth()) * 100)
+    changeRate(preRate + ((compatible.getClientFromMouseEvent(e).clientX - startX) / getTrickWidth()) * 100)
   }
 
   function handleMouseUp() {
@@ -42,7 +42,7 @@ export default function Slider({ min = 0, max = 100, step = 1, value, showLabel 
     if (!trick.current) return
 
     const trickRect = await compatible.getBoundingClientRect(trick.current)
-    changeRate(((e.clientX - trickRect.left) / trickRect.width) * 100)
+    changeRate(((compatible.getClientFromMouseEvent(e).clientX - trickRect.left) / trickRect.width) * 100)
   }
 
   function changeRate(newRate: number) {

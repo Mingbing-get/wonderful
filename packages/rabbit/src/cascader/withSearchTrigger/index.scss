@@ -21,6 +21,7 @@
       text-overflow: ellipsis;
       word-break: keep-all;
       white-space: nowrap;
+      z-index: 2;
 
       .with-search-tag:not(:last-child) {
         margin-right: 0.2rem;

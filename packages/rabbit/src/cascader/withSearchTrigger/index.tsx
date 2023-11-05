@@ -65,13 +65,13 @@ function WithSearchTrigger(
       style={style}
       className={classNames('rabbit-with-search-trigger-wrapper rabbit-component', className, allowClear && 'allow-clear', disabled && 'is-disabled')}>
       <div className={classNames('with-search-trigger', showSearchInput && 'show-input')}>
-        <div className={classNames('with-search-value', showPlaceholder && 'show-placeholder')}>{showPlaceholder ? placeholder : displayValue}</div>
         <Input
           ref={inputRef}
           value={_searchText}
           onChange={handleChangeSearchText}
           onClick={(e) => e.stopPropagation()}
         />
+        <div className={classNames('with-search-value', showPlaceholder && 'show-placeholder')}>{showPlaceholder ? placeholder : displayValue}</div>
       </div>
       <span className="with-search-icon">
         <span className="with-search-arrow">

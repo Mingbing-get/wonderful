@@ -44,7 +44,7 @@ export default function useDragTree({ expandHandleWidth, draggleHandleWidth, sto
       }
 
       const { top, height, left, width } = await compatible.getBoundingClientRect(e.currentTarget)
-      const y = e.clientY
+      const y = compatible.getClientFromMouseEvent(e).clientY
       const isTop = y - top < height / 2
 
       innerLocation.current = isTop ? 'before' : stopLongTime.current ? 'children' : 'after'
