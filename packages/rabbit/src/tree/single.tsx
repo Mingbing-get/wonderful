@@ -1,38 +1,28 @@
-import React, { useMemo, useCallback, useRef, useEffect } from 'react'
-import { createPortal } from 'react-dom'
-import classNames from 'classnames'
+import React, { useMemo, useCallback, useRef } from 'react'
 
-import { isSame } from '../utils'
-import { getPathFromLinkTreeNode } from '../hooks/useTree/utils'
 import useVirtualScrollY from '../hooks/useVirtualScrollY'
-import { LinkTreeNode, TreeValue } from '../hooks/useTree/type'
+import { LinkTreeNode } from '../hooks/useTree/type'
+
+import TreeNodeRender from './components/treeNodeRender'
+import TreeExtraRender from './components/treeExtraRender'
+import TreeWrapper from './components/treeWrapper'
 import { useSingleTree } from './context'
-
-import Icon from '../icon'
-
 import useDragTree from './useDragTree'
-import { SingleTreeProps, TreeNode, TreeLabelRender } from '../types/tree'
-import compatible from '../compatible'
-
-type ChangeRecord = { node: TreeNode; res: boolean }
-
-const defaultLabelRender: TreeLabelRender<{}> = (node) => node.label || node.value
+import useResponseTree from './useResponseTree'
+import { SingleTreeProps, TreeNode } from '../types/tree'
 
 export default function SingleTree({
-  className,
   itemClassName,
-  style,
   checkedPath,
   expandPath,
   draggable,
-  showLine,
   expandIcon,
   draggleIcon = true,
   virtualScroll,
   disableSelect,
   renderLabelIcon,
   renderExtra,
-  labelRender = defaultLabelRender,
+  labelRender,
   onChecked,
   onExpand,
 
@@ -45,14 +35,7 @@ export default function SingleTree({
   loadData,
   ...extra
 }: SingleTreeProps) {
-  const hookCheckedPathRef = useRef<TreeValue[]>([])
-  const hookExpandPathRef = useRef<TreeValue[][]>([])
-  const curCheckedRef = useRef<ChangeRecord>()
-  const curExpandRef = useRef<ChangeRecord>()
   const deepRef = useRef(0)
-  const expandHandleWidth = useRef(0)
-  const draggleHandleWidth = useRef(0)
-  const treeWrapperRef = useRef<HTMLDivElement>(null)
 
   const {
     linkForest,
@@ -64,52 +47,21 @@ export default function SingleTree({
     changeExpandPath,
     canMove: hookCanMove,
     move,
-    clearChecked,
   } = useSingleTree()
 
-  useEffect(() => {
-    hookCheckedPathRef.current = hookCheckedPath
+  const { curCheckedRef, curExpandRef, expandHandleWidth, draggleHandleWidth, treeWrapperRef } = useResponseTree({
+    hookCheckedPath,
+    hookExpandPath,
+    checkedPath,
+    expandPath,
+    expandIcon,
+    draggleIcon,
 
-    if (curCheckedRef.current) {
-      onChecked?.(hookCheckedPath, curCheckedRef.current.node, curCheckedRef.current.res)
-      curCheckedRef.current = undefined
-    }
-  }, [hookCheckedPath, onChecked])
-
-  useEffect(() => {
-    hookExpandPathRef.current = hookExpandPath
-
-    if (curExpandRef.current) {
-      onExpand?.(hookExpandPath, curExpandRef.current.node, curExpandRef.current.res)
-      curExpandRef.current = undefined
-    }
-  }, [hookExpandPath, onExpand])
-
-  useEffect(() => {
-    if (!checkedPath || isSame(checkedPath, hookCheckedPathRef.current)) return
-
-    changeCheckedPath(checkedPath)
-  }, [checkedPath])
-
-  useEffect(() => {
-    if (!expandPath || isSame(expandPath, hookExpandPathRef.current)) return
-
-    changeExpandPath(expandPath)
-  }, [expandPath])
-
-  useEffect(() => {
-    if (!treeWrapperRef.current) return
-
-    const expandHandle = compatible.getElementsByClassName(treeWrapperRef.current, 'expand-handle')[0] as HTMLSpanElement
-    if (expandHandle) {
-      expandHandleWidth.current = expandHandle.offsetWidth
-    }
-
-    const draggleHandle = compatible.getElementsByClassName(treeWrapperRef.current, 'draggle-handle')[0] as HTMLSpanElement
-    if (draggleHandle) {
-      draggleHandleWidth.current = draggleHandle.offsetWidth
-    }
-  }, [treeWrapperRef.current, expandIcon, draggleIcon])
+    onChecked,
+    onExpand,
+    changeCheckedPath,
+    changeExpandPath,
+  })
 
   const { dragTipStyle, handleDragOver, handleDragStart, handleDragLeave, handleDrop } = useDragTree({
     expandHandleWidth: expandHandleWidth.current,
@@ -147,47 +99,23 @@ export default function SingleTree({
       const options: React.ReactNode[] = []
       linkForest.forEach((linkNode) => {
         options.push(
-          <div
-            style={{ marginLeft: `${level}rem` }}
+          <TreeNodeRender
             key={`${level}-${linkNode.value}`}
-            className={classNames(
-              'tree-item',
-              itemClassName,
-              linkNode.isExpand && 'is-expand',
-              linkNode.isLeft && 'is-left',
-              linkNode.disabled && 'is-disabled',
-              linkNode.checked && 'is-checked'
-            )}
+            level={level}
+            linkNode={linkNode}
+            className={itemClassName}
             draggable={draggable}
-            onDragStart={(e) => handleDragStart(e, linkNode)}
-            onDrop={(e) => handleDrop(e, linkNode)}
-            onDragOver={(e) => handleDragOver(e, linkNode)}
-            onDragLeave={handleDragLeave}>
-            {draggable && draggleIcon && <span className="draggle-handle">{draggleIcon === true ? <Icon type="draggle" /> : draggleIcon}</span>}
-            {linkNode.isLoading ? (
-              <Icon
-                className="tree-item-loading-icon"
-                type="loading"
-              />
-            ) : (
-              <span
-                className="expand-handle"
-                onClick={() => toggleExpand(linkNode)}>
-                {expandIcon || (
-                  <Icon
-                    className="tree-arrow-right"
-                    type="arrowRight"
-                  />
-                )}
-              </span>
-            )}
-            <span
-              onClick={() => toggleChecked(linkNode)}
-              className="tree-item-label">
-              {renderLabelIcon && <span className="label-icon">{renderLabelIcon(linkNode.data, linkNode.isExpand, linkNode.isLeft)}</span>}
-              <span>{labelRender(linkNode.data)}</span>
-            </span>
-          </div>
+            draggleIcon={draggleIcon}
+            expandIcon={expandIcon}
+            renderLabelIcon={renderLabelIcon}
+            labelRender={labelRender}
+            onDragStart={handleDragStart}
+            onDrop={handleDrop}
+            onDragLeave={handleDragLeave}
+            onDragOver={handleDragOver}
+            onToggleChecked={toggleChecked}
+            onToggleExpand={toggleExpand}
+          />
         )
 
         if (linkNode.isExpand && linkNode.children) {
@@ -195,33 +123,18 @@ export default function SingleTree({
         }
       })
 
-      const path = parentNode ? getPathFromLinkTreeNode(parentNode) : []
-      const extra = renderExtra?.(path, parentNode?.data)
-      if (extra) {
-        options.push(
-          <div
-            key={`extra-${level}-${parentNode?.value || 'first'}`}
-            style={{ marginLeft: `${level}rem` }}
-            className={classNames('tree-item', itemClassName, 'is-left')}>
-            {draggable && draggleIcon && (
-              <span
-                className="draggle-handle"
-                style={{ opacity: 0, cursor: 'default' }}>
-                {draggleIcon === true ? <Icon type="draggle" /> : draggleIcon}
-              </span>
-            )}
-            <span className="expand-handle">
-              {expandIcon || (
-                <Icon
-                  className="tree-arrow-right"
-                  type="arrowRight"
-                />
-              )}
-            </span>
-            {extra}
-          </div>
-        )
-      }
+      options.push(
+        <TreeExtraRender
+          key={`extra-${level}-${parentNode?.value || 'first'}`}
+          level={level}
+          className={itemClassName}
+          parentNode={parentNode}
+          draggable={draggable}
+          draggleIcon={draggleIcon}
+          expandIcon={expandIcon}
+          renderExtra={renderExtra}
+        />
+      )
 
       return options
     }
@@ -230,38 +143,16 @@ export default function SingleTree({
   const { handleScroll, startShow, endShow, wrapperStyle, itemsStyle } = useVirtualScrollY(renderOptions.length, virtualScroll)
 
   return (
-    <div
-      {...extra}
+    <TreeWrapper
       ref={treeWrapperRef}
-      className={classNames('rabbit-tree-wrapper', 'rabbit-component', className)}
-      style={{ ...style, ...wrapperStyle }}
-      onScroll={handleScroll}>
-      {showLine && (
-        <div className="tree-lines">
-          {new Array(deepRef.current).fill(0).map((_, index) => (
-            <div
-              key={index}
-              className="tree-line"
-              style={{ left: `calc(${index}rem + ${(draggleHandleWidth.current || expandHandleWidth.current) / 2}px)` }}
-            />
-          ))}
-        </div>
-      )}
-      <div
-        className="tree-items"
-        style={itemsStyle}>
-        {renderOptions.slice(startShow, endShow)}
-      </div>
-      {dragTipStyle &&
-        createPortal(
-          <div
-            className="tree-drag-tip rabbit-component"
-            style={dragTipStyle}>
-            <span className="circle"></span>
-            <span className="line"></span>
-          </div>,
-          compatible.getBody()
-        )}
-    </div>
+      wrapperStyle={wrapperStyle}
+      itemsStyle={itemsStyle}
+      dragTipStyle={dragTipStyle}
+      deep={deepRef.current}
+      renderItems={renderOptions.slice(startShow, endShow)}
+      lineOffset={(draggleHandleWidth.current || expandHandleWidth.current) / 2}
+      onScroll={handleScroll}
+      {...extra}
+    />
   )
 }
