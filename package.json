@@ -1,6 +1,6 @@
 {
   "name": "wonderful-marrow",
-  "version": "2.3.8",
+  "version": "2.3.9",
   "workspaces": {
     "packages": [
       "packages/audio",

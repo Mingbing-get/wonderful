@@ -7,6 +7,7 @@ export type TreeSelectBaseProps = {
   popupClassName?: string
   popupStyle?: React.CSSProperties
   offset?: PopoverOffset
+  panelVisible?: boolean
   preventControlVisible?: boolean
   delay?: number
   hoverOpenDelay?: number

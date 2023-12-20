@@ -42,6 +42,7 @@ export default function MultipleTreeSelect<T extends Object>({
   popupClassName,
   popupStyle,
   offset,
+  panelVisible,
   preventControlVisible,
   delay,
   hoverOpenDelay,
@@ -147,6 +148,12 @@ export default function MultipleTreeSelect<T extends Object>({
     },
     [showSearch, onPopoverVisibleChange]
   )
+
+  useEffect(() => {
+    if (panelVisible === undefined) return
+
+    handleChangeVisible(panelVisible)
+  }, [panelVisible, handleChangeVisible])
 
   useEffect(() => {
     setTimeout(() => {

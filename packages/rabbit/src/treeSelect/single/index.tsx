@@ -20,6 +20,7 @@ export default function SingleTreeSelect<T extends Object>({
   popupClassName,
   popupStyle,
   offset,
+  panelVisible,
   preventControlVisible,
   delay,
   hoverOpenDelay,
@@ -115,8 +116,14 @@ export default function SingleTreeSelect<T extends Object>({
         setSearchText('')
       }
     },
-    [onPopoverVisibleChange]
+    [onPopoverVisibleChange, showSearch]
   )
+
+  useEffect(() => {
+    if (panelVisible === undefined) return
+
+    handleChangeVisible(panelVisible)
+  }, [panelVisible, handleChangeVisible])
 
   if (disabled) {
     return (
