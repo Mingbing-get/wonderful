@@ -11,7 +11,7 @@ import useDragTree from './useDragTree'
 import useResponseTree from './useResponseTree'
 import { SingleTreeProps, TreeNode } from '../types/tree'
 
-export default function SingleTree({
+export default function SingleTree<T extends Object>({
   itemClassName,
   checkedPath,
   expandPath,
@@ -22,6 +22,8 @@ export default function SingleTree({
   disableSelect,
   renderLabelIcon,
   renderExtra,
+  addNodePanelRender,
+  updateNodePanelRender,
   labelRender,
   onChecked,
   onExpand,
@@ -30,11 +32,12 @@ export default function SingleTree({
   defaultChecked,
   defaultCheckedPath,
   defaultExpandPath,
+  onUpdateTree,
   onMove,
   onCanMove,
   loadData,
   ...extra
-}: SingleTreeProps) {
+}: SingleTreeProps<T>) {
   const deepRef = useRef(0)
 
   const {
@@ -47,7 +50,10 @@ export default function SingleTree({
     changeExpandPath,
     canMove: hookCanMove,
     move,
-  } = useSingleTree()
+    addChild,
+    addSibling,
+    updateNode,
+  } = useSingleTree<TreeNode<T>>()
 
   const { curCheckedRef, curExpandRef, expandHandleWidth, draggleHandleWidth, treeWrapperRef } = useResponseTree({
     hookCheckedPath,
@@ -71,7 +77,7 @@ export default function SingleTree({
   })
 
   const toggleExpand = useCallback(
-    (linkNode: LinkTreeNode<TreeNode>) => {
+    (linkNode: LinkTreeNode<TreeNode<T>>) => {
       if (linkNode.disabled || linkNode.isLeft) return
 
       curExpandRef.current = { node: linkNode.data, res: !linkNode.isExpand }
@@ -81,7 +87,7 @@ export default function SingleTree({
   )
 
   const toggleChecked = useCallback(
-    (linkNode: LinkTreeNode<TreeNode>) => {
+    (linkNode: LinkTreeNode<TreeNode<T>>) => {
       if (linkNode.disabled || disableSelect) return
 
       curCheckedRef.current = { node: linkNode.data, res: !linkNode.checked }
@@ -94,7 +100,7 @@ export default function SingleTree({
     deepRef.current = 0
     return getRenderOptions(linkForest, 0)
 
-    function getRenderOptions(linkForest: LinkTreeNode<TreeNode>[], level: number, parentNode?: LinkTreeNode<TreeNode>) {
+    function getRenderOptions(linkForest: LinkTreeNode<TreeNode<T>>[], level: number, parentNode?: LinkTreeNode<TreeNode<T>>) {
       deepRef.current = Math.max(level, deepRef.current)
       const options: React.ReactNode[] = []
       linkForest.forEach((linkNode) => {
@@ -115,6 +121,11 @@ export default function SingleTree({
             onDragOver={handleDragOver}
             onToggleChecked={toggleChecked}
             onToggleExpand={toggleExpand}
+            addNodePanelRender={addNodePanelRender}
+            updateNodePanelRender={updateNodePanelRender}
+            addChild={addChild}
+            addSibling={addSibling}
+            updateNode={updateNode}
           />
         )
 
@@ -138,7 +149,23 @@ export default function SingleTree({
 
       return options
     }
-  }, [linkForest, toggleExpand, toggleChecked, labelRender, renderLabelIcon, renderExtra, expandIcon, itemClassName, draggable, draggleIcon])
+  }, [
+    linkForest,
+    toggleExpand,
+    toggleChecked,
+    labelRender,
+    renderLabelIcon,
+    renderExtra,
+    addNodePanelRender,
+    updateNodePanelRender,
+    expandIcon,
+    itemClassName,
+    draggable,
+    draggleIcon,
+    addChild,
+    addSibling,
+    updateNode,
+  ])
 
   const { handleScroll, startShow, endShow, wrapperStyle, itemsStyle } = useVirtualScrollY(renderOptions.length, virtualScroll)
 

@@ -2,7 +2,7 @@ import { BaseTreeNode, LinkTreeNode, TreeValue, TreeMode, InnerLocation } from '
 
 // 将原始Forest转换成LinkForest
 export function baseForestToLinkForest<T extends BaseTreeNode>(forest: T[], loadData?: (node: T) => void): LinkTreeNode<T>[] {
-  return forest.map(tree => baseTreeToLinkTree(tree, undefined))
+  return forest.map((tree) => baseTreeToLinkTree(tree, undefined))
 
   function baseTreeToLinkTree(tree: T, parent?: LinkTreeNode<T>) {
     const newNode: LinkTreeNode<T> = {
@@ -10,11 +10,11 @@ export function baseForestToLinkForest<T extends BaseTreeNode>(forest: T[], load
       data: tree,
       parent: parent,
       isLeft: loadData ? tree.isLeft : !tree.children?.length,
-      disabled: tree.disabled
+      disabled: tree.disabled,
     }
 
     if (tree.children) {
-      newNode.children = tree.children.map(tree => baseTreeToLinkTree(tree as T, newNode))
+      newNode.children = tree.children.map((tree) => baseTreeToLinkTree(tree as T, newNode))
     }
 
     return newNode
@@ -22,23 +22,23 @@ export function baseForestToLinkForest<T extends BaseTreeNode>(forest: T[], load
 }
 // 将LinkForest转换成原始的Forest
 export function linkForestToBaseForest<T extends BaseTreeNode>(linkForest: LinkTreeNode<T>[]): T[] {
-  return linkForest.map(linkTree => linkTreeToBaseTree(linkTree))
+  return linkForest.map((linkTree) => linkTreeToBaseTree(linkTree))
 
   function linkTreeToBaseTree(linkTree: LinkTreeNode<T>) {
     const newNode = linkTree.data
-    newNode.children = linkTree.children?.map(linkTree => linkTreeToBaseTree(linkTree))
+    newNode.children = linkTree.children?.map((linkTree) => linkTreeToBaseTree(linkTree))
 
     return newNode
   }
 }
 // 设置某一个节点展开(其父节点都会展开)
 export function changeExpand<T extends BaseTreeNode>(expandPath: TreeValue[][], linkForest: LinkTreeNode<T>[], loadData?: (node: T) => void) {
-  expandPath.forEach(singleExpandPath => {
+  expandPath.forEach((singleExpandPath) => {
     let curList: LinkTreeNode<T>[] | undefined = linkForest
-    singleExpandPath.forEach(value => {
+    singleExpandPath.forEach((value) => {
       if (!curList) return
 
-      const curLinkNode = curList.find(node => node.value === value)
+      const curLinkNode = curList.find((node) => node.value === value)
       if (curLinkNode) {
         curLinkNode.isExpand = true
         if (curLinkNode.isLeft) {
@@ -57,7 +57,7 @@ export function changeExpand<T extends BaseTreeNode>(expandPath: TreeValue[][], 
 export function clearExpand<T extends BaseTreeNode>(linkForest: LinkTreeNode<T>[]) {
   let curLinkList = linkForest
   while (true) {
-    const expandLinkNode = curLinkList.find(node => node.isExpand)
+    const expandLinkNode = curLinkList.find((node) => node.isExpand)
     if (!expandLinkNode) return
 
     expandLinkNode.isExpand = false
@@ -70,9 +70,14 @@ export function clearExpand<T extends BaseTreeNode>(linkForest: LinkTreeNode<T>[
   }
 }
 // 从所有选择的路径标记LinkForest哪些节点被选中
-export function changeCheckedAll<T extends BaseTreeNode>(multiple: boolean, mode: TreeMode, checkedPath: TreeValue[] | TreeValue[][], linkForest: LinkTreeNode<T>[]) {
+export function changeCheckedAll<T extends BaseTreeNode>(
+  multiple: boolean,
+  mode: TreeMode,
+  checkedPath: TreeValue[] | TreeValue[][],
+  linkForest: LinkTreeNode<T>[]
+) {
   if (isMultiple(multiple, checkedPath)) {
-    checkedPath.forEach(singleCheckedPath => {
+    checkedPath.forEach((singleCheckedPath) => {
       if (singleCheckedPath.length !== 0) {
         const curLinkTreeNode = findLinkByProperty(linkForest, 'value', singleCheckedPath[singleCheckedPath.length - 1])
         curLinkTreeNode && changeChecked(multiple, mode, linkForest, curLinkTreeNode, true)
@@ -86,7 +91,13 @@ export function changeCheckedAll<T extends BaseTreeNode>(multiple: boolean, mode
   }
 }
 // 从一个选择的节点标记LinkForest哪些节点被选中
-export function changeChecked<T extends BaseTreeNode>(multiple: boolean, mode: TreeMode, linkForest: LinkTreeNode<T>[], curLinkTreeNode: LinkTreeNode<T>, checked: boolean) {
+export function changeChecked<T extends BaseTreeNode>(
+  multiple: boolean,
+  mode: TreeMode,
+  linkForest: LinkTreeNode<T>[],
+  curLinkTreeNode: LinkTreeNode<T>,
+  checked: boolean
+) {
   if (multiple) {
     if (mode === 'ordinary') {
       setForestPropertyEffectSingleItem([curLinkTreeNode], 'checked', checked)
@@ -108,23 +119,27 @@ export function changeChecked<T extends BaseTreeNode>(multiple: boolean, mode: T
     if (mode === 'ordinary') {
       if (curLinkTreeNode.isLeft) {
         checked && setForestPropertyEffectSingleItem(linkForest, 'checked', false)
-        findLinkPath(curLinkTreeNode).forEach(node => node.checked = checked)
+        findLinkPath(curLinkTreeNode).forEach((node) => (node.checked = checked))
       }
     } else {
       checked && setForestPropertyEffectSingleItem(linkForest, 'checked', false)
-      findLinkPath(curLinkTreeNode).forEach(node => node.checked = checked)
+      findLinkPath(curLinkTreeNode).forEach((node) => (node.checked = checked))
       curLinkTreeNode.children && setForestPropertyEffectSingleItem(curLinkTreeNode.children, 'checked', false)
     }
   }
 }
 // 从当前forest开始设置当前key为传递的值
-export function setForestPropertyEffectSingleItem<T extends BaseTreeNode, K extends keyof LinkTreeNode<T>, V extends LinkTreeNode<T>[K]>(linkForest: LinkTreeNode<T>[], key: K, value: V) {
+export function setForestPropertyEffectSingleItem<T extends BaseTreeNode, K extends keyof LinkTreeNode<T>, V extends LinkTreeNode<T>[K]>(
+  linkForest: LinkTreeNode<T>[],
+  key: K,
+  value: V
+) {
   let curForest = linkForest
   while (curForest.length > 0) {
-    const effectLinkNodes = curForest.filter(node => node[key] !== value && !node.disabled)
+    const effectLinkNodes = curForest.filter((node) => node[key] !== value && !node.disabled)
 
     const _curForest: LinkTreeNode<T>[] = []
-    effectLinkNodes.forEach(curLinkNode => {
+    effectLinkNodes.forEach((curLinkNode) => {
       curLinkNode[key] = value
       if (curLinkNode.children) {
         _curForest.push(...curLinkNode.children)
@@ -166,7 +181,11 @@ export function findLinkPath<T extends BaseTreeNode>(linkTreeNode: LinkTreeNode<
   return path
 }
 // 以一个linkNode其中一个属性的值在linkForest中找到当前节点
-export function findLinkByProperty<T extends BaseTreeNode, K extends keyof LinkTreeNode<T>, V extends LinkTreeNode<T>[K]>(linkForest: LinkTreeNode<T>[], key: K, data: V) {
+export function findLinkByProperty<T extends BaseTreeNode, K extends keyof LinkTreeNode<T>, V extends LinkTreeNode<T>[K]>(
+  linkForest: LinkTreeNode<T>[],
+  key: K,
+  data: V
+) {
   const stack = [...linkForest]
 
   while (stack.length > 0) {
@@ -186,17 +205,17 @@ export function findLinkByProperty<T extends BaseTreeNode, K extends keyof LinkT
 export function getCheckedLinkPathFromLinkForest<T extends BaseTreeNode>(multiple: boolean, mode: TreeMode, linkForest: LinkTreeNode<T>[]) {
   if (multiple) {
     const checkedPath: LinkTreeNode<T>[][] = []
-    const stack = [...linkForest] 
+    const stack = [...linkForest]
     while (stack.length > 0) {
       const curLinkNode = stack.pop()
       if (!curLinkNode) continue
 
       if (curLinkNode.checked) {
-        if (mode !== 'canCheckedParent' || (mode === 'canCheckedParent' && !curLinkNode.children?.every(child => child.disabled || child.checked))) {
+        if (mode !== 'canCheckedParent' || (mode === 'canCheckedParent' && !curLinkNode.children?.every((child) => child.disabled || child.checked))) {
           checkedPath.push(findLinkPath(curLinkNode))
         }
 
-        if (mode === 'ordinary' && curLinkNode.children?.some(child => child.checked)) continue
+        if (mode === 'ordinary' && curLinkNode.children?.some((child) => child.checked)) continue
       }
 
       if (curLinkNode.children) {
@@ -206,10 +225,10 @@ export function getCheckedLinkPathFromLinkForest<T extends BaseTreeNode>(multipl
     return checkedPath
   } else {
     const checkedPath: LinkTreeNode<T>[] = []
-    let curLinkList = linkForest.find(item => item.checked)
+    let curLinkList = linkForest.find((item) => item.checked)
     while (curLinkList) {
       checkedPath.push(curLinkList)
-      curLinkList = curLinkList.children?.find(item => item.checked)
+      curLinkList = curLinkList.children?.find((item) => item.checked)
     }
     return checkedPath
   }
@@ -222,7 +241,7 @@ export function getExpandLinkPathFromLinkForest<T extends BaseTreeNode>(linkFore
     const curLinkNode = stack.pop()
     if (!curLinkNode) continue
 
-    if (curLinkNode.isExpand && !curLinkNode.children?.some(child => child.isExpand)) {
+    if (curLinkNode.isExpand && !curLinkNode.children?.some((child) => child.isExpand)) {
       expandPath.push(findLinkPath(curLinkNode))
     }
 
@@ -233,10 +252,15 @@ export function getExpandLinkPathFromLinkForest<T extends BaseTreeNode>(linkFore
   return expandPath
 }
 // 从LinkForest中的原始数据的指定key上查询指定的字符串
-export function searchTextFromBaseTree<T extends BaseTreeNode, K extends keyof T, V extends (T[K] & string)>(linkForest: LinkTreeNode<T>[], keys: K[], searchTexts: V[], mode: TreeMode) {
+export function searchTextFromBaseTree<T extends BaseTreeNode, K extends keyof T, V extends string>(
+  linkForest: LinkTreeNode<T>[],
+  keys: K[],
+  searchTexts: V[],
+  mode: TreeMode
+) {
   const searchRes: LinkTreeNode<T>[][] = []
   const stack = [...linkForest]
-  while(stack.length > 0) {
+  while (stack.length > 0) {
     const curLinkNode = stack.pop()
     if (!curLinkNode) break
 
@@ -258,7 +282,7 @@ export function findAllPathAndTileChildren<T extends BaseTreeNode>(linkTreeNode:
     if (mode !== 'ordinary') {
       allPath.push(_parentPath)
     }
-    linkTreeNode.children?.forEach(child => {
+    linkTreeNode.children?.forEach((child) => {
       allPath.push(...findAllPathAndTileChildren(child, mode, [..._parentPath, child]))
     })
   } else {
@@ -268,33 +292,44 @@ export function findAllPathAndTileChildren<T extends BaseTreeNode>(linkTreeNode:
   return allPath
 }
 // 判断是否可以将某个节点移动到指定位置
-export function canMove<T extends BaseTreeNode>(linkForest: LinkTreeNode<T>[], node: LinkTreeNode<T>, target: LinkTreeNode<T>, location: InnerLocation): boolean {
+export function canMove<T extends BaseTreeNode>(
+  linkForest: LinkTreeNode<T>[],
+  node: LinkTreeNode<T>,
+  target: LinkTreeNode<T>,
+  location: InnerLocation
+): boolean {
   if (target.disabled && location === 'children') return false
 
   const targetAncestor = findLinkPath(target)
   if (targetAncestor.includes(node)) return false
 
   const exitNodeList = node.parent?.children || linkForest
-  const index = exitNodeList.findIndex(item => item === node) || 0
+  const index = exitNodeList.findIndex((item) => item === node) || 0
   if (location === 'before') {
     if (exitNodeList[index + 1] === target) return false
   } else if (location === 'after') {
     if (exitNodeList[index - 1] === target) return false
   } else {
-    const nodeIndex = target.children?.findIndex(item => item === node)
+    const nodeIndex = target.children?.findIndex((item) => item === node)
     if (nodeIndex === 0) return false
   }
 
   return true
 }
 // 移动某个节点到制定位置
-export function move<T extends BaseTreeNode>(linkForest: LinkTreeNode<T>[], multiple: boolean, node: LinkTreeNode<T>, target: LinkTreeNode<T>, location: InnerLocation) {
+export function move<T extends BaseTreeNode>(
+  linkForest: LinkTreeNode<T>[],
+  multiple: boolean,
+  node: LinkTreeNode<T>,
+  target: LinkTreeNode<T>,
+  location: InnerLocation
+) {
   const nodeParent = node.parent
-  const exitNodeList = node.parent ? node.parent.children as LinkTreeNode<T>[] : linkForest
-  const nodeIndex = exitNodeList.findIndex(item => item === node)
+  const exitNodeList = node.parent ? (node.parent.children as LinkTreeNode<T>[]) : linkForest
+  const nodeIndex = exitNodeList.findIndex((item) => item === node)
   exitNodeList.splice(nodeIndex, 1)
   if (nodeParent) {
-    nodeParent.data.children = nodeParent.data.children?.filter(item => item !== node.data)
+    nodeParent.data.children = nodeParent.data.children?.filter((item) => item !== node.data)
     if (!nodeParent.data.children?.length) {
       nodeParent.data.children = undefined
       nodeParent.isLeft = true
@@ -308,8 +343,8 @@ export function move<T extends BaseTreeNode>(linkForest: LinkTreeNode<T>[], mult
     target.isLeft = false
     target.isExpand = true
   } else {
-    const exitTargetList = target.parent ? target.parent.children as LinkTreeNode<T>[] : linkForest
-    const targetIndex = exitTargetList.findIndex(item => item === target)
+    const exitTargetList = target.parent ? (target.parent.children as LinkTreeNode<T>[]) : linkForest
+    const targetIndex = exitTargetList.findIndex((item) => item === target)
     if (location === 'before') {
       exitTargetList.splice(targetIndex, 0, node)
     } else {
@@ -327,15 +362,15 @@ export function move<T extends BaseTreeNode>(linkForest: LinkTreeNode<T>[], mult
     if (multiple) {
       resetParent(nodeParent)
     } else {
-      node.checked && findLinkPath(nodeParent).forEach(linkNode => linkNode.checked = false)
+      node.checked && findLinkPath(nodeParent).forEach((linkNode) => (linkNode.checked = false))
     }
   }
-  
+
   if (node.parent) {
     if (multiple) {
       resetParent(node.parent)
     } else {
-      node.checked && findLinkPath(node.parent).forEach(linkNode => linkNode.checked = true)
+      node.checked && findLinkPath(node.parent).forEach((linkNode) => (linkNode.checked = true))
     }
   }
 
@@ -348,7 +383,7 @@ export function move<T extends BaseTreeNode>(linkForest: LinkTreeNode<T>[], mult
     }
 
     if (node.parent) {
-      findLinkPath(node.parent).forEach(linkNode => linkNode.isExpand = true)
+      findLinkPath(node.parent).forEach((linkNode) => (linkNode.isExpand = true))
     }
   }
 }
@@ -356,25 +391,27 @@ export function move<T extends BaseTreeNode>(linkForest: LinkTreeNode<T>[], mult
 function resetParent<T extends BaseTreeNode>(nodeParent?: LinkTreeNode<T>) {
   if (!nodeParent) return
 
-  findLinkPath(nodeParent).reverse().forEach(linkNode => {
-    let halfChecked = false
-    let checked = true
-    linkNode.children?.forEach(child => {
-      if (child.disabled) return
+  findLinkPath(nodeParent)
+    .reverse()
+    .forEach((linkNode) => {
+      let halfChecked = false
+      let checked = true
+      linkNode.children?.forEach((child) => {
+        if (child.disabled) return
 
-      halfChecked = !!(halfChecked || child.checked || child.halfChecked)
-      if (checked) checked = !!child.checked
+        halfChecked = !!(halfChecked || child.checked || child.halfChecked)
+        if (checked) checked = !!child.checked
+      })
+      linkNode.checked = checked
+      linkNode.halfChecked = checked ? false : halfChecked
     })
-    linkNode.checked = checked
-    linkNode.halfChecked = checked ? false : halfChecked
-  })
 }
 // 获取LinkNode的path
 export function getPathFromLinkTreeNode<T extends BaseTreeNode>(linkForest: LinkTreeNode<T>): TreeValue[] {
   const path: TreeValue[] = []
 
   let currentNode = linkForest
-  while(true) {
+  while (true) {
     path.unshift(currentNode.value)
     if (!currentNode.parent) break
 
@@ -384,11 +421,19 @@ export function getPathFromLinkTreeNode<T extends BaseTreeNode>(linkForest: Link
   return path
 }
 // 将TreeValue的path转换成linkTreeNode的path
-export function checkedPathToLinkPath<T extends BaseTreeNode>(multiple: true, checkedPath: TreeValue[] | TreeValue[][], linkForest: LinkTreeNode<T>[]): LinkTreeNode<T>[][]
-export function checkedPathToLinkPath<T extends BaseTreeNode>(multiple: false, checkedPath: TreeValue[] | TreeValue[][], linkForest: LinkTreeNode<T>[]): LinkTreeNode<T>[]
+export function checkedPathToLinkPath<T extends BaseTreeNode>(
+  multiple: true,
+  checkedPath: TreeValue[] | TreeValue[][],
+  linkForest: LinkTreeNode<T>[]
+): LinkTreeNode<T>[][]
+export function checkedPathToLinkPath<T extends BaseTreeNode>(
+  multiple: false,
+  checkedPath: TreeValue[] | TreeValue[][],
+  linkForest: LinkTreeNode<T>[]
+): LinkTreeNode<T>[]
 export function checkedPathToLinkPath<T extends BaseTreeNode>(multiple: boolean, checkedPath: TreeValue[] | TreeValue[][], linkForest: LinkTreeNode<T>[]) {
   if (isMultiple(multiple, checkedPath)) {
-    return checkedPath.map(singlePath => _checkedPathToLinkPath(singlePath, linkForest))
+    return checkedPath.map((singlePath) => _checkedPathToLinkPath(singlePath, linkForest))
   } else {
     return _checkedPathToLinkPath(checkedPath, linkForest)
   }
@@ -400,7 +445,7 @@ function _checkedPathToLinkPath<T extends BaseTreeNode>(checkedPath: TreeValue[]
   const linkPath = checkedPath.reduce((total: LinkTreeNode<T>[], value) => {
     if (!curLinkForest) return total
 
-    const currentLinkTreeNode = curLinkForest.find(linkTree => linkTree.value === value)
+    const currentLinkTreeNode = curLinkForest.find((linkTree) => linkTree.value === value)
     if (currentLinkTreeNode) {
       total.push(currentLinkTreeNode)
       curLinkForest = currentLinkTreeNode.children
@@ -424,7 +469,7 @@ export function linkPathToCheckedPath<T extends BaseTreeNode>(multiple: boolean,
 }
 
 function _linkPathToCheckedPath<T extends BaseTreeNode>(linkPath: LinkTreeNode<T>[]) {
-  return linkPath.map(linkTreeNode => linkTreeNode.value)
+  return linkPath.map((linkTreeNode) => linkTreeNode.value)
 }
 // 将linkTreeNode的path转换成原始数据的path
 export function linkPathToDataPath<T extends BaseTreeNode>(multiple: true, linkPath: LinkTreeNode<T>[] | LinkTreeNode<T>[][]): T[][]
@@ -438,5 +483,5 @@ export function linkPathToDataPath<T extends BaseTreeNode>(multiple: boolean, li
 }
 
 function _linkPathToDataPath<T extends BaseTreeNode>(linkPath: LinkTreeNode<T>[]) {
-  return linkPath.map(linkTreeNode => linkTreeNode.data)
+  return linkPath.map((linkTreeNode) => linkTreeNode.data)
 }

@@ -16,14 +16,14 @@ export type TreeSelectBaseProps = {
   onPopoverVisibleChange?: (visible: boolean) => void
 } & Omit<React.HTMLAttributes<HTMLDivElement>, 'value' | 'defaultValue' | 'onChange' | 'children'>
 
-export type MultipleTreeSelectProps = {
+export type MultipleTreeSelectProps<T extends object> = {
   onChange?: (checkedPath: TreeValue[][]) => void
-  displayRender?: (checkedPath: TreeValue[][], checkedDataPath: TreeNode[][]) => string
+  displayRender?: (checkedPath: TreeValue[][], checkedDataPath: TreeNode<T>[][]) => string
 } & TreeSelectBaseProps &
-  MultipleTreeProps
+  MultipleTreeProps<T>
 
-export type SingleTreeSelectProps = {
+export type SingleTreeSelectProps<T extends object> = {
   onChange?: (checkedPath: TreeValue[]) => void
-  displayRender?: (checkedPath: TreeValue[], checkedDataPath: TreeNode[]) => string
+  displayRender?: (checkedPath: TreeValue[], checkedDataPath: TreeNode<T>[]) => string
 } & TreeSelectBaseProps &
-  SingleTreeProps
+  SingleTreeProps<T>

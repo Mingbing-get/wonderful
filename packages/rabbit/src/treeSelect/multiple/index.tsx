@@ -16,7 +16,7 @@ import { PopoverRef } from '../../types/popover'
 import { TreeNode } from '../../types/tree'
 import { MultipleTreeSelectProps } from '../../types/treeSelect'
 
-const defaultDisplayRender = (checkedPath: TreeNode[][], onClose: (data: TreeNode) => void) => {
+function defaultDisplayRender<T extends Object>(checkedPath: TreeNode<T>[][], onClose: (data: TreeNode<T>) => void) {
   return checkedPath.map((singlePath, index) => {
     const curLastNode = singlePath.pop()
     if (!curLastNode) return <></>
@@ -36,7 +36,7 @@ const defaultDisplayRender = (checkedPath: TreeNode[][], onClose: (data: TreeNod
   })
 }
 
-export default function MultipleTreeSelect({
+export default function MultipleTreeSelect<T extends Object>({
   style,
   className,
   popupClassName,
@@ -74,13 +74,13 @@ export default function MultipleTreeSelect({
   onMove,
 
   ...extra
-}: MultipleTreeSelectProps) {
+}: MultipleTreeSelectProps<T>) {
   const [showSearchInput, setShowSearchInput] = useState(false)
   const [visible, setVisible] = useState(false)
   const popoverRef = useRef<PopoverRef>()
   const initRef = useRef(false)
 
-  const { clearChecked, setChecked, linkForest, checkedPath: _checkedPath, changeCheckedPath } = useMultipleTree<TreeNode>()
+  const { clearChecked, setChecked, linkForest, checkedPath: _checkedPath, changeCheckedPath } = useMultipleTree<TreeNode<T>>()
 
   useEffect(() => {
     if (!initRef.current) {
@@ -95,7 +95,7 @@ export default function MultipleTreeSelect({
       if (!linkForest || !checkedPath) return
 
       const labels: string[][] = []
-      const data: TreeNode[][] = []
+      const data: TreeNode<T>[][] = []
       const checkedLinkNodePath = checkedPathToLinkPath(true, checkedPath, linkForest)
       checkedLinkNodePath.forEach((linkPath) => {
         labels.push(linkPath.map((linkNode) => linkNode.data.label || `${linkNode.value}`))
@@ -104,7 +104,7 @@ export default function MultipleTreeSelect({
 
       return displayRender ? displayRender(labels, data) : defaultDisplayRender(data, onClose)
 
-      function onClose(data: TreeNode) {
+      function onClose(data: TreeNode<T>) {
         setChecked?.(data, false)
       }
     },
@@ -118,7 +118,7 @@ export default function MultipleTreeSelect({
   })
 
   const handleChecked = useCallback(
-    (checkedPath: TreeValue[][], node: TreeNode, isChecked: boolean) => {
+    (checkedPath: TreeValue[][], node: TreeNode<T>, isChecked: boolean) => {
       onChecked?.(checkedPath, node, isChecked)
       onChange?.(checkedPath)
     },

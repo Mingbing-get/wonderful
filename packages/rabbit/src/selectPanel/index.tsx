@@ -2,13 +2,19 @@ import React, { useRef, useEffect, useState, useCallback } from 'react'
 import classNames from 'classnames'
 
 import compatible from '../compatible'
-import { SelectValueType } from '../types/select'
+import { SelectValueType, SelectOptionType } from '../types/select'
 import { SelectPanelProps } from '../types/selectPanel'
 import Option from './option'
 
 import './index.scss'
 
-export default function Panel<T extends SelectValueType>({ wrapperClassName, value, wrapperStyle, options, onClickItem }: SelectPanelProps<T>) {
+export default function Panel<T extends SelectValueType, O extends SelectOptionType<T>>({
+  wrapperClassName,
+  value,
+  wrapperStyle,
+  options,
+  onClickItem,
+}: SelectPanelProps<T, O>) {
   const [hoverValue, setHoverValue] = useState(value)
   const [refresh, setRefresh] = useState(0)
   const selectWrapperRef = useRef<HTMLDivElement>(null)

@@ -6,34 +6,36 @@ import { SingleTreeProps, MultipleTreeProps, TreeNode } from '../types/tree'
 
 import compatible from '../compatible'
 
-type ChangeRecord = { node: TreeNode; res: boolean }
+type ChangeRecord<T extends Object> = { node: TreeNode<T>; res: boolean }
 
-interface MultipleProps extends Pick<MultipleTreeProps, 'onChecked' | 'onExpand' | 'checkedPath' | 'expandPath' | 'expandIcon' | 'draggleIcon'> {
+interface MultipleProps<T extends Object>
+  extends Pick<MultipleTreeProps<T>, 'onChecked' | 'onExpand' | 'checkedPath' | 'expandPath' | 'expandIcon' | 'draggleIcon'> {
   hookCheckedPath: TreeValue[][]
   hookExpandPath: TreeValue[][]
   changeCheckedPath: (path: TreeValue[][]) => void
   changeExpandPath: (path: TreeValue[][]) => void
 }
 
-interface SingleProps extends Pick<SingleTreeProps, 'onChecked' | 'onExpand' | 'checkedPath' | 'expandPath' | 'expandIcon' | 'draggleIcon'> {
+interface SingleProps<T extends Object>
+  extends Pick<SingleTreeProps<T>, 'onChecked' | 'onExpand' | 'checkedPath' | 'expandPath' | 'expandIcon' | 'draggleIcon'> {
   hookCheckedPath: TreeValue[]
   hookExpandPath: TreeValue[][]
   changeCheckedPath: (path: TreeValue[]) => void
   changeExpandPath: (path: TreeValue[][]) => void
 }
 
-interface Return {
-  curCheckedRef: React.MutableRefObject<ChangeRecord | undefined>
-  curExpandRef: React.MutableRefObject<ChangeRecord | undefined>
+interface Return<T extends Object> {
+  curCheckedRef: React.MutableRefObject<ChangeRecord<T> | undefined>
+  curExpandRef: React.MutableRefObject<ChangeRecord<T> | undefined>
   expandHandleWidth: React.MutableRefObject<number>
   draggleHandleWidth: React.MutableRefObject<number>
   treeWrapperRef: React.RefObject<HTMLDivElement>
 }
 
-type Props = MultipleProps | SingleProps
-export function useResponseTree(props: MultipleProps): Return
-export function useResponseTree(props: SingleProps): Return
-export default function useResponseTree({
+type Props<T extends Object> = MultipleProps<T> | SingleProps<T>
+export function useResponseTree<T extends Object>(props: MultipleProps<T>): Return<T>
+export function useResponseTree<T extends Object>(props: SingleProps<T>): Return<T>
+export default function useResponseTree<T extends Object>({
   hookCheckedPath,
   hookExpandPath,
   checkedPath,
@@ -45,11 +47,11 @@ export default function useResponseTree({
   onExpand,
   changeCheckedPath,
   changeExpandPath,
-}: Props) {
-  const hookCheckedPathRef = useRef<Props['hookCheckedPath']>([])
+}: Props<T>) {
+  const hookCheckedPathRef = useRef<Props<T>['hookCheckedPath']>([])
   const hookExpandPathRef = useRef<TreeValue[][]>([])
-  const curCheckedRef = useRef<ChangeRecord>()
-  const curExpandRef = useRef<ChangeRecord>()
+  const curCheckedRef = useRef<ChangeRecord<T>>()
+  const curExpandRef = useRef<ChangeRecord<T>>()
   const expandHandleWidth = useRef(0)
   const draggleHandleWidth = useRef(0)
   const treeWrapperRef = useRef<HTMLDivElement>(null)

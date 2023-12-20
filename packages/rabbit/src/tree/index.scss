@@ -6,12 +6,12 @@
   position: relative;
   background-color: #fff;
   .tree-item {
+    position: relative;
     display: flex;
     align-items: center;
     padding: 0.1rem;
     background-color: #fff;
     height: var(--tree-item-height);
-    overflow-y: hidden;
     .tree-item-loading-icon {
       color: var(--rabbit-primary-color);
       animation: rotate-until 1s 0.2s infinite linear;
@@ -42,6 +42,11 @@
       }
       &:hover {
         background-color: var(--rabbit-primary-1);
+      }
+    }
+    &:hover {
+      .tree-item-insert {
+        display: inline-block;
       }
     }
     &.is-left {
@@ -124,7 +129,47 @@
 }
 
 @keyframes rotate-until {
-  0% { rotate: 0; }
-  50% { rotate: 270deg; }
-  100% { rotate: 360deg; }
+  0% {
+    rotate: 0;
+  }
+  50% {
+    rotate: 270deg;
+  }
+  100% {
+    rotate: 360deg;
+  }
+}
+
+.tree-item-insert {
+  display: none;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  &.is-panel-visible {
+    display: inline-block;
+  }
+  .insert-line {
+    width: 100%;
+    height: 1px;
+    background-color: var(--rabbit-primary-color);
+  }
+  .icon-wrapper {
+    position: absolute;
+    right: 0;
+    top: 0;
+    transform: translate(100%, -100%);
+    box-shadow: var(--rabbit-box-shadow-base);
+    border-radius: var(--rabbit-border-radius-base);
+
+    .insert-icon-item {
+      cursor: pointer;
+      &:not(:last-child) {
+        margin-right: 0.2rem;
+      }
+      &:hover {
+        color: var(--rabbit-primary-color);
+      }
+    }
+  }
 }

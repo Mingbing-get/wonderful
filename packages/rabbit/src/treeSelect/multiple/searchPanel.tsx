@@ -2,35 +2,35 @@ import React, { useMemo, useCallback, useRef, useEffect } from 'react'
 import classNames from 'classnames'
 
 import { LinkTreeNode, TreeValue } from '../../hooks/useTree/type'
-import { searchTextFromBaseTree, linkPathToCheckedPath } from '../../hooks/useTree/utils'
+import { searchTextFromBaseTree } from '../../hooks/useTree/utils'
 import { useMultipleTree } from '../../tree/context'
 import { TreeNode } from '../../types/tree'
 
 import CheckBox from '../../checkbox'
 
-type SearchPath = {
+type SearchPath<T extends Object> = {
   texts: string[]
   disabled?: boolean
   checked?: boolean
   halfChecked?: boolean
-  path: LinkTreeNode<TreeNode>[]
+  path: LinkTreeNode<TreeNode<T>>[]
 }
 
-type Props = {
+type Props<T extends Object> = {
   searchText: string
-  onChecked?: (checkedPath: TreeValue[][], node: TreeNode, isChecked: boolean) => void
+  onChecked?: (checkedPath: TreeValue[][], node: TreeNode<T>, isChecked: boolean) => void
 }
 
-export default function SearchPanel({ searchText, onChecked }: Props) {
-  const curNodeRef = useRef<{ node: TreeNode; isChecked: boolean }>()
-  const { linkForest, setChecked, checkedPath } = useMultipleTree<TreeNode>()
+export default function SearchPanel<T extends Object>({ searchText, onChecked }: Props<T>) {
+  const curNodeRef = useRef<{ node: TreeNode<T>; isChecked: boolean }>()
+  const { linkForest, setChecked, checkedPath } = useMultipleTree<TreeNode<T>>()
 
   const searchPath = useMemo(() => {
     const searchLinkPathList = searchTextFromBaseTree(linkForest, ['label', 'value'], [searchText, searchText], 'unlink')
 
     return searchLinkPathList.map((linkTreePath) => {
       const onePath = linkTreePath.reduce(
-        (total: Omit<SearchPath, 'path'>, linkTreeNode) => {
+        (total: Omit<SearchPath<T>, 'path'>, linkTreeNode) => {
           total.texts.push(
             `${linkTreeNode.data.label || linkTreeNode.data.value}`.replace(
               new RegExp(searchText, 'ig'),
@@ -48,7 +48,7 @@ export default function SearchPanel({ searchText, onChecked }: Props) {
         checked: linkTreePath[linkTreePath.length - 1].checked,
         halfChecked: linkTreePath[linkTreePath.length - 1].halfChecked,
         path: linkTreePath,
-      } as SearchPath
+      } as SearchPath<T>
     })
   }, [searchText, linkForest])
 
@@ -60,7 +60,7 @@ export default function SearchPanel({ searchText, onChecked }: Props) {
   }, [checkedPath, onChecked])
 
   const handleClickItem = useCallback(
-    (searchPath: SearchPath, checked: boolean) => {
+    (searchPath: SearchPath<T>, checked: boolean) => {
       if (searchPath.disabled) return
 
       setChecked(searchPath.path[searchPath.path.length - 1].data, checked)

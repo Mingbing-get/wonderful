@@ -7,13 +7,13 @@ import Icon from '../../icon'
 import { LinkTreeNode } from '../../hooks/useTree/type'
 import { TreeBaseProps, TreeNode } from '../../types/tree'
 
-interface Props extends Pick<TreeBaseProps, 'draggleIcon' | 'draggable' | 'expandIcon' | 'renderExtra'> {
+interface Props<T extends Object> extends Pick<TreeBaseProps<T>, 'draggleIcon' | 'draggable' | 'expandIcon' | 'renderExtra'> {
   level: number
   className?: string
-  parentNode?: LinkTreeNode<TreeNode>
+  parentNode?: LinkTreeNode<TreeNode<T>>
 }
 
-export default function TreeExtraRender({ level, parentNode, className, draggleIcon, draggable, expandIcon, renderExtra }: Props) {
+export default function TreeExtraRender<T extends Object>({ level, parentNode, className, draggleIcon, draggable, expandIcon, renderExtra }: Props<T>) {
   const extra = useMemo(() => {
     const path = parentNode ? getPathFromLinkTreeNode(parentNode) : []
     return renderExtra?.(path, parentNode?.data)

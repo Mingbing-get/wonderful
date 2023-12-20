@@ -4,18 +4,18 @@ import compatible from '../compatible'
 import { LinkTreeNode, InnerLocation } from '../hooks/useTree/type'
 import { TreeNode } from '../types/tree'
 
-type Props = {
+type Props<T extends Object> = {
   expandHandleWidth: number
   draggleHandleWidth: number
   stopTimeToChildren?: number
-  canMove?: (node: LinkTreeNode<TreeNode>, target: LinkTreeNode<TreeNode>, innerLocation: InnerLocation) => boolean
-  onMove?: (node: LinkTreeNode<TreeNode>, target: LinkTreeNode<TreeNode>, innerLocation: InnerLocation) => void
+  canMove?: (node: LinkTreeNode<TreeNode<T>>, target: LinkTreeNode<TreeNode<T>>, innerLocation: InnerLocation) => boolean
+  onMove?: (node: LinkTreeNode<TreeNode<T>>, target: LinkTreeNode<TreeNode<T>>, innerLocation: InnerLocation) => void
 }
 
-export default function useDragTree({ expandHandleWidth, draggleHandleWidth, stopTimeToChildren = 2000, canMove, onMove }: Props) {
+export default function useDragTree<T extends Object>({ expandHandleWidth, draggleHandleWidth, stopTimeToChildren = 2000, canMove, onMove }: Props<T>) {
   const expandHandleWidthRef = useRef(expandHandleWidth)
   const draggleHandleWidthRef = useRef(draggleHandleWidth)
-  const dragLinkNode = useRef<LinkTreeNode<TreeNode>>()
+  const dragLinkNode = useRef<LinkTreeNode<TreeNode<T>>>()
   const dragTipStyleRef = useRef<React.CSSProperties>()
   const stopLongTime = useRef(false)
   const canMoveRef = useRef(false)
@@ -31,12 +31,12 @@ export default function useDragTree({ expandHandleWidth, draggleHandleWidth, sto
     setDragTipStyle(style)
   }, [])
 
-  const handleDragStart = useCallback((e: React.DragEvent<HTMLDivElement>, linkNode: LinkTreeNode<TreeNode>) => {
+  const handleDragStart = useCallback((e: React.DragEvent<HTMLDivElement>, linkNode: LinkTreeNode<TreeNode<T>>) => {
     dragLinkNode.current = linkNode
   }, [])
 
   const handleDragOver = useCallback(
-    async (e: React.DragEvent<HTMLDivElement>, linkNode: LinkTreeNode<TreeNode>) => {
+    async (e: React.DragEvent<HTMLDivElement>, linkNode: LinkTreeNode<TreeNode<T>>) => {
       e.preventDefault()
       if (linkNode === dragLinkNode.current || !dragLinkNode.current) {
         setTipStyle(undefined)
@@ -85,7 +85,7 @@ export default function useDragTree({ expandHandleWidth, draggleHandleWidth, sto
   }, [])
 
   const handleDrop = useCallback(
-    (e: React.DragEvent<HTMLDivElement>, linkNode: LinkTreeNode<TreeNode>) => {
+    (e: React.DragEvent<HTMLDivElement>, linkNode: LinkTreeNode<TreeNode<T>>) => {
       e.preventDefault()
       setTipStyle(undefined)
       stopLongTime.current = false

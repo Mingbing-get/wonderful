@@ -1,7 +1,11 @@
 import React, { useState } from 'react'
 import { TreeSelect, TreeNode, MultipleTreeSelect, Input } from '../../../rabbit/src'
 
-const baseData: TreeNode[] = [
+type TestNode = TreeNode<{
+  test?: boolean
+}>
+
+const baseData: TestNode[] = [
   {
     label: '自定义label',
     value: '0-0',
@@ -46,7 +50,7 @@ const baseData: TreeNode[] = [
   },
 ]
 
-function createTreeNode(levelCount: number, dep: number, pre: string = ''): TreeNode[] {
+function createTreeNode(levelCount: number, dep: number, pre: string = ''): TestNode[] {
   return new Array(levelCount).fill(0).map((_, index) => ({
     value: `${pre}-${index}`,
     label: `${pre}-${index}`,

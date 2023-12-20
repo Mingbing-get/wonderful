@@ -3,26 +3,32 @@ import classNames from 'classnames'
 
 import Icon from '../../icon'
 import Checkbox from '../../checkbox'
+import TreeEditRender from './treeEditRender'
 
 import { LinkTreeNode } from '../../hooks/useTree/type'
 import { TreeBaseProps, TreeNode, TreeLabelRender } from '../../types/tree'
 
-interface Props extends Pick<TreeBaseProps, 'draggleIcon' | 'draggable' | 'expandIcon' | 'renderLabelIcon' | 'labelRender'> {
+type NeedTreeProps = 'draggleIcon' | 'draggable' | 'expandIcon' | 'renderLabelIcon' | 'labelRender' | 'addNodePanelRender' | 'updateNodePanelRender'
+interface Props<T extends Object> extends Pick<TreeBaseProps<T>, NeedTreeProps> {
   level: number
-  linkNode: LinkTreeNode<TreeNode>
+  linkNode: LinkTreeNode<TreeNode<T>>
   className?: string
   displayCheckbox?: boolean
-  onDragStart?: (e: React.DragEvent<HTMLDivElement>, linkNode: LinkTreeNode<TreeNode>) => void
-  onDrop?: (e: React.DragEvent<HTMLDivElement>, linkNode: LinkTreeNode<TreeNode>) => void
-  onDragOver?: (e: React.DragEvent<HTMLDivElement>, linkNode: LinkTreeNode<TreeNode>) => Promise<void>
+  onDragStart?: (e: React.DragEvent<HTMLDivElement>, linkNode: LinkTreeNode<TreeNode<T>>) => void
+  onDrop?: (e: React.DragEvent<HTMLDivElement>, linkNode: LinkTreeNode<TreeNode<T>>) => void
+  onDragOver?: (e: React.DragEvent<HTMLDivElement>, linkNode: LinkTreeNode<TreeNode<T>>) => Promise<void>
   onDragLeave?: (e: React.DragEvent<HTMLDivElement>) => void
-  onToggleExpand?: (linkNode: LinkTreeNode<TreeNode>) => void
-  onToggleChecked?: (linkNode: LinkTreeNode<TreeNode>, checked?: boolean) => void
+  onToggleExpand?: (linkNode: LinkTreeNode<TreeNode<T>>) => void
+  onToggleChecked?: (linkNode: LinkTreeNode<TreeNode<T>>, checked?: boolean) => void
+
+  addSibling: (refNode: LinkTreeNode<TreeNode<T>>, newNode: TreeNode<T>) => void
+  addChild: (refNode: LinkTreeNode<TreeNode<T>>, newNode: TreeNode<T>) => void
+  updateNode: (refNode: LinkTreeNode<TreeNode<T>>, newNode: TreeNode<T>) => void
 }
 
 const defaultLabelRender: TreeLabelRender<{}> = (node) => node.label || node.value
 
-export default function TreeNodeRender({
+export default function TreeNodeRender<T extends Object>({
   level,
   linkNode,
   className,
@@ -38,7 +44,13 @@ export default function TreeNodeRender({
   onDragLeave,
   onToggleExpand,
   onToggleChecked,
-}: Props) {
+  addNodePanelRender,
+  updateNodePanelRender,
+
+  addSibling,
+  addChild,
+  updateNode,
+}: Props<T>) {
   return (
     <div
       style={{ marginLeft: `${level}rem` }}
@@ -87,6 +99,16 @@ export default function TreeNodeRender({
         {renderLabelIcon && <span className="label-icon">{renderLabelIcon(linkNode.data, linkNode.isExpand, linkNode.isLeft)}</span>}
         <span>{labelRender(linkNode.data)}</span>
       </span>
+      {(addNodePanelRender || updateNodePanelRender) && (
+        <TreeEditRender
+          linkNode={linkNode}
+          addNodePanelRender={addNodePanelRender}
+          updateNodePanelRender={updateNodePanelRender}
+          addChild={addChild}
+          addSibling={addSibling}
+          updateNode={updateNode}
+        />
+      )}
     </div>
   )
 }

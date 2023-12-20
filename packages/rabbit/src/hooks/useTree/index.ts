@@ -35,7 +35,8 @@ export default function useTree<T extends BaseTreeNode>({
   loadData, // 不是响应式的
   onChange,
   onCanMove,
-  onMove
+  onMove,
+  onUpdateTree,
 }: Props<T>): UseTreeReturn<T> {
   const [linkForest, setLinkForest] = useState<LinkTreeNode<T>[]>([])
 
@@ -69,7 +70,7 @@ export default function useTree<T extends BaseTreeNode>({
 
   const changeExpandPath = useCallback((expandPath: TreeValue[][]) => {
     if (!linkForestRef.current.length) return
-    
+
     clearExpand(linkForestRef.current)
     changeExpand(expandPath, linkForestRef.current, loadData)
     setLinkForest([...linkForestRef.current])
@@ -90,7 +91,8 @@ export default function useTree<T extends BaseTreeNode>({
       clearExpand(linkForestRef.current)
     }
 
-    if (!data) { // 清除所有的展开
+    if (!data) {
+      // 清除所有的展开
       expandPathRef.current = []
       setLinkForest([...linkForestRef.current])
       return
@@ -103,9 +105,9 @@ export default function useTree<T extends BaseTreeNode>({
     if (!expand) {
       setForestPropertyEffectSingleItem([curLinkTreeNode], 'isExpand', false)
     } else {
-      expandLinkPath.forEach(linkNode => linkNode.isExpand = true)
+      expandLinkPath.forEach((linkNode) => (linkNode.isExpand = true))
       curLinkTreeNode.children && setForestPropertyEffectSingleItem(curLinkTreeNode.children, 'isExpand', false)
-      
+
       const lastLinkNode = expandLinkPath[expandLinkPath.length - 1]
       if (lastLinkNode && !lastLinkNode.isLeft && !lastLinkNode.children) {
         loadData?.(lastLinkNode.data)
@@ -122,18 +124,72 @@ export default function useTree<T extends BaseTreeNode>({
     setLinkForest([...linkForestRef.current])
   }, [])
 
-  const _canMove = useCallback((node: LinkTreeNode<T>, target: LinkTreeNode<T>, location: InnerLocation) => {
-    return canMove(linkForestRef.current, node, target, location) && onCanMove?.(node.data, target.data, location) !== false
-  }, [onCanMove])
+  const _canMove = useCallback(
+    (node: LinkTreeNode<T>, target: LinkTreeNode<T>, location: InnerLocation) => {
+      return canMove(linkForestRef.current, node, target, location) && onCanMove?.(node.data, target.data, location) !== false
+    },
+    [onCanMove]
+  )
 
-  const _move = useCallback((node: LinkTreeNode<T>, target: LinkTreeNode<T>, location: InnerLocation) => {
-    move(linkForestRef.current, multiple, node, target, location)
-    checkedPathRef.current = linkPathToCheckedPath(multiple as any, getCheckedLinkPathFromLinkForest(multiple, mode, linkForestRef.current))
-    expandPathRef.current = linkPathToCheckedPath(true, getExpandLinkPathFromLinkForest(linkForestRef.current))
+  const _move = useCallback(
+    (node: LinkTreeNode<T>, target: LinkTreeNode<T>, location: InnerLocation) => {
+      move(linkForestRef.current, multiple, node, target, location)
+      checkedPathRef.current = linkPathToCheckedPath(multiple as any, getCheckedLinkPathFromLinkForest(multiple, mode, linkForestRef.current))
+      expandPathRef.current = linkPathToCheckedPath(true, getExpandLinkPathFromLinkForest(linkForestRef.current))
+
+      setLinkForest([...linkForestRef.current])
+      onMove?.(linkForestToBaseForest(linkForestRef.current), node.data, target.data, location)
+      onUpdateTree?.(linkForestToBaseForest(linkForestRef.current))
+    },
+    [onMove, onUpdateTree]
+  )
+
+  const addSibling = useCallback((refNode: LinkTreeNode<T>, newNode: T) => {
+    const newLinkNode = baseForestToLinkForest([newNode], loadData)[0]
+    const parentNode = refNode.parent
+
+    if (parentNode?.children) {
+      const index = parentNode.children.findIndex((item) => item.value === refNode.value)
+      parentNode.data.children?.splice(index + 1, 0, newNode)
+      newLinkNode.parent = parentNode
+      parentNode.children.splice(index + 1, 0, newLinkNode)
+      changeChecked(multiple, mode, linkForestRef.current, newLinkNode, false)
+    } else {
+      const index = linkForestRef.current.findIndex((item) => item.value === refNode.value)
+      linkForestRef.current.splice(index + 1, 0, newLinkNode)
+    }
 
     setLinkForest([...linkForestRef.current])
-    onMove?.(linkForestToBaseForest(linkForestRef.current), node.data, target.data, location)
-  }, [onMove])
+    onUpdateTree?.(linkForestToBaseForest(linkForestRef.current))
+  }, [])
+
+  const addChild = useCallback((refNode: LinkTreeNode<T>, newNode: T) => {
+    const newLinkNode = baseForestToLinkForest([newNode], loadData)[0]
+    refNode.data.children = [newNode, ...(refNode.data.children || [])]
+    refNode.children = [newLinkNode, ...(refNode.children || [])]
+    refNode.isLeft = false
+    newLinkNode.parent = refNode
+    changeChecked(multiple, mode, linkForestRef.current, newLinkNode, false)
+    setLinkForest([...linkForestRef.current])
+    onUpdateTree?.(linkForestToBaseForest(linkForestRef.current))
+  }, [])
+
+  const updateNode = useCallback((refNode: LinkTreeNode<T>, newNode: T) => {
+    const newLinkNode = baseForestToLinkForest([newNode], loadData)[0]
+    const parentNode = refNode.parent
+
+    if (parentNode?.children) {
+      const index = parentNode.children.findIndex((item) => item.value === refNode.value)
+      parentNode.data.children?.splice(index, 1, newNode)
+      parentNode.children.splice(index, 1, newLinkNode)
+    } else {
+      const index = linkForestRef.current.findIndex((item) => item.value === refNode.value)
+      linkForestRef.current.splice(index, 1, newLinkNode)
+    }
+
+    setLinkForest([...linkForestRef.current])
+    onUpdateTree?.(linkForestToBaseForest(linkForestRef.current))
+  }, [])
 
   return {
     linkForest,
@@ -146,5 +202,8 @@ export default function useTree<T extends BaseTreeNode>({
     clearChecked: _clearChecked,
     canMove: _canMove,
     move: _move,
+    addSibling,
+    addChild,
+    updateNode,
   }
 }

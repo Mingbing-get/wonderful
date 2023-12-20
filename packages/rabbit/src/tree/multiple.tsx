@@ -11,7 +11,7 @@ import useDragTree from './useDragTree'
 import useResponseTree from './useResponseTree'
 import { MultipleTreeProps, TreeNode } from '../types/tree'
 
-export default function MultipleTree({
+export default function MultipleTree<T extends Object>({
   itemClassName,
   checkedPath,
   expandPath,
@@ -21,6 +21,8 @@ export default function MultipleTree({
   virtualScroll,
   renderLabelIcon,
   renderExtra,
+  addNodePanelRender,
+  updateNodePanelRender,
   labelRender,
   onChecked,
   onExpand,
@@ -29,11 +31,12 @@ export default function MultipleTree({
   defaultChecked,
   defaultCheckedPath,
   defaultExpandPath,
+  onUpdateTree,
   onMove,
   onCanMove,
   loadData,
   ...extra
-}: MultipleTreeProps) {
+}: MultipleTreeProps<T>) {
   const deepRef = useRef(0)
 
   const {
@@ -46,7 +49,10 @@ export default function MultipleTree({
     changeExpandPath,
     canMove: hookCanMove,
     move,
-  } = useMultipleTree()
+    addChild,
+    addSibling,
+    updateNode,
+  } = useMultipleTree<TreeNode<T>>()
 
   const { curCheckedRef, curExpandRef, expandHandleWidth, draggleHandleWidth, treeWrapperRef } = useResponseTree({
     hookCheckedPath,
@@ -70,7 +76,7 @@ export default function MultipleTree({
   })
 
   const toggleExpand = useCallback(
-    (linkNode: LinkTreeNode<TreeNode>) => {
+    (linkNode: LinkTreeNode<TreeNode<T>>) => {
       if (linkNode.disabled || linkNode.isLeft) return
 
       curExpandRef.current = { node: linkNode.data, res: !linkNode.isExpand }
@@ -80,7 +86,7 @@ export default function MultipleTree({
   )
 
   const toggleChecked = useCallback(
-    (linkNode: LinkTreeNode<TreeNode>, checked: boolean = false) => {
+    (linkNode: LinkTreeNode<TreeNode<T>>, checked: boolean = false) => {
       if (linkNode.disabled) return
 
       curCheckedRef.current = { node: linkNode.data, res: checked }
@@ -93,12 +99,13 @@ export default function MultipleTree({
     deepRef.current = 0
     return getRenderOptions(linkForest, 0)
 
-    function getRenderOptions(linkForest: LinkTreeNode<TreeNode>[], level: number, parentNode?: LinkTreeNode<TreeNode>) {
+    function getRenderOptions(linkForest: LinkTreeNode<TreeNode<T>>[], level: number, parentNode?: LinkTreeNode<TreeNode<T>>) {
       deepRef.current = Math.max(level, deepRef.current)
       const options: React.ReactNode[] = []
       linkForest.forEach((linkNode) => {
         options.push(
           <TreeNodeRender
+            key={`${level}-${linkNode.value}`}
             level={level}
             linkNode={linkNode}
             className={itemClassName}
@@ -114,6 +121,11 @@ export default function MultipleTree({
             onDragOver={handleDragOver}
             onToggleChecked={toggleChecked}
             onToggleExpand={toggleExpand}
+            addNodePanelRender={addNodePanelRender}
+            updateNodePanelRender={updateNodePanelRender}
+            addChild={addChild}
+            addSibling={addSibling}
+            updateNode={updateNode}
           />
         )
 
@@ -124,6 +136,7 @@ export default function MultipleTree({
 
       options.push(
         <TreeExtraRender
+          key={`extra-${level}-${parentNode?.value || 'first'}`}
           level={level}
           className={itemClassName}
           parentNode={parentNode}
@@ -136,7 +149,22 @@ export default function MultipleTree({
 
       return options
     }
-  }, [linkForest, toggleExpand, toggleChecked, labelRender, renderLabelIcon, expandIcon, itemClassName, draggable, draggleIcon])
+  }, [
+    linkForest,
+    toggleExpand,
+    toggleChecked,
+    labelRender,
+    renderLabelIcon,
+    addNodePanelRender,
+    updateNodePanelRender,
+    expandIcon,
+    itemClassName,
+    draggable,
+    draggleIcon,
+    addChild,
+    addSibling,
+    updateNode,
+  ])
 
   const { handleScroll, startShow, endShow, wrapperStyle, itemsStyle } = useVirtualScrollY(renderOptions.length, virtualScroll)
 

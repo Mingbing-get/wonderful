@@ -14,7 +14,7 @@ import { TreeNode } from '../../types/tree'
 import { SingleTreeSelectProps } from '../../types/treeSelect'
 import { InputRef } from '../../types/input'
 
-export default function SingleTreeSelect({
+export default function SingleTreeSelect<T extends Object>({
   style,
   className,
   popupClassName,
@@ -52,7 +52,7 @@ export default function SingleTreeSelect({
   onMove,
 
   ...extra
-}: SingleTreeSelectProps) {
+}: SingleTreeSelectProps<T>) {
   const [showSearchInput, setShowSearchInput] = useState(false)
   const [searchText, setSearchText] = useState('')
   const [visible, setVisible] = useState(false)
@@ -61,7 +61,7 @@ export default function SingleTreeSelect({
 
   const onChangeRef = useRef(onChange)
 
-  const { linkForest, clearChecked, checkedPath: _checkedPath, changeCheckedPath } = useSingleTree<TreeNode>()
+  const { linkForest, clearChecked, checkedPath: _checkedPath, changeCheckedPath } = useSingleTree<TreeNode<T>>()
 
   useEffect(() => {
     if (!initRef.current) {

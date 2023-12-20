@@ -1,7 +1,11 @@
-import React, { useState, useEffect } from 'react'
-import { Tree, MultipleTree, Icon, TreeNode, Input } from '../../../rabbit/src'
+import React, { useState, useEffect, useCallback, useMemo } from 'react'
+import { Tree, MultipleTree, Icon, TreeNode, Input, Button, AddNodePanelRenderProps, UpdateNodePanelRenderProps } from '../../../rabbit/src'
 
-const baseData: TreeNode[] = [
+type TestNode = TreeNode<{
+  test?: boolean
+}>
+
+const baseData: TestNode[] = [
   {
     label: '0-0',
     value: '0-0',
@@ -66,8 +70,20 @@ export default function ExampleTree() {
     }, 5000)
   }, [])
 
+  const addNodePanel = useCallback((props: AddNodePanelRenderProps<{}>) => {
+    return <AddNode {...props} />
+  }, [])
+
+  const updateNodePanel = useCallback((props: UpdateNodePanelRenderProps<{}>) => {
+    return <UpdateNode {...props} />
+  }, [])
+
+  const handleUpdateTree = useCallback((data: TestNode[]) => {
+    console.log(data)
+  }, [])
+
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 16%)', justifyContent: 'space-between' }}>
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 14%)', justifyContent: 'space-between' }}>
       <Tree
         data={data}
         expandPath={expandPath}
@@ -123,6 +139,12 @@ export default function ExampleTree() {
         data={data}
         renderExtra={(path, parentNode) => <Input />}
       />
+      <Tree
+        data={data}
+        addNodePanelRender={addNodePanel}
+        updateNodePanelRender={updateNodePanel}
+        onUpdateTree={handleUpdateTree}
+      />
       <MultipleTree data={data} />
       <MultipleTree
         data={data}
@@ -140,6 +162,42 @@ export default function ExampleTree() {
         draggable
         renderExtra={(path, parentNode) => (parentNode?.value === '0-0' ? false : <Input />)}
       />
+      <MultipleTree
+        data={data}
+        addNodePanelRender={addNodePanel}
+        updateNodePanelRender={updateNodePanel}
+      />
+    </div>
+  )
+}
+
+function AddNode({ addChild, addNextSibling }: AddNodePanelRenderProps<{}>) {
+  const [value, setValue] = useState('')
+
+  return (
+    <div>
+      <Input
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+      />
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
+        <Button onClick={() => addNextSibling({ value, label: `label-${value}` })}>添加下一个节点</Button>
+        <Button onClick={() => addChild({ value, label: `label-${value}` })}>添加子节点</Button>
+      </div>
+    </div>
+  )
+}
+
+function UpdateNode({ refNode, updateNode }: UpdateNodePanelRenderProps<{}>) {
+  const [value, setValue] = useState(refNode.label)
+
+  return (
+    <div>
+      <Input
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+      />
+      <Button onClick={() => updateNode({ value: refNode.value, label: `label-${value}` })}>确定</Button>
     </div>
   )
 }
