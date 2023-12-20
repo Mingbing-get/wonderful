@@ -1,10 +1,15 @@
 import { Placement } from './popover'
+import { PopoverOffset } from '../popoverInstance/type'
 import { TreeValue } from '../hooks/useTree/type'
 import { MultipleTreeProps, SingleTreeProps, TreeNode } from './tree'
 
 export type TreeSelectBaseProps = {
   popupClassName?: string
   popupStyle?: React.CSSProperties
+  offset?: PopoverOffset
+  preventControlVisible?: boolean
+  delay?: number
+  hoverOpenDelay?: number
   placeholder?: string
   disabled?: boolean
   allowClear?: boolean

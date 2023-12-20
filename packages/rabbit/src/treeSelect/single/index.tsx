@@ -19,6 +19,10 @@ export default function SingleTreeSelect<T extends Object>({
   className,
   popupClassName,
   popupStyle,
+  offset,
+  preventControlVisible,
+  delay,
+  hoverOpenDelay,
   placeholder,
   allowClear,
   disabled,
@@ -131,6 +135,10 @@ export default function SingleTreeSelect<T extends Object>({
   return (
     <Popover
       visible={visible}
+      offset={offset}
+      preventControlVisible={preventControlVisible}
+      delay={delay}
+      hoverOpenDelay={hoverOpenDelay}
       placement={placement}
       className={popupClassName}
       style={popupStyle}

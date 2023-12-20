@@ -41,6 +41,10 @@ export default function MultipleTreeSelect<T extends Object>({
   className,
   popupClassName,
   popupStyle,
+  offset,
+  preventControlVisible,
+  delay,
+  hoverOpenDelay,
   placeholder,
   allowClear,
   disabled,
@@ -179,6 +183,10 @@ export default function MultipleTreeSelect<T extends Object>({
       <Popover
         ref={popoverRef}
         visible={visible}
+        offset={offset}
+        preventControlVisible={preventControlVisible}
+        delay={delay}
+        hoverOpenDelay={hoverOpenDelay}
         placement={placement}
         className={popupClassName}
         style={popupStyle}
