@@ -1,5 +1,15 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react'
-import { Tree, MultipleTree, Icon, TreeNode, Input, Button, AddNodePanelRenderProps, UpdateNodePanelRenderProps } from '../../../rabbit/src'
+import React, { useState, useEffect, useCallback } from 'react'
+import {
+  Tree,
+  MultipleTree,
+  Icon,
+  TreeNode,
+  Input,
+  Button,
+  AddNodePanelRenderProps,
+  UpdateNodePanelRenderProps,
+  RemoveNodePanelRenderProps,
+} from '../../../rabbit/src'
 
 type TestNode = TreeNode<{
   test?: boolean
@@ -78,6 +88,10 @@ export default function ExampleTree() {
     return <UpdateNode {...props} />
   }, [])
 
+  const removeNodePanel = useCallback((props: RemoveNodePanelRenderProps<{}>) => {
+    return <RemoveNode {...props} />
+  }, [])
+
   const handleUpdateTree = useCallback((data: TestNode[]) => {
     console.log(data)
   }, [])
@@ -143,6 +157,7 @@ export default function ExampleTree() {
         data={data}
         addNodePanelRender={addNodePanel}
         updateNodePanelRender={updateNodePanel}
+        removeNodePanelRender={removeNodePanel}
         onUpdateTree={handleUpdateTree}
       />
       <MultipleTree data={data} />
@@ -166,6 +181,7 @@ export default function ExampleTree() {
         data={data}
         addNodePanelRender={addNodePanel}
         updateNodePanelRender={updateNodePanel}
+        removeNodePanelRender
       />
     </div>
   )
@@ -198,6 +214,19 @@ function UpdateNode({ refNode, updateNode }: UpdateNodePanelRenderProps<{}>) {
         onChange={(e) => setValue(e.target.value)}
       />
       <Button onClick={() => updateNode({ value: refNode.value, label: `label-${value}` })}>确定</Button>
+    </div>
+  )
+}
+
+function RemoveNode({ refNode, removeNode }: RemoveNodePanelRenderProps<{}>) {
+  return (
+    <div>
+      <p>确认删除节点：{refNode.label}</p>
+      <Button
+        type="danger"
+        onClick={removeNode}>
+        确定
+      </Button>
     </div>
   )
 }

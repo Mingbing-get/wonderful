@@ -24,6 +24,7 @@ export default function SingleTree<T extends Object>({
   renderExtra,
   addNodePanelRender,
   updateNodePanelRender,
+  removeNodePanelRender,
   labelRender,
   onChecked,
   onExpand,
@@ -53,6 +54,7 @@ export default function SingleTree<T extends Object>({
     addChild,
     addSibling,
     updateNode,
+    removeNode,
   } = useSingleTree<TreeNode<T>>()
 
   const { curCheckedRef, curExpandRef, expandHandleWidth, draggleHandleWidth, treeWrapperRef } = useResponseTree({
@@ -123,9 +125,11 @@ export default function SingleTree<T extends Object>({
             onToggleExpand={toggleExpand}
             addNodePanelRender={addNodePanelRender}
             updateNodePanelRender={updateNodePanelRender}
+            removeNodePanelRender={removeNodePanelRender}
             addChild={addChild}
             addSibling={addSibling}
             updateNode={updateNode}
+            removeNode={removeNode}
           />
         )
 
@@ -158,6 +162,7 @@ export default function SingleTree<T extends Object>({
     renderExtra,
     addNodePanelRender,
     updateNodePanelRender,
+    removeNodePanelRender,
     expandIcon,
     itemClassName,
     draggable,
@@ -165,6 +170,7 @@ export default function SingleTree<T extends Object>({
     addChild,
     addSibling,
     updateNode,
+    removeNode,
   ])
 
   const { handleScroll, startShow, endShow, wrapperStyle, itemsStyle } = useVirtualScrollY(renderOptions.length, virtualScroll)

@@ -8,17 +8,28 @@ import Popover from '../../popover'
 import { LinkTreeNode } from '../../hooks/useTree/type'
 import { TreeNode, TreeBaseProps } from '../../types/tree'
 
-interface Props<T extends Object> extends Pick<TreeBaseProps<T>, 'addNodePanelRender' | 'updateNodePanelRender'> {
+interface Props<T extends Object> extends Pick<TreeBaseProps<T>, 'addNodePanelRender' | 'updateNodePanelRender' | 'removeNodePanelRender'> {
   linkNode: LinkTreeNode<TreeNode<T>>
 
   addSibling: (refNode: LinkTreeNode<TreeNode<T>>, newNode: TreeNode<T>) => void
   addChild: (refNode: LinkTreeNode<TreeNode<T>>, newNode: TreeNode<T>) => void
   updateNode: (refNode: LinkTreeNode<TreeNode<T>>, newNode: TreeNode<T>) => void
+  removeNode: (refNode: LinkTreeNode<TreeNode<T>>) => void
 }
 
-export default function TreeEditRender<T extends Object>({ linkNode, addNodePanelRender, updateNodePanelRender, addSibling, addChild, updateNode }: Props<T>) {
+export default function TreeEditRender<T extends Object>({
+  linkNode,
+  addNodePanelRender,
+  updateNodePanelRender,
+  removeNodePanelRender,
+  addSibling,
+  addChild,
+  updateNode,
+  removeNode,
+}: Props<T>) {
   const [visibleAddPanel, setVisibleAddPanel] = useState(false)
   const [visibleUpdatePanel, setVisibleUpdatePanel] = useState(false)
+  const [visibleRemovePanel, setVisibleRemovePanel] = useState(false)
 
   const path = useMemo(() => findLinkPath(linkNode).map((node) => node.value), [linkNode])
 
@@ -35,7 +46,7 @@ export default function TreeEditRender<T extends Object>({ linkNode, addNodePane
       addChild(linkNode, newNode)
       setVisibleAddPanel(false)
     },
-    [linkNode]
+    [linkNode, addChild]
   )
 
   const _updateNode = useCallback(
@@ -43,11 +54,20 @@ export default function TreeEditRender<T extends Object>({ linkNode, addNodePane
       updateNode(linkNode, newNode)
       setVisibleUpdatePanel(false)
     },
-    [linkNode]
+    [linkNode, updateNode]
   )
 
+  const _removeNode = useCallback(() => {
+    removeNode(linkNode)
+    setVisibleRemovePanel(false)
+  }, [linkNode, removeNode])
+
+  const needShow = useMemo(() => {
+    return visibleAddPanel || visibleUpdatePanel || visibleRemovePanel
+  }, [visibleAddPanel, visibleUpdatePanel, visibleRemovePanel])
+
   return (
-    <div className={classNames('tree-item-insert', (visibleAddPanel || visibleUpdatePanel) && 'is-panel-visible')}>
+    <div className={classNames('tree-item-insert', needShow && 'is-panel-visible')}>
       <div className="insert-line" />
       <div className="icon-wrapper">
         {addNodePanelRender && (
@@ -74,6 +94,25 @@ export default function TreeEditRender<T extends Object>({ linkNode, addNodePane
             </span>
           </Popover>
         )}
+        {removeNodePanelRender &&
+          (removeNodePanelRender === true ? (
+            <span
+              className="insert-icon-item is-delete-icon"
+              onClick={_removeNode}>
+              <Icon type="delete" />
+            </span>
+          ) : (
+            <Popover
+              arrow="none"
+              placement="bottom-start"
+              visible={visibleRemovePanel}
+              onVisibleChange={setVisibleRemovePanel}
+              content={<div>{removeNodePanelRender({ refNode: linkNode.data, path, removeNode: _removeNode })}</div>}>
+              <span className="insert-icon-item is-delete-icon">
+                <Icon type="delete" />
+              </span>
+            </Popover>
+          ))}
       </div>
     </div>
   )

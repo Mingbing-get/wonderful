@@ -170,6 +170,11 @@
       &:hover {
         color: var(--rabbit-primary-color);
       }
+      &.is-delete-icon {
+        &:hover {
+          color: var(--rabbit-error-color);
+        }
+      }
     }
   }
 }

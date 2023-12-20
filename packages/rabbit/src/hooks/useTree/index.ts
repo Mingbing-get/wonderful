@@ -187,6 +187,28 @@ export default function useTree<T extends BaseTreeNode>({
       linkForestRef.current.splice(index, 1, newLinkNode)
     }
 
+    checkedPathRef.current = linkPathToCheckedPath(multiple as any, getCheckedLinkPathFromLinkForest(multiple, mode, linkForestRef.current))
+    expandPathRef.current = linkPathToCheckedPath(true, getExpandLinkPathFromLinkForest(linkForestRef.current))
+
+    setLinkForest([...linkForestRef.current])
+    onUpdateTree?.(linkForestToBaseForest(linkForestRef.current))
+  }, [])
+
+  const removeNode = useCallback((refNode: LinkTreeNode<T>) => {
+    const parentNode = refNode.parent
+
+    if (parentNode?.children) {
+      const index = parentNode.children.findIndex((item) => item.value === refNode.value)
+      parentNode.data.children?.splice(index, 1)
+      parentNode.children.splice(index, 1)
+    } else {
+      const index = linkForestRef.current.findIndex((item) => item.value === refNode.value)
+      linkForestRef.current.splice(index, 1)
+    }
+
+    checkedPathRef.current = linkPathToCheckedPath(multiple as any, getCheckedLinkPathFromLinkForest(multiple, mode, linkForestRef.current))
+    expandPathRef.current = linkPathToCheckedPath(true, getExpandLinkPathFromLinkForest(linkForestRef.current))
+
     setLinkForest([...linkForestRef.current])
     onUpdateTree?.(linkForestToBaseForest(linkForestRef.current))
   }, [])
@@ -205,5 +227,6 @@ export default function useTree<T extends BaseTreeNode>({
     addSibling,
     addChild,
     updateNode,
+    removeNode,
   }
 }

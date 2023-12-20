@@ -64,6 +64,7 @@ export interface BaseReturn<T extends BaseTreeNode> {
   addSibling: (refNode: LinkTreeNode<T>, newNode: T) => void
   addChild: (refNode: LinkTreeNode<T>, newNode: T) => void
   updateNode: (refNode: LinkTreeNode<T>, newNode: T) => void
+  removeNode: (refNode: LinkTreeNode<T>) => void
 }
 
 export interface MultipleReturn<T extends BaseTreeNode> extends BaseReturn<T> {

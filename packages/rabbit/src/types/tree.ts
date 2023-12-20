@@ -22,6 +22,12 @@ export interface UpdateNodePanelRenderProps<T extends Object> {
   updateNode: (newNode: TreeNode<T>) => void
 }
 
+export interface RemoveNodePanelRenderProps<T extends Object> {
+  refNode: TreeNode<T>
+  path: TreeValue[]
+  removeNode: () => void
+}
+
 export type TreeBaseProps<T extends object = {}> = {
   className?: string
   itemClassName?: string
@@ -36,6 +42,7 @@ export type TreeBaseProps<T extends object = {}> = {
   virtualScroll?: VirtualScrollY
   addNodePanelRender?: (props: AddNodePanelRenderProps<T>) => React.ReactNode
   updateNodePanelRender?: (props: UpdateNodePanelRenderProps<T>) => React.ReactNode
+  removeNodePanelRender?: true | ((props: RemoveNodePanelRenderProps<T>) => React.ReactNode)
   renderLabelIcon?: (node: TreeNode<T>, isExpand?: boolean, isLeaf?: boolean) => React.ReactNode
   renderExtra?: (parentPath: TreeValue[], parentNode?: TreeNode<T>) => React.ReactNode | false
   labelRender?: TreeLabelRender<T>

@@ -8,7 +8,15 @@ import TreeEditRender from './treeEditRender'
 import { LinkTreeNode } from '../../hooks/useTree/type'
 import { TreeBaseProps, TreeNode, TreeLabelRender } from '../../types/tree'
 
-type NeedTreeProps = 'draggleIcon' | 'draggable' | 'expandIcon' | 'renderLabelIcon' | 'labelRender' | 'addNodePanelRender' | 'updateNodePanelRender'
+type NeedTreeProps =
+  | 'draggleIcon'
+  | 'draggable'
+  | 'expandIcon'
+  | 'renderLabelIcon'
+  | 'labelRender'
+  | 'addNodePanelRender'
+  | 'updateNodePanelRender'
+  | 'removeNodePanelRender'
 interface Props<T extends Object> extends Pick<TreeBaseProps<T>, NeedTreeProps> {
   level: number
   linkNode: LinkTreeNode<TreeNode<T>>
@@ -24,6 +32,7 @@ interface Props<T extends Object> extends Pick<TreeBaseProps<T>, NeedTreeProps> 
   addSibling: (refNode: LinkTreeNode<TreeNode<T>>, newNode: TreeNode<T>) => void
   addChild: (refNode: LinkTreeNode<TreeNode<T>>, newNode: TreeNode<T>) => void
   updateNode: (refNode: LinkTreeNode<TreeNode<T>>, newNode: TreeNode<T>) => void
+  removeNode: (refNode: LinkTreeNode<TreeNode<T>>) => void
 }
 
 const defaultLabelRender: TreeLabelRender<{}> = (node) => node.label || node.value
@@ -46,10 +55,12 @@ export default function TreeNodeRender<T extends Object>({
   onToggleChecked,
   addNodePanelRender,
   updateNodePanelRender,
+  removeNodePanelRender,
 
   addSibling,
   addChild,
   updateNode,
+  removeNode,
 }: Props<T>) {
   return (
     <div
@@ -104,9 +115,11 @@ export default function TreeNodeRender<T extends Object>({
           linkNode={linkNode}
           addNodePanelRender={addNodePanelRender}
           updateNodePanelRender={updateNodePanelRender}
+          removeNodePanelRender={removeNodePanelRender}
           addChild={addChild}
           addSibling={addSibling}
           updateNode={updateNode}
+          removeNode={removeNode}
         />
       )}
     </div>
