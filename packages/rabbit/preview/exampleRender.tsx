@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react'
-import { Tree, TreeNode, Icon } from '../../rabbit/src'
+import { Tree, TreeNode, Icon, TreeValue } from '../../rabbit/src'
 
 import ExampleIcon from './examples/icon'
 import ExampleLoading from './examples/loading'
@@ -270,7 +270,7 @@ mergeValueAndLabel(treeData)
 export default function ExampleRender() {
   const [currentShow, setCurrentShow] = useState<React.ReactNode>(<ExampleColorPicker />)
 
-  const handleChecked = useCallback((_: any, node: ComponentTreeNode) => {
+  const handleChecked = useCallback((path: TreeValue[], node: ComponentTreeNode) => {
     setCurrentShow(node.component)
   }, [])
 

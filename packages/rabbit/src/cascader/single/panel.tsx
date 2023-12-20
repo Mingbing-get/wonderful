@@ -7,16 +7,16 @@ import { CascaderOption, CascaderTriggerType } from '../../types/cascader'
 
 import Icon from '../../icon'
 
-type Props = {
-  linkForest: LinkTreeNode<CascaderOption>[]
+type Props<T extends object> = {
+  linkForest: LinkTreeNode<CascaderOption<T>>[]
   mode: TreeMode
   expandIcon?: React.ReactNode
   expandTrigger: CascaderTriggerType
-  setChecked: (data: CascaderOption, checked: boolean, closePopover?: boolean) => void
-  setExpandNode: (data?: CascaderOption | undefined, expand?: boolean | undefined) => void
+  setChecked: (data: CascaderOption<T>, checked: boolean, closePopover?: boolean) => void
+  setExpandNode: (data?: CascaderOption<T> | undefined, expand?: boolean | undefined) => void
 }
 
-export default function Panel({ linkForest, mode, expandIcon, expandTrigger, setChecked, setExpandNode }: Props) {
+export default function Panel<T extends object>({ linkForest, mode, expandIcon, expandTrigger, setChecked, setExpandNode }: Props<T>) {
   const renderForestList = useMemo(() => {
     const renderForestList = [linkForest]
 
@@ -30,7 +30,7 @@ export default function Panel({ linkForest, mode, expandIcon, expandTrigger, set
   }, [linkForest])
 
   const handleClickLevelItem = useCallback(
-    (linkNode: LinkTreeNode<CascaderOption>) => {
+    (linkNode: LinkTreeNode<CascaderOption<T>>) => {
       if (linkNode.disabled) return
 
       if (!linkNode.isLeft && expandTrigger === 'click') {
@@ -49,7 +49,7 @@ export default function Panel({ linkForest, mode, expandIcon, expandTrigger, set
   )
 
   const handleMouseEnter = useCallback(
-    (linkNode: LinkTreeNode<CascaderOption>) => {
+    (linkNode: LinkTreeNode<CascaderOption<T>>) => {
       if (expandTrigger !== 'hover' || linkNode.disabled) return
 
       setExpandNode(linkNode.data, true)

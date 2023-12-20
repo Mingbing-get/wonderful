@@ -1,4 +1,4 @@
-import { BaseTreeNode, TreeValue, InnerLocation, LinkTreeNode, TreeMode } from '../hooks/useTree/type'
+import { BaseTreeNode, TreeValue, InnerLocation, TreeMode } from '../hooks/useTree/type'
 import { VirtualScrollY } from '../hooks/useVirtualScrollY'
 
 export type TreeNode<T extends object = {}> = BaseTreeNode<
@@ -6,15 +6,6 @@ export type TreeNode<T extends object = {}> = BaseTreeNode<
     label?: string
   }
 >
-
-export type TreeRef<T extends object = {}> =
-  | {
-      forest: LinkTreeNode<TreeNode<T>>[]
-      setChecked: (data: TreeNode<T>, checked: boolean) => void
-      setExpandNode: (data?: TreeNode<T>, expand?: boolean) => void
-      clearChecked: () => void
-    }
-  | undefined
 
 export type TreeLabelRender<T extends object> = (node: TreeNode<T>) => React.ReactNode
 

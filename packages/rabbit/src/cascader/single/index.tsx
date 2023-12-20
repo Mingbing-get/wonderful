@@ -15,7 +15,7 @@ import { isSame } from '../../utils'
 import { CascaderOption, CascaderSingleProps, CascaderSingleDisplayRender, CascaderDropdownRender, CascaderNotFoundContent } from '../../types/cascader'
 import { InputRef } from '../../types/input'
 
-const defaultDisplayRender: CascaderSingleDisplayRender = (labels, _) => labels.join(' / ')
+const defaultDisplayRender: CascaderSingleDisplayRender<any> = (labels, _) => labels.join(' / ')
 const defaultDropdownRender: CascaderDropdownRender = (menus, _) => menus
 const defaultNotFoundContent: CascaderNotFoundContent = () => (
   <div className="cascader-empty">
@@ -27,7 +27,7 @@ const defaultNotFoundContent: CascaderNotFoundContent = () => (
   </div>
 )
 
-export default function SingleCascader({
+export default function SingleCascader<T extends object>({
   className,
   popupClassName,
   popupStyle,
@@ -52,13 +52,13 @@ export default function SingleCascader({
   onDropdownVisibleChange,
   onSearch,
   ...extra
-}: CascaderSingleProps) {
+}: CascaderSingleProps<T>) {
   const [showSearchInput, setShowSearchInput] = useState(false)
   const [visiblePopover, setVisiblePopover] = useState(false)
   const [searchText, setSearchText] = useState('')
   const inputRef = useRef<InputRef>(null)
   const valueRef = useRef<TreeValue[]>([])
-  const linkForestRef = useRef<LinkTreeNode<CascaderOption>[]>([])
+  const linkForestRef = useRef<LinkTreeNode<CascaderOption<T>>[]>([])
 
   const onChangeRef = useRef(onChange)
   const onSearchRef = useRef(onSearch)
@@ -99,7 +99,7 @@ export default function SingleCascader({
     if (!onChangeRef.current) return
 
     const values: TreeValue[] = []
-    const checkedPath: CascaderOption[] = []
+    const checkedPath: CascaderOption<T>[] = []
     checkedLinkNodePath.forEach((linkNode) => {
       values.push(linkNode.value)
       checkedPath.push(linkNode.data)
@@ -116,9 +116,9 @@ export default function SingleCascader({
   }, [value])
 
   const _displayRender = useCallback(
-    (checkedLinkNodePath: LinkTreeNode<CascaderOption>[]) => {
+    (checkedLinkNodePath: LinkTreeNode<CascaderOption<T>>[]) => {
       const labels: string[] = []
-      const checkedPath: CascaderOption[] = []
+      const checkedPath: CascaderOption<T>[] = []
       checkedLinkNodePath.forEach((linkNode) => {
         labels.push(linkNode.data.label || `${linkNode.value}`)
         checkedPath.push(linkNode.data)
@@ -145,7 +145,7 @@ export default function SingleCascader({
   )
 
   const handleChecked = useCallback(
-    (data: CascaderOption, checked: boolean, closePopover: boolean = true) => {
+    (data: CascaderOption<T>, checked: boolean, closePopover: boolean = true) => {
       setChecked(data, checked)
       closePopover && setVisiblePopover(false)
     },

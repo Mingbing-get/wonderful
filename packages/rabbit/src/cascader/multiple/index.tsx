@@ -17,7 +17,7 @@ import { isSame } from '../../utils'
 import { CascaderOption, CascaderMultipleProps, CascaderDropdownRender, CascaderNotFoundContent } from '../../types/cascader'
 import { PopoverRef } from '../../types/popover'
 
-const defaultDisplayRender = (checkedPath: CascaderOption[][], onClose: (data: CascaderOption) => void) => {
+const defaultDisplayRender = <T extends object>(checkedPath: CascaderOption<T>[][], onClose: (data: CascaderOption<T>) => void) => {
   return checkedPath.map((singlePath, index) => {
     const curLastNode = singlePath.pop()
     if (!curLastNode) return <></>
@@ -47,7 +47,7 @@ const defaultNotFoundContent: CascaderNotFoundContent = () => (
   </div>
 )
 
-export default function MultipleCascader({
+export default function MultipleCascader<T extends object>({
   className,
   popupClassName,
   popupStyle,
@@ -72,7 +72,7 @@ export default function MultipleCascader({
   onDropdownVisibleChange,
   onSearch,
   ...extra
-}: CascaderMultipleProps) {
+}: CascaderMultipleProps<T>) {
   const [showSearchInput, setShowSearchInput] = useState(false)
   const [visiblePopover, setVisiblePopover] = useState(false)
   const valueRef = useRef<TreeValue[][]>([])
@@ -92,9 +92,9 @@ export default function MultipleCascader({
   }, [checkedPath, linkForest])
 
   const _displayRender = useCallback(
-    (checkedLinkNodePath: LinkTreeNode<CascaderOption>[][]) => {
+    (checkedLinkNodePath: LinkTreeNode<CascaderOption<T>>[][]) => {
       const labels: string[][] = []
-      const checkedPath: CascaderOption[][] = []
+      const checkedPath: CascaderOption<T>[][] = []
       checkedLinkNodePath.forEach((linkPath) => {
         labels.push(linkPath.map((linkNode) => linkNode.data.label || `${linkNode.value}`))
         checkedPath.push(linkPath.map((linkNode) => linkNode.data))
@@ -102,7 +102,7 @@ export default function MultipleCascader({
 
       return displayRender ? displayRender(labels, checkedPath) : defaultDisplayRender(checkedPath, onClose)
 
-      function onClose(data: CascaderOption) {
+      function onClose(data: CascaderOption<T>) {
         setChecked(data, false)
       }
     },

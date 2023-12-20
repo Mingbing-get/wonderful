@@ -7,27 +7,27 @@ import { CascaderOption } from '../../types/cascader'
 
 import CheckBox from '../../checkbox'
 
-type SearchPath = {
+type SearchPath<T extends object> = {
   texts: string[]
   disabled?: boolean
   checked?: boolean
   halfChecked?: boolean
-  path: LinkTreeNode<CascaderOption>[]
+  path: LinkTreeNode<CascaderOption<T>>[]
 }
 
-type Props = {
+type Props<T extends object> = {
   searchText: string
-  linkForest: LinkTreeNode<CascaderOption>[]
-  setChecked: (data: CascaderOption, checked: boolean, closePopover?: boolean) => void
+  linkForest: LinkTreeNode<CascaderOption<T>>[]
+  setChecked: (data: CascaderOption<T>, checked: boolean, closePopover?: boolean) => void
 }
 
-export default function SearchPanel({ searchText, linkForest, setChecked }: Props) {
+export default function SearchPanel<T extends object>({ searchText, linkForest, setChecked }: Props<T>) {
   const searchPath = useMemo(() => {
     const searchLinkPathList = searchTextFromBaseTree(linkForest, ['label', 'value'], [searchText, searchText], 'unlink')
 
     return searchLinkPathList.map((linkTreePath) => {
       const onePath = linkTreePath.reduce(
-        (total: Omit<SearchPath, 'path'>, linkTreeNode) => {
+        (total: Omit<SearchPath<T>, 'path'>, linkTreeNode) => {
           total.texts.push(
             `${linkTreeNode.data.label || linkTreeNode.data.value}`.replace(
               new RegExp(searchText, 'ig'),
@@ -45,12 +45,12 @@ export default function SearchPanel({ searchText, linkForest, setChecked }: Prop
         checked: linkTreePath[linkTreePath.length - 1].checked,
         halfChecked: linkTreePath[linkTreePath.length - 1].halfChecked,
         path: linkTreePath,
-      } as SearchPath
+      } as SearchPath<T>
     })
   }, [searchText, linkForest])
 
   const handleClickItem = useCallback(
-    (searchPath: SearchPath, checked: boolean) => {
+    (searchPath: SearchPath<T>, checked: boolean) => {
       if (searchPath.disabled) return
 
       setChecked(searchPath.path[searchPath.path.length - 1].data, checked)
