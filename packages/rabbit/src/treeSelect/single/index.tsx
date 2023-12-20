@@ -50,6 +50,9 @@ export default function SingleTreeSelect<T extends Object>({
   onExpand,
   onCanMove,
   onMove,
+  addNodePanelRender,
+  updateNodePanelRender,
+  removeNodePanelRender,
 
   ...extra
 }: SingleTreeSelectProps<T>) {
@@ -161,6 +164,9 @@ export default function SingleTreeSelect<T extends Object>({
             onExpand={onExpand}
             onCanMove={onCanMove}
             onMove={onMove}
+            addNodePanelRender={addNodePanelRender}
+            updateNodePanelRender={updateNodePanelRender}
+            removeNodePanelRender={removeNodePanelRender}
           />
         )
       }>

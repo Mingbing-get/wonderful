@@ -72,6 +72,9 @@ export default function MultipleTreeSelect<T extends Object>({
   onExpand,
   onCanMove,
   onMove,
+  addNodePanelRender,
+  updateNodePanelRender,
+  removeNodePanelRender,
 
   ...extra
 }: MultipleTreeSelectProps<T>) {
@@ -208,6 +211,9 @@ export default function MultipleTreeSelect<T extends Object>({
               onExpand={onExpand}
               onCanMove={onCanMove}
               onMove={onMove}
+              addNodePanelRender={addNodePanelRender}
+              updateNodePanelRender={updateNodePanelRender}
+              removeNodePanelRender={removeNodePanelRender}
             />
           )
         }>
