@@ -17,6 +17,8 @@ interface Props<T extends Object> extends Pick<TreeBaseProps<T>, 'addNodePanelRe
   removeNode: (refNode: LinkTreeNode<TreeNode<T>>) => void
 }
 
+type EditAction = 'add' | 'update' | 'remove'
+
 export default function TreeEditRender<T extends Object>({
   linkNode,
   addNodePanelRender,
@@ -27,16 +29,14 @@ export default function TreeEditRender<T extends Object>({
   updateNode,
   removeNode,
 }: Props<T>) {
-  const [visibleAddPanel, setVisibleAddPanel] = useState(false)
-  const [visibleUpdatePanel, setVisibleUpdatePanel] = useState(false)
-  const [visibleRemovePanel, setVisibleRemovePanel] = useState(false)
+  const [visible, setVisible] = useState<Partial<Record<EditAction, boolean>>>({})
 
   const path = useMemo(() => findLinkPath(linkNode).map((node) => node.value), [linkNode])
 
   const _addNextSibling = useCallback(
     (newNode: TreeNode<T>) => {
       addSibling(linkNode, newNode)
-      setVisibleAddPanel(false)
+      setVisible({})
     },
     [linkNode, addSibling]
   )
@@ -44,7 +44,7 @@ export default function TreeEditRender<T extends Object>({
   const _addChild = useCallback(
     (newNode: TreeNode<T>) => {
       addChild(linkNode, newNode)
-      setVisibleAddPanel(false)
+      setVisible({})
     },
     [linkNode, addChild]
   )
@@ -52,19 +52,19 @@ export default function TreeEditRender<T extends Object>({
   const _updateNode = useCallback(
     (newNode: TreeNode<T>) => {
       updateNode(linkNode, newNode)
-      setVisibleUpdatePanel(false)
+      setVisible({})
     },
     [linkNode, updateNode]
   )
 
   const _removeNode = useCallback(() => {
     removeNode(linkNode)
-    setVisibleRemovePanel(false)
+    setVisible({})
   }, [linkNode, removeNode])
 
   const needShow = useMemo(() => {
-    return visibleAddPanel || visibleUpdatePanel || visibleRemovePanel
-  }, [visibleAddPanel, visibleUpdatePanel, visibleRemovePanel])
+    return visible.add || visible.remove || visible.update
+  }, [visible])
 
   return (
     <div className={classNames('tree-item-insert', needShow && 'is-panel-visible')}>
@@ -74,13 +74,12 @@ export default function TreeEditRender<T extends Object>({
           <Popover
             arrow="none"
             placement="bottom-start"
-            visible={visibleAddPanel}
+            visible={visible.add}
             preventControlVisible
-            onVisibleChange={setVisibleAddPanel}
             content={<div>{addNodePanelRender({ refNode: linkNode.data, path, addNextSibling: _addNextSibling, addChild: _addChild })}</div>}>
             <span
               className="insert-icon-item"
-              onClick={() => setVisibleAddPanel(true)}>
+              onClick={() => setVisible({ add: !visible.add })}>
               <Icon type="add" />
             </span>
           </Popover>
@@ -89,13 +88,12 @@ export default function TreeEditRender<T extends Object>({
           <Popover
             arrow="none"
             placement="bottom-start"
-            visible={visibleUpdatePanel}
+            visible={visible.update}
             preventControlVisible
-            onVisibleChange={setVisibleUpdatePanel}
             content={<div>{updateNodePanelRender({ refNode: linkNode.data, path, updateNode: _updateNode })}</div>}>
             <span
               className="insert-icon-item"
-              onClick={() => setVisibleUpdatePanel(true)}>
+              onClick={() => setVisible({ update: !visible.update })}>
               <Icon type="edit" />
             </span>
           </Popover>
@@ -111,13 +109,12 @@ export default function TreeEditRender<T extends Object>({
             <Popover
               arrow="none"
               placement="bottom-start"
-              visible={visibleRemovePanel}
+              visible={visible.remove}
               preventControlVisible
-              onVisibleChange={setVisibleRemovePanel}
               content={<div>{removeNodePanelRender({ refNode: linkNode.data, path, removeNode: _removeNode })}</div>}>
               <span
                 className="insert-icon-item is-delete-icon"
-                onClick={() => setVisibleRemovePanel(true)}>
+                onClick={() => setVisible({ remove: !visible.remove })}>
                 <Icon type="delete" />
               </span>
             </Popover>
