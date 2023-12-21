@@ -75,9 +75,12 @@ export default function TreeEditRender<T extends Object>({
             arrow="none"
             placement="bottom-start"
             visible={visibleAddPanel}
+            preventControlVisible
             onVisibleChange={setVisibleAddPanel}
             content={<div>{addNodePanelRender({ refNode: linkNode.data, path, addNextSibling: _addNextSibling, addChild: _addChild })}</div>}>
-            <span className="insert-icon-item">
+            <span
+              className="insert-icon-item"
+              onClick={() => setVisibleAddPanel(true)}>
               <Icon type="add" />
             </span>
           </Popover>
@@ -87,9 +90,12 @@ export default function TreeEditRender<T extends Object>({
             arrow="none"
             placement="bottom-start"
             visible={visibleUpdatePanel}
+            preventControlVisible
             onVisibleChange={setVisibleUpdatePanel}
             content={<div>{updateNodePanelRender({ refNode: linkNode.data, path, updateNode: _updateNode })}</div>}>
-            <span className="insert-icon-item">
+            <span
+              className="insert-icon-item"
+              onClick={() => setVisibleUpdatePanel(true)}>
               <Icon type="edit" />
             </span>
           </Popover>
@@ -106,9 +112,12 @@ export default function TreeEditRender<T extends Object>({
               arrow="none"
               placement="bottom-start"
               visible={visibleRemovePanel}
+              preventControlVisible
               onVisibleChange={setVisibleRemovePanel}
               content={<div>{removeNodePanelRender({ refNode: linkNode.data, path, removeNode: _removeNode })}</div>}>
-              <span className="insert-icon-item is-delete-icon">
+              <span
+                className="insert-icon-item is-delete-icon"
+                onClick={() => setVisibleRemovePanel(true)}>
                 <Icon type="delete" />
               </span>
             </Popover>
