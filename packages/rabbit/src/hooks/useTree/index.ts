@@ -201,6 +201,9 @@ export default function useTree<T extends BaseTreeNode>({
       const index = parentNode.children.findIndex((item) => item.value === refNode.value)
       parentNode.data.children?.splice(index, 1)
       parentNode.children.splice(index, 1)
+      if (parentNode.children.length === 0) {
+        parentNode.isLeft = true
+      }
     } else {
       const index = linkForestRef.current.findIndex((item) => item.value === refNode.value)
       linkForestRef.current.splice(index, 1)
