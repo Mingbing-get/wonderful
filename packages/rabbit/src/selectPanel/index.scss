@@ -22,3 +22,22 @@
     font-weight: 600;
   }
 }
+
+.rabbit-select-group {
+  display: flex;
+  flex-direction: column;
+  .rabbit-select-group-title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-size: 0.75rem;
+    color: var(--rabbit-border-color-base);
+    padding: 0.2rem 0.5rem;
+  }
+  .rabbit-select-group-options {
+    .rabbit-select-option,
+    .rabbit-multiple-select-option {
+      padding-left: 1.5rem;
+    }
+  }
+}

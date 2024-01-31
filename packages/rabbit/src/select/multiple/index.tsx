@@ -4,9 +4,10 @@ import classNames from 'classnames'
 import Tag from '../../tag'
 import Popover from '../../popover'
 import Icon from '../../icon'
-import { MultipleSelectProps, SelectOptionType, SelectValueType } from '../../types/select'
+import { MultipleSelectProps, SelectOptionType, SelectValueType, SelectGroup } from '../../types/select'
 import useMultipleDisplay from '../../hooks/useMultipleDisplay'
 import Panel from './selectPanel'
+import { isSelectGroup } from '../../selectPanel/utils'
 
 import './index.scss'
 
@@ -27,7 +28,7 @@ function defaultDisplayRender<T extends SelectValueType>(checkedPath: SelectOpti
   })
 }
 
-export default function MultipleSelect<T extends SelectValueType>({
+export default function MultipleSelect<T extends SelectValueType, O extends SelectOptionType<T>>({
   className,
   style,
   wrapperClassName,
@@ -40,7 +41,7 @@ export default function MultipleSelect<T extends SelectValueType>({
   showSearch,
   onChange,
   ...extra
-}: MultipleSelectProps<T>) {
+}: MultipleSelectProps<T, O>) {
   const [_value, setValue] = useState(defaultValue || value || [])
   const [triggerChange, setTriggerChange] = useState(false)
   const [visiblePopover, setVisiblePopover] = useState(false)
@@ -54,7 +55,23 @@ export default function MultipleSelect<T extends SelectValueType>({
   }, [onChange, triggerChange, _value])
 
   const checkedOptions = useMemo(() => {
-    return options.filter((option) => _value.includes(option.value))
+    const checkedOptions: O[] = []
+
+    options.forEach((option) => {
+      if (isSelectGroup(option)) {
+        option.options.forEach((subOption) => {
+          if (_value.includes(subOption.value)) {
+            checkedOptions.push(subOption)
+          }
+        })
+      } else {
+        if (_value.includes(option.value)) {
+          checkedOptions.push(option)
+        }
+      }
+    })
+
+    return checkedOptions
   }, [_value, options])
 
   const handleChangeValue = useCallback(
@@ -113,11 +130,32 @@ export default function MultipleSelect<T extends SelectValueType>({
   const afterFilterOptions = useMemo(() => {
     if (!searchText) return options
 
-    return options.filter((item) => {
-      if (typeof item.label !== 'string') return true
+    const afterFilterOptions: O[] | SelectGroup<T, O>[] = []
 
-      return item.label.includes(searchText)
+    options.forEach((item) => {
+      if (typeof item.label !== 'string') {
+        afterFilterOptions.push(item as any)
+        return
+      }
+
+      if (isSelectGroup(item)) {
+        const newGroup: SelectGroup<T, O> = { ...item, options: [] }
+
+        item.options.forEach((subOption) => {
+          if (typeof subOption.label !== 'string' || subOption.label.includes(searchText)) {
+            newGroup.options.push(subOption)
+          }
+        })
+
+        if (newGroup.options.length > 0) {
+          afterFilterOptions.push(newGroup as any)
+        }
+      } else if (item.label.includes(searchText)) {
+        afterFilterOptions.push(item as any)
+      }
     })
+
+    return afterFilterOptions
   }, [options, searchText])
 
   return (

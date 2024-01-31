@@ -5,6 +5,8 @@ import compatible from '../compatible'
 import { SelectValueType, SelectOptionType } from '../types/select'
 import { SelectPanelProps } from '../types/selectPanel'
 import Option from './option'
+import Group from './group'
+import { isSelectGroup, findOptionInGroupsOrOptions, findNextOptionInGroupsOrOptions } from './utils'
 
 import './index.scss'
 
@@ -26,21 +28,10 @@ export default function Panel<T extends SelectValueType, O extends SelectOptionT
 
   const changeHover = useCallback(
     (step: number) => {
-      if (options.length === 0) return
+      const nextOption = findNextOptionInGroupsOrOptions(options, step, hoverValueRef.current)
+      if (!nextOption) return
 
-      let currentIndex = -1
-      if (hoverValueRef.current) {
-        currentIndex = options.findIndex((option) => option.value === hoverValueRef.current)
-      }
-
-      currentIndex += step
-      if (currentIndex < 0) {
-        currentIndex = options.length - 1
-      } else if (currentIndex > options.length - 1) {
-        currentIndex = 0
-      }
-
-      setHoverValue(options[currentIndex].value)
+      setHoverValue(nextOption.value)
       setRefresh((old) => (old + 1) % 10000)
     },
     [options]
@@ -49,7 +40,8 @@ export default function Panel<T extends SelectValueType, O extends SelectOptionT
   const handleSelect = useCallback(() => {
     if (!hoverValueRef.current) return
 
-    const item = options.find((option) => option.value === hoverValueRef.current)
+    const item = findOptionInGroupsOrOptions(options, hoverValueRef.current)
+
     if (!item) return
 
     onClickItem?.(item)
@@ -96,15 +88,35 @@ export default function Panel<T extends SelectValueType, O extends SelectOptionT
       ref={selectWrapperRef}
       className={classNames('rabbit-select-wrapper', 'rabbit-component', wrapperClassName)}
       style={wrapperStyle}>
-      {options.map((item) => (
-        <Option
-          className={classNames({ 'is-select': value === item.value, 'is-hover': hoverValue === item.value })}
-          {...item}
-          key={item.value}
-          onClick={(value) => onClickItem?.(item)}
-          onMouseEnter={setHoverValue}
-        />
-      ))}
+      {options.map((item) => {
+        if (isSelectGroup(item)) {
+          return (
+            <Group
+              title={item.label}
+              key={item.id}>
+              {item.options.map((subItem) => (
+                <Option
+                  className={classNames({ 'is-select': value === subItem.value, 'is-hover': hoverValue === subItem.value })}
+                  {...subItem}
+                  key={subItem.value}
+                  onClick={(value) => onClickItem?.(subItem)}
+                  onMouseEnter={setHoverValue}
+                />
+              ))}
+            </Group>
+          )
+        }
+
+        return (
+          <Option
+            className={classNames({ 'is-select': value === item.value, 'is-hover': hoverValue === item.value })}
+            {...item}
+            key={item.value}
+            onClick={(value) => onClickItem?.(item)}
+            onMouseEnter={setHoverValue}
+          />
+        )
+      })}
     </div>
   )
 }

@@ -1,13 +1,43 @@
 import React from 'react'
-import { Select, MultipleSelect } from '../../../rabbit/src'
+import { Select, MultipleSelect, SelectGroup } from '../../../rabbit/src'
 
 function getOptions(count: number) {
   return new Array(count).fill(1).map((_, index) => ({ value: index + 1, label: `l-${index + 1}` }))
 }
 
+const groups: SelectGroup[] = [
+  {
+    label: 'group1',
+    id: 'group1',
+    options: [
+      { value: 'g1-1', label: 'g1-1' },
+      { value: 'g1-2', label: 'g1-2' },
+      { value: 'g1-3', label: 'g1-3' },
+    ],
+  },
+  {
+    label: 'group2',
+    id: 'group2',
+    options: [
+      { value: 'g2-1', label: 'g2-1' },
+      { value: 'g2-2', label: 'g2-2' },
+      { value: 'g2-3', label: 'g2-3' },
+    ],
+  },
+  {
+    label: 'group3',
+    id: 'group3',
+    options: [
+      { value: 'g3-1', label: 'g3-1' },
+      { value: 'g3-2', label: 'g3-2' },
+      { value: 'g3-3', label: 'g3-3' },
+    ],
+  },
+]
+
 export default function ExampleSelect() {
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 23%)', justifyContent: 'space-between' }}>
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 23%)', gridGap: 10, justifyContent: 'space-between' }}>
       <Select
         options={[
           {
@@ -45,6 +75,7 @@ export default function ExampleSelect() {
           },
         ]}
       />
+      <Select options={groups} />
       <MultipleSelect
         options={[
           {
@@ -97,6 +128,7 @@ export default function ExampleSelect() {
           },
         ]}
       />
+      <MultipleSelect options={groups} />
     </div>
   )
 }

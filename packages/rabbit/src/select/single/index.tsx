@@ -5,11 +5,12 @@ import Trigger from '../../selectTrigger'
 import Panel from '../../selectPanel'
 import Icon from '../../icon'
 import Popover from '../../popover'
+import { findOptionInGroupsOrOptions } from '../../selectPanel/utils'
 
 import { SelectOptionType, SelectProps, SelectValueType } from '../../types/select'
 import './index.scss'
 
-export default function Select<T extends SelectValueType>({
+export default function Select<T extends SelectValueType, O extends SelectOptionType<T>>({
   defaultValue,
   value,
   options,
@@ -22,7 +23,7 @@ export default function Select<T extends SelectValueType>({
   wrapperStyle,
   onChange,
   ...extra
-}: SelectProps<T>) {
+}: SelectProps<T, O>) {
   const [visible, setVisible] = useState(false)
   const [_value, setValue] = useState<T>()
   const initRef = useRef(false)
@@ -67,7 +68,9 @@ export default function Select<T extends SelectValueType>({
   const findLabelByValue = useCallback(
     (value?: T) => {
       if (value === undefined) return
-      const currentOption = options.find((item) => item.value === value)
+
+      const currentOption = findOptionInGroupsOrOptions(options, value)
+
       return currentOption?.label || currentOption?.value
     },
     [options]
