@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import ReactDOM from 'react-dom'
 import classNames from 'classnames'
 
@@ -33,6 +33,7 @@ export default function Modal({
   className,
   zIndex,
   preventMouseOver,
+  preventAutoClose,
   onClose,
   onVisibleChange,
   getContainer = () => compatible.getBody(),
@@ -73,23 +74,25 @@ export default function Modal({
     }
   }, [getContainer])
 
-  function handleClose() {
-    setHidden(true)
-    delaySetVisible(false)
+  const handleClose = useCallback(() => {
+    if (!preventAutoClose) {
+      setHidden(true)
+      delaySetVisible(false)
+    }
     onClose?.()
-  }
+  }, [preventAutoClose, onClose])
 
-  function handleFooterButton(fn?: () => void) {
+  const handleFooterButton = useCallback((fn?: () => void) => {
     setHidden(true)
     delaySetVisible(false)
     fn?.()
-  }
+  }, [])
 
-  function delaySetVisible(visible: boolean) {
+  const delaySetVisible = useCallback((visible: boolean) => {
     setTimeout(() => {
       setVisible(visible)
     }, animationTime)
-  }
+  }, [])
 
   if (!_visible) return <></>
 

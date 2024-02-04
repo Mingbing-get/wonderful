@@ -19,6 +19,7 @@ export type ModalProps = {
   className?: string
   zIndex?: number
   preventMouseOver?: boolean
+  preventAutoClose?: boolean
   onVisibleChange?: (visible: boolean) => void
   onClose?: () => void
   getContainer?: () => HTMLElement
