@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState, useCallback } from 'react'
 import classNames from 'classnames'
 
 import compatible from '../compatible'
-import { SelectValueType } from '../types/select'
+import { SelectValueType, SelectOptionType } from '../types/select'
 import { SelectPanelProps } from '../types/selectPanel'
 import Option from './option'
 import Group from './group'
@@ -10,7 +10,13 @@ import { isSelectGroup, findOptionInGroupsOrOptions, findNextOptionInGroupsOrOpt
 
 import './index.scss'
 
-export default function Panel<T extends SelectValueType>({ wrapperClassName, value, wrapperStyle, options, onClickItem }: SelectPanelProps<T>) {
+export default function Panel<T extends SelectValueType, O extends SelectOptionType<T>>({
+  wrapperClassName,
+  value,
+  wrapperStyle,
+  options,
+  onClickItem,
+}: SelectPanelProps<T, O>) {
   const [hoverValue, setHoverValue] = useState(value)
   const [refresh, setRefresh] = useState(0)
   const selectWrapperRef = useRef<HTMLDivElement>(null)
@@ -38,7 +44,7 @@ export default function Panel<T extends SelectValueType>({ wrapperClassName, val
 
     if (!item) return
 
-    onClickItem?.(item)
+    onClickItem?.(item as O)
   }, [options, onClickItem])
 
   useEffect(() => {
@@ -93,7 +99,7 @@ export default function Panel<T extends SelectValueType>({ wrapperClassName, val
                   className={classNames({ 'is-select': value === subItem.value, 'is-hover': hoverValue === subItem.value })}
                   {...subItem}
                   key={subItem.value}
-                  onClick={(value) => onClickItem?.(subItem)}
+                  onClick={(value) => onClickItem?.(subItem as O)}
                   onMouseEnter={setHoverValue}
                 />
               ))}
@@ -106,7 +112,7 @@ export default function Panel<T extends SelectValueType>({ wrapperClassName, val
             className={classNames({ 'is-select': value === item.value, 'is-hover': hoverValue === item.value })}
             {...item}
             key={item.value}
-            onClick={(value) => onClickItem?.(item)}
+            onClick={(value) => onClickItem?.(item as O)}
             onMouseEnter={setHoverValue}
           />
         )
