@@ -112,7 +112,7 @@ export default function ExampleSelect() {
       />
       <MultipleSelect
         disabled
-        defaultValue={[1]}
+        defaultValue={[1] as number[]}
         options={[
           {
             value: 1,

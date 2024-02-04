@@ -39,7 +39,7 @@ export default function Modal({
 }: ModalProps) {
   const [_visible, setVisible] = useState(!!visible)
   const [hidden, setHidden] = useState(!visible)
-  const [_zIndex, setZIndex] = useState(1)
+  const [_zIndex, setZIndex] = useState(visible ? zIndexManager.next('normal') : 1)
   const [containerRect, setContainerRect] = useState<ContainerRect>(bodyContainerRect)
 
   useEffect(() => {
