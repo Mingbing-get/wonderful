@@ -28,7 +28,7 @@ function defaultDisplayRender<T extends SelectValueType>(checkedPath: SelectOpti
   })
 }
 
-export default function MultipleSelect<T extends SelectValueType, O extends SelectOptionType<T>>({
+export default function MultipleSelect<T extends SelectValueType>({
   className,
   style,
   wrapperClassName,
@@ -41,7 +41,7 @@ export default function MultipleSelect<T extends SelectValueType, O extends Sele
   showSearch,
   onChange,
   ...extra
-}: MultipleSelectProps<T, O>) {
+}: MultipleSelectProps<T>) {
   const [_value, setValue] = useState(defaultValue || value || [])
   const [triggerChange, setTriggerChange] = useState(false)
   const [visiblePopover, setVisiblePopover] = useState(false)
@@ -55,7 +55,7 @@ export default function MultipleSelect<T extends SelectValueType, O extends Sele
   }, [onChange, triggerChange, _value])
 
   const checkedOptions = useMemo(() => {
-    const checkedOptions: O[] = []
+    const checkedOptions: SelectOptionType<T>[] = []
 
     options.forEach((option) => {
       if (isSelectGroup(option)) {
@@ -130,7 +130,7 @@ export default function MultipleSelect<T extends SelectValueType, O extends Sele
   const afterFilterOptions = useMemo(() => {
     if (!searchText) return options
 
-    const afterFilterOptions: O[] | SelectGroup<T, O>[] = []
+    const afterFilterOptions: SelectOptionType<T>[] | SelectGroup<T>[] = []
 
     options.forEach((item) => {
       if (typeof item.label !== 'string') {
@@ -139,7 +139,7 @@ export default function MultipleSelect<T extends SelectValueType, O extends Sele
       }
 
       if (isSelectGroup(item)) {
-        const newGroup: SelectGroup<T, O> = { ...item, options: [] }
+        const newGroup: SelectGroup<T> = { ...item, options: [] }
 
         item.options.forEach((subOption) => {
           if (typeof subOption.label !== 'string' || subOption.label.includes(searchText)) {

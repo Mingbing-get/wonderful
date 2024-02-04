@@ -1,9 +1,9 @@
 import { SelectValueType, SelectOptionType, SelectGroup } from './select'
 
-export interface SelectPanelProps<T extends SelectValueType, O extends SelectOptionType<T>> {
+export interface SelectPanelProps<T extends SelectValueType> {
   value?: T
   wrapperClassName?: string
   wrapperStyle?: React.CSSProperties
-  options: O[] | SelectGroup<T, O>[]
-  onClickItem?: (item: O) => void
+  options: SelectOptionType<T>[] | SelectGroup<T>[]
+  onClickItem?: (item: SelectOptionType<T>) => void
 }

@@ -5,7 +5,7 @@ function getOptions(count: number) {
   return new Array(count).fill(1).map((_, index) => ({ value: index + 1, label: `l-${index + 1}` }))
 }
 
-const groups: SelectGroup[] = [
+const groups: SelectGroup<string>[] = [
   {
     label: 'group1',
     id: 'group1',
@@ -112,7 +112,7 @@ export default function ExampleSelect() {
       />
       <MultipleSelect
         disabled
-        defaultValue={[1] as number[]}
+        defaultValue={[1]}
         options={[
           {
             value: 1,

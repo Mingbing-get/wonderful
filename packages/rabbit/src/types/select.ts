@@ -11,15 +11,15 @@ export type SelectOptionType<T extends SelectValueType = SelectValueType> = {
   onMouseEnter?: (value: T) => void
 }
 
-export type SelectGroup<T extends SelectValueType = SelectValueType, O extends SelectOptionType<T> = SelectOptionType<T>> = {
+export type SelectGroup<T extends SelectValueType> = {
   id: string
   label: React.ReactNode
-  options: O[]
+  options: SelectOptionType<T>[]
   [k: string]: any
 }
 
-export type BaseSelectProps<T extends SelectValueType, O extends SelectOptionType<T>> = {
-  options: O[] | SelectGroup<T, O>[]
+export type BaseSelectProps<T extends SelectValueType> = {
+  options: SelectOptionType<T>[] | SelectGroup<T>[]
   className?: string
   style?: React.CSSProperties
   placeholder?: string
@@ -28,16 +28,16 @@ export type BaseSelectProps<T extends SelectValueType, O extends SelectOptionTyp
   wrapperStyle?: React.CSSProperties
 } & Omit<React.HTMLAttributes<HTMLSpanElement>, 'onChange' | 'defaultValue' | 'value' | 'children'>
 
-export type SelectProps<T extends SelectValueType, O extends SelectOptionType<T>> = {
+export type SelectProps<T extends SelectValueType> = {
   defaultValue?: T
   value?: T
   allowClear?: boolean
   onChange?: (value?: T) => void
-} & BaseSelectProps<T, O>
+} & BaseSelectProps<T>
 
-export type MultipleSelectProps<T extends SelectValueType, O extends SelectOptionType<T>> = {
+export type MultipleSelectProps<T extends SelectValueType> = {
   defaultValue?: T[]
   value?: T[]
   showSearch?: boolean
   onChange?: (value: T[]) => void
-} & BaseSelectProps<T, O>
+} & BaseSelectProps<T>

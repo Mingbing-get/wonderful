@@ -1,18 +1,18 @@
 import { SelectGroup, SelectValueType, SelectOptionType } from '../types/select'
 
-export function isSelectGroup<T extends SelectValueType, O extends SelectOptionType<T>>(option: O | SelectGroup<T, O>): option is SelectGroup<T, O> {
+export function isSelectGroup<T extends SelectValueType>(option: SelectOptionType<T> | SelectGroup<T>): option is SelectGroup<T> {
   return option.options
 }
 
-export function isSelectOption<T extends SelectValueType, O extends SelectOptionType<T>>(option: O | SelectGroup<T, O>): option is O {
+export function isSelectOption<T extends SelectValueType>(option: SelectOptionType<T> | SelectGroup<T>): option is SelectOptionType<T> {
   return !option.options
 }
 
-export function findOptionInGroupsOrOptions<T extends SelectValueType, O extends SelectOptionType<T>>(
-  options: O[] | SelectGroup<T, O>[],
+export function findOptionInGroupsOrOptions<T extends SelectValueType>(
+  options: SelectOptionType<T>[] | SelectGroup<T>[],
   value: T
-): O | undefined {
-  let item: O | undefined
+): SelectOptionType<T> | undefined {
+  let item: SelectOptionType<T> | undefined
 
   for (const option of options) {
     if (isSelectGroup(option)) {
@@ -35,13 +35,13 @@ export function findOptionInGroupsOrOptions<T extends SelectValueType, O extends
   return item
 }
 
-export function findNextOptionInGroupsOrOptions<T extends SelectValueType, O extends SelectOptionType<T>>(
-  options: O[] | SelectGroup<T, O>[],
+export function findNextOptionInGroupsOrOptions<T extends SelectValueType>(
+  options: SelectOptionType<T>[] | SelectGroup<T>[],
   step: number,
   value?: T
-): O | undefined {
+): SelectOptionType<T> | undefined {
   if (options.length === 0) return
-  const newOptions: O[] = []
+  const newOptions: SelectOptionType<T>[] = []
 
   options.forEach((option) => {
     if (isSelectGroup(option)) {

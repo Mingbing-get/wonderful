@@ -10,7 +10,7 @@ import { findOptionInGroupsOrOptions } from '../../selectPanel/utils'
 import { SelectOptionType, SelectProps, SelectValueType } from '../../types/select'
 import './index.scss'
 
-export default function Select<T extends SelectValueType, O extends SelectOptionType<T>>({
+export default function Select<T extends SelectValueType>({
   defaultValue,
   value,
   options,
@@ -23,7 +23,7 @@ export default function Select<T extends SelectValueType, O extends SelectOption
   wrapperStyle,
   onChange,
   ...extra
-}: SelectProps<T, O>) {
+}: SelectProps<T>) {
   const [visible, setVisible] = useState(false)
   const [_value, setValue] = useState<T>()
   const initRef = useRef(false)
