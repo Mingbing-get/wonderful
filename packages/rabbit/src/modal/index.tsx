@@ -6,6 +6,7 @@ import compatible from '../compatible'
 import Icon from '../icon'
 import Button from '../button'
 import { ModalProps } from '../types/modal'
+import zIndexManager from '../zIndexManager'
 
 import './index.scss'
 const animationTime = 200
@@ -38,6 +39,7 @@ export default function Modal({
 }: ModalProps) {
   const [_visible, setVisible] = useState(!!visible)
   const [hidden, setHidden] = useState(!visible)
+  const [_zIndex, setZIndex] = useState(1)
   const [containerRect, setContainerRect] = useState<ContainerRect>(bodyContainerRect)
 
   useEffect(() => {
@@ -50,6 +52,7 @@ export default function Modal({
           setHidden(false)
         }, 60)
         setVisible(true)
+        setZIndex(zIndexManager.next('normal'))
       }
     }
   }, [visible])
@@ -93,7 +96,7 @@ export default function Modal({
   return ReactDOM.createPortal(
     <div
       className={classNames('rabbit-modal-wrapper', 'rabbit-component', `placement-${placement}`)}
-      style={{ zIndex }}
+      style={{ zIndex: zIndex === undefined ? _zIndex : zIndex }}
       onMouseOverCapture={(e) => preventMouseOver && e.preventDefault()}>
       <div
         className={classNames('modal-container', className)}

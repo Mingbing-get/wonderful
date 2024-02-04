@@ -5,6 +5,7 @@ import classNames from 'classnames'
 import compatible from '../compatible'
 import PopoverInstance from '../popoverInstance'
 import { PopoverHandleProps } from '../types/popoverHandle'
+import zIndexManager from '../zIndexManager'
 
 import './index.scss'
 
@@ -16,6 +17,7 @@ function HandlePopover(
   const arrowRef = useRef<HTMLDivElement>(null)
   const popperInstance = useRef(new PopoverInstance())
   const [targetWidth, setTargetWidth] = useState(0)
+  const [zIndex, setZIndex] = useState(1)
 
   useImperativeHandle(ref, () => popperInstance.current, [])
 
@@ -39,10 +41,15 @@ function HandlePopover(
   }, [])
 
   useEffect(() => {
+    popperInstance.current.forceUpdate()
+  }, [targetWidth])
+
+  useEffect(() => {
     if (!target) return
 
+    setZIndex(zIndexManager.next('normal'))
     requestAnimationFrame(() => {
-      compatible.getBoundingClientRect(target).then(domRect => {
+      compatible.getBoundingClientRect(target).then((domRect) => {
         setTargetWidth(domRect.width)
       })
     })
@@ -59,7 +66,7 @@ function HandlePopover(
               { 'not-arrow': arrow === 'none', 'is-small': arrow === 'small', 'is-large': arrow === 'large' },
               className
             )}
-            style={{ ...style, minWidth: widthFollowTarget ? `${targetWidth}px` : '' }}
+            style={{ ...style, minWidth: widthFollowTarget ? `${targetWidth}px` : '', zIndex }}
             ref={displayRef}
             onClick={(e) => e.stopPropagation()}>
             {content}

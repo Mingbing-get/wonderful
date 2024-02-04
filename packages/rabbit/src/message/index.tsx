@@ -4,6 +4,7 @@ import classNames from 'classnames'
 import compatible from '../compatible'
 import Icon, { IconType } from '../icon'
 import { MessageProps } from '../types/message'
+import zIndexManager from '../zIndexManager'
 
 import './index.scss'
 
@@ -131,7 +132,7 @@ class MessageFactory {
       transition: 'all 0.2s linear',
       width: 'fit-content',
       transform: 'translate(-50%, 0)',
-      'z-index': 100,
+      'z-index': zIndexManager.next('important'),
       ...(style || {}),
     }
   }
