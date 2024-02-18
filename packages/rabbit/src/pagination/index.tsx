@@ -1,11 +1,9 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react'
-import classNames from 'classnames'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
 
-import { Select } from '../select'
-import InputNumber from '../inputNumber'
-import Icon from '../icon'
 import { PaginationProps, PaginationItemRender } from '../types/pagination'
-import { SelectOptionType } from '../types/select'
+
+import SimplePagination from './simple'
+import CommonPagination from './common'
 
 import './index.scss'
 
@@ -52,103 +50,50 @@ export default function Pagination({
     resetCurrent(Math.floor((currentRef.current * prePageSize) / pageSize))
   }, [pageSize])
 
-  const items = useMemo(() => {
-    if (simple) return []
+  const resetCurrent = useCallback(
+    (currentPage?: number) => {
+      if (currentPage === undefined) return
 
-    const items: React.ReactNode[] = []
-    const maxPage = Math.ceil(total / _pageSize) - 1
-    const hasFirstPage = _current === Math.ceil(showItemCount / 2)
-    const hasPreEllipse = _current > Math.ceil(showItemCount / 2)
-    const hasLastPage = maxPage - _current === Math.ceil(showItemCount / 2)
-    const hasNextEllipse = maxPage - _current > Math.ceil(showItemCount / 2)
+      const maxPage = Math.ceil(total / pageSizeRef.current) - 1
+      let newCurrent = currentPage
+      if (currentPage < 0) {
+        newCurrent = 0
+      } else if (maxPage < currentPage) {
+        newCurrent = maxPage
+      }
 
-    if (hasFirstPage || hasPreEllipse) {
-      items.push(
-        <span
-          className="pagination-item"
-          key={0}
-          onClick={() => handleChangePage(0)}>
-          {itemRender(0, 'page', <span className="pagination-page-btn">1</span>)}
-        </span>
-      )
-    }
-    if (hasPreEllipse) {
-      items.push(
-        <span
-          className="pagination-ellipsis-btn"
-          key="ellipsis-prev">
-          {itemRender(-1, 'ellipsis', <Icon type="ellipsis" />)}
-        </span>
-      )
-    }
+      if (newCurrent === currentRef.current) return
+      currentRef.current = newCurrent
+      setCurrent(newCurrent)
+      onChange?.(newCurrent, pageSizeRef.current)
+    },
+    [total]
+  )
 
-    const start = Math.max(_current - Math.floor((showItemCount - 1) / 2), 0)
-    const end = Math.min(_current + Math.floor((showItemCount - 1) / 2), maxPage)
-    for (let i = start; i <= end; i++) {
-      items.push(
-        <span
-          className="pagination-item"
-          key={i}
-          onClick={() => handleChangePage(i)}>
-          {itemRender(i, 'page', <span className={classNames('pagination-page-btn', i === _current && 'is-active')}>{i + 1}</span>)}
-        </span>
-      )
-    }
+  const handleJumperBlur = useCallback(() => {
+    if (jumperPage === undefined) return
 
-    if (hasNextEllipse) {
-      items.push(
-        <span
-          className="pagination-ellipsis-btn"
-          key="ellipsis-next">
-          {itemRender(-1, 'ellipsis', <Icon type="ellipsis" />)}
-        </span>
-      )
-    }
-    if (hasLastPage || hasNextEllipse) {
-      items.push(
-        <span
-          className="pagination-item"
-          key={maxPage}
-          onClick={() => handleChangePage(maxPage)}>
-          {itemRender(maxPage, 'page', <span className="pagination-page-btn">{maxPage + 1}</span>)}
-        </span>
-      )
-    }
+    resetCurrent(jumperPage - 1)
+    setJumperPage(undefined)
+  }, [jumperPage])
 
-    return items
-  }, [_current, _pageSize, total, showItemCount, itemRender])
+  const handleJumperKeyUp = useCallback(
+    (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.code !== 'Enter' || jumperPage === undefined) return
 
-  const _pageSizeOptions: SelectOptionType<number>[] = useMemo(() => {
-    if (!pageSizeOptions) return []
+      resetCurrent(jumperPage - 1)
+      setJumperPage(undefined)
+    },
+    [jumperPage]
+  )
 
-    return pageSizeOptions.map((item) => ({
-      value: item,
-      label: `${item}条/页`,
-    }))
-  }, [pageSizeOptions])
+  const handleChangePage = useCallback((currentPage: number) => {
+    if (disabled) return
 
-  const range: [number, number] = useMemo(() => {
-    return [_current * _pageSize, Math.min((_current + 1) * _pageSize, total)]
-  }, [_current, _pageSize, total])
+    resetCurrent(currentPage)
+  }, [])
 
-  function resetCurrent(currentPage?: number) {
-    if (currentPage === undefined) return
-
-    const maxPage = Math.ceil(total / pageSizeRef.current) - 1
-    let newCurrent = currentPage
-    if (currentPage < 0) {
-      newCurrent = 0
-    } else if (maxPage < currentPage) {
-      newCurrent = maxPage
-    }
-
-    if (newCurrent === currentRef.current) return
-    currentRef.current = newCurrent
-    setCurrent(newCurrent)
-    onChange?.(newCurrent, pageSizeRef.current)
-  }
-
-  function handleChangePageSize(pageSize?: number) {
+  const handleChangePageSize = useCallback((pageSize?: number) => {
     if (pageSize === undefined || pageSize === pageSizeRef.current) return
 
     const prePageSize = pageSizeRef.current
@@ -156,27 +101,7 @@ export default function Pagination({
     setPageSize(pageSize)
     onPageSizeChange?.(currentRef.current, pageSize)
     resetCurrent(Math.floor((currentRef.current * prePageSize) / pageSize))
-  }
-
-  function handleJumperBlur() {
-    if (jumperPage === undefined) return
-
-    resetCurrent(jumperPage - 1)
-    setJumperPage(undefined)
-  }
-
-  function handleJumperKeyUp(e: React.KeyboardEvent<HTMLInputElement>) {
-    if (e.code !== 'Enter' || jumperPage === undefined) return
-
-    resetCurrent(jumperPage - 1)
-    setJumperPage(undefined)
-  }
-
-  function handleChangePage(currentPage: number) {
-    if (disabled) return
-
-    resetCurrent(currentPage)
-  }
+  }, [])
 
   if (hideOnSinglePage && total <= _pageSize) {
     return <></>
@@ -184,91 +109,43 @@ export default function Pagination({
 
   if (simple) {
     return (
-      <div
-        className={classNames('rabbit-pagination-wrapper', 'rabbit-component', disabled && 'is-disabled', className)}
-        style={style}>
-        <div onClick={() => handleChangePage(_current - 1)}>
-          {itemRender(
-            -1,
-            'prev',
-            <div className="pagination-prev-btn">
-              <Icon type="arrowLeft" />
-            </div>
-          )}
-        </div>
-        <InputNumber
-          className="pagination-simple-input"
-          showStepBtn={false}
-          disabled={disabled}
-          value={_current + 1}
-          onChange={setJumperPage}
-          onBlur={handleJumperBlur}
-          onKeyUp={handleJumperKeyUp}
-        />
-        <span className="pagination-simple-text">/</span>
-        <span className="pagination-simple-text">{Math.ceil(total / _pageSize)}</span>
-        <div onClick={() => handleChangePage(_current + 1)}>
-          {itemRender(
-            -1,
-            'next',
-            <div className="pagination-next-btn">
-              <Icon type="arrowRight" />
-            </div>
-          )}
-        </div>
-      </div>
+      <SimplePagination
+        {...extra}
+        disabled={disabled}
+        className={className}
+        style={style}
+        itemRender={itemRender}
+        current={_current}
+        total={total}
+        pageSize={_pageSize}
+        onJumperPage={setJumperPage}
+        onChangePage={handleChangePage}
+        onJumperBlur={handleJumperBlur}
+        onJumperKeyUp={handleJumperKeyUp}
+      />
     )
   }
 
   return (
-    <div
+    <CommonPagination
       {...extra}
-      className={classNames('rabbit-pagination-wrapper', 'rabbit-component', disabled && 'is-disabled', className)}
-      style={style}>
-      {showTotal && <div className="pagination-total">{showTotal(total, range)}</div>}
-      <div onClick={() => handleChangePage(_current - 1)}>
-        {itemRender(
-          -1,
-          'prev',
-          <div className="pagination-prev-btn">
-            <Icon type="arrowLeft" />
-          </div>
-        )}
-      </div>
-      {items}
-      <div onClick={() => handleChangePage(_current + 1)}>
-        {itemRender(
-          -1,
-          'next',
-          <div className="pagination-next-btn">
-            <Icon type="arrowRight" />
-          </div>
-        )}
-      </div>
-      {_pageSizeOptions.length > 0 && (
-        <Select
-          style={{ width: '5rem', minWidth: '5rem' }}
-          value={_pageSize}
-          options={_pageSizeOptions}
-          onChange={handleChangePageSize}
-          disabled={disabled}
-        />
-      )}
-      {showQuickJumper && (
-        <div className="pagination-quick-jumper">
-          跳至
-          <InputNumber
-            style={{ width: '3rem', minWidth: '3rem' }}
-            showStepBtn={false}
-            disabled={disabled}
-            value={jumperPage}
-            onChange={setJumperPage}
-            onBlur={handleJumperBlur}
-            onKeyUp={handleJumperKeyUp}
-          />
-          页
-        </div>
-      )}
-    </div>
+      disabled={disabled}
+      className={className}
+      style={style}
+      itemRender={itemRender}
+      current={_current}
+      total={total}
+      pageSize={_pageSize}
+      pageSizeOptions={pageSizeOptions}
+      showItemCount={showItemCount}
+      showQuickJumper={showQuickJumper}
+      jumperPage={jumperPage}
+      showTotal={showTotal}
+      onJumperPage={setJumperPage}
+      onChangePage={handleChangePage}
+      onJumperBlur={handleJumperBlur}
+      onJumperKeyUp={handleJumperKeyUp}
+      onChangePageSize={handleChangePageSize}
+    />
   )
 }

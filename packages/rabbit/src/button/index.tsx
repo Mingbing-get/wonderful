@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback } from 'react'
 import classNames from 'classnames'
 
 import Loading from '../loading'
@@ -6,22 +6,21 @@ import { ButtonProps } from '../types/button'
 
 import './index.scss'
 
-function Button({ type, loading, block, disabled, ghost, children, className, onClick, ...extra }: ButtonProps, ref?: React.ForwardedRef<HTMLDivElement>) {
-  const [addBoxShadow, setAddBoxShadow] = useState(false)
+function Button(
+  { type = 'default', loading, block, disabled, ghost, round, children, className, onClick, ...extra }: ButtonProps,
+  ref?: React.ForwardedRef<HTMLButtonElement>
+) {
+  const handleClick = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      if (disabled || loading) return
 
-  function handleClick(e: React.MouseEvent<HTMLDivElement>) {
-    if (disabled || loading) return
-    onClick?.(e)
-
-    setAddBoxShadow(true)
-
-    setTimeout(() => {
-      setAddBoxShadow(false)
-    }, 200)
-  }
+      onClick?.(e)
+    },
+    [disabled, loading, onClick]
+  )
 
   return (
-    <div
+    <button
       className={classNames(
         'rabbit-button-wrapper',
         'rabbit-component',
@@ -30,9 +29,10 @@ function Button({ type, loading, block, disabled, ghost, children, className, on
         disabled && 'is-disabled',
         loading && 'is-loading',
         ghost && 'is-ghost',
-        addBoxShadow && 'transition-shadow',
+        round && 'is-round',
         className
       )}
+      disabled={disabled || loading}
       onClick={handleClick}
       ref={ref}
       {...extra}>
@@ -40,8 +40,8 @@ function Button({ type, loading, block, disabled, ghost, children, className, on
       <span className="loading-mask">
         <Loading />
       </span>
-    </div>
+    </button>
   )
 }
 
-export default React.forwardRef<HTMLDivElement, ButtonProps>(Button)
+export default React.forwardRef<HTMLButtonElement, ButtonProps>(Button)

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import classNames from 'classnames'
 import Icon from '../icon'
 
@@ -51,42 +51,51 @@ function Upload({ source, children, multiple, onChange, style, className, ...ext
     }
   }, [imgList])
 
-  function _onChange(newImgList: UploadImgDesc[]) {
-    if (multiple) {
-      onChange?.(newImgList)
-    } else {
-      onChange?.(newImgList[0])
-    }
-  }
+  const _onChange = useCallback(
+    (newImgList: UploadImgDesc[]) => {
+      if (multiple) {
+        onChange?.(newImgList)
+      } else {
+        onChange?.(newImgList[0])
+      }
+    },
+    [onChange]
+  )
 
-  async function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0]
-    if (!file) return
+  const handleChange = useCallback(
+    async (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0]
+      if (!file) return
 
-    const path = e.target.value
-    const base64 = await toBase64(file)
-    e.target.value = ''
-    const newImgList = [
-      ...imgList,
-      {
-        key: generateKey(),
-        type: getTypeByPath(path),
-        originPath: path,
-        base64: base64 as string,
-      },
-    ]
-    setImgList(newImgList)
-    _onChange(newImgList)
-  }
+      const path = e.target.value
+      const base64 = await toBase64(file)
+      e.target.value = ''
+      const newImgList = [
+        ...imgList,
+        {
+          key: generateKey(),
+          type: getTypeByPath(path),
+          originPath: path,
+          base64: base64 as string,
+        },
+      ]
+      setImgList(newImgList)
+      _onChange(newImgList)
+    },
+    [imgList, _onChange]
+  )
 
-  function handleDelete(key: string) {
-    const index = imgList.findIndex((item) => item.key === key)
-    if (index === -1) return
+  const handleDelete = useCallback(
+    (key: string) => {
+      const index = imgList.findIndex((item) => item.key === key)
+      if (index === -1) return
 
-    imgList.splice(index, 1)
-    setImgList([...imgList])
-    _onChange(imgList)
-  }
+      imgList.splice(index, 1)
+      setImgList([...imgList])
+      _onChange(imgList)
+    },
+    [imgList, _onChange]
+  )
 
   return (
     <div

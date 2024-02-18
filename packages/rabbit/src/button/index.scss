@@ -15,7 +15,6 @@
     left: 0;
     bottom: 0;
     right: 0;
-    cursor: not-allowed;
 
     display: none;
     align-items: center;
@@ -24,6 +23,30 @@
 
   &.is-block {
     width: 100%;
+  }
+  &.is-round {
+    border-radius: 100000000px;
+  }
+  &.is-loading {
+    cursor: not-allowed;
+    .loading-mask {
+      display: inline-flex;
+    }
+  }
+  &.is-disabled {
+    cursor: not-allowed;
+  }
+
+  &.type-default {
+    background-color: #fff;
+    border-color: var(--rabbit-border-color-base);
+    &.is-disabled,
+    &.is-loading {
+      background-color: var(--rabbit-disabled-bg-color);
+    }
+    &:focus {
+      box-shadow: 0 0 6px 0 var(--rabbit-border-color-base);
+    }
   }
 
   @each $name, $color in (primary, var(--rabbit-primary-color)), (danger, var(--rabbit-error-color)), (success, var(--rabbit-success-color)),
@@ -34,40 +57,26 @@
       background-color: $color;
       border-color: $color;
 
+      &.is-disabled,
+      &.is-loading {
+        background-color: color-mix(in lch, $color 60%, transparent);
+        border-color: color-mix(in lch, $color 60%, transparent);
+      }
+
       &.is-ghost {
         color: $color;
         background-color: transparent;
         border-color: $color;
+        &.is-disabled,
+        &.is-loading {
+          color: color-mix(in lch, $color 60%, transparent);
+          border-color: color-mix(in lch, $color 60%, transparent);
+        }
       }
 
-      &.transition-shadow {
+      &:focus {
         box-shadow: 0 0 6px 0 $color;
       }
-    }
-  }
-
-  &.is-disabled {
-    background-color: var(--rabbit-disabled-bg-color);
-    border-color: var(--rabbit-disabled-bg-color);
-    color: var(--rabbit-disabled-color);
-    cursor: not-allowed;
-    &.is-ghost {
-      color: var(--rabbit-disabled-color);
-      background-color: transparent;
-      border-color: var(--rabbit-disabled-bg-color);
-    }
-  }
-  &.is-loading {
-    background-color: var(--rabbit-disabled-bg-color);
-    border-color: var(--rabbit-disabled-bg-color);
-    color: var(--rabbit-disabled-color);
-    &.is-ghost {
-      color: var(--rabbit-disabled-color);
-      background-color: transparent;
-      border-color: var(--rabbit-disabled-bg-color);
-    }
-    .loading-mask {
-      display: flex;
     }
   }
 }

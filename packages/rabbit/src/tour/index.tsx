@@ -18,7 +18,7 @@ export default function Tour({ steps, open = false, arrow, placement, current = 
   const [_open, setOpen] = useState(open)
   const [_current, setCurrent] = useState(current)
   const [showPopover, setShowPopover] = useState(true)
-  const [itemLocation, setItemLocation] = useState({width: 0, height: 0, left: 0, top: 0})
+  const [itemLocation, setItemLocation] = useState({ width: 0, height: 0, left: 0, top: 0 })
 
   useEffect(() => {
     setOpen(open)
@@ -77,7 +77,7 @@ export default function Tour({ steps, open = false, arrow, placement, current = 
       type: 'primary',
       children: '结束导航',
       ...finishButtonProps,
-      onClick: (e: React.MouseEvent<HTMLDivElement>) => {
+      onClick: (e: React.MouseEvent<HTMLButtonElement>) => {
         onFinish?.()
         setCurrent(0)
         setOpen(false)
@@ -92,7 +92,7 @@ export default function Tour({ steps, open = false, arrow, placement, current = 
       type: 'primary',
       children: '下一步',
       ...steps[_current].nextButtonProps,
-      onClick: (e: React.MouseEvent<HTMLDivElement>) => {
+      onClick: (e: React.MouseEvent<HTMLButtonElement>) => {
         handleChange(true)
         steps[_current].nextButtonProps?.onClick?.(e)
       },
@@ -104,7 +104,7 @@ export default function Tour({ steps, open = false, arrow, placement, current = 
     () => ({
       children: '上一步',
       ...steps[_current].prevButtonProps,
-      onClick: (e: React.MouseEvent<HTMLDivElement>) => {
+      onClick: (e: React.MouseEvent<HTMLButtonElement>) => {
         handleChange(false)
         steps[_current].prevButtonProps?.onClick?.(e)
       },
