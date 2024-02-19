@@ -1,15 +1,21 @@
 ### wonderful
-自定义组件库和基本动画组件
-***
+
+1. 自定义组件库: 支持微信小程序，移动端，pc 端，响应式布局
+2. 基本动画组件
+
+---
 
 #### Install
+
 ```bash
 
 npm install wonderful-marrow
 ```
-***
+
+---
 
 #### 组件库使用
+
 ```js
 
 import React from 'react'
@@ -30,7 +36,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 #### 支持的组件
 
 ```js
-[
+const componentList = [
   {
     value: 'currency',
     label: '通用',
@@ -42,8 +48,12 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       {
         value: 'Icon',
         label: '图标',
-      }
-    ]
+      },
+      {
+        value: 'Boundary',
+        label: '可变边界',
+      },
+    ],
   },
   {
     value: 'nav',
@@ -60,8 +70,8 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       {
         value: 'Steps',
         label: '步骤条',
-      }
-    ]
+      },
+    ],
   },
   {
     value: 'data-input',
@@ -96,6 +106,10 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         label: '选择器',
       },
       {
+        value: 'SelectPanel',
+        label: '选择器(自定义触发器)',
+      },
+      {
         value: 'Slider',
         label: '滑动输入条',
       },
@@ -126,8 +140,12 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       {
         value: 'TreeSelect',
         label: '树形选择器',
-      }
-    ]
+      },
+      {
+        value: 'ColorPicker',
+        label: '颜色选择器',
+      },
+    ],
   },
   {
     value: 'data-display',
@@ -148,6 +166,10 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       {
         value: 'Popover',
         label: '气泡卡片',
+      },
+      {
+        value: 'PopoverHandle',
+        label: '气泡卡片(自定义触发器)',
       },
       {
         value: 'Tab',
@@ -176,8 +198,8 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       {
         value: 'Table',
         label: '表格',
-      }
-    ]
+      },
+    ],
   },
   {
     value: 'feedback',
@@ -198,15 +220,15 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       {
         value: 'Progress',
         label: '进度条',
-      }
-    ]
+      },
+    ],
   },
 ]
 ```
 
 #### 动画库使用
-```js
 
+```js
 import { Marrow, Build, Render } from 'wonderful-marrow/marrow'
 
 import 'wonderful-marrow/marrow/index.css'
@@ -223,9 +245,13 @@ const data: Marrow[] = []
 
 function App() {
   return (
-    <div style={{width: '100vw', height: '100vh', display: 'flex'}}>
+    <div style={{ width: '100vw', height: '100vh', display: 'flex' }}>
       <div style={{ width: '50%', height: '100%', borderRight: '1px solid #ccc' }}>
-        <Build marrows={data} onChange={handleChange} onSave={handleSave} />
+        <Build
+          marrows={data}
+          onChange={handleChange}
+          onSave={handleSave}
+        />
       </div>
       <div style={{ width: '50%', height: '100%' }}>
         <Render marrows={data} />
