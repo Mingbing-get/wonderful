@@ -1,0 +1,65 @@
+.rabbit-boundary-wrapper {
+  display: flex;
+
+  &.direction-row {
+    flex-direction: row;
+  }
+  &.direction-column {
+    flex-direction: column;
+  }
+
+  .rabbit-boundary-handle {
+    display: inline-block;
+    position: relative;
+    --bar-width: 1px;
+
+    &.direction-row {
+      min-height: 100%;
+      width: 1px;
+      .rabbit-boundary-handle-trick {
+        position: absolute;
+        top: 0;
+        left: -2px;
+        padding: 0 2px;
+        height: 100%;
+        cursor: ew-resize;
+      }
+
+      .rabbit-boundary-handle-bar {
+        width: var(--bar-width);
+        height: 100%;
+      }
+    }
+
+    &.direction-column {
+      min-width: 100%;
+      height: 1px;
+      .rabbit-boundary-handle-trick {
+        position: absolute;
+        top: -2px;
+        left: 0;
+        padding: 2px 0;
+        width: 100%;
+        cursor: ns-resize;
+      }
+
+      .rabbit-boundary-handle-bar {
+        height: var(--bar-width);
+        width: 100%;
+      }
+    }
+
+    &.is-moving {
+      --bar-width: 3px;
+      .rabbit-boundary-handle-bar {
+        background-color: var(--rabbit-primary-color);
+      }
+    }
+
+    &:hover {
+      .rabbit-boundary-handle-bar {
+        background-color: var(--rabbit-primary-color);
+      }
+    }
+  }
+}

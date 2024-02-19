@@ -38,6 +38,7 @@ export * from './tree'
 export * from './treeSelect'
 export * from './upload'
 export * from './colorPicker'
+export * from './boundary'
 
 export type {
   TableRow,

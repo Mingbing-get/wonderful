@@ -37,6 +37,7 @@ import ExampleDatePicker from './examples/datePicker'
 import ExampleTransfer from './examples/transfer'
 import ExampleSteps from './examples/steps'
 import ExampleColorPicker from './examples/colorPicker'
+import ExampleBoundary from './examples/boundary'
 
 type ComponentTreeNode = TreeNode<{
   component?: React.ReactNode
@@ -56,6 +57,11 @@ const treeData: ComponentTreeNode[] = [
         value: 'button',
         label: '按钮',
         component: <ExampleButton />,
+      },
+      {
+        value: 'boundary',
+        label: '可变边界',
+        component: <ExampleBoundary />,
       },
     ],
   },
@@ -268,7 +274,7 @@ function mergeValueAndLabel(baseData: ComponentTreeNode[]) {
 mergeValueAndLabel(treeData)
 
 export default function ExampleRender() {
-  const [currentShow, setCurrentShow] = useState<React.ReactNode>(<ExampleColorPicker />)
+  const [currentShow, setCurrentShow] = useState<React.ReactNode>(<ExampleBoundary />)
 
   const handleChecked = useCallback((path: TreeValue[], node: ComponentTreeNode) => {
     setCurrentShow(node.component)
@@ -278,8 +284,8 @@ export default function ExampleRender() {
     <div className="rabbit-preview-wrapper">
       <div className="nav">
         <Tree
-          defaultCheckedPath={['data-input', 'colorPicker']}
-          defaultExpandPath={[['data-input']]}
+          defaultCheckedPath={['currency', 'boundary']}
+          defaultExpandPath={[['currency']]}
           data={treeData}
           onChecked={handleChecked}
           renderLabelIcon={(_, isExpand, isLeaf) => {

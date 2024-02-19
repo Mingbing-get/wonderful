@@ -43,6 +43,7 @@ export { default as ColorPicker } from './colorPicker'
 export { default as Transfer } from './transfer'
 export { default as Steps } from './steps'
 export { default as Table } from './table'
+export { default as Boundary } from './boundary'
 
 export { default as useTable } from './hooks/useTable'
 export { default as useVirtualScrollY } from './hooks/useVirtualScrollY'
