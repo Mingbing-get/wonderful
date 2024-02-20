@@ -2,9 +2,9 @@ import React, { useRef, useState } from 'react'
 import { Tour, TourStepType, Button } from '../../../rabbit/src'
 
 export default function ExampleTour() {
-  const firstRef = useRef<HTMLDivElement>(null)
-  const secondRef = useRef<HTMLDivElement>(null)
-  const threeRef = useRef<HTMLDivElement>(null)
+  const firstRef = useRef<HTMLButtonElement>(null)
+  const secondRef = useRef<HTMLButtonElement>(null)
+  const threeRef = useRef<HTMLButtonElement>(null)
   const [openDot, setOpenDot] = useState(false)
   const [openSimple, setOpenSimple] = useState(false)
   const [openNone, setOpenNone] = useState(false)
@@ -12,58 +12,38 @@ export default function ExampleTour() {
   const steps: TourStepType[] = [
     {
       title: '第一步',
-      content: (
-        <div>
-          第一步内容
-        </div>
-      ),
-      target: () => firstRef.current
+      content: <div>第一步内容</div>,
+      target: () => firstRef.current,
     },
     {
       title: '第二步',
-      content: (
-        <div>
-          第二步内容
-        </div>
-      ),
+      content: <div>第二步内容</div>,
       nextButtonProps: {
-        children: '自定义下一步'
+        children: '自定义下一步',
       },
       prevButtonProps: {
         onClick: () => {
           console.log('点击了第二步的上一步')
-        }
+        },
       },
-      target: () => secondRef.current
+      target: () => secondRef.current,
     },
     {
       title: '第三步',
-      content: (
-        <div>
-          第三步内容
-        </div>
-      ),
+      content: <div>第三步内容</div>,
       placement: 'right',
-      target: () => threeRef.current
+      target: () => threeRef.current,
     },
     {
       title: '第四步',
-      content: (
-        <div>
-          第四步内容
-        </div>
-      ),
-      target: () => null
+      content: <div>第四步内容</div>,
+      target: () => null,
     },
     {
       title: '第五步',
-      content: (
-        <div>
-          第五步内容
-        </div>
-      ),
-      target: () => document.getElementById('five')
-    }
+      content: <div>第五步内容</div>,
+      target: () => document.getElementById('five'),
+    },
   ]
   return (
     <div>
@@ -75,7 +55,11 @@ export default function ExampleTour() {
       <Button ref={firstRef}>第一步</Button>
       <Button ref={secondRef}>第二步</Button>
       <Button ref={threeRef}>第三步</Button>
-      <div id='five' style={{ display: 'inline-block', padding: '0.5rem' }}>第五步</div>
+      <div
+        id="five"
+        style={{ display: 'inline-block', padding: '0.5rem' }}>
+        第五步
+      </div>
       <Tour
         open={openDot}
         onChange={(current) => console.log(current)}
@@ -88,7 +72,7 @@ export default function ExampleTour() {
         onChange={(current) => console.log(current)}
         onClose={() => setOpenSimple(false)}
         onFinish={() => setOpenSimple(false)}
-        tip='simple'
+        tip="simple"
         steps={steps}
       />
       <Tour
@@ -96,7 +80,7 @@ export default function ExampleTour() {
         onChange={(current) => console.log(current)}
         onClose={() => setOpenNone(false)}
         onFinish={() => setOpenNone(false)}
-        tip='none'
+        tip="none"
         steps={steps}
       />
     </div>
